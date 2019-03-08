@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/bookkeeping",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Bookkeeping\\Providers\\BookkeepingServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Bookkeeping\\": ""
+        }
+    }
+}
