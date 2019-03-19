@@ -1,79 +1,39 @@
 <?php
 
-namespace Modules\Login\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
-    {
-        return view('login::index');
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers;
 
     /**
-     * Show the form for creating a new resource.
-     * @return Response
+     * Where to redirect users after login.
+     *
+     * @var string
      */
-    public function create()
-    {
-        return view('login::create');
-    }
+    protected $redirectTo = '/home';
 
     /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
+     * Create a new controller instance.
+     *
+     * @return void
      */
-    public function store(Request $request)
+    public function __construct()
     {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('login::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('login::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        $this->middleware('guest')->except('logout');
     }
 }
