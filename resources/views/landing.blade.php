@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bootstrap 4 admin template</title>
+    <title>Accounting Software</title>
     <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet">
    <link rel="stylesheet" href="{{asset('assets/styles/css/themes/lite-purple.min.css')}}">
 </head>
@@ -23,7 +23,7 @@
                             <h1 class="mb-3 text-18">Check the Dashboard</h1>
 
                             <div class="mt-3 text-center">
-                                <a class=" btn btn-primary" href="{{route('starter')}}">Dashboard</a>
+                                <a class=" btn btn-primary" href="/dashboard">Dashboard</a>
                             </div>
                         </div>
                     </div>
