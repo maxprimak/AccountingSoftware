@@ -3,9 +3,10 @@
 namespace Modules\Login\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Login extends Model
+class Login extends Authenticatable
 {
-    protected $fillable = [];
+    protected $fillable = ['id', 'username', 'password', 'remember_token'];
     public $timestamps = false;
 }

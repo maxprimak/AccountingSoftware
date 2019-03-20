@@ -12,9 +12,9 @@ class DashboardController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function showDashboard()
     {
-        return view('dashboard::index');
+        return view('dashboard::dashboard');
     }
 
     /**

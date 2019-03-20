@@ -10,11 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Authentication Routes...
+Route::get('/login', 'LoginController@showLoginForm')->name('login');
+Route::post('/login', 'LoginController@authenticate');
+Route::get('/logout', 'LoginController@logout');
 
-//TODO: Understand why routes do not work here
-Route::prefix('login')->group(function() {
-    Route::get('/', 'LoginController@index');
-});
-
-//Add new routes here
-Route::get('/login', 'LoginController@index');
+//Registration Routes...
+Route::get('/register', 'RegisterController@showRegisterForm')->name('register');
+Route::post('/register', 'RegisterController@register');

@@ -1,39 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Accounting Software</title>
-    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet">
-   <link rel="stylesheet" href="{{asset('assets/styles/css/themes/lite-purple.min.css')}}">
-</head>
+        <title>Accounting Software</title>
 
-<body>
-    <div class="auth-layout-wrap" style="background-image: url({{asset('assets/images/photo-wide-4.jpg')}})">
-        <div class="auth-content">
-            <div class="card o-hidden">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="p-4 text-center">
-                            <div class="auth-logo text-center mb-4">
-                                <img src="assets/images/logo.png" alt="">
-                            </div>
-                            <h1 class="mb-3 text-18">Check the Dashboard</h1>
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
 
-                            <div class="mt-3 text-center">
-                                <a class=" btn btn-primary" href="/dashboard">Dashboard</a>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Styles -->
+        <style>
+            html, body {
+                background-color: #fff;
+                color: #636b6f;
+                font-family: 'Nunito', sans-serif;
+                font-weight: 200;
+                height: 100vh;
+                margin: 0;
+            }
 
+            .full-height {
+                height: 100vh;
+            }
+
+            .flex-center {
+                align-items: center;
+                display: flex;
+                justify-content: center;
+            }
+
+            .position-ref {
+                position: relative;
+            }
+
+            .top-right {
+                position: absolute;
+                right: 10px;
+                top: 18px;
+            }
+
+            .content {
+                text-align: center;
+            }
+
+            .title {
+                font-size: 84px;
+            }
+
+            .links > a {
+                color: #636b6f;
+                padding: 0 25px;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: .1rem;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+
+            .m-b-md {
+                margin-bottom: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="flex-center position-ref full-height">
+            @if (Route::has('login'))
+                <div class="top-right links">
+                    @auth
+                        <a href="{{ url('/dashboard') }}">Dashboard</a>
+                    @else
+                        <a href="{{ route('login') }}">Sign In</a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}">Sign Up</a>
+                        @endif
+                    @endauth
+                </div>
+            @endif
+
+            <div class="content">
+                <div class="title m-b-md">
+                    Accounting Sofware
                 </div>
             </div>
         </div>
-    </div>
-
-   <script src="{{asset('assets/js/script.js')}}"></script>
-</body>
-
+    </body>
 </html>

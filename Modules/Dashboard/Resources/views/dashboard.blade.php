@@ -1,6 +1,13 @@
 @extends('layouts.master')
 @section('main-content')
+            @if(session()->has('message'))
+            <div class="alert alert-success">
+                {{ session()->get('message') }}
+            </div>
+            @endif
            <div class="breadcrumb">
+            <br>
+            <br>
                 <h1>Version 1</h1>
                 <ul>
                     <li><a href="">Dashboard</a></li>
