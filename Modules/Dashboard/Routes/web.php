@@ -15,3 +15,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'DashboardController@showDashboard');
 });
 
+/* middleware(['auth', 'verified']) - access only with verified email */

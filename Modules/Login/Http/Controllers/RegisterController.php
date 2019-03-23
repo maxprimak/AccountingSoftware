@@ -3,9 +3,11 @@
 namespace Modules\Login\Http\Controllers;
 
 use Modules\Login\Entities\Login;
+use Modules\Login\Entities\Person;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -59,12 +61,13 @@ class RegisterController extends Controller
     {   
         $validator = $this->validator($request->all());
         if ($validator->fails()){
-            return redirect('/register')
-                        ->withErrors($validator);
+            return Redirect::to('/register')
+                        ->withErrors($validator)
+                        ->withInput();
         }
-        $login = $this->create($request->all());
+        $login = $this->createLogin($request->all());
         Auth::login($login, true);
-        return redirect($this->redirectPath());
+        return redirect($this->redirectPath())->with('message', 'Welcome!');;
     }
 
     /**
@@ -76,8 +79,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'username' => 'required|min:6|unique:logins,username'
-            //add more here
+            'username' => 'required|min:6|unique:logins,username',
+            'email' => 'required|email|unique:logins,email',
+            'password' => 'required|min:8',
+            'repassword' => 'required|same:password'
         ]);
     }
 
@@ -87,12 +92,17 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return Modules\Login\Entities\Login
      */
-    protected function create(array $data)
+    protected function createLogin(array $data)
     {   
-        return Login::create([
+        $login = Login::create([
             'username' => $data['username'],
+            'email' => $data['email'],
             'password' => $data['password'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($data['password'])
         ]);
+
+        $login->sendEmailVerificationNotification();
+
+        return $login;
     }
 }

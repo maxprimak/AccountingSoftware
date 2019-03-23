@@ -5,6 +5,11 @@
                 {{ session()->get('message') }}
             </div>
             @endif
+            @if(!auth()->user()->hasVerifiedEmail())
+            <div class="alert alert-danger">
+                {{'Please verify your email adress.'}}
+            </div>
+            @endif
            <div class="breadcrumb">
             <br>
             <br>

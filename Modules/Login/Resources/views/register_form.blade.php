@@ -34,34 +34,37 @@
                     </div>
 
                     <div class="col-md-6">
-                        <div class="p-4">
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+                        <div class="p-4">               
                             <h1 class="mb-3 text-18">Sign Up</h1>
                             <form action="/register" method="POST">
                             @csrf
                                 <div class="form-group">
                                     <label for="username">Username</label>
-                                    <input name="username" id="username" class="form-control form-control-rounded" value="{{ old('username') }}" type="text">
+                                    <input required name="username" minlength="6" id="username" class="form-control form-control-rounded" value="{{ old('username') }}" type="text">
+                                    @if ($errors->has('username'))
+                                        <p class="help-block">{{ $errors->first('username') }}</p>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email address</label>
-                                    <input name="email" id="email" class="form-control form-control-rounded" type="email">
+                                    <input required name="email" id="email" class="form-control form-control-rounded" type="email" value="{{ old('email') }}">
+                                    @if ($errors->has('email'))
+                                        <p class="help-block">{{ $errors->first('email') }}</p>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input name="password" id="password" class="form-control form-control-rounded" type="password">
+                                    <input required name="password" minlength="8" id="password" class="form-control form-control-rounded" type="password" value="{{ old('password') }}">
+                                    @if ($errors->has('password'))
+                                        <p class="help-block">{{ $errors->first('password') }}</p>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="repassword">Retype password</label>
-                                    <input name="repassword" id="repassword" class="form-control form-control-rounded" type="password">
+                                    <input required name="repassword" id="repassword" class="form-control form-control-rounded" type="password" value="{{ old('repassword') }}">
+                                    @if ($errors->has('repassword'))
+                                        <p class="help-block">{{ $errors->first('repassword') }}</p>
+                                    @endif
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-block btn-rounded mt-3">Sign Up</button>
                             </form>

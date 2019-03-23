@@ -19,7 +19,6 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('person_id');
             /* $table->unsignedInteger('role_id'); */
             /* $table->unsignedInteger('branch_id'); */
-            $table->date('email_verified_at')->nullable();
             $table->foreign('login_id')->references('id')->on('logins');
             $table->foreign('person_id')->references('id')->on('people');
         });

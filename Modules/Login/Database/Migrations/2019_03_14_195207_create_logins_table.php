@@ -18,6 +18,8 @@ class CreateLoginsTable extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->rememberToken();
+            $table->string('email')->unique();
+            $table->date('email_verified_at')->nullable();
         });
 
         /* FOR FUTURE USE OF INDEXES

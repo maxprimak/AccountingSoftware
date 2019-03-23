@@ -56,6 +56,9 @@ class LoginController extends Controller
         {
             return redirect()->intended($this->redirectPath());
         }
+        else{
+            return redirect()->back()->withInput()->with('message', 'Username or password incorrect');
+        }
     }
 
     /**

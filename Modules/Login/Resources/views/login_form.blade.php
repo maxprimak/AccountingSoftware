@@ -25,15 +25,19 @@
                             @csrf
                                 <div class="form-group">
                                     <label for="username">Username</label>
-                                    <input name="username" id="username" class="form-control form-control-rounded" type="text">
+                                    <input name="username" id="username" class="form-control form-control-rounded" type="text" value="{{ old('username') }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input name="password" id="password" class="form-control form-control-rounded" type="password">
+                                    <input name="password" id="password" class="form-control form-control-rounded" type="password" value="{{ old('password') }}">
                                 </div>
+                                @if(session()->has('message'))
+                                <div>
+                                    {{ session()->get('message') }}
+                                </div>
+                                @endif
                                 <button type="submit" class="btn btn-rounded btn-primary btn-block mt-2">Sign In</button>
                             </form>
-
                             <div class="mt-3 text-center">
                                 <a href="forgot.html" class="text-muted"><u>Forgot Password?</u></a>
                             </div>
