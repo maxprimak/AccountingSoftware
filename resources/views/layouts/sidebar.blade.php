@@ -5,17 +5,17 @@
                     <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}">
                         <a class="nav-item-hold" href="/dashboard">
                             <i class="nav-icon i-Bar-Chart"></i>
-                            <span class="nav-text">Dashboard</span>
+                            <span class="nav-text"><!-- Dashboard --> Generate PDFs</span>
                         </a>
                         <div class="triangle"></div>
                     </li>
-                    <li class="nav-item" data-item="uikits">
+                    <!-- <li class="nav-item" data-item="uikits">
                         <a class="nav-item-hold" href="#">
                             <i class="nav-icon i-Library"></i>
                             <span class="nav-text">Orders</span>
                         </a>
                         <div class="triangle"></div>
-                    </li><!-- 
+                    </li> --><!-- 
                     <li class="nav-item" data-item="extrakits">
                         <a class="nav-item-hold" href="#">
                             <i class="nav-icon i-Suitcase"></i>
