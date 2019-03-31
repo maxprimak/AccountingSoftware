@@ -12,7 +12,12 @@
 */
 
 Route::middleware(['auth'])->group(function () {
+    //Dashboard Routes
     Route::get('/dashboard', 'DashboardController@showDashboard');
+    //PDF Routes
+    Route::post('/pdf/rechnung_hand_dif', 'PDFController@rechnungHandDif');
+    Route::post('/pdf/kostenvorschlag', 'PDFController@kostenVorschlag');
+    Route::post('/pdf/kaufvertrag', 'PDFController@kaufVertrag');
 });
 
 /* middleware(['auth', 'verified']) - access only with verified email */

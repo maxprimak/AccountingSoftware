@@ -14,4 +14,5 @@ class Login extends Authenticatable implements MustVerifyEmail
 
     protected $fillable = ['id', 'username', 'password', 'remember_token', 'email', 'email_verified_at'];
     public $timestamps = false;
+
 }

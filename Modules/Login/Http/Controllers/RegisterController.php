@@ -67,7 +67,7 @@ class RegisterController extends Controller
         }
         $login = $this->createLogin($request->all());
         Auth::login($login, true);
-        return redirect($this->redirectPath())->with('message', 'Welcome!');;
+        return redirect($this->redirectPath())->with('message', 'Welcome!');
     }
 
     /**

@@ -20,10 +20,10 @@ Route::get('/register', 'RegisterController@showRegisterForm')->name('register')
 Route::post('/register', 'RegisterController@register');
 
 // Password Reset Routes...
-Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
+Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');;
 Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.request');
-Route::post('password/reset', 'ResetPasswordController@reset')->name('password.reset');;
+Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'ResetPasswordController@reset')->name('password.update');
 
 // Email Verification Routes...
 Route::get('email/verify', 'VerificationController@showVerification')->name('verification.notice');
