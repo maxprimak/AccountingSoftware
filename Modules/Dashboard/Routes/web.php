@@ -16,7 +16,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'DashboardController@showDashboard');
     //PDF Routes
     Route::post('/pdf/rechnung_hand_dif', 'PDFController@rechnungHandDif');
-    Route::post('/pdf/kostenvorschlag', 'PDFController@kostenVorschlag');
+    Route::post('/pdf/kostenvoranschlag', 'PDFController@kostenVoranschlag');
     Route::post('/pdf/kaufvertrag', 'PDFController@kaufVertrag');
 });
 
