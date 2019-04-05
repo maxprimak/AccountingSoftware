@@ -71,7 +71,6 @@
                         <a href="{{ url('/dashboard') }}">Dashboard</a>
                     @else
                         <a href="{{ route('login') }}">Sign In</a>
-
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}">Sign Up</a>
                         @endif

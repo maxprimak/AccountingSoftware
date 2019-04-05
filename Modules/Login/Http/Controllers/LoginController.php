@@ -40,15 +40,15 @@ class LoginController extends Controller
     }
 
     /**
-     * 
-     * 
+     *
+     *
      */
     public function showLoginForm(){
         return view('login::login_form');
     }
 
     /**
-     * 
+     *
      *
      */
     public function authenticate(Request $request){
@@ -62,8 +62,8 @@ class LoginController extends Controller
     }
 
     /**
-     * 
-     * 
+     *
+     *
      */
     public function logout(){
         Auth::logout();

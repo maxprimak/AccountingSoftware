@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Employees\Http\Controllers;
+namespace Modules\Users\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
-class EmployeesController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        return view('employees::index');
+        return view('users::index');
     }
 
     /**
@@ -23,7 +23,7 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        return view('employees::create');
+        return view('users::create');
     }
 
     /**
@@ -43,7 +43,7 @@ class EmployeesController extends Controller
      */
     public function show($id)
     {
-        return view('employees::show');
+        return view('users::show');
     }
 
     /**
@@ -53,8 +53,7 @@ class EmployeesController extends Controller
      */
     public function edit($id)
     {
-        dd('HIER');
-        return view('employees::edit');
+        return view('users::edit');
     }
 
     /**

@@ -23,12 +23,12 @@
                           </div>
                           <div class="col-md-2 form-group mb-3">
                               <label for="firstName1">Username</label>
-                              <input disabled type="text" class="form-control" id="firstName1" name="username" value="">
+                              <input disabled type="text" class="form-control" id="firstName1" name="username" value="{{$username}}">
                           </div>
 
                             <div class="col-md-2 form-group mb-3">
                                 <label for="firstName1">Full name</label>
-                                <input type="text" class="form-control" id="firstName1" placeholder="Enter your full name">
+                                <input type="text" class="form-control" id="firstName1" placeholder="Enter your first name">
                             </div>
 
                             <div class="col-md-2 form-group mb-3">

@@ -9,13 +9,14 @@
                         </a>
                         <div class="triangle"></div>
                     </li>
-                    <!-- <li class="nav-item" data-item="uikits">
+                    <!--
+                    <li class="nav-item" data-item="uikits">
                         <a class="nav-item-hold" href="#">
                             <i class="nav-icon i-Library"></i>
                             <span class="nav-text">Orders</span>
                         </a>
                         <div class="triangle"></div>
-                    </li> --><!-- 
+                    </li>
                     <li class="nav-item" data-item="extrakits">
                         <a class="nav-item-hold" href="#">
                             <i class="nav-icon i-Suitcase"></i>
@@ -44,13 +45,15 @@
                         </a>
                         <div class="triangle"></div>
                     </li>
-                    <li class="nav-item" data-item="sessions">
-                        <a class="nav-item-hold" href="/test.html">
+                     -->
+                    <li class="nav-item" {{ request()->is('employees/*') ? 'active' : '' }}>
+                        <a class="nav-item-hold" href="/employees">
                             <i class="nav-icon i-Administrator"></i>
-                            <span class="nav-text">Sessions</span>
+                            <span class="nav-text">Employees</span>
                         </a>
                         <div class="triangle"></div>
                     </li>
+                    <!--
                     <li class="nav-item" data-item="others">
                         <a class="nav-item-hold" href="/test.html">
                             <i class="nav-icon i-Double-Tap"></i>
