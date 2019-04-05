@@ -119,7 +119,7 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                      <form id="form-handy-diff" action="/pdf/rechnung_hand_dif" method="POST">
+                      <form id="form-handy-diff" action="/pdf/kaufvertrag" method="POST">
                       {{ csrf_field() }}
                         <div class="card einheit-handy-diff" style="margin:10px; padding: 10px;">
                         <div class="form-group">
@@ -136,15 +136,15 @@
                         </div>
                         <div class="form-group">
                           <label for="ort">Ort/PLZ</label>
-                          <input type="number" class="form-control" id="ort" name="ort">
+                          <input type="text" class="form-control" id="ort" name="ort">
                         </div>
                         <div class="form-group">
                           <label for="modell">Modell</label>
-                          <input type="number" step="0.01" class="form-control" id="modell" name="modell">
+                          <input type="text" step="0.01" class="form-control" id="modell" name="modell">
                         </div>
                         <div class="form-group">
                           <label for="imei">IMEI</label>
-                          <input type="number" step="0.01" class="form-control" id="imei" name="imei">
+                          <input type="text" step="0.01" class="form-control" id="imei" name="imei">
                         </div>
                         <div class="form-group">
                           <center><label for="is_mobil">Mobiltelefon</label></center>
@@ -180,7 +180,7 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                      <form id="form-kostenvoranschlag" action="/pdf/rechnung_hand_dif" method="POST">
+                      <form id="form-kostenvoranschlag" action="/pdf/kostenvoranschlag" method="POST">
                       {{ csrf_field() }}
                         <div class="card einheit-handy-diff" style="margin:10px; padding: 10px;">
                         <center><strong><p style="font-size:14px;">Reparatur Einheit</p></strong></center>
