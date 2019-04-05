@@ -83,7 +83,7 @@
                         <div class="form-group">
                           <label for="imei">IMEI</label>
                           <input type="text" class="form-control" id="imei" name="imei[]">
-                        </div> 
+                        </div>
                         <div class="form-group">
                           <label for="menge">Menge</label>
                           <input type="number" class="form-control" id="menge" name="menge[]">
@@ -133,7 +133,7 @@
                         <div class="form-group">
                           <label for="adresse">Adresse</label>
                           <input type="text" class="form-control" id="adresse" name="adresse">
-                        </div> 
+                        </div>
                         <div class="form-group">
                           <label for="ort">Ort/PLZ</label>
                           <input type="text" class="form-control" id="ort" name="ort">
@@ -195,7 +195,7 @@
                         <div class="form-group">
                           <label for="imei">IMEI</label>
                           <input type="text" class="form-control" id="imei" name="imei[]">
-                        </div> 
+                        </div>
                         <div class="form-group">
                           <label for="menge">Menge</label>
                           <input type="number" class="form-control" id="menge" name="menge[]">
@@ -239,7 +239,7 @@
                         '<div class="form-group">' +
                           '<label for="imei">IMEI</label>' +
                           '<input type="text" class="form-control" id="imei" name="imei[]">' +
-                        '</div>' + 
+                        '</div>' +
                         '<div class="form-group">' +
                           '<label for="menge">Menge</label>' +
                           '<input type="number" class="form-control" id="menge" name="menge[]">' +
