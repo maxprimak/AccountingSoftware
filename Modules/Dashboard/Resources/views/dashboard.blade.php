@@ -204,7 +204,11 @@
                           <label for="imei">Preis</label>
                           <input type="number" step="0.01" class="form-control" id="preis" name="preis[]">
                         </div>
+                        <div class="form-group">
+                          <center><label for="is_kostenvoranschlag">Kostenvoranschlag + Arbeitszeiten 29.00€</label></center>
+                          <input type="checkbox" class="form-control" id="is_kostenvoranschlag" name="is_kostenvoranschlag">
                         </div>
+                        </div>                   
                         <div class="modal-footer">
                             <button type="button" id="add-more-kostenvoranschlag" class="btn btn-success">Add More</button>
                             <button type="submit" class="btn btn-primary">Submit</button>

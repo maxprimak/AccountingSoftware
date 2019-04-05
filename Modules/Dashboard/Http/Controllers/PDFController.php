@@ -123,6 +123,7 @@ class PDFController extends Controller
      * 
      */
     public function kostenVoranschlag(Request $request){
+        $this->checkboxToRequest('is_kostenvoranschlag', $request);
         $pdf = PDF::loadView('dashboard::kostenvoranschlag', $request);
         redirect()->back();
         return $pdf->stream('Kaufvertrag_' . date('d.m.y') .'.pdf', array("Attachment" => 0));

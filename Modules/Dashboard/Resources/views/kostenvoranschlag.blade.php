@@ -100,7 +100,7 @@ Wien, am {{date('d.m.y')}}<br>
 <SPAN class="ft0">Zahlungsmodalität:</SPAN><br>
 Bar</P>
 <P class="p7 ft6">Kostenvoranschlag</P>
-<P class="p8 ft1">Sehr geehrter Kunde!</P>
+<P class="p8 ft1">Sehr geehrte Damen und Herren</P>
 <P class="p9 ft7">Für nachfolgend angeführte Produkte erlauben wir wie folgt Rechnung zu legen. Alle Produkte bleiben bis zu ihrer vollständigen Bezahlung unser Eigentum. Es gelten die AGB.</P>
 <TABLE style="width: 600px; border-collapse: collapse;" >
 <THEAD>
@@ -115,18 +115,33 @@ Bar</P>
 <TR>
     <TD style="border: 1px solid;"><P class="p10 ft1">{{ $handy_bezeichnung[$i] }} {{ $reparatur_bezeichnung[$i] }} Imei: {{ $imei[$i] }}<BR><BR></P></TD>
 	<TD style="border: 1px solid;" align="center"><P class="p14 ft1"></P>{{$menge[$i]}}<BR><BR></TD>
-	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p10 ft1"></P><strong>{{$preis[$i]}}€</strong><BR><BR></TD>
+	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p10 ft1"></P><strong>{{sprintf('%.2f',$preis[$i])}}€</strong><BR><BR></TD>
 </TR>
 @endfor
+@if($is_kostenvoranschlag != null)
 <TR>
     <TD style="border: 1px solid;"><P class="p10 ft3">Kostenvoranschlag + Arbeitszeit   €29.00</P></TD>
 	<TD style="border: 1px solid;" align="center"><P class="p14 ft1"></P></TD>
-	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p10 ft1"></P><strong>29€</strong><BR><BR></TD>
+	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p10 ft1"></P><strong>29.00€</strong><BR><BR></TD>
+</TR>
+@endif
+<?php 
+$sum = ($is_kostenvoranschlag == null) ? array_sum($preis) : array_sum($preis) + 29;
+?>
+<TR>
+    <TD style="border: none; "><P class="p11 ft1"></P></TD>
+	<TD style="border: 1px solid;" align="center"><P class="p11 ft1"></P><strong>Nettobetrag:</strong></TD>
+	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p11 ft1"></P><strong>{{ sprintf('%.2f', $sum - $sum*0.2) }}€</strong></TD>
+</TR>
+<TR>
+    <TD style="border: none; "><P class="p11 ft1"></P></TD>
+	<TD style="border: 1px solid;" align="center"><P class="p11 ft1"></P><strong>MwSt. 20%</strong></TD>
+	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p11 ft1"></P><strong>{{ sprintf('%.2f', $sum*0.2) }}€</strong></TD>
 </TR>
 <TR>
     <TD style="border: none; "><P class="p11 ft1"></P></TD>
 	<TD style="border: 1px solid;" align="center"><P class="p11 ft1"></P><strong>Gesamt:</strong></TD>
-	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p11 ft1"></P>Differenzbesteuert §24 <strong>{{ array_sum($preis) + 29 }}€</strong></TD>
+	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p11 ft1"></P>Inkl. 20% MwSt. <strong>{{ sprintf('%.2f', $sum) }}€</strong></TD>
 </TR>
 </TBODY>
 </TABLE>
