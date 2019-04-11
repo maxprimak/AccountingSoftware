@@ -77,7 +77,7 @@ class DashboardController extends Controller
         $kostenvoranschlag = Kostenvoranschlag::find($id);
         $items = Item::where('kostenvoranschlag_id', $id)->get();
 
-        $price = 0;
+        $price = ($kostenvoranschlag->kost29 == 1) ? 29 : 0;
         foreach($items as $item){
             $price += $item->preis;
         }
@@ -95,6 +95,7 @@ class DashboardController extends Controller
     }
 
     public function createKostenvoranschlag(){
+        
         $kostenvoranschlag = Kostenvoranschlag::create([
             'date' => 'Datum: ' . date('d.m.y'),
             'shop' => 'Neubau Phone Factory',
@@ -109,14 +110,59 @@ class DashboardController extends Controller
             'text_head' => 'Sehr geehrte Damen und Herren,',
             'text_body' => 'Für nachfolgend angeführte Produkte erlauben wir wie folgt Rechnung zu legen. Alle Produkte bleiben bis zu ihrer vollständigen Bezahlung unser Eigentum. Es gelten die AGB.'
         ]);
+
         return redirect()->back();
     }
 
     public function updateKostenvoranschlag(Request $data, $id){
-        return $data;
+        
         Kostenvoranschlag::where('id', $id)->update([
-
+            'date' => $data['date'],
+            'shop' => $data['shop'],
+            'shop_tel' => $data['shop_tel'],
+            'shop_email' => $data['shop_email'],
+            'web' => $data['web'],
+            'kundenbetreuer' => $data['kundenbetreuer'],
+            'zahlungsmodalitat' => $data['zahlungsmodalitat'],
+            'kunde' => $data['kunde'],
+            'kunde_tel' => $data['kunde_tel'],
+            'kunde_email' => $data['kunde_email'],
+            'text_head' => $data['text_head'],
+            'text_body' => $data['text_body'],
+            'kost29' => $data['kost29']
         ]);
+        
+        $kostenvoranschlag = Kostenvoranschlag::find($id);
+        $items = array();
+
+        if($data->has(['artikelbeschreibung', 'menge', 'preis']))
+        $items = $this->createItems($data['artikelbeschreibung'], $data['menge'], $data['preis']);
+        
+        $this->addItems($items, $kostenvoranschlag);
+
+        return redirect()->back();
+    }
+
+    public function addItems($items, $kostenvoranschlag){
+        Item::where('kostenvoranschlag_id', $kostenvoranschlag->id)->delete();
+
+        foreach($items as $item){
+            $item->kostenvoranschlag_id = $kostenvoranschlag->id;
+            $item->save();
+        }
+    }
+
+    public function createItems($artikelbeschreibungen, $mengen, $preise){
+        $items = array();
+        for($i=0; $i < sizeof($artikelbeschreibungen); $i++){
+            $item = Item::create([
+                'artikelbeschreibung' => $artikelbeschreibungen[$i],
+                'menge' => $mengen[$i],
+                'preis' => $preise[$i]
+            ]);
+            array_push($items, $item);
+        }
+        return $items;
     }
 
     /**

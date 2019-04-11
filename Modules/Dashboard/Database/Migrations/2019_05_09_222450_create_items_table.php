@@ -18,7 +18,7 @@ class CreateItemsTable extends Migration
             $table->string('artikelbeschreibung');
             $table->integer('menge');
             $table->double('preis');
-            $table->bigInteger('kostenvoranschlag_id')->unsigned();
+            $table->bigInteger('kostenvoranschlag_id')->unsigned()->nullable();
             $table->timestamps();
             $table->foreign('kostenvoranschlag_id')->references('id')->on('kostenvoranschlags');
         });

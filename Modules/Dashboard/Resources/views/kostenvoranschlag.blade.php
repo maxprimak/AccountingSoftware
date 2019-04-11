@@ -93,9 +93,9 @@
                                                     @else
                                                     @foreach($items as $item)
                                                     <tr>
-                                                        <td scope="row">Handy Bezeichnung + Repuratur Bezeichnung<br>Imei:</th>
-                                                        <td>1</td>
-                                                        <td>30.12€</td>
+                                                        <td scope="row">{{$item->artikelbeschreibung}}</th>
+                                                        <td>{{$item->menge}}</td>
+                                                        <td>{{number_format($item->preis, 2, '.', '')}}€</td>
                                                     </tr>
                                                     @endforeach
                                                     @endif
@@ -133,7 +133,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <h3 class="font-weight-bold">Kostenvoranschlag</h3>
-                                            <input class="form-control" name="date" style="font-size: 14px;" value="Datum: {{date('d.m.y')}}" />
+                                            <input class="form-control" name="date" style="font-size: 14px;" value="{{$kostenvoranschlag->date}}"" />
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                         </div>
@@ -144,33 +144,33 @@
                                             <h4 class="font-weight-bold">Von:</h4>
                                             <div class="col-md-5">
                                             <span style="white-space: pre-line; font-size: 14px;">
-                                                <strong class="">Shop:</strong><input type="text" name="shop" class="form-control" value="Neubau Phone Factory" />
-                                                <strong class="">Tel:</strong><input type="text" name="shop_tel" class="form-control" value="+43(0)1 5223397" />
-                                                <strong class="">Email:</strong><input type="text" name="shop_email" class="form-control" value="neubau@phonefactory.at" />
-                                                <strong class="">Web:</strong><input type="text" name="web" class="form-control" value="www.phonefactory.at" />
+                                                <strong class="">Shop:</strong><input type="text" name="shop" class="form-control" value="{{$kostenvoranschlag->shop}}"/>
+                                                <strong class="">Tel:</strong><input type="text" name="shop_tel" class="form-control" value="{{$kostenvoranschlag->shop_tel}}" />
+                                                <strong class="">Email:</strong><input type="text" name="shop_email" class="form-control" value="{{$kostenvoranschlag->shop_email}}" />
+                                                <strong class="">Web:</strong><input type="text" name="web" class="form-control" value="{{$kostenvoranschlag->web}}" />
 
                                                 <strong class="">Ihr Kundenbetreuer:</strong>
-                                                <input type="text" class="form-control" name="kundenbetreuer" value="The Phone Factory Team" />
+                                                <input type="text" class="form-control" name="kundenbetreuer" value="{{$kostenvoranschlag->kundenbetreuer}}" />
 
                                                 <strong class="">Zahlungmodalität:</strong>
-                                                <input type="text" class="form-control" name="zahlungsmodalitat" value="Bar">
+                                                <input type="text" class="form-control" name="zahlungsmodalitat" value="{{$kostenvoranschlag->zahlungsmodalitat}}">
                                             </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4 text-sm-right">
                                             <h4 class="font-weight-bold">An:</h4>
                                             <span style="white-space: pre-line; font-size:14px;">
-                                            <strong>Kunde:</strong><input type="text" name="kunde" width="50%" class="form-control" value="Vorname Nachname" />
-                                            <strong >Telefon:</strong><input type="text" name="kunde_tel" class="form-control" value="+4312 237898243" />
-                                            <strong >Email:</strong><input type="text" name="kunde_email" class="form-control" value="name@mail.at" />
+                                            <strong>Kunde:</strong><input type="text" name="kunde" width="50%" class="form-control" value="{{$kostenvoranschlag->kunde}}" />
+                                            <strong >Telefon:</strong><input type="text" name="kunde_tel" class="form-control" value="{{$kostenvoranschlag->kunde_tel}}" />
+                                            <strong >Email:</strong><input type="text" name="kunde_email" class="form-control" value="{{$kostenvoranschlag->kunde_email}}" />
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row">
                                     <div class="col-md-12">
-                                    <input style="font-size: 16px;" class="form-control col-md-4" name="text_head" value="Sehr geehrte Damen und Herren," />
+                                    <input style="font-size: 16px;" class="form-control col-md-4" name="text_head" value="{{$kostenvoranschlag->text_head}}" />
                                     <br>
-                                    <textarea style="font-size: 16px;" name="text_body" cols="10" rows="5" class="form-control">Für nachfolgend angeführte Produkte erlauben wir wie folgt Rechnung zu legen. Alle Produkte bleiben bis zu ihrer vollständigen Bezahlung unser Eigentum. Es gelten die AGB.</textarea>
+                                    <textarea style="font-size: 16px;" name="text_body" cols="10" rows="5" class="form-control">{{$kostenvoranschlag->text_body}}</textarea>
                                     <br>
                                     </div>
                                     </div>
@@ -186,23 +186,26 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbody-item">
+                                                    @foreach($items as $item)
                                                     <tr>
                                                         <td>
-                                                            <textarea class="form-control"
-                                                                placeholder="Item Name" name="artikelbeschreibung[]"></textarea>
+                                                            <textarea required class="form-control"
+                                                                placeholder="Item Name" name="artikelbeschreibung[]">{{$item->artikelbeschreibung}}</textarea>
                                                         </td>
                                                         <td>
-                                                            <input type="number" step="0.01" class="form-control"
-                                                                placeholder="Unit Price" name="menge[]">
+                                                            <input required type="number" step="0.01" class="form-control"
+                                                                placeholder="Unit Price" name="menge[]" value="{{$item->menge}}">
                                                         </td>
                                                         <td>
-                                                            <input class="form-control preis-input" step="0.01" type="number"
-                                                                placeholder="Unit" name="preis[]">
+                                                            <input required class="form-control preis-input" step="0.01" type="number"
+                                                                placeholder="Unit" name="preis[]" value="{{number_format($item->preis, 2, '.', '')}}">
                                                         </td>
                                                         <td>
                                                             <button  onclick="$(this).parent().parent().remove()" type="button" class="btn btn-outline-secondary float-right delete-item">Delete</button>
                                                         </td>
                                                     </tr>
+                                                    @endforeach
+                                                    @if($kostenvoranschlag->kost29 == 1)
                                                     <tr id="kost29-tr">
                                                         <th scope="row">Kostenvoranschlag + Arbeitszeit €29.00</th>
                                                         <td></td>
@@ -213,6 +216,7 @@
                                                         <td>
                                                         </td>
                                                     </tr>
+                                                    @endif
                                                 </tbody>
                                             </table>
                                             <button class="btn btn-primary float-right mb-4" type="button" id="add-item">Add Item</button>
@@ -221,7 +225,8 @@
                                         <div class="col-md-12">
                                             <div class="col-md-3">
                                             Kostenvoranschlag + Arbeitszeit €29.00 
-                                            <input type="checkbox" checked id="kost29" name="kost29" class="form-control col-md-1">
+                                            <input type="hidden" name="kost29" value="0">
+                                            <input type="checkbox" @if($kostenvoranschlag->kost29 == 1){{'checked'}}@endif id="kost29" value="1" name="kost29" class="form-control col-md-1">
                                             </div>
                                             <div class="invoice-summary">
                                             <button type="button" id="show-prices" class="btn">Show Final Prices</button>
@@ -257,14 +262,14 @@
     //item
     var item = "<tr>" + 
                 "<td>" +
-                "<textarea class='form-control' placeholder='Item Name' name='artikelbeschreibung[]'>" +
+                "<textarea required class='form-control' placeholder='Item Name' name='artikelbeschreibung[]'>" +
                 "</textarea>" +
                 "</td>" + 
                 "<td>" + 
-                "<input type='number' class='form-control'placeholder='Unit Price' step='0.01' name='menge[]'>" + 
+                "<input required type='number' class='form-control'placeholder='Unit Price' step='0.01' name='menge[]'>" + 
                 "</td>" + 
                 "<td>" +
-                "<input type='number' class='form-control preis-input'placeholder='Unit' step='0.01' name='preis[]'>" +
+                "<input required type='number' class='form-control preis-input'placeholder='Unit' step='0.01' name='preis[]'>" +
                 "</td>" +
                 "<td>" +
                 "<button type='button' onclick='$(this).parent().parent().remove()' class='btn btn-outline-secondary float-right delete-item'>Delete</button>" +
