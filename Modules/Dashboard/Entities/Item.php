@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Login\Entities;
+namespace Modules\Dashboard\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Person extends Model
+class Item extends Model
 {
     protected $fillable = [];
 }

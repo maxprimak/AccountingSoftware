@@ -12,7 +12,7 @@ class CreateUsersTable extends Migration
      * @return void
      */
     public function up()
-    {
+    {   
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('login_id');
@@ -23,8 +23,14 @@ class CreateUsersTable extends Migration
             $table->foreign('login_id')->references('id')->on('logins');
             $table->foreign('person_id')->references('id')->on('people');
             $table->foreign('role_id')->references('id')->on('roles');
-            // $table->foreign('branch_id')->references('id')->on('users');
         });
+
+        /* FOR FUTURE USE OF INDEXES
+        Schema::table('users', function(Blueprint $table)
+        {
+            $table->index('INSERT_INDEX_HERE');
+        }); 
+        */
     }
 
     /**
@@ -35,5 +41,12 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
+
+        /* FOR FUTURE USE OF INDEXES
+        Schema::table('users', function (Blueprint $table)
+        {
+            $table->dropIndex(['INSERT_INDEX_HERE']);
+        }); 
+        */
     }
 }

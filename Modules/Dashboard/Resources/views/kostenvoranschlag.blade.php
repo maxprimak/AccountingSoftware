@@ -1,157 +1,357 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META http-equiv="X-UA-Compatible" content="IE=8">
-<TITLE>bcl_1913170511.htm</TITLE>
-<META name="generator" content="BCL easyConverter SDK 5.0.140">
-<STYLE type="text/css">
+@extends('layouts.master')
+@section('page-css')
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.date.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/dropzone.min.css')}}">
+@endsection
 
-body {margin-top: 0px;margin-left: 0px;}
+@section('main-content')
+    <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs justify-content-end mb-4" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="invoice-tab" data-toggle="tab" href="#invoice" role="tab"
+                                aria-controls="invoice" aria-selected="true">Invoice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit"
+                                aria-selected="false">Edit</a>
+                        </li>
 
-#page_1 {position:relative; overflow: hidden;margin: 0px 0px 18px 15px;padding: 0px;border: none;}
-#page_1 #id1_1 {border:none;margin: 78px 0px 0px 59px;padding: 0px;border:none;width: 698px;overflow: hidden;}
-#page_1 #id1_2 {border:none;margin: 80px 0px 0px 119px;padding: 0px;border:none;width: 658px;overflow: hidden;}
+                    </ul>
+                    <div class="card">
 
-#page_1 #p1dimg1 {position:absolute;top:0px;left:0px;z-index:-1;width:699px;height:80px;}
-#page_1 #p1dimg1 #p1img1 {width:699px;height:80px;}
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
+                                <div class="d-sm-flex mb-5" data-view="print">
+                                    <span class="m-auto"></span>
+                                    <button id="doc-without-logo" style="margin-left: 5px;" class="btn btn-primary">Doc without logo</button>
+                                    <button id="doc-with-logo" style="margin-left: 5px; display:none" class="btn btn-primary">Doc with logo</button>
+                                    <button style="margin-left: 5px;" class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
+                                </div>
+                                <!---===== Print Area =======-->
+                                <div id="print-area">
+                                <center><img id="image-doc" src="{{asset('assets/images/logo_phone_factory_2.jpg')}}" style="margin-bottom: 30px;"></center>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h3 class="font-weight-bold">Kostenvoranschlag</h3>
+                                            <p style="font-size: 14px;">{{$kostenvoranschlag->date}}</p>
+                                        </div>
+                                        <div class="col-md-6 text-sm-right">
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row mb-5">
+                                        <div class="col-md-6 mb-3 mb-sm-0">
+                                            <h4 class="font-weight-bold">Von:</h4>
+                                            <span style="white-space: pre-line; font-size: 14px;">
+                                                <strong class="">Shop:</strong> {{$kostenvoranschlag->shop}}
+                                                <strong class="">Tel:</strong> {{$kostenvoranschlag->shop_tel}}
+                                                <strong class="">Email:</strong> {{$kostenvoranschlag->shop_email}}
+                                                <strong class="">Web:</strong> {{$kostenvoranschlag->web}}
+
+                                                <strong class="">Ihr Kundenbetreuer:</strong>
+                                                {{$kostenvoranschlag->kundenbetreuer}}
+
+                                                <strong class="">Zahlungmodalität:</strong>
+                                                {{$kostenvoranschlag->zahlungsmodalitat}}
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6 text-sm-right">
+                                            <h4 class="font-weight-bold">An:</h4>
+                                            <span style="white-space: pre-line; font-size:14px;">
+                                            <strong class="">Kunde:</strong> {{$kostenvoranschlag->kunde}}
+                                            <strong class="">Telefon:</strong> {{$kostenvoranschlag->kunde_tel}}
+                                            <strong class="">Email:</strong> {{$kostenvoranschlag->kunde_email}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                    <p style="font-size: 16px;">{{$kostenvoranschlag->text_head}}<br>
+                                    {{$kostenvoranschlag->text_body}}
+                                    <br>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table style="font-size: 14px;" class="table table-hover mb-4">
+                                                <thead class="bg-gray-300">
+                                                    <tr>
+                                                        <th scope="col">Artikelbeschreibung</th>
+                                                        <th scope="col">Menge</th>
+                                                        <th scope="col">Preis</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if(sizeof($items) == 0)
+                                                    <tr>
+                                                        <td scope="row"></th>
+                                                        <td>No items yet</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    @else
+                                                    @foreach($items as $item)
+                                                    <tr>
+                                                        <td scope="row">Handy Bezeichnung + Repuratur Bezeichnung<br>Imei:</th>
+                                                        <td>1</td>
+                                                        <td>30.12€</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                                    @if($kostenvoranschlag->kost29 == 1)
+                                                    <tr>
+                                                        <th scope="row">Kostenvoranschlag + Arbeitszeit €29.00</th>
+                                                        <td></td>
+                                                        <th>29.00€</td>
+                                                    </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="invoice-summary">
+                                                <p>Nettobetrag: <span>{{number_format($price-$price*0.2, 2, ".", "")}}</span>€</p>
+                                                <p>MwSt. 20%: <span>{{number_format($price*0.2, 2, ".", "")}}</span>€</p>
+                                                <h5 class="font-weight-bold">Gesamt:<span>{{number_format($price, 2, ".", "")}}</span>€</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--==== / Print Area =====-->
+                            </div>
+                            <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                                <!--==== Edit Area =====-->
+                                    <form action="/kostenvoranschlag/update/{{$kostenvoranschlag->id}}"  method="POST">
+                                    <div class="d-flex mb-5">
+                                    <span class="m-auto"></span>
+                                    <button style="margin-left: 5px;" class="btn btn-primary">Save</button>
+                                </div>
+                                    <center><img id="image-edit" src="{{asset('assets/images/logo_phone_factory_2.jpg')}}" style="margin-bottom: 30px;"></center>
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h3 class="font-weight-bold">Kostenvoranschlag</h3>
+                                            <input class="form-control" name="date" style="font-size: 14px;" value="Datum: {{date('d.m.y')}}" />
+                                        </div>
+                                        <div class="col-md-6 text-sm-right">
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row mb-5">
+                                        <div class="col-md-8 mb-3 mb-sm-0">
+                                            <h4 class="font-weight-bold">Von:</h4>
+                                            <div class="col-md-5">
+                                            <span style="white-space: pre-line; font-size: 14px;">
+                                                <strong class="">Shop:</strong><input type="text" name="shop" class="form-control" value="Neubau Phone Factory" />
+                                                <strong class="">Tel:</strong><input type="text" name="shop_tel" class="form-control" value="+43(0)1 5223397" />
+                                                <strong class="">Email:</strong><input type="text" name="shop_email" class="form-control" value="neubau@phonefactory.at" />
+                                                <strong class="">Web:</strong><input type="text" name="web" class="form-control" value="www.phonefactory.at" />
+
+                                                <strong class="">Ihr Kundenbetreuer:</strong>
+                                                <input type="text" class="form-control" name="kundenbetreuer" value="The Phone Factory Team" />
+
+                                                <strong class="">Zahlungmodalität:</strong>
+                                                <input type="text" class="form-control" name="zahlungsmodalitat" value="Bar">
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 text-sm-right">
+                                            <h4 class="font-weight-bold">An:</h4>
+                                            <span style="white-space: pre-line; font-size:14px;">
+                                            <strong>Kunde:</strong><input type="text" name="kunde" width="50%" class="form-control" value="Vorname Nachname" />
+                                            <strong >Telefon:</strong><input type="text" name="kunde_tel" class="form-control" value="+4312 237898243" />
+                                            <strong >Email:</strong><input type="text" name="kunde_email" class="form-control" value="name@mail.at" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                    <input style="font-size: 16px;" class="form-control col-md-4" name="text_head" value="Sehr geehrte Damen und Herren," />
+                                    <br>
+                                    <textarea style="font-size: 16px;" name="text_body" cols="10" rows="5" class="form-control">Für nachfolgend angeführte Produkte erlauben wir wie folgt Rechnung zu legen. Alle Produkte bleiben bis zu ihrer vollständigen Bezahlung unser Eigentum. Es gelten die AGB.</textarea>
+                                    <br>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 table-responsive">
+                                            <table class="table table-hover mb-3">
+                                                <thead class="bg-gray-300">
+                                                    <tr>
+                                                        <th scope="col" width="50%">Artikelbeschreibung</th>
+                                                        <th scope="col">Menge</th>
+                                                        <th scope="col">Preis</th>
+                                                        <th scope="col"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbody-item">
+                                                    <tr>
+                                                        <td>
+                                                            <textarea class="form-control"
+                                                                placeholder="Item Name" name="artikelbeschreibung[]"></textarea>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" step="0.01" class="form-control"
+                                                                placeholder="Unit Price" name="menge[]">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control preis-input" step="0.01" type="number"
+                                                                placeholder="Unit" name="preis[]">
+                                                        </td>
+                                                        <td>
+                                                            <button  onclick="$(this).parent().parent().remove()" type="button" class="btn btn-outline-secondary float-right delete-item">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr id="kost29-tr">
+                                                        <th scope="row">Kostenvoranschlag + Arbeitszeit €29.00</th>
+                                                        <td></td>
+                                                        <td>
+                                                            <input class=" form-control preis-input" type="number"
+                                                                placeholder="Unit" value="29.00" name="preis[]">
+                                                        </td>
+                                                        <td>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <button class="btn btn-primary float-right mb-4" type="button" id="add-item">Add Item</button>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="col-md-3">
+                                            Kostenvoranschlag + Arbeitszeit €29.00 
+                                            <input type="checkbox" checked id="kost29" name="kost29" class="form-control col-md-1">
+                                            </div>
+                                            <div class="invoice-summary">
+                                            <button type="button" id="show-prices" class="btn">Show Final Prices</button>
+                                                <br><br>
+                                                <div id="final-prices" style="display: none">
+                                                <p>Nettobetrag: <span id="netto">23.20</span>€</p>
+                                                <p>MwSt. 20%: <span id="mwst20">5.80</span>€</p>
+                                                <h5 class="font-weight-bold">Gesamt:<span id="gesamt">29.00</span>€</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                                <!--==== / Edit Area =====-->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
 
 
+@endsection
 
-.dclr {clear:both;float:none;height:1px;margin:0px;padding:0px;overflow:hidden;}
+@section('page-js')
+<script>
 
-.ft0{font: bold 15px 'Arial';line-height: 18px;}
-.ft1{font: 15px 'Arial';line-height: 17px;}
-.ft2{font: 15px 'Arial';line-height: 25px;}
-.ft3{font: 15px 'Arial';line-height: 17px; text-decoration: underline;}
-.ft4{font: bold 16px 'Arial';line-height: 19px;}
-.ft5{font: 16px 'Arial';line-height: 18px;}
-.ft6{font: bold 20px 'Arial';line-height: 24px; text-decoration: underline;}
-.ft7{font: 15px 'Arial';line-height: 20px;}
-.ft8{font: 1px 'Arial';line-height: 3px;}
-.ft9{font: 1px 'Arial';line-height: 1px;}
-.ft10{font: bold 12px 'Arial';line-height: 15px;}
-.ft11{font: bold 14px 'Arial';line-height: 16px;}
-.ft12{font: 14px 'Arial';line-height: 16px;}
-.ft13{font: bold 11px 'Arial';line-height: 14px;}
-.ft14{font: 11px 'Arial';line-height: 14px;}
+    //create/delete new item in table
+    //deleting in html code
 
-.p0{text-align: left;padding-left: 377px;margin-top: 0px;margin-bottom: 0px;}
-.p1{text-align: left;padding-left: 377px;margin-top: 5px;margin-bottom: 0px;}
-.p2{text-align: left;padding-left: 377px;padding-right: 107px;margin-top: 16px;margin-bottom: 0px;}
-.p3{text-align: left;padding-left: 377px;margin-top: 3px;margin-bottom: 0px;}
-.p4{text-align: left;padding-left: 377px;margin-top: 7px;margin-bottom: 0px;}
-.p5{text-align: left;padding-left: 377px;margin-top: 12px;margin-bottom: 0px;}
-.p6{text-align: left;padding-left: 377px;margin-top: 6px;margin-bottom: 0px;}
-.p7{text-align: left;padding-left: 0px; margin-top: 18px;margin-bottom: 0px;}
-.p8{text-align: left;padding-left: 0px; margin-top: 38px;margin-bottom: 0px;}
-.p9{text-align: justify;padding-left: 0px; padding-right: 94px; padding-bottom: 10px;margin-top: 10px;margin-bottom: 0px;}
-.p10{text-align: left;padding-left: 0px; padding-left: 5px;margin-top: 0px;margin-bottom: 0px; white-space: normal; word-wrap: break-word;}
-.p11{text-align: center;padding-left: 0px; padding-left: 0px;margin-top: 0px;margin-bottom: 0px;}
-.p12{text-align: left;padding-left: 84px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p13{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p14{text-align: center;padding-left: 0px; padding-left: 0px;margin-top: 0px;margin-bottom: 0px;}
-.p15{text-align: center;padding-right: 2px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p16{text-align: left;padding-left: 134px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p17{text-align: center;padding-right: 4px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p18{text-align: left;padding-left: 13px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p19{text-align: left;padding-left: 103px;margin-top: 12px;margin-bottom: 0px;}
-.p20{text-align: left;padding-left: 143px;margin-top: 10px;margin-bottom: 0px;}
-.p21{text-align: left;padding-left: 32px;margin-top: 0px;margin-bottom: 0px;}
-.p22{text-align: left;margin-top: 0px;margin-bottom: 0px;}
-.p23{text-align: left;padding-left: 50px;margin-top: 2px;margin-bottom: 0px;}
+    //item
+    var item = "<tr>" + 
+                "<td>" +
+                "<textarea class='form-control' placeholder='Item Name' name='artikelbeschreibung[]'>" +
+                "</textarea>" +
+                "</td>" + 
+                "<td>" + 
+                "<input type='number' class='form-control'placeholder='Unit Price' step='0.01' name='menge[]'>" + 
+                "</td>" + 
+                "<td>" +
+                "<input type='number' class='form-control preis-input'placeholder='Unit' step='0.01' name='preis[]'>" +
+                "</td>" +
+                "<td>" +
+                "<button type='button' onclick='$(this).parent().parent().remove()' class='btn btn-outline-secondary float-right delete-item'>Delete</button>" +
+                "</td>" +
+                "</tr>";
 
-.td0{border: #00000a 1px solid;}
+    //add item
+    $("#add-item").click(function(){
+        $("#tbody-item").prepend(item);
+    });
 
-.tr0{height: 28px;}
-.tr1{height: 3px;}
-.tr2{height: 20px;}
-.tr3{height: 17px;}
-.tr4{height: 23px;}
-.tr5{height: 21px;}
-.tr6{height: 22px;}
+</script>
+<script>
 
-.t0{width: 603px;margin-top: 27px;font: 15px 'Arial';}
+    //remove/add logo
+    
+    //remove logo
+    $("#doc-without-logo").click(function(){
+        $(this).hide();
+        $("#doc-with-logo").show();
+        $("#image-edit").hide();
+        $("#image-doc").hide();
+    });
 
-</STYLE>
-</HEAD>
+    //add logo
+    $("#doc-with-logo").click(function(){
+        $(this).hide();
+        $("#doc-without-logo").show();
+        $("#image-edit").show();
+        $("#image-doc").show();
+    })
 
-<BODY>
-<DIV id="page_1">
-<DIV id="p1dimg1">
-<center><IMG src="assets/images/logo_phone_factory_2.png" id="p1img1"></center>
-</DIV>
+</script>
+<script>
+    
+    //function to show prices on click
+    $("#show-prices").click(function(){
+        var netto = 0;
+        var mwst20 = 0;
+        var gesamt = 0;
 
+        //sum prices of all inputs
+        $(".preis-input").each(function(){
+            var preis = parseFloat($(this).val());
+            if(!isNaN(preis)){
+                mwst20 += preis*0.2;
+                netto += preis - preis*0.2;
+                gesamt += preis;
+            }
+        });
 
-<DIV class="dclr"></DIV>
-<DIV id="id1_1">
-<P class="p0 ft1"><SPAN class="ft0">Shop: </SPAN>Neubau Phone Factory</P>
-<P class="p0 ft1"><SPAN class="ft0">Tel</SPAN>: +43 (0) 1 5223397<br>
-<SPAN class="ft0">E-Mail</SPAN>:</NOBR> neubau@phonefactory.at <br>
-<SPAN class="ft0">Web</SPAN>: www.phonefactory.at<br>
-<BR>
-<SPAN class="ft0">Ihr Kundenbetreuer:</SPAN><br>
-The Phone Factory Team<br>
-<BR>
-<SPAN class="ft0">Ort, Datum:</SPAN><br>
-Wien, am {{date('d.m.y')}}<br>
-<BR>
-<SPAN class="ft0">Zahlungsmodalität:</SPAN><br>
-Bar</P>
-<P class="p7 ft6">Kostenvoranschlag</P>
-<P class="p8 ft1">Sehr geehrte Damen und Herren</P>
-<P class="p9 ft7">Für nachfolgend angeführte Produkte erlauben wir wie folgt Rechnung zu legen. Alle Produkte bleiben bis zu ihrer vollständigen Bezahlung unser Eigentum. Es gelten die AGB.</P>
-<TABLE style="width: 600px; border-collapse: collapse;" >
-<THEAD>
-<TR>
-	<TH style="border: 1px solid;"><P class="p11 ft2">Artikelbeschreibung</P></TH>
-	<TH style="border: 1px solid;"><P class="p11 ft2">Menge</P></TH>
-	<TH style="border: 1px solid; width:220px;"><P class="p11 ft2">Preis</P></TH>
-</TR>
-<THEAD>
-<TBODY>
-@for($i=0; $i < sizeof($preis); $i++)
-<TR>
-    <TD style="border: 1px solid;"><P class="p10 ft1">{{ $handy_bezeichnung[$i] }} {{ $reparatur_bezeichnung[$i] }} Imei: {{ $imei[$i] }}<BR><BR></P></TD>
-	<TD style="border: 1px solid;" align="center"><P class="p14 ft1"></P>{{$menge[$i]}}<BR><BR></TD>
-	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p10 ft1"></P><strong>{{sprintf('%.2f',$preis[$i])}}€</strong><BR><BR></TD>
-</TR>
-@endfor
-@if($is_kostenvoranschlag != null)
-<TR>
-    <TD style="border: 1px solid;"><P class="p10 ft3">Kostenvoranschlag + Arbeitszeit   €29.00</P></TD>
-	<TD style="border: 1px solid;" align="center"><P class="p14 ft1"></P></TD>
-	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p10 ft1"></P><strong>29.00€</strong><BR><BR></TD>
-</TR>
-@endif
-<?php 
-$sum = ($is_kostenvoranschlag == null) ? array_sum($preis) : array_sum($preis) + 29;
-?>
-<TR>
-    <TD style="border: none; "><P class="p11 ft1"></P></TD>
-	<TD style="border: 1px solid;" align="center"><P class="p11 ft1"></P><strong>Nettobetrag:</strong></TD>
-	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p11 ft1"></P><strong>{{ sprintf('%.2f', $sum - $sum*0.2) }}€</strong></TD>
-</TR>
-<TR>
-    <TD style="border: none; "><P class="p11 ft1"></P></TD>
-	<TD style="border: 1px solid;" align="center"><P class="p11 ft1"></P><strong>MwSt. 20%</strong></TD>
-	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p11 ft1"></P><strong>{{ sprintf('%.2f', $sum*0.2) }}€</strong></TD>
-</TR>
-<TR>
-    <TD style="border: none; "><P class="p11 ft1"></P></TD>
-	<TD style="border: 1px solid;" align="center"><P class="p11 ft1"></P><strong>Gesamt:</strong></TD>
-	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p11 ft1"></P>Inkl. 20% MwSt. <strong>{{ sprintf('%.2f', $sum) }}€</strong></TD>
-</TR>
-</TBODY>
-</TABLE>
-<P class="p20 ft12">Vielen Dank für Ihren Einkauf bei Phonefactory .</P>
-</DIV>
-<DIV id="id1_2">
-<P class="p21 ft14"><SPAN class="ft13">ME Phoneservice GmbH</SPAN>| Wagramerstraße 94 Top 1a, 1220 Wien <NOBR>|+43(0)1-3694001</NOBR></P>
-<P class="p22 ft14">Oberbank AG. <NOBR>Konto-Nr.:</NOBR> 4781012697 BLZ: 15000 IBAN: AT 241500004781012697 BIC: OBKLAT2L</P>
-<P class="p23 ft14">ATU67513746 | Es gelten unsere AGB | Handelsgericht Wien | Mitglied der WKO</P>
-</DIV>
-</DIV>
-</BODY>
-</HTML>
+        //set prices
+        javascript:document.getElementById('netto').innerHTML= netto.toFixed(2);
+        javascript:document.getElementById('mwst20').innerHTML= mwst20.toFixed(2);
+        javascript:document.getElementById('gesamt').innerHTML= gesamt.toFixed(2);
+
+        //edit button text
+        javascript:document.getElementById('show-prices').innerHTML= "Update Final Prices";
+
+        //show prices
+        $("#final-prices").show();
+    });
+
+</script>
+<script>
+
+//show/hide kost29
+
+var kost29 = "<tr id='kost29-tr'>" + 
+                "<th scope='row'>Kostenvoranschlag + Arbeitszeit €29.00</th>" +
+                "<td></td>" +
+                "<td>" +
+                "<input class='form-control preis-input' type='number'placeholder='Unit' value='29.00' name='preis[]'>" +
+                "</td>" +
+                "<td>" +
+                "</td>" +
+                "</tr>";
+
+$("#kost29").on('change', function(){
+    if($(this).is(':checked')) $("#tbody-item").append(kost29);
+    else $("#kost29-tr").remove(); 
+});
+
+</script>
+<script src="{{asset('assets/js/vendor/dropzone.min.js')}}"></script>
+<script src="{{asset('assets/js/dropzone.script.js')}}"></script>
+<script src="{{asset('assets/js/vendor/pickadate/picker.js')}}"></script>
+<script src="{{asset('assets/js/vendor/pickadate/picker.date.js')}}"></script>
+<script src="{{asset('assets/js/invoice.script.js')}}"></script>
+@endsection

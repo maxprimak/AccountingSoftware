@@ -20,6 +20,13 @@ class CreatePeopleTable extends Migration
             $table->string('adress');
             $table->timestamps();
         });
+
+         /* FOR FUTURE USE OF INDEXES
+        Schema::table('users', function(Blueprint $table)
+        {
+            $table->index('INSERT_INDEX_HERE');
+        }); 
+        */
     }
 
     /**
@@ -30,5 +37,12 @@ class CreatePeopleTable extends Migration
     public function down()
     {
         Schema::dropIfExists('people');
+
+                /* FOR FUTURE USE OF INDEXES
+        Schema::table('users', function (Blueprint $table)
+        {
+            $table->dropIndex(['INSERT_INDEX_HERE']);
+        }); 
+        */
     }
 }

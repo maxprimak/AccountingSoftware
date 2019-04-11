@@ -1,139 +1,271 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META http-equiv="X-UA-Compatible" content="IE=8">
-<TITLE>bcl_1913170511.htm</TITLE>
-<META name="generator" content="BCL easyConverter SDK 5.0.140">
-<STYLE type="text/css">
+@extends('layouts.master')
+@section('page-css')
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.date.css')}}">
+@endsection
 
-body {margin-top: 0px;margin-left: 0px;}
+@section('main-content')
+    <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs justify-content-end mb-4" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="invoice-tab" data-toggle="tab" href="#invoice" role="tab"
+                                aria-controls="invoice" aria-selected="true">Invoice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit"
+                                aria-selected="false">Edit</a>
+                        </li>
 
-#page_1 {position:relative; overflow: hidden;margin: 0px 0px 18px 15px;padding: 0px;border: none;}
-#page_1 #id1_1 {border:none;margin: 188px 0px 0px 59px;padding: 0px;border:none;width: 698px;overflow: hidden;}
-#page_1 #id1_2 {border:none;margin: 80px 0px 0px 119px;padding: 0px;border:none;width: 658px;overflow: hidden;}
+                    </ul>
+                    <div class="card">
 
-#page_1 #p1dimg1 {position:absolute;top:0px;left:0px;z-index:-1;width:699px;height:180px;}
-#page_1 #p1dimg1 #p1img1 {width:699px;height:180px;}
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
+                                <div class="d-sm-flex mb-5" data-view="print">
+                                    <span class="m-auto"></span>
+                                    <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
+                                </div>
+                                <!---===== Print Area =======-->
+                                <div id="print-area">
+                                <center><img src="assets/images/logo_phone_factory_2.jpg" style="margin-bottom: 30px;"></center>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="font-weight-bold">Order Info</h4>
+                                            <p>#106</p>
+                                        </div>
+                                        <div class="col-md-6 text-sm-right">
+                                            <p><strong>Order status: </strong> Delivered</p>
+                                            <p><strong>Order date: </strong> 10 Dec, 2018</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row mb-5">
+                                        <div class="col-md-6 mb-3 mb-sm-0">
+                                            <h5 class="font-weight-bold">Bill From</h5>
+                                            <p>New Age Inc.</p>
+                                            <span style="white-space: pre-line">
+                                                rodriguez.trent@senger.com
+                                                61 Johnson St. Shirley, NY 11967.
+
+                                                +202-555-0170
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6 text-sm-right">
+                                            <h5 class="font-weight-bold">Bill To</h5>
+                                            <p>UI Lib</p>
+                                            <span style="white-space: pre-line">
+                                                sales@ui-lib.com
+                                                8254 S. Garfield Street. Villa Rica, GA 30180.
+
+                                                +1-202-555-0170
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-hover mb-4">
+                                                <thead class="bg-gray-300">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Item Name</th>
+                                                        <th scope="col">Unit Price</th>
+                                                        <th scope="col">Unit</th>
+                                                        <th scope="col">Cost</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>Product 1</td>
+                                                        <td>300</td>
+                                                        <td>2</td>
+                                                        <td>600</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>Product 2</td>
+                                                        <td>200</td>
+                                                        <td>3</td>
+                                                        <td>600</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="invoice-summary">
+                                                <p>Sub total: <span>$1200</span></p>
+                                                <p>Vat: <span>$120</span></p>
+                                                <h5 class="font-weight-bold">Grand Total: <span> $1320</span></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--==== / Print Area =====-->
+                            </div>
+                            <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                                <!--==== Edit Area =====-->
+                                <div class="d-flex mb-5">
+                                    <span class="m-auto"></span>
+                                    <button class="btn btn-primary">Save</button>
+                                </div>
+                                <form >
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="font-weight-bold">Order Info</h4>
+                                            <div class="col-sm-4 form-group mb-3 pl-0">
+                                                <label for="orderNo">Order Number</label>
+                                                <input type="text" class="form-control"
+                                                    id="orderNo" placeholder="Enter order number">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 offset-md-3 text-right">
+                                            <label class="d-block text-12 text-muted">Order Status</label>
+                                            <div class="col-md-6 offset-md-6 pr-0 mb-4">
+                                                <label class="radio radio-reverse radio-danger">
+                                                    <input type="radio" name="orderStatus" value="Pending">
+                                                    <span>Pending</span>
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radio radio-reverse radio-warning">
+                                                    <input type="radio" name="orderStatus" value="Processing">
+                                                    <span>Processing</span>
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radio radio-reverse radio-success">
+                                                    <input type="radio" name="orderStatus" value="Delivered">
+                                                    <span>Delivered</span>
+                                                    <span class="checkmark"></span>
+                                                </label>
+
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="order-datepicker">Order Date</label>
+                                                    <input id="order-datepicker" class="form-control text-right"
+                                                        placeholder="yyyy-mm-dd" name="dp">
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row mb-5">
+                                        <div class="col-md-6" >
+                                            <h5 class="font-weight-bold">Bill From</h5>
+                                            <div class="col-md-10 form-group mb-3 pl-0">
+                                                <input type="text" class="form-control" id="billFrom"
+                                                    placeholder="Bill From">
+                                            </div>
+                                            <div class="col-md-10 form-group mb-3 pl-0">
+                                                <textarea class="form-control"
+                                                    placeholder="Bill From Address"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 text-right" >
+                                            <h5 class="font-weight-bold">Bill To</h5>
+                                            <div class="col-md-10 offset-md-2 form-group mb-3 pr-0">
+                                                <input type="text" class="form-control text-right"
+                                                    id="billFrom2" placeholder="Bill From">
+                                            </div>
+                                            <div class="col-md-10 offset-md-2 form-group mb-3 pr-0">
+                                                <textarea class="form-control text-right"
+                                                    placeholder="Bill From Address"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 table-responsive">
+                                            <table class="table table-hover mb-3">
+                                                <thead class="bg-gray-300">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Item Name</th>
+                                                        <th scope="col">Unit Price</th>
+                                                        <th scope="col">Unit</th>
+                                                        <th scope="col">Cost</th>
+                                                        <th scope="col"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>
+                                                            <input value="Product 1" type="text" class="form-control"
+                                                                placeholder="Item Name">
+                                                        </td>
+                                                        <td>
+                                                            <input value="300" type="number" class="form-control"
+                                                                placeholder="Unit Price">
+                                                        </td>
+                                                        <td>
+                                                            <input value="2" type="number" class="form-control"
+                                                                placeholder="Unit">
+                                                        </td>
+                                                        <td>600</td>
+                                                        <td>
+                                                            <button class="btn btn-outline-secondary float-right">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">2</th>
+                                                        <td>
+                                                            <input value="Product 1" type="text" class="form-control"
+                                                                placeholder="Item Name">
+                                                        </td>
+                                                        <td>
+                                                            <input value="300" type="number" class="form-control"
+                                                                placeholder="Unit Price">
+                                                        </td>
+                                                        <td>
+                                                            <input value="2" type="number" class="form-control"
+                                                                placeholder="Unit">
+                                                        </td>
+                                                        <td>600</td>
+                                                        <td>
+                                                            <button class="btn btn-outline-secondary float-right">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <button class="btn btn-primary float-right mb-4">Add Item</button>
+                                        </div>
+
+                                        <div class="col-md-12">
+
+                                            <div class="invoice-summary invoice-summary-input">
+                                                <p>Sub total: <span>$1200</span></p>
+                                                <p class="d-flex align-items-center">Vat(%):<span>
+                                                        <input type="text" class="form-control small-input" value="10">$120</span>
+                                                </p>
+                                                <h5 class="font-weight-bold d-flex align-items-center">Grand Total:
+                                                    <span>
+                                                        <input type="text" class="form-control small-input" value="$">
+                                                        $1320
+                                                    </span>
+                                                </h5>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                                <!--==== / Edit Area =====-->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
 
 
+@endsection
 
-.dclr {clear:both;float:none;height:1px;margin:0px;padding:0px;overflow:hidden;}
+@section('page-js')
 
-.ft0{font: bold 15px 'Arial';line-height: 18px;}
-.ft1{font: 15px 'Arial';line-height: 17px;}
-.ft2{font: 15px 'Arial';line-height: 25px;}
-.ft3{font: 15px 'Arial';line-height: 19px;}
-.ft4{font: bold 16px 'Arial';line-height: 19px;}
-.ft5{font: 16px 'Arial';line-height: 18px;}
-.ft6{font: bold 20px 'Arial';line-height: 24px;}
-.ft7{font: 15px 'Arial';line-height: 20px;}
-.ft8{font: 1px 'Arial';line-height: 3px;}
-.ft9{font: 1px 'Arial';line-height: 1px;}
-.ft10{font: bold 12px 'Arial';line-height: 15px;}
-.ft11{font: bold 14px 'Arial';line-height: 16px;}
-.ft12{font: 14px 'Arial';line-height: 16px;}
-.ft13{font: bold 11px 'Arial';line-height: 14px;}
-.ft14{font: 11px 'Arial';line-height: 14px;}
-
-.p0{text-align: left;padding-left: 377px;margin-top: 0px;margin-bottom: 0px;}
-.p1{text-align: left;padding-left: 377px;margin-top: 5px;margin-bottom: 0px;}
-.p2{text-align: left;padding-left: 377px;padding-right: 107px;margin-top: 16px;margin-bottom: 0px;}
-.p3{text-align: left;padding-left: 377px;margin-top: 3px;margin-bottom: 0px;}
-.p4{text-align: left;padding-left: 377px;margin-top: 7px;margin-bottom: 0px;}
-.p5{text-align: left;padding-left: 377px;margin-top: 12px;margin-bottom: 0px;}
-.p6{text-align: left;padding-left: 377px;margin-top: 6px;margin-bottom: 0px;}
-.p7{text-align: left;padding-left: 0px; margin-top: 18px;margin-bottom: 0px;}
-.p8{text-align: left;padding-left: 0px; margin-top: 38px;margin-bottom: 0px;}
-.p9{text-align: justify;padding-left: 0px; padding-right: 94px; padding-bottom: 10px;margin-top: 10px;margin-bottom: 0px;}
-.p10{text-align: left;padding-left: 0px; padding-left: 5px;margin-top: 0px;margin-bottom: 0px; white-space: normal; word-wrap: break-word;}
-.p11{text-align: center;padding-left: 0px; padding-left: 0px;margin-top: 0px;margin-bottom: 0px;}
-.p12{text-align: left;padding-left: 84px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p13{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p14{text-align: center;padding-left: 0px; padding-left: 0px;margin-top: 0px;margin-bottom: 0px;}
-.p15{text-align: center;padding-right: 2px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p16{text-align: left;padding-left: 134px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p17{text-align: center;padding-right: 4px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p18{text-align: left;padding-left: 13px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p19{text-align: left;padding-left: 103px;margin-top: 12px;margin-bottom: 0px;}
-.p20{text-align: left;padding-left: 143px;margin-top: 10px;margin-bottom: 0px;}
-.p21{text-align: left;padding-left: 32px;margin-top: 0px;margin-bottom: 0px;}
-.p22{text-align: left;margin-top: 0px;margin-bottom: 0px;}
-.p23{text-align: left;padding-left: 50px;margin-top: 2px;margin-bottom: 0px;}
-
-.td0{border: #00000a 1px solid;}
-
-.tr0{height: 28px;}
-.tr1{height: 3px;}
-.tr2{height: 20px;}
-.tr3{height: 17px;}
-.tr4{height: 23px;}
-.tr5{height: 21px;}
-.tr6{height: 22px;}
-
-.t0{width: 603px;margin-top: 27px;font: 15px 'Arial';}
-
-</STYLE>
-</HEAD>
-
-<BODY>
-<DIV id="page_1">
-<DIV id="p1dimg1">
-<center><IMG src="assets/images/logo_phone_factory.png" id="p1img1"></center>
-</DIV>
-
-
-<DIV class="dclr"></DIV>
-<DIV id="id1_1">
-<P class="p0 ft1"><SPAN class="ft0">Shop: </SPAN>Neubau Phone Factory</P>
-<P class="p0 ft1"><SPAN class="ft0">Tel</SPAN>: +43 (0) 1 5223397<br>
-<BR>
-<SPAN class="ft0">E-Mail</SPAN>:</NOBR> neubau@phonefactory.at <br>
-<SPAN class="ft0">Web</SPAN>: www.phonefactory.at<br>
-<BR>
-<SPAN class="ft0">Ihr Kundenbetreuer:</SPAN><br>
-The Phone Factory Team<br>
-<BR>
-<SPAN class="ft0">Ort, Datum:</SPAN><br>
-Wien, am {{date('d.m.y')}}<br>
-<BR>
-<SPAN class="ft0">Zahlungsmodalität:</SPAN><br>
-Bar</P>
-<P class="p7 ft6">Rechnung Nr. {{date('d.m.y')}}</P>
-<P class="p8 ft1">Sehr geehrter Kunde!</P>
-<P class="p9 ft7">Für nachfolgend angeführte Produkte erlauben wir wie folgt Rechnung zu legen. Alle Produkte bleiben bis zu ihrer vollständigen Bezahlung unser Eigentum. Es gelten die AGB.</P>
-<TABLE style="width: 600px; border-collapse: collapse;" >
-<THEAD>
-<TR>
-	<TH style="border: 1px solid;"><P class="p11 ft2">Artikelbeschreibung</P></TH>
-	<TH style="border: 1px solid;"><P class="p11 ft2">Menge</P></TH>
-	<TH style="border: 1px solid; width:220px;"><P class="p11 ft2">Preis</P></TH>
-</TR>
-<THEAD>
-<TBODY>
-@for($i=0; $i < sizeof($preis); $i++)
-<TR>
-    <TD style="border: 1px solid;"><P class="p10 ft1">{{ $handy_bezeichnung[$i] }} {{ $reparatur_bezeichnung[$i] }} Imei: {{ $imei[$i] }}<BR><BR></P></TD>
-	<TD style="border: 1px solid;" align="center"><P class="p14 ft1"></P>{{$menge[$i]}}<BR><BR></TD>
-	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p10 ft1"></P><strong>{{$preis[$i]}}€</strong><BR><BR></TD>
-</TR>
-@endfor
-<TR>
-    <TD style="border: none; "><P class="p11 ft1"></P></TD>
-	<TD style="border: 1px solid;" align="center"><P class="p11 ft1"></P><strong>Gesamt:</strong></TD>
-	<TD style="border: 1px solid; padding-right: 5px;" align="right"><P class="p11 ft1"></P>Differenzbesteuert §24 <strong>{{ array_sum($preis) }}€</strong></TD>
-</TR>
-</TBODY>
-</TABLE>
-<P class="p19 ft11">Keine Geldrückgabe nur Umtausch oder Gutschrift !!</P>
-<P class="p20 ft12">Vielen Dank für Ihren Einkauf bei Phonefactory .</P>
-</DIV>
-<DIV id="id1_2">
-<P class="p21 ft14"><SPAN class="ft13">ME Phoneservice GmbH</SPAN>| Wagramerstraße 94 Top 1a, 1220 Wien <NOBR>|+43(0)1-3694001</NOBR></P>
-<P class="p22 ft14">Oberbank AG. <NOBR>Konto-Nr.:</NOBR> 4781012697 BLZ: 15000 IBAN: AT 241500004781012697 BIC: OBKLAT2L</P>
-<P class="p23 ft14">ATU67513746 | Es gelten unsere AGB | Handelsgericht Wien | Mitglied der WKO</P>
-</DIV>
-</DIV>
-</BODY>
-</HTML>
+ <script src="{{asset('assets/js/vendor/pickadate/picker.js')}}"></script>
+<script src="{{asset('assets/js/vendor/pickadate/picker.date.js')}}"></script>
+<script src="{{asset('assets/js/invoice.script.js')}}"></script>
+@endsection

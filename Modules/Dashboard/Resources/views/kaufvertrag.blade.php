@@ -1,92 +1,271 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META http-equiv="X-UA-Compatible" content="IE=8">
-<TITLE>bcl_294794885.htm</TITLE>
-<META name="generator" content="BCL easyConverter SDK 5.0.140">
-<STYLE type="text/css">
+@extends('layouts.master')
+@section('page-css')
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.date.css')}}">
+@endsection
 
-body {margin-top: 0px;margin-left: 0px;}
+@section('main-content')
+    <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs justify-content-end mb-4" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="invoice-tab" data-toggle="tab" href="#invoice" role="tab"
+                                aria-controls="invoice" aria-selected="true">Invoice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit"
+                                aria-selected="false">Edit</a>
+                        </li>
 
-#page_1 {position:relative; overflow: hidden;margin: 0px 0px 0px 0px;padding: 0px;border: none;width: 747px;}
+                    </ul>
+                    <div class="card">
 
-#page_1 #p1dimg1 {position:absolute;top:0px;left:0px;z-index:-1;width:699px;height:180px;}
-#page_1 #p1dimg1 #p1img1 {width:699px;height:180px;}
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
+                                <div class="d-sm-flex mb-5" data-view="print">
+                                    <span class="m-auto"></span>
+                                    <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
+                                </div>
+                                <!---===== Print Area =======-->
+                                <div id="print-area">
+                                <center><img src="assets/images/logo_phone_factory_2.jpg" style="margin-bottom: 30px;"></center>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="font-weight-bold">Order Info</h4>
+                                            <p>#106</p>
+                                        </div>
+                                        <div class="col-md-6 text-sm-right">
+                                            <p><strong>Order status: </strong> Delivered</p>
+                                            <p><strong>Order date: </strong> 10 Dec, 2018</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row mb-5">
+                                        <div class="col-md-6 mb-3 mb-sm-0">
+                                            <h5 class="font-weight-bold">Bill From</h5>
+                                            <p>New Age Inc.</p>
+                                            <span style="white-space: pre-line">
+                                                rodriguez.trent@senger.com
+                                                61 Johnson St. Shirley, NY 11967.
+
+                                                +202-555-0170
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6 text-sm-right">
+                                            <h5 class="font-weight-bold">Bill To</h5>
+                                            <p>UI Lib</p>
+                                            <span style="white-space: pre-line">
+                                                sales@ui-lib.com
+                                                8254 S. Garfield Street. Villa Rica, GA 30180.
+
+                                                +1-202-555-0170
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-hover mb-4">
+                                                <thead class="bg-gray-300">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Item Name</th>
+                                                        <th scope="col">Unit Price</th>
+                                                        <th scope="col">Unit</th>
+                                                        <th scope="col">Cost</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>Product 1</td>
+                                                        <td>300</td>
+                                                        <td>2</td>
+                                                        <td>600</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>Product 2</td>
+                                                        <td>200</td>
+                                                        <td>3</td>
+                                                        <td>600</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="invoice-summary">
+                                                <p>Sub total: <span>$1200</span></p>
+                                                <p>Vat: <span>$120</span></p>
+                                                <h5 class="font-weight-bold">Grand Total: <span> $1320</span></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--==== / Print Area =====-->
+                            </div>
+                            <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                                <!--==== Edit Area =====-->
+                                <div class="d-flex mb-5">
+                                    <span class="m-auto"></span>
+                                    <button class="btn btn-primary">Save</button>
+                                </div>
+                                <form >
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="font-weight-bold">Order Info</h4>
+                                            <div class="col-sm-4 form-group mb-3 pl-0">
+                                                <label for="orderNo">Order Number</label>
+                                                <input type="text" class="form-control"
+                                                    id="orderNo" placeholder="Enter order number">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 offset-md-3 text-right">
+                                            <label class="d-block text-12 text-muted">Order Status</label>
+                                            <div class="col-md-6 offset-md-6 pr-0 mb-4">
+                                                <label class="radio radio-reverse radio-danger">
+                                                    <input type="radio" name="orderStatus" value="Pending">
+                                                    <span>Pending</span>
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radio radio-reverse radio-warning">
+                                                    <input type="radio" name="orderStatus" value="Processing">
+                                                    <span>Processing</span>
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radio radio-reverse radio-success">
+                                                    <input type="radio" name="orderStatus" value="Delivered">
+                                                    <span>Delivered</span>
+                                                    <span class="checkmark"></span>
+                                                </label>
+
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="order-datepicker">Order Date</label>
+                                                    <input id="order-datepicker" class="form-control text-right"
+                                                        placeholder="yyyy-mm-dd" name="dp">
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row mb-5">
+                                        <div class="col-md-6" >
+                                            <h5 class="font-weight-bold">Bill From</h5>
+                                            <div class="col-md-10 form-group mb-3 pl-0">
+                                                <input type="text" class="form-control" id="billFrom"
+                                                    placeholder="Bill From">
+                                            </div>
+                                            <div class="col-md-10 form-group mb-3 pl-0">
+                                                <textarea class="form-control"
+                                                    placeholder="Bill From Address"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 text-right" >
+                                            <h5 class="font-weight-bold">Bill To</h5>
+                                            <div class="col-md-10 offset-md-2 form-group mb-3 pr-0">
+                                                <input type="text" class="form-control text-right"
+                                                    id="billFrom2" placeholder="Bill From">
+                                            </div>
+                                            <div class="col-md-10 offset-md-2 form-group mb-3 pr-0">
+                                                <textarea class="form-control text-right"
+                                                    placeholder="Bill From Address"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 table-responsive">
+                                            <table class="table table-hover mb-3">
+                                                <thead class="bg-gray-300">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Item Name</th>
+                                                        <th scope="col">Unit Price</th>
+                                                        <th scope="col">Unit</th>
+                                                        <th scope="col">Cost</th>
+                                                        <th scope="col"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>
+                                                            <input value="Product 1" type="text" class="form-control"
+                                                                placeholder="Item Name">
+                                                        </td>
+                                                        <td>
+                                                            <input value="300" type="number" class="form-control"
+                                                                placeholder="Unit Price">
+                                                        </td>
+                                                        <td>
+                                                            <input value="2" type="number" class="form-control"
+                                                                placeholder="Unit">
+                                                        </td>
+                                                        <td>600</td>
+                                                        <td>
+                                                            <button class="btn btn-outline-secondary float-right">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">2</th>
+                                                        <td>
+                                                            <input value="Product 1" type="text" class="form-control"
+                                                                placeholder="Item Name">
+                                                        </td>
+                                                        <td>
+                                                            <input value="300" type="number" class="form-control"
+                                                                placeholder="Unit Price">
+                                                        </td>
+                                                        <td>
+                                                            <input value="2" type="number" class="form-control"
+                                                                placeholder="Unit">
+                                                        </td>
+                                                        <td>600</td>
+                                                        <td>
+                                                            <button class="btn btn-outline-secondary float-right">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <button class="btn btn-primary float-right mb-4">Add Item</button>
+                                        </div>
+
+                                        <div class="col-md-12">
+
+                                            <div class="invoice-summary invoice-summary-input">
+                                                <p>Sub total: <span>$1200</span></p>
+                                                <p class="d-flex align-items-center">Vat(%):<span>
+                                                        <input type="text" class="form-control small-input" value="10">$120</span>
+                                                </p>
+                                                <h5 class="font-weight-bold d-flex align-items-center">Grand Total:
+                                                    <span>
+                                                        <input type="text" class="form-control small-input" value="$">
+                                                        $1320
+                                                    </span>
+                                                </h5>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                                <!--==== / Edit Area =====-->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
 
 
+@endsection
 
-.dclr {clear:both;float:none;height:1px;margin:0px;padding:0px;overflow:hidden;}
+@section('page-js')
 
-.ft0{font: bold 32px 'Arial';text-decoration: underline;line-height: 37px;}
-.ft1{font: 17px 'Arial';line-height: 19px;}
-.ft2{font: 17px 'Arial';line-height: 22px;}
-
-.p0{text-align: left;padding-left: 261px;margin-top: 214px;margin-bottom: 0px;}
-.p1{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p2{text-align: left;padding-left: 18px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p3{text-align: left;padding-left: 16px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p4{text-align: left;padding-left: 86px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p5{text-align: left;padding-left: 157px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p6{text-align: left;padding-left: 30px;margin-top: 56px;margin-bottom: 0px;}
-.p7{text-align: left;padding-left: 30px;margin-top: 21px;margin-bottom: 0px;}
-.p8{text-align: left;padding-left: 30px;padding-right: 106px;margin-top: 21px;margin-bottom: 0px;}
-.p9{text-align: left;padding-left: 259px;margin-top: 29px;margin-bottom: 0px;}
-.p10{text-align: left;padding-left: 309px;margin-top: 5px;margin-bottom: 0px;}
-.p11{text-align: left;padding-left: 30px;margin-top: 77px;margin-bottom: 0px;}
-.p12{text-align: left;padding-left: 30px;margin-top: 5px;margin-bottom: 0px;}
-
-.td0{padding: 0px;margin: 0px;width: 211px;vertical-align: bottom;}
-.td1{padding: 0px;margin: 0px;width: 326px;vertical-align: bottom;}
-
-.tr0{height: 29px;}
-.tr1{height: 39px;}
-.tr2{height: 40px;}
-.tr3{height: 60px;}
-
-.t0{width: 537px;margin-left: 30px;margin-top: 64px;font: 17px 'Arial';}
-
-</STYLE>
-</HEAD>
-
-<BODY>
-<DIV id="page_1">
-<DIV id="p1dimg1">
-<center><IMG src="assets/images/logo_phone_factory.png" id="p1img1"></center>
-</DIV>
-
-<DIV class="dclr"></DIV>
-<P class="p0 ft0">Kaufvertrag</P>
-<TABLE cellpadding=0 cellspacing=0 class="t0">
-<TR>
-	<TD class="tr0 td0"><P class="p1 ft1">Name des Verkäufers:</P></TD>
-	<TD class="tr0 td1"><P class="p2 ft1">{{$name}}</P></TD>
-</TR>
-<TR>
-	<TD class="tr1 td0"><P class="p1 ft1">Telefon Nr.:</P></TD>
-	<TD class="tr1 td1"><P class="p3 ft1">{{$telefon}}</P></TD>
-</TR>
-<TR>
-	<TD class="tr2 td0"><P class="p1 ft1">Adresse:</P></TD>
-	<TD class="tr2 td1"><P class="p3 ft1">{{$adresse}}</P></TD>
-</TR>
-<TR>
-	<TD class="tr2 td0"><P class="p1 ft1">Ort/PLZ:</P></TD>
-	<TD class="tr2 td1"><P class="p2 ft1">{{$ort}}</P></TD>
-</TR>
-<TR>
-	<TD class="tr3 td0"><P class="p4 ft1"><input type="checkbox" <?php if($is_mobil != null) echo 'checked' ?>/> Mobiltelefon</P></TD>
-	<TD class="tr3 td1"><P class="p5 ft1"><input type="checkbox" <?php if($is_tablet != null) echo 'checked' ?>/> Tablet</P></TD>
-</TR>
-</TABLE>
-<P class="p6 ft1">Modell: {{$modell}}</P>
-<P class="p7 ft1">IMEI: {{$imei}}</P>
-<P class="p8 ft2">Der/Die Verkäufer/in ist laut Allgemeine Bürgerliche Gesetzbuch §2 (ABGB) volljährig, und der rechtmäßige Eigentümer des Gerätes. Er/Sie garantiert dass, das Gerät nicht als gestohlen gemeldet ist!</P>
-<P class="p9 ft1">___________________</P>
-<P class="p10 ft1">Ort, Datum</P>
-<P class="p11 ft1">___________________________________________</P>
-<P class="p12 ft1">Unterschrift des Verkäufers</P>
-</DIV>
-</BODY>
-</HTML>
+ <script src="{{asset('assets/js/vendor/pickadate/picker.js')}}"></script>
+<script src="{{asset('assets/js/vendor/pickadate/picker.date.js')}}"></script>
+<script src="{{asset('assets/js/invoice.script.js')}}"></script>
+@endsection

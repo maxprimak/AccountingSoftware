@@ -2,14 +2,14 @@
   <div class="side-content-wrap">
             <div class="sidebar-left open rtl-ps-none" data-perfect-scrollbar data-suppress-scroll-x="true">
                 <ul class="navigation-left">
-                    <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}">
+                    <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}" data-item="dashboard">
                         <a class="nav-item-hold" href="/dashboard">
                             <i class="nav-icon i-Bar-Chart"></i>
-                            <span class="nav-text"><!-- Dashboard --> Generate PDFs</span>
+                            <span class="nav-text"><!-- Dashboard --> My Invoices</span>
                         </a>
                         <div class="triangle"></div>
                     </li>
-                    <!--
+                                         <!--
                     <li class="nav-item" data-item="uikits">
                         <a class="nav-item-hold" href="#">
                             <i class="nav-icon i-Library"></i>
@@ -73,26 +73,26 @@
 
             <div class="sidebar-left-secondary rtl-ps-none" data-perfect-scrollbar data-suppress-scroll-x="true">
                 <!-- Submenu Dashboards -->
-                <!-- <ul class="childNav" data-parent="dashboard">
+                <ul class="childNav" data-parent="dashboard">
                     <li class="nav-item">
-                        <a class="{{ Route::currentRouteName()=='dashboard_version_1' ? 'open' : '' }}" href="#dashboard_version_1">
-                            <i class="nav-icon i-Clock-3"></i>
-                            <span class="item-name">Version 1</span>
+                        <a class="{{ Route::currentRouteName()=='dashboard_version_1' ? 'open' : '' }}" href="{{route('rechnung_hand_dif')}}">
+                            <i class="nav-icon i-Money-2"></i>
+                            <span class="item-name">Rechnung Handy Differenz</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#dashboard_version_2">
-                            <i class="nav-icon i-Clock-4"></i>
-                            <span class="item-name">Version 2</span>
+                        <a href="{{route('kostenvoranschlag.all')}}">
+                            <i class="nav-icon i-Gear"></i>
+                            <span class="item-name">Konstenvoranchläge</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#dashboard_version_3">
-                            <i class="nav-icon i-Over-Time"></i>
-                            <span class="item-name">Version 3</span>
+                        <a href="{{route('kaufvertrag')}}">
+                            <i class="nav-icon i-Financial"></i>
+                            <span class="item-name">Kaufvertrag</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a href="#dashboard_version_4">
                             <i class="nav-icon i-Clock"></i>
                             <span class="item-name">Version 4</span>

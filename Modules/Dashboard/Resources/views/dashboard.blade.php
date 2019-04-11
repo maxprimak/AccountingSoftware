@@ -1,268 +1,271 @@
 @extends('layouts.master')
+@section('page-css')
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.date.css')}}">
+@endsection
+
 @section('main-content')
-            @if(session()->has('message'))
-            <div class="alert alert-success">
-                {{ session()->get('message') }}
-            </div>
-            @endif
-            @if(!auth()->user()->hasVerifiedEmail())
-            <div class="alert alert-danger">
-                {{'Please verify your email adress. We have sent email to '. auth()->user()->email . '. If you do not see mail in inbox, check your spam folder. '}}
-                <a href="{{ route('verification.resend') }}">Send email again</a><br>
-                @if (session('resent'))
-                            {{ __('A fresh verification link has been sent to your email address.') }}
-                @endif
-            </div>
-            @endif
-           <div class="breadcrumb">
-            <br>
-            <br>
-                <h1>Generate PDF Files</h1>
-            </div>
+    <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs justify-content-end mb-4" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="invoice-tab" data-toggle="tab" href="#invoice" role="tab"
+                                aria-controls="invoice" aria-selected="true">Invoice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit"
+                                aria-selected="false">Edit</a>
+                        </li>
 
-            <div class="separator-breadcrumb border-top"></div>
+                    </ul>
+                    <div class="card">
 
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6" style="cursor: pointer" data-toggle="modal" data-target="#exampleModal">
-                    <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                        <div class="card-body text-center">
-                            <i class="i-Gear"></i>
-                            <div class="content">
-                                <p class="text-muted mt-2 mb-0">Rechnung Handy Diff.</p>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
+                                <div class="d-sm-flex mb-5" data-view="print">
+                                    <span class="m-auto"></span>
+                                    <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
+                                </div>
+                                <!---===== Print Area =======-->
+                                <div id="print-area">
+                                <img src="assets/images/logo_phone_factory_2.jpg" style="margin-bottom: 30px;">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="font-weight-bold">Order Info</h4>
+                                            <p>#106</p>
+                                        </div>
+                                        <div class="col-md-6 text-sm-right">
+                                            <p><strong>Order status: </strong> Delivered</p>
+                                            <p><strong>Order date: </strong> 10 Dec, 2018</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row mb-5">
+                                        <div class="col-md-6 mb-3 mb-sm-0">
+                                            <h5 class="font-weight-bold">Bill From</h5>
+                                            <p>New Age Inc.</p>
+                                            <span style="white-space: pre-line">
+                                                rodriguez.trent@senger.com
+                                                61 Johnson St. Shirley, NY 11967.
+
+                                                +202-555-0170
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6 text-sm-right">
+                                            <h5 class="font-weight-bold">Bill To</h5>
+                                            <p>UI Lib</p>
+                                            <span style="white-space: pre-line">
+                                                sales@ui-lib.com
+                                                8254 S. Garfield Street. Villa Rica, GA 30180.
+
+                                                +1-202-555-0170
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-hover mb-4">
+                                                <thead class="bg-gray-300">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Item Name</th>
+                                                        <th scope="col">Unit Price</th>
+                                                        <th scope="col">Unit</th>
+                                                        <th scope="col">Cost</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>Product 1</td>
+                                                        <td>300</td>
+                                                        <td>2</td>
+                                                        <td>600</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>Product 2</td>
+                                                        <td>200</td>
+                                                        <td>3</td>
+                                                        <td>600</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="invoice-summary">
+                                                <p>Sub total: <span>$1200</span></p>
+                                                <p>Vat: <span>$120</span></p>
+                                                <h5 class="font-weight-bold">Grand Total: <span> $1320</span></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--==== / Print Area =====-->
+                            </div>
+                            <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                                <!--==== Edit Area =====-->
+                                <div class="d-flex mb-5">
+                                    <span class="m-auto"></span>
+                                    <button class="btn btn-primary">Save</button>
+                                </div>
+                                <form >
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="font-weight-bold">Order Info</h4>
+                                            <div class="col-sm-4 form-group mb-3 pl-0">
+                                                <label for="orderNo">Order Number</label>
+                                                <input type="text" class="form-control"
+                                                    id="orderNo" placeholder="Enter order number">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 offset-md-3 text-right">
+                                            <label class="d-block text-12 text-muted">Order Status</label>
+                                            <div class="col-md-6 offset-md-6 pr-0 mb-4">
+                                                <label class="radio radio-reverse radio-danger">
+                                                    <input type="radio" name="orderStatus" value="Pending">
+                                                    <span>Pending</span>
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radio radio-reverse radio-warning">
+                                                    <input type="radio" name="orderStatus" value="Processing">
+                                                    <span>Processing</span>
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radio radio-reverse radio-success">
+                                                    <input type="radio" name="orderStatus" value="Delivered">
+                                                    <span>Delivered</span>
+                                                    <span class="checkmark"></span>
+                                                </label>
+
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="order-datepicker">Order Date</label>
+                                                    <input id="order-datepicker" class="form-control text-right"
+                                                        placeholder="yyyy-mm-dd" name="dp">
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row mb-5">
+                                        <div class="col-md-6" >
+                                            <h5 class="font-weight-bold">Bill From</h5>
+                                            <div class="col-md-10 form-group mb-3 pl-0">
+                                                <input type="text" class="form-control" id="billFrom"
+                                                    placeholder="Bill From">
+                                            </div>
+                                            <div class="col-md-10 form-group mb-3 pl-0">
+                                                <textarea class="form-control"
+                                                    placeholder="Bill From Address"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 text-right" >
+                                            <h5 class="font-weight-bold">Bill To</h5>
+                                            <div class="col-md-10 offset-md-2 form-group mb-3 pr-0">
+                                                <input type="text" class="form-control text-right"
+                                                    id="billFrom2" placeholder="Bill From">
+                                            </div>
+                                            <div class="col-md-10 offset-md-2 form-group mb-3 pr-0">
+                                                <textarea class="form-control text-right"
+                                                    placeholder="Bill From Address"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 table-responsive">
+                                            <table class="table table-hover mb-3">
+                                                <thead class="bg-gray-300">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Item Name</th>
+                                                        <th scope="col">Unit Price</th>
+                                                        <th scope="col">Unit</th>
+                                                        <th scope="col">Cost</th>
+                                                        <th scope="col"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>
+                                                            <input value="Product 1" type="text" class="form-control"
+                                                                placeholder="Item Name">
+                                                        </td>
+                                                        <td>
+                                                            <input value="300" type="number" class="form-control"
+                                                                placeholder="Unit Price">
+                                                        </td>
+                                                        <td>
+                                                            <input value="2" type="number" class="form-control"
+                                                                placeholder="Unit">
+                                                        </td>
+                                                        <td>600</td>
+                                                        <td>
+                                                            <button class="btn btn-outline-secondary float-right">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">2</th>
+                                                        <td>
+                                                            <input value="Product 1" type="text" class="form-control"
+                                                                placeholder="Item Name">
+                                                        </td>
+                                                        <td>
+                                                            <input value="300" type="number" class="form-control"
+                                                                placeholder="Unit Price">
+                                                        </td>
+                                                        <td>
+                                                            <input value="2" type="number" class="form-control"
+                                                                placeholder="Unit">
+                                                        </td>
+                                                        <td>600</td>
+                                                        <td>
+                                                            <button class="btn btn-outline-secondary float-right">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <button class="btn btn-primary float-right mb-4">Add Item</button>
+                                        </div>
+
+                                        <div class="col-md-12">
+
+                                            <div class="invoice-summary invoice-summary-input">
+                                                <p>Sub total: <span>$1200</span></p>
+                                                <p class="d-flex align-items-center">Vat(%):<span>
+                                                        <input type="text" class="form-control small-input" value="10">$120</span>
+                                                </p>
+                                                <h5 class="font-weight-bold d-flex align-items-center">Grand Total:
+                                                    <span>
+                                                        <input type="text" class="form-control small-input" value="$">
+                                                        $1320
+                                                    </span>
+                                                </h5>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                                <!--==== / Edit Area =====-->
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="col-lg-3 col-md-6 col-sm-6" style="cursor: pointer" data-toggle="modal" data-target="#kaufvertragModal">
-                    <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                        <div class="card-body text-center">
-                            <i class="i-Financial"></i>
-                            <div class="content">
-                                <p class="text-muted mt-2 mb-0">Kaufvertrag</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6 col-sm-6" style="cursor: pointer" data-toggle="modal" data-target="#kostenvorschlagModal">
-                    <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                        <div class="card-body text-center">
-                            <i class="i-Money-2"></i>
-                            <div class="content">
-                                <p class="text-muted mt-2 mb-0">Kostenvoranschlag</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-                <!-- modal handy diff -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Rechnung Handy Differenz</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                      <form id="form-handy-diff" action="/pdf/rechnung_hand_dif" method="POST">
-                      {{ csrf_field() }}
-                        <div class="card einheit-handy-diff" style="margin:10px; padding: 10px;">
-                        <center><strong><p style="font-size:14px;">Reparatur Einheit</p></strong></center>
-                        <div class="form-group">
-                          <label for="handy_bezeichnung">Handy Bezeichnung</label>
-                          <input type="text" class="form-control" id="handy_bezeichnung" name="handy_bezeichnung[]">
-                        </div>
-                        <div class="form-group">
-                          <label for="reparatur_bezeichnung">Reparatur Bezeichnung</label>
-                          <input type="text" class="form-control" id="reparatur_bezeichnung" name="reparatur_bezeichnung[]">
-                        </div>
-                        <div class="form-group">
-                          <label for="imei">IMEI</label>
-                          <input type="text" class="form-control" id="imei" name="imei[]">
-                        </div>
-                        <div class="form-group">
-                          <label for="menge">Menge</label>
-                          <input type="number" class="form-control" id="menge" name="menge[]">
-                        </div>
-                        <div class="form-group">
-                          <label for="imei">Preis</label>
-                          <input type="number" step="0.01" class="form-control" id="preis" name="preis[]">
-                        </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" id="add-more-handy-diff" class="btn btn-success">Add More</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                      </form>
-                      <div class="collapse" id="collapseExample">
-    	              </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- end modal handy diff-->
 
 
-
-                <!-- modal kaufvertrag -->
-                <div class="modal fade" id="kaufvertragModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Kaufvertrag</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                      <form id="form-handy-diff" action="/pdf/kaufvertrag" method="POST">
-                      {{ csrf_field() }}
-                        <div class="card einheit-handy-diff" style="margin:10px; padding: 10px;">
-                        <div class="form-group">
-                          <label for="name">Name des Verkäufers</label>
-                          <input type="text" class="form-control" id="name" name="name">
-                        </div>
-                        <div class="form-group">
-                          <label for="telefon">Telefon Nr.</label>
-                          <input type="text" class="form-control" id="telefon" name="telefon">
-                        </div>
-                        <div class="form-group">
-                          <label for="adresse">Adresse</label>
-                          <input type="text" class="form-control" id="adresse" name="adresse">
-                        </div>
-                        <div class="form-group">
-                          <label for="ort">Ort/PLZ</label>
-                          <input type="text" class="form-control" id="ort" name="ort">
-                        </div>
-                        <div class="form-group">
-                          <label for="modell">Modell</label>
-                          <input type="text" step="0.01" class="form-control" id="modell" name="modell">
-                        </div>
-                        <div class="form-group">
-                          <label for="imei">IMEI</label>
-                          <input type="text" step="0.01" class="form-control" id="imei" name="imei">
-                        </div>
-                        <div class="form-group">
-                          <center><label for="is_mobil">Mobiltelefon</label></center>
-                          <input type="checkbox" class="form-control" id="is_mobil" name="is_mobil">
-                        </div>
-                        <div class="form-group">
-                          <center><label for="is_tablet">Tablet</label></center>
-                          <input type="checkbox" class="form-control" id="is_tablet" name="is_tablet">
-                        </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                      </form>
-                      <div class="collapse" id="collapseExample">
-    	              </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- end modal kaufvertrag-->
-
-
-
-                <!-- modal kostenvorschlag -->
-                <div class="modal fade" id="kostenvorschlagModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Kostenvoranschlag</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                      <form id="form-kostenvoranschlag" action="/pdf/kostenvoranschlag" method="POST">
-                      {{ csrf_field() }}
-                        <div class="card einheit-handy-diff" style="margin:10px; padding: 10px;">
-                        <center><strong><p style="font-size:14px;">Reparatur Einheit</p></strong></center>
-                        <div class="form-group">
-                          <label for="handy_bezeichnung">Handy Bezeichnung</label>
-                          <input type="text" class="form-control" id="handy_bezeichnung" name="handy_bezeichnung[]">
-                        </div>
-                        <div class="form-group">
-                          <label for="reparatur_bezeichnung">Reparatur Bezeichnung</label>
-                          <input type="text" class="form-control" id="reparatur_bezeichnung" name="reparatur_bezeichnung[]">
-                        </div>
-                        <div class="form-group">
-                          <label for="imei">IMEI</label>
-                          <input type="text" class="form-control" id="imei" name="imei[]">
-                        </div>
-                        <div class="form-group">
-                          <label for="menge">Menge</label>
-                          <input type="number" class="form-control" id="menge" name="menge[]">
-                        </div>
-                        <div class="form-group">
-                          <label for="imei">Preis</label>
-                          <input type="number" step="0.01" class="form-control" id="preis" name="preis[]">
-                        </div>
-                        <div class="form-group">
-                          <center><label for="is_kostenvoranschlag">Kostenvoranschlag + Arbeitszeiten 29.00€</label></center>
-                          <input type="checkbox" class="form-control" id="is_kostenvoranschlag" name="is_kostenvoranschlag">
-                        </div>
-                        </div>                   
-                        <div class="modal-footer">
-                            <button type="button" id="add-more-kostenvoranschlag" class="btn btn-success">Add More</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                      </form>
-                      <div class="collapse" id="collapseExample">
-    	              </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- end modal kostenvorschlag-->
 @endsection
 
 @section('page-js')
-     <script>
-     $(document).ready(function () {
-      var card ='<div class="card" style="margin:10px; padding: 10px;">' +
-                        '<center><strong><p style="font-size:14px;">Reparatur Einheit</p></strong></center>' +
-                        '<div class="form-group">' +
-                          '<label for="handy_bezeichnung">Handy Bezeichnung</label>'+
-                          '<input type="text" class="form-control" id="handy_bezeichnung" name="handy_bezeichnung[]">' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                          '<label for="reparatur_bezeichnung">Reparatur Bezeichnung</label>' +
-                          '<input type="text" class="form-control" id="reparatur_bezeichnung" name="reparatur_bezeichnung[]">' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                          '<label for="imei">IMEI</label>' +
-                          '<input type="text" class="form-control" id="imei" name="imei[]">' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                          '<label for="menge">Menge</label>' +
-                          '<input type="number" class="form-control" id="menge" name="menge[]">' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                          '<label for="imei">Preis</label>' +
-                          '<input type="number" step="0.01" class="form-control" id="preis" name="preis[]">' +
-                        '</div>' +
-                          '<button type="button" onclick="$(this).parent().remove()"class="btn btn-danger delete-handy-diff">Remove</button>' +
-                        '</div>';
-        $("#add-more-handy-diff").click(function(e){
-            e.preventDefault();
-            //dynamic input
-            $("#form-handy-diff").prepend(card);
-        });
-        $("#add-more-kostenvoranschlag").click(function(e){
-            e.preventDefault();
-            //dynamic input
-            $("#form-kostenvoranschlag").prepend(card);
-        });
-    });
-     </script>
-     <script src="{{asset('assets/js/vendor/echarts.min.js')}}"></script>
-     <script src="{{asset('assets/js/es5/echart.options.min.js')}}"></script>
-     <script src="{{asset('assets/js/es5/dashboard.v1.script.js')}}"></script>
+
+ <script src="{{asset('assets/js/vendor/pickadate/picker.js')}}"></script>
+<script src="{{asset('assets/js/vendor/pickadate/picker.date.js')}}"></script>
+<script src="{{asset('assets/js/invoice.script.js')}}"></script>
 @endsection
