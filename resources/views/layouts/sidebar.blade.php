@@ -75,7 +75,7 @@
                 <!-- Submenu Dashboards -->
                 <ul class="childNav" data-parent="dashboard">
                     <li class="nav-item">
-                        <a class="{{ Route::currentRouteName()=='dashboard_version_1' ? 'open' : '' }}" href="{{route('rechnung_hand_dif')}}">
+                        <a class="{{ Route::currentRouteName()=='dashboard_version_1' ? 'open' : '' }}" href="{{route('rechnung_hand_dif.all')}}">
                             <i class="nav-icon i-Money-2"></i>
                             <span class="item-name">Rechnung Handy Differenz</span>
                         </a>
@@ -87,9 +87,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{route('kaufvertrag')}}">
+                        <a href="{{route('kaufvertrag.all')}}">
                             <i class="nav-icon i-Financial"></i>
-                            <span class="item-name">Kaufvertrag</span>
+                            <span class="item-name">Kaufverträge</span>
                         </a>
                     </li>
                     <!-- <li class="nav-item">
