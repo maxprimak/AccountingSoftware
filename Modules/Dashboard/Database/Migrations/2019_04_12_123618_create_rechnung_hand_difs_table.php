@@ -15,19 +15,19 @@ class CreateRechnungHandDifsTable extends Migration
     {
         Schema::create('rechnung_hand_difs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('number');
-            $table->string('date');
-            $table->string('shop');
-            $table->string('shop_tel');
-            $table->string('shop_email');
-            $table->string('web');
-            $table->string('kundenbetreuer');
-            $table->string('zahlungsmodalitat');
-            $table->string('kunde');
-            $table->string('kunde_tel');
-            $table->string('kunde_email');
-            $table->string('text_head');
-            $table->string('text_body');
+            $table->string('number')->nullable();
+            $table->string('date')->nullable();
+            $table->string('shop')->nullable();
+            $table->string('shop_tel')->nullable();
+            $table->string('shop_email')->nullable();
+            $table->string('web')->nullable();
+            $table->string('kundenbetreuer')->nullable();
+            $table->string('zahlungsmodalitat')->nullable();
+            $table->string('kunde')->nullable();
+            $table->string('kunde_tel')->nullable();
+            $table->string('kunde_email')->nullable();
+            $table->string('text_head')->nullable();
+            $table->string('text_body')->nullable();
             $table->timestamps();
         });
     }

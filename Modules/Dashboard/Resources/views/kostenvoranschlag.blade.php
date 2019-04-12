@@ -35,7 +35,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <h3 class="font-weight-bold">Kostenvoranschlag</h3>
-                                            <p style="font-size: 14px;">{{$kostenvoranschlag->date}}</p>
+                                            @if($kostenvoranschlag->date != null)<p style="font-size: 14px;">{{$kostenvoranschlag->date}}</p>@endif
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                         </div>
@@ -45,31 +45,35 @@
                                         <div class="col-md-6 mb-3 mb-sm-0">
                                             <h4 class="font-weight-bold">Von:</h4>
                                             <span style="white-space: pre-line; font-size: 14px;">
-                                                <strong class="">Shop:</strong> {{$kostenvoranschlag->shop}}
-                                                <strong class="">Tel:</strong> {{$kostenvoranschlag->shop_tel}}
-                                                <strong class="">Email:</strong> {{$kostenvoranschlag->shop_email}}
-                                                <strong class="">Web:</strong> {{$kostenvoranschlag->web}}
+                                                @if($kostenvoranschlag->shop != null)<strong class="">Shop:</strong> {{$kostenvoranschlag->shop}}<br>@endif
+                                                @if($kostenvoranschlag->shop_tel != null)<strong class="">Tel:</strong> {{$kostenvoranschlag->shop_tel}}<br>@endif
+                                                @if($kostenvoranschlag->shop_email != null)<strong class="">Email:</strong> {{$kostenvoranschlag->shop_email}}<br>@endif
+                                                @if($kostenvoranschlag->web != null)<strong class="">Web:</strong> {{$kostenvoranschlag->web}}<br>@endif
 
+                                                @if($kostenvoranschlag->kundenbetreuer != null)
                                                 <strong class="">Ihr Kundenbetreuer:</strong>
                                                 {{$kostenvoranschlag->kundenbetreuer}}
+                                                @endif
 
+                                                @if($kostenvoranschlag->zahlungsmodalitat != null)
                                                 <strong class="">Zahlungmodalität:</strong>
                                                 {{$kostenvoranschlag->zahlungsmodalitat}}
+                                                @endif
                                             </span>
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                             <h4 class="font-weight-bold">An:</h4>
                                             <span style="white-space: pre-line; font-size:14px;">
-                                            <strong class="">Kunde:</strong> {{$kostenvoranschlag->kunde}}
-                                            <strong class="">Telefon:</strong> {{$kostenvoranschlag->kunde_tel}}
-                                            <strong class="">Email:</strong> {{$kostenvoranschlag->kunde_email}}
+                                            @if($kostenvoranschlag->kunde != null)<strong class="">Kunde:</strong> {{$kostenvoranschlag->kunde}}<br>@endif
+                                            @if($kostenvoranschlag->kunde_tel != null)<strong class="">Telefon:</strong> {{$kostenvoranschlag->kunde_tel}}<br>@endif
+                                            @if($kostenvoranschlag->kunde_email != null)<strong class="">Email:</strong> {{$kostenvoranschlag->kunde_email}}<br>@endif
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row">
                                     <div class="col-md-12">
-                                    <p style="font-size: 16px;">{{$kostenvoranschlag->text_head}}<br>
-                                    {{$kostenvoranschlag->text_body}}
+                                    @if($kostenvoranschlag->text_head != null)<p style="font-size: 16px;">{{$kostenvoranschlag->text_head}}<br>@endif
+                                    @if($kostenvoranschlag->text_body != null){{$kostenvoranschlag->text_body}}@endif
                                     <br>
                                     </div>
                                     </div>
@@ -133,7 +137,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <h3 class="font-weight-bold">Kostenvoranschlag</h3>
-                                            <input class="form-control" name="date" style="font-size: 14px;" value="{{$kostenvoranschlag->date}}"" />
+                                            <input class="form-control" name="date" placeholder="Leave empty to hide field"  style="font-size: 14px;" value="{{$kostenvoranschlag->date}}"" />
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                         </div>
@@ -144,33 +148,37 @@
                                             <h4 class="font-weight-bold">Von:</h4>
                                             <div class="col-md-5">
                                             <span style="white-space: pre-line; font-size: 14px;">
-                                                <strong class="">Shop:</strong><input type="text" name="shop" class="form-control" value="{{$kostenvoranschlag->shop}}"/>
-                                                <strong class="">Tel:</strong><input type="text" name="shop_tel" class="form-control" value="{{$kostenvoranschlag->shop_tel}}" />
-                                                <strong class="">Email:</strong><input type="text" name="shop_email" class="form-control" value="{{$kostenvoranschlag->shop_email}}" />
-                                                <strong class="">Web:</strong><input type="text" name="web" class="form-control" value="{{$kostenvoranschlag->web}}" />
+                                                <strong class="">Shop:</strong><input placeholder="Leave empty to hide field"  type="text" name="shop" class="form-control" value="{{$kostenvoranschlag->shop}}"/>
+                                                <strong class="">Tel:</strong><input placeholder="Leave empty to hide field"  type="text" name="shop_tel" class="form-control" value="{{$kostenvoranschlag->shop_tel}}" />
+                                                <strong class="">Email:</strong><input placeholder="Leave empty to hide field"  type="text" name="shop_email" class="form-control" value="{{$kostenvoranschlag->shop_email}}" />
+                                                <strong class="">Web:</strong><input placeholder="Leave empty to hide field"  type="text" name="web" class="form-control" value="{{$kostenvoranschlag->web}}" />
 
                                                 <strong class="">Ihr Kundenbetreuer:</strong>
-                                                <input type="text" class="form-control" name="kundenbetreuer" value="{{$kostenvoranschlag->kundenbetreuer}}" />
+                                                <input type="text" class="form-control" name="kundenbetreuer" placeholder="Leave empty to hide field"  value="{{$kostenvoranschlag->kundenbetreuer}}" />
 
                                                 <strong class="">Zahlungmodalität:</strong>
-                                                <input type="text" class="form-control" name="zahlungsmodalitat" value="{{$kostenvoranschlag->zahlungsmodalitat}}">
+                                                <select name="zahlungsmodalitat" class="form-control">
+                                                    <option selected hidden value="{{$kostenvoranschlag->zahlungsmodalitat}}">{{$kostenvoranschlag->zahlungsmodalitat}}</option>
+                                                    <option value="Karte">Karte</option>
+                                                    <option value="Bar">Bar</option>
+                                                </select>
                                             </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4 text-sm-right">
                                             <h4 class="font-weight-bold">An:</h4>
                                             <span style="white-space: pre-line; font-size:14px;">
-                                            <strong>Kunde:</strong><input type="text" name="kunde" width="50%" class="form-control" value="{{$kostenvoranschlag->kunde}}" />
-                                            <strong >Telefon:</strong><input type="text" name="kunde_tel" class="form-control" value="{{$kostenvoranschlag->kunde_tel}}" />
-                                            <strong >Email:</strong><input type="text" name="kunde_email" class="form-control" value="{{$kostenvoranschlag->kunde_email}}" />
+                                            <strong>Kunde:</strong><input type="text" placeholder="Leave empty to hide field"  name="kunde" width="50%" class="form-control" value="{{$kostenvoranschlag->kunde}}" />
+                                            <strong >Telefon:</strong><input type="text" placeholder="Leave empty to hide field"  name="kunde_tel" class="form-control" value="{{$kostenvoranschlag->kunde_tel}}" />
+                                            <strong >Email:</strong><input type="text" placeholder="Leave empty to hide field"  name="kunde_email" class="form-control" value="{{$kostenvoranschlag->kunde_email}}" />
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row">
                                     <div class="col-md-12">
-                                    <input style="font-size: 16px;" class="form-control col-md-4" name="text_head" value="{{$kostenvoranschlag->text_head}}" />
+                                    <input placeholder="Leave empty to hide field"  style="font-size: 16px;" class="form-control col-md-4" name="text_head" value="{{$kostenvoranschlag->text_head}}" />
                                     <br>
-                                    <textarea style="font-size: 16px;" name="text_body" cols="10" rows="5" class="form-control">{{$kostenvoranschlag->text_body}}</textarea>
+                                    <textarea placeholder="Leave empty to hide field"  style="font-size: 16px;" name="text_body" cols="10" rows="5" class="form-control">{{$kostenvoranschlag->text_body}}</textarea>
                                     <br>
                                     </div>
                                     </div>
@@ -220,6 +228,7 @@
                                                 </tbody>
                                             </table>
                                             <button class="btn btn-primary float-right mb-4" type="button" id="add-item">Add Item</button>
+                                            <button class="btn btn-primary float-right mb-4 mr-1">Save</button>
                                         </div>
 
                                         <div class="col-md-12">

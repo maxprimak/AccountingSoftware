@@ -34,8 +34,8 @@
                                 <center><img id="image-doc" src="{{asset('assets/images/logo_phone_factory_2.jpg')}}" style="margin-bottom: 30px;"></center>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h3 class="font-weight-bold">Rechnung Handy Differenz # {{$rechnungHandDif->number}}</h3>
-                                            <p style="font-size: 14px;">{{$rechnungHandDif->date}}</p>
+                                            <h3 class="font-weight-bold">Rechnung Handy Differenz @if($rechnungHandDif->number != null)# {{$rechnungHandDif->number}}</h3>@endif
+                                            @if($rechnungHandDif->date != null)<p style="font-size: 14px;">{{$rechnungHandDif->date}}</p>@endif
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                         </div>
@@ -45,31 +45,35 @@
                                         <div class="col-md-6 mb-3 mb-sm-0">
                                             <h4 class="font-weight-bold">Von:</h4>
                                             <span style="white-space: pre-line; font-size: 14px;">
-                                                <strong class="">Shop:</strong> {{$rechnungHandDif->shop}}
-                                                <strong class="">Tel:</strong> {{$rechnungHandDif->shop_tel}}
-                                                <strong class="">Email:</strong> {{$rechnungHandDif->shop_email}}
-                                                <strong class="">Web:</strong> {{$rechnungHandDif->web}}
-
+                                                @if($rechnungHandDif->shop != null)<strong class="">Shop:</strong> {{$rechnungHandDif->shop}}<br>@endif
+                                                @if($rechnungHandDif->shop_tel != null)<strong class="">Tel:</strong> {{$rechnungHandDif->shop_tel}}<br>@endif
+                                                @if($rechnungHandDif->shop_email != null)<strong class="">Email:</strong> {{$rechnungHandDif->shop_email}}<br>@endif
+                                                @if($rechnungHandDif->web != null)<strong class="">Web:</strong> {{$rechnungHandDif->web}}<br>@endif
+                                                
+                                                @if($rechnungHandDif->kundenbetreuer != null)
                                                 <strong class="">Ihr Kundenbetreuer:</strong>
                                                 {{$rechnungHandDif->kundenbetreuer}}
+                                                @endif
 
+                                                @if($rechnungHandDif->zahlungsmodalitat != null)
                                                 <strong class="">Zahlungmodalität:</strong>
                                                 {{$rechnungHandDif->zahlungsmodalitat}}
+                                                @endif
                                             </span>
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                             <h4 class="font-weight-bold">An:</h4>
                                             <span style="white-space: pre-line; font-size:14px;">
-                                            <strong class="">Kunde:</strong> {{$rechnungHandDif->kunde}}
-                                            <strong class="">Telefon:</strong> {{$rechnungHandDif->kunde_tel}}
-                                            <strong class="">Email:</strong> {{$rechnungHandDif->kunde_email}}
+                                            @if($rechnungHandDif->kunde != null)<strong class="">Kunde:</strong> {{$rechnungHandDif->kunde}}<br>@endif
+                                            @if($rechnungHandDif->kunde_tel != null)<strong class="">Telefon:</strong> {{$rechnungHandDif->kunde_tel}}<br>@endif
+                                            @if($rechnungHandDif->kunde_email != null)<strong class="">Email:</strong> {{$rechnungHandDif->kunde_email}}<br>@endif
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row">
                                     <div class="col-md-12">
-                                    <p style="font-size: 16px;">{{$rechnungHandDif->text_head}}<br>
-                                    {{$rechnungHandDif->text_body}}
+                                    @if($rechnungHandDif->text_head != null)<p style="font-size: 16px;">{{$rechnungHandDif->text_head}}<br>@endif
+                                    @if($rechnungHandDif->text_body != null){{$rechnungHandDif->text_body}}@endif
                                     <br>
                                     </div>
                                     </div>
@@ -123,9 +127,9 @@
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <h3 class="font-weight-bold">Rechnung Handy Differenz #</h3><input type="text" name="number" style="font-size: 14px;" class="form-control col-md-4" value="{{$rechnungHandDif->number}}" />
+                                            <h3 class="font-weight-bold">Rechnung Handy Differenz #</h3><input type="text" placeholder="Leave empty to hide field" name="number" style="font-size: 14px;" class="form-control col-md-6" value="{{$rechnungHandDif->number}}" />
                                             <br>
-                                            <input class="form-control" name="date" style="font-size: 14px;" value="{{$rechnungHandDif->date}}"" />
+                                            <input placeholder="Leave empty to hide field"  class="form-control" name="date" style="font-size: 14px;" value="{{$rechnungHandDif->date}}" />
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                         </div>
@@ -136,33 +140,37 @@
                                             <h4 class="font-weight-bold">Von:</h4>
                                             <div class="col-md-5">
                                             <span style="white-space: pre-line; font-size: 14px;">
-                                                <strong class="">Shop:</strong><input type="text" name="shop" class="form-control" value="{{$rechnungHandDif->shop}}"/>
-                                                <strong class="">Tel:</strong><input type="text" name="shop_tel" class="form-control" value="{{$rechnungHandDif->shop_tel}}" />
-                                                <strong class="">Email:</strong><input type="text" name="shop_email" class="form-control" value="{{$rechnungHandDif->shop_email}}" />
-                                                <strong class="">Web:</strong><input type="text" name="web" class="form-control" value="{{$rechnungHandDif->web}}" />
+                                                <strong class="">Shop:</strong><input placeholder="Leave empty to hide field" type="text" name="shop" class="form-control" value="{{$rechnungHandDif->shop}}"/>
+                                                <strong class="">Tel:</strong><input placeholder="Leave empty to hide field" type="text" name="shop_tel" class="form-control" value="{{$rechnungHandDif->shop_tel}}" />
+                                                <strong class="">Email:</strong><input placeholder="Leave empty to hide field" type="text" name="shop_email" class="form-control" value="{{$rechnungHandDif->shop_email}}" />
+                                                <strong class="">Web:</strong><input placeholder="Leave empty to hide field" type="text" name="web" class="form-control" value="{{$rechnungHandDif->web}}" />
 
                                                 <strong class="">Ihr Kundenbetreuer:</strong>
-                                                <input type="text" class="form-control" name="kundenbetreuer" value="{{$rechnungHandDif->kundenbetreuer}}" />
+                                                <input placeholder="Leave empty to hide field" type="text" class="form-control" name="kundenbetreuer" value="{{$rechnungHandDif->kundenbetreuer}}" />
 
                                                 <strong class="">Zahlungmodalität:</strong>
-                                                <input type="text" class="form-control" name="zahlungsmodalitat" value="{{$rechnungHandDif->zahlungsmodalitat}}">
+                                                <select name="zahlungsmodalitat" class="form-control">
+                                                    <option selected hidden value="{{$rechnungHandDif->zahlungsmodalitat}}">{{$rechnungHandDif->zahlungsmodalitat}}</option>
+                                                    <option value="Karte">Karte</option>
+                                                    <option value="Bar">Bar</option>
+                                                </select>
                                             </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4 text-sm-right">
                                             <h4 class="font-weight-bold">An:</h4>
                                             <span style="white-space: pre-line; font-size:14px;">
-                                            <strong>Kunde:</strong><input type="text" name="kunde" width="50%" class="form-control" value="{{$rechnungHandDif->kunde}}" />
-                                            <strong >Telefon:</strong><input type="text" name="kunde_tel" class="form-control" value="{{$rechnungHandDif->kunde_tel}}" />
-                                            <strong >Email:</strong><input type="text" name="kunde_email" class="form-control" value="{{$rechnungHandDif->kunde_email}}" />
+                                            <strong>Kunde:</strong><input placeholder="Leave empty to hide field" type="text" name="kunde" width="50%" class="form-control" value="{{$rechnungHandDif->kunde}}" />
+                                            <strong >Telefon:</strong><input placeholder="Leave empty to hide field" type="text" name="kunde_tel" class="form-control" value="{{$rechnungHandDif->kunde_tel}}" />
+                                            <strong >Email:</strong><input placeholder="Leave empty to hide field" type="text" name="kunde_email" class="form-control" value="{{$rechnungHandDif->kunde_email}}" />
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row">
                                     <div class="col-md-12">
-                                    <input style="font-size: 16px;" class="form-control col-md-4" name="text_head" value="{{$rechnungHandDif->text_head}}" />
+                                    <input placeholder="Leave empty to hide field"  style="font-size: 16px;" class="form-control col-md-4" name="text_head" value="{{$rechnungHandDif->text_head}}" />
                                     <br>
-                                    <textarea style="font-size: 16px;" name="text_body" cols="10" rows="5" class="form-control">{{$rechnungHandDif->text_body}}</textarea>
+                                    <textarea placeholder="Leave empty to hide field" style="font-size: 16px;" name="text_body" cols="10" rows="5" class="form-control">{{$rechnungHandDif->text_body}}</textarea>
                                     <br>
                                     </div>
                                     </div>
@@ -200,6 +208,7 @@
                                                 </tbody>
                                             </table>
                                             <button class="btn btn-primary float-right mb-4" type="button" id="add-item">Add Item</button>
+                                            <button class="btn btn-primary float-right mb-4 mr-1">Save</button>
                                         </div>
 
                                         <div class="col-md-12">

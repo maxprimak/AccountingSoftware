@@ -33,23 +33,23 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <h4 class="font-weight-bold">Kaufvertrag</h4>
-                                            <p style="font-size: 14px;">{{$kaufvertrag->ort_datum}}</p>
+                                            @if($kaufvertrag->ort_datum != null)<p style="font-size: 14px;">{{$kaufvertrag->ort_datum}}</p>@endif
                                         </div>
                                     </div>
                                     <div class="mt-3 mb-4 border-top"></div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3 mb-sm-0">
                                             <span style="white-space: pre-line; font-size: 14px;">
-                                                <h5><strong>Name des Varkäufers: </strong></h5>{{$kaufvertrag->name}}<br>
-                                                <h5><strong>Telefon Nr.: </strong></h5>{{$kaufvertrag->telefon}}<br>
-                                                <h5><strong>Adresse: </strong></h5>{{$kaufvertrag->adresse}}<br>
-                                                <h5><strong>Ort/PLZ: </strong></h5>{{$kaufvertrag->ort_plz}}<br>
+                                                @if($kaufvertrag->name != null)<h5><strong>Name des Varkäufers: </strong></h5>{{$kaufvertrag->name}}<br><br>@endif
+                                                @if($kaufvertrag->telefon != null)<h5><strong>Telefon Nr.: </strong></h5>{{$kaufvertrag->telefon}}<br><br>@endif
+                                                @if($kaufvertrag->adresse != null)<h5><strong>Adresse: </strong></h5>{{$kaufvertrag->adresse}}<br><br>@endif
+                                                @if($kaufvertrag->ort_plz != null)<h5><strong>Ort/PLZ: </strong></h5>{{$kaufvertrag->ort_plz}}<br><br>@endif
                                             </span>
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                             <span style="white-space: pre-line; font-size:14px;">
-                                                <h5><strong>Modell: </strong></h5>{{$kaufvertrag->modell}}<br>
-                                                <h5><strong>IMEI: </strong></h5>{{$kaufvertrag->imei}}<br>
+                                                @if($kaufvertrag->modell != null)<h5><strong>Modell: </strong></h5>{{$kaufvertrag->modell}}<br><br>@endif
+                                                @if($kaufvertrag->imei != null)<h5><strong>IMEI: </strong></h5>{{$kaufvertrag->imei}}<br><br>@endif
                                             </span>
                                         </div>
                                     </div>
@@ -72,7 +72,7 @@
                                     <div class="mt-3 mb-4 border-top"></div>
                                     <div class="row">
                                         <div class="col-md-12 mb-4">
-                                        <p style="font-size: 16px;">{{$kaufvertrag->text_body}}</p>
+                                        @if($kaufvertrag->text_body != null)<p style="font-size: 16px;">{{$kaufvertrag->text_body}}</p>@endif
                                         </div>
                                     </div>
                                     <div class="row">
@@ -95,23 +95,23 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <h4 class="font-weight-bold">Kaufvertrag</h4>
-                                            <input class="form-control col-md-4" style="font-size: 14px;" name="ort_datum" value="{{$kaufvertrag->ort_datum}}" />
+                                            <input class="form-control col-md-4" placeholder="Leave empty to hide field" style="font-size: 14px;" name="ort_datum" value="{{$kaufvertrag->ort_datum}}" />
                                         </div>
                                     </div>
                                     <div class="mt-3 mb-4 border-top"></div>
                                     <div class="row">
                                         <div class="col-md-8 mb-3 mb-sm-0">
                                             <span style="white-space: pre-line; font-size: 14px;">
-                                                <h5><strong>Name des Varkäufers: </strong></h5><input type="text" name="name" class="form-control col-md-5" value="{{$kaufvertrag->name}}" />
-                                                <h5><strong>Telefon Nr.: </strong></h5><input type="text" name="telefon" class="form-control col-md-5" value="{{$kaufvertrag->telefon}}" />
-                                                <h5><strong>Adresse: </strong></h5><input type="text" name="adresse" class="form-control col-md-5" value="{{$kaufvertrag->adresse}}" />
-                                                <h5><strong>Ort/PLZ: </strong></h5><input type="text" name="ort_plz" class="form-control col-md-5" value="{{$kaufvertrag->ort_plz}}" />
+                                                <h5><strong>Name des Varkäufers: </strong></h5><input type="text" placeholder="Leave empty to hide field" name="name" class="form-control col-md-5" value="{{$kaufvertrag->name}}" />
+                                                <h5><strong>Telefon Nr.: </strong></h5><input type="text" placeholder="Leave empty to hide field" name="telefon" class="form-control col-md-5" value="{{$kaufvertrag->telefon}}" />
+                                                <h5><strong>Adresse: </strong></h5><input type="text" placeholder="Leave empty to hide field" name="adresse" class="form-control col-md-5" value="{{$kaufvertrag->adresse}}" />
+                                                <h5><strong>Ort/PLZ: </strong></h5><input type="text" placeholder="Leave empty to hide field" name="ort_plz" class="form-control col-md-5" value="{{$kaufvertrag->ort_plz}}" />
                                             </span>
                                         </div>
                                         <div class="col-md-4 text-sm-right">
                                             <span style="white-space: pre-line; font-size:14px;">
-                                                <h5><strong>Modell: </strong></h5><input type="text" class="form-control" name="modell" value="{{$kaufvertrag->modell}}" />
-                                                <h5><strong>IMEI: </strong></h5><input type="text" class="form-control" name="imei" value="{{$kaufvertrag->imei}}" />
+                                                <h5><strong>Modell: </strong></h5><input type="text" placeholder="Leave empty to hide field" class="form-control" name="modell" value="{{$kaufvertrag->modell}}" />
+                                                <h5><strong>IMEI: </strong></h5><input type="text" placeholder="Leave empty to hide field" class="form-control" name="imei" value="{{$kaufvertrag->imei}}" />
                                             </span>
                                         </div>
                                     </div>
@@ -136,8 +136,12 @@
                                     <div class="mt-3 mb-4 border-top"></div>
                                     <div class="row">
                                         <div class="col-md-12 mb-4">
-                                        <textarea name="text_body" cols="200" rows="10" class="form-control" style="font-size: 16px;">{{$kaufvertrag->text_body}}</textarea>
+                                        <textarea placeholder="Leave empty to hide field" name="text_body" cols="200" rows="10" class="form-control" style="font-size: 16px;">{{$kaufvertrag->text_body}}</textarea>
                                         </div>
+                                    </div>
+                                    <div class="d-flex mb-5">
+                                    <span class="m-auto"></span>
+                                    <button class="btn btn-primary">Save</button>
                                     </div>
                                 </form>
                                 <!--==== / Edit Area =====-->
