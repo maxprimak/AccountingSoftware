@@ -1,0 +1,14 @@
+{
+    "name": "Companies",
+    "alias": "companies",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Companies\\Providers\\CompaniesServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

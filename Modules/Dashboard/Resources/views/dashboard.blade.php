@@ -1,10 +1,5 @@
 @extends('layouts.master')
 @section('main-content')
-            @if(session()->has('message'))
-            <div class="alert alert-success">
-                {{ session()->get('message') }}
-            </div>
-            @endif
             @if(!auth()->user()->hasVerifiedEmail())
             <div class="alert alert-danger">
                 {{'Please verify your email adress. We have sent email to '. auth()->user()->email . '. If you do not see mail in inbox, check your spam folder. '}}
