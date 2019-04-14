@@ -16,7 +16,7 @@
                 <h4>Let's move to employees creation</h4>
             </div>
             <div>
-                <h6>You can skip this action by clicking<button type="button" class="btn btn-link">here</button>, but we highly recommend you not to do it</h6>
+                <h6>You can skip this action by clicking<button onclick="window.location.assign('/dashboard')" type="button" class="btn btn-link">here</button>, but we highly recommend you not to do it</h6>
             </div>
 
             <div hidden class="row mb-3">
@@ -59,14 +59,18 @@
                                             </thead>
                                             <tbody id="tbody-employee">
                                                 <tr>
-                                                    <td><input type="text" class="form-control" /></td>
-                                                    <td><input type="text" class="form-control" /></td>
-                                                    <td><input type="text" class="form-control" /></td>
-                                                    <td><input type="text" class="form-control" /></td>
-                                                    <td><select id="" class="form-control"></select></td>
-                                                    <td><select id="select-employee" class="form-control">
+                                                    <td><input name="name[]" type="text" class="form-control" /></td>
+                                                    <td><input name="email[]" type="text" class="form-control" /></td>
+                                                    <td><input name="username[]" type="text" class="form-control" /></td>
+                                                    <td><input name="password[]" type="text" class="form-control" /></td>
+                                                    <td><select name="role[]" id="" class="form-control">
+                                                        @foreach($roles as $role)
+                                                            <option value="{{$role->id}}">{{$role->name}}</option>
+                                                        @endforeach
+                                                    </select></td>
+                                                    <td><select name="branch[]" id="select-employee" class="form-control">
                                                         @foreach($branches as $branch)
-                                                        <option value="{{$branch->id}}">{{$branch->name}}</option>
+                                                            <option value="{{$branch->id}}">{{$branch->name}}</option>
                                                         @endforeach
                                                     </select></td>
                                                     <td></td>
@@ -89,12 +93,20 @@
 <script>
 //add/delete new branch
 var newEmployee = '<tr>'+
-                    '<td><input type="text" class="form-control" /></td>'+
-                    '<td><input type="text" class="form-control" /></td>'+
-                    '<td><input type="text" class="form-control" /></td>'+
-                    '<td><input type="text" class="form-control" /></td>'+
-                    '<td><select id="" class="form-control"></select></td>'+
-                    '<td><select id="" class="form-control"></select></td>'+
+                    '<td><input name="name[]" type="text" class="form-control" /></td>'+
+                    '<td><input name="email[]" type="text" class="form-control" /></td>'+
+                    '<td><input name="username[]" type="text" class="form-control" /></td>'+
+                    '<td><input name="password[]" type="text" class="form-control" /></td>'+
+                    '<td><select name="role[]" id="" class="form-control">'+
+                        '@foreach($roles as $role)'+
+                            '<option value="{{$role->id}}">{{$role->name}}</option>'+
+                        '@endforeach'+
+                    '</select></td>'+
+                    '<td><select name="branch[]" id="" class="form-control">'+
+                        '@foreach($branches as $branch)'+
+                            '<option value="{{$branch->id}}">{{$branch->name}}</option>'+
+                        '@endforeach'+
+                    '</select></td>'+
                     '<td><button onclick="$(this).parent().parent().remove();" class="btn btn-outline-secondary float-right">Delete</button></td>'+
                 '</tr>';
 $('#add-new-employee').click(function(){

@@ -14,8 +14,11 @@ class UsersDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
-
-        // $this->call("OthersTableSeeder");
+        //DOES NOT WORK!!!!!!!!
+        DB::table('roles')->insert([
+            ['name' => 'Head'],
+            ['name' => 'Sales Manager'],
+            ['name' => 'Tech']
+        ]);
     }
 }

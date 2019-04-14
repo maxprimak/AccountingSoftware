@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Users\Entities\People;
+use Modules\Users\Entities\Role;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
 
@@ -74,8 +75,9 @@ class CompaniesController extends Controller
 
         $company = Company::find($id);
         $branches = Branch::where('company_id', $id)->get();
+        $roles = Role::all();
 
-        return view('companies::add_employees', compact('company', 'branches'));
+        return view('companies::add_employees', compact('company', 'branches', 'roles'));
 
     }
 

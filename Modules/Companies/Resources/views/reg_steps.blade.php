@@ -17,7 +17,7 @@
                 <h4>This quick registration to will help you to set Relist in a few steps</h4>
             </div>
             <div>
-                <h6>You can skip this action by clicking<button type="button" class="btn btn-link">here</button>, but we highly recommend you not to do it</h6>
+                <h6>You can skip this action by clicking<button type="button" onclick="window.location.assign('/dashboard')" class="btn btn-link">here</button>, but we highly recommend you not to do it</h6>
             </div>
 
             <div hidden class="row mb-3">
