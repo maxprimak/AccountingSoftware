@@ -5,6 +5,11 @@ namespace Modules\Users\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Users\Entities\People;
+use Modules\Users\Entities\Users;
+use Modules\Users\Entities\Role;
+use Modules\Login\Entities\Login;
+
 
 class EmployeesController extends Controller
 {
@@ -13,17 +18,39 @@ class EmployeesController extends Controller
      * @return Response
      */
     public function index()
-    {
-        return view('employees::index');
+    {   $people = People::all();
+        $users = Users::all();
+        $roles = Role::all();
+        $logins = Login::all();
+        return view('users::employees_index',compact('people','users','roles'));
     }
 
     /**
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('employees::create');
+        // new Person
+        $person = new People;
+        $person->name = $request->new_full_name;
+        $person->phone = $request->new_phone;
+        $person->save();
+        // new Login
+        $login = new Login;
+        $login->username = $request->new_login;
+        $login->password = $request->new_password;
+        $login->email = $request->new_email;
+        $login->save();
+        // new User
+        $user = new Users;
+        $user->login_id = $login->id;
+        $user->person_id = $person->id;
+        $user->role_id = $request->new_role;
+        $user->branch_id = 1;
+        $user->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -51,10 +78,10 @@ class EmployeesController extends Controller
      * @param int $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        dd('HIER');
-        return view('employees::edit');
+
+        return redirect()->back();
     }
 
     /**

@@ -6,8 +6,11 @@
 
 
 @section('main-content')
-    <h2>List of employees</h2>
-
+  <div class="breadcrumb">
+         <br>
+         <br>
+             <h2>List of employees</h2>
+   </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
@@ -23,14 +26,12 @@
                           </div>
                           <div class="col-md-2 form-group mb-3">
                               <label for="firstName1">Username</label>
-                              <input disabled type="text" class="form-control" id="firstName1" name="username" value="">
+                              <input disabled type="text" class="form-control" id="firstName1" name="" value="">
                           </div>
-
                             <div class="col-md-2 form-group mb-3">
                                 <label for="firstName1">Full name</label>
                                 <input type="text" class="form-control" id="firstName1" placeholder="Enter your full name">
                             </div>
-
                             <div class="col-md-2 form-group mb-3">
                                 <label for="exampleInputEmail1">Email address</label>
                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
