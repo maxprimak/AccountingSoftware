@@ -14,10 +14,24 @@
 Route::middleware(['auth'])->group(function () {
     //Dashboard Routes
     Route::get('/dashboard', 'DashboardController@showDashboard');
-    //PDF Routes
-    Route::post('/pdf/rechnung_hand_dif', 'PDFController@rechnungHandDif');
-    Route::post('/pdf/kostenvoranschlag', 'PDFController@kostenVoranschlag');
-    Route::post('/pdf/kaufvertrag', 'PDFController@kaufVertrag');
+
+    //Kostenvoranschlag
+    Route::get('/kostenvoranschlag/edit/{id}', 'DashboardController@showKostenvoranschlag');
+    Route::get('/kostenvoranschlag/all', 'DashboardController@showAllKostenvoranschlage')->name('kostenvoranschlag.all');
+    Route::post('/kostenvoranschlag/create', 'DashboardController@createKostenvoranschlag')->name('kostenvoranschlag.create');
+    Route::post('/kostenvoranschlag/update/{id}', 'DashboardController@updateKostenvoranschlag');
+
+    //Kaufvertrag
+    Route::get('/kaufvertrag/edit/{id}', 'DashboardController@showKaufvertrag');
+    Route::get('/kaufvertrag/all', 'DashboardController@showAllKaufvertrage')->name('kaufvertrag.all');
+    Route::post('/kaufvertrag/create', 'DashboardController@createKaufvertrag')->name('kaufvertrag.create');
+    Route::post('/kaufvertrag/update/{id}', 'DashboardController@updateKaufvertrag');
+
+    //RechnungHandDif
+    Route::get('/rechnung_hand_dif/edit/{id}', 'DashboardController@showRechnungHandDif');
+    Route::get('/rechnung_hand_dif/all', 'DashboardController@showAllRechnungHandDifs')->name('rechnung_hand_dif.all');
+    Route::post('/rechnung_hand_dif/create', 'DashboardController@createRechnungHandDif')->name('rechnung_hand_dif.create');
+    Route::post('/rechnung_hand_dif/update/{id}', 'DashboardController@updateRechnungHandDif');
 });
 
 /* middleware(['auth', 'verified']) - access only with verified email */

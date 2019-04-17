@@ -34,8 +34,8 @@
                                 <center><img id="image-doc" src="{{asset('assets/images/logo_phone_factory_2.jpg')}}" style="margin-bottom: 30px;"></center>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h3 class="font-weight-bold">Kostenvoranschlag</h3>
-                                            @if($kostenvoranschlag->date != null)<p style="font-size: 14px;">{{$kostenvoranschlag->date}}</p>@endif
+                                            <h3 class="font-weight-bold">Rechnung Handy Differenz @if($rechnungHandDif->number != null)# {{$rechnungHandDif->number}}</h3>@endif
+                                            @if($rechnungHandDif->date != null)<p style="font-size: 14px;">{{$rechnungHandDif->date}}</p>@endif
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                         </div>
@@ -45,35 +45,35 @@
                                         <div class="col-md-6 mb-3 mb-sm-0">
                                             <h4 class="font-weight-bold">Von:</h4>
                                             <span style="white-space: pre-line; font-size: 14px;">
-                                                @if($kostenvoranschlag->shop != null)<strong class="">Shop:</strong> {{$kostenvoranschlag->shop}}<br>@endif
-                                                @if($kostenvoranschlag->shop_tel != null)<strong class="">Tel:</strong> {{$kostenvoranschlag->shop_tel}}<br>@endif
-                                                @if($kostenvoranschlag->shop_email != null)<strong class="">Email:</strong> {{$kostenvoranschlag->shop_email}}<br>@endif
-                                                @if($kostenvoranschlag->web != null)<strong class="">Web:</strong> {{$kostenvoranschlag->web}}<br>@endif
-
-                                                @if($kostenvoranschlag->kundenbetreuer != null)
+                                                @if($rechnungHandDif->shop != null)<strong class="">Shop:</strong> {{$rechnungHandDif->shop}}<br>@endif
+                                                @if($rechnungHandDif->shop_tel != null)<strong class="">Tel:</strong> {{$rechnungHandDif->shop_tel}}<br>@endif
+                                                @if($rechnungHandDif->shop_email != null)<strong class="">Email:</strong> {{$rechnungHandDif->shop_email}}<br>@endif
+                                                @if($rechnungHandDif->web != null)<strong class="">Web:</strong> {{$rechnungHandDif->web}}<br>@endif
+                                                
+                                                @if($rechnungHandDif->kundenbetreuer != null)
                                                 <strong class="">Ihr Kundenbetreuer:</strong>
-                                                {{$kostenvoranschlag->kundenbetreuer}}
+                                                {{$rechnungHandDif->kundenbetreuer}}
                                                 @endif
 
-                                                @if($kostenvoranschlag->zahlungsmodalitat != null)
+                                                @if($rechnungHandDif->zahlungsmodalitat != null)
                                                 <strong class="">Zahlungmodalität:</strong>
-                                                {{$kostenvoranschlag->zahlungsmodalitat}}
+                                                {{$rechnungHandDif->zahlungsmodalitat}}
                                                 @endif
                                             </span>
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                             <h4 class="font-weight-bold">An:</h4>
                                             <span style="white-space: pre-line; font-size:14px;">
-                                            @if($kostenvoranschlag->kunde != null)<strong class="">Kunde:</strong> {{$kostenvoranschlag->kunde}}<br>@endif
-                                            @if($kostenvoranschlag->kunde_tel != null)<strong class="">Telefon:</strong> {{$kostenvoranschlag->kunde_tel}}<br>@endif
-                                            @if($kostenvoranschlag->kunde_email != null)<strong class="">Email:</strong> {{$kostenvoranschlag->kunde_email}}<br>@endif
+                                            @if($rechnungHandDif->kunde != null)<strong class="">Kunde:</strong> {{$rechnungHandDif->kunde}}<br>@endif
+                                            @if($rechnungHandDif->kunde_tel != null)<strong class="">Telefon:</strong> {{$rechnungHandDif->kunde_tel}}<br>@endif
+                                            @if($rechnungHandDif->kunde_email != null)<strong class="">Email:</strong> {{$rechnungHandDif->kunde_email}}<br>@endif
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row">
                                     <div class="col-md-12">
-                                    @if($kostenvoranschlag->text_head != null)<p style="font-size: 16px;">{{$kostenvoranschlag->text_head}}<br>@endif
-                                    @if($kostenvoranschlag->text_body != null){{$kostenvoranschlag->text_body}}@endif
+                                    @if($rechnungHandDif->text_head != null)<p style="font-size: 16px;">{{$rechnungHandDif->text_head}}<br>@endif
+                                    @if($rechnungHandDif->text_body != null){{$rechnungHandDif->text_body}}@endif
                                     <br>
                                     </div>
                                     </div>
@@ -103,21 +103,12 @@
                                                     </tr>
                                                     @endforeach
                                                     @endif
-                                                    @if($kostenvoranschlag->kost29 == 1)
-                                                    <tr>
-                                                        <th scope="row">Kostenvoranschlag + Arbeitszeit €29.00</th>
-                                                        <td></td>
-                                                        <th>29.00€</td>
-                                                    </tr>
-                                                    @endif
                                                 </tbody>
                                             </table>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="invoice-summary">
-                                                <p>Nettobetrag: <span>{{number_format($price-$price*0.2, 2, ".", "")}}</span>€</p>
-                                                <p>MwSt. 20%: <span>{{number_format($price*0.2, 2, ".", "")}}</span>€</p>
                                                 <h5 class="font-weight-bold">Gesamt:<span>{{number_format($price, 2, ".", "")}}</span>€</h5>
                                             </div>
                                         </div>
@@ -127,7 +118,7 @@
                             </div>
                             <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
                                 <!--==== Edit Area =====-->
-                                    <form action="/kostenvoranschlag/update/{{$kostenvoranschlag->id}}"  method="POST">
+                                    <form action="/rechnung_hand_dif/update/{{$rechnungHandDif->id}}"  method="POST">
                                     <div class="d-flex mb-5">
                                     <span class="m-auto"></span>
                                     <button style="margin-left: 5px;" class="btn btn-primary">Save</button>
@@ -136,8 +127,9 @@
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <h3 class="font-weight-bold">Kostenvoranschlag</h3>
-                                            <input class="form-control" name="date" placeholder="Leave empty to hide field"  style="font-size: 14px;" value="{{$kostenvoranschlag->date}}"" />
+                                            <h3 class="font-weight-bold">Rechnung Handy Differenz #</h3><input type="text" placeholder="Leave empty to hide field" name="number" style="font-size: 14px;" class="form-control col-md-6" value="{{$rechnungHandDif->number}}" />
+                                            <br>
+                                            <input placeholder="Leave empty to hide field"  class="form-control" name="date" style="font-size: 14px;" value="{{$rechnungHandDif->date}}" />
                                         </div>
                                         <div class="col-md-6 text-sm-right">
                                         </div>
@@ -148,17 +140,17 @@
                                             <h4 class="font-weight-bold">Von:</h4>
                                             <div class="col-md-5">
                                             <span style="white-space: pre-line; font-size: 14px;">
-                                                <strong class="">Shop:</strong><input placeholder="Leave empty to hide field"  type="text" name="shop" class="form-control" value="{{$kostenvoranschlag->shop}}"/>
-                                                <strong class="">Tel:</strong><input placeholder="Leave empty to hide field"  type="text" name="shop_tel" class="form-control" value="{{$kostenvoranschlag->shop_tel}}" />
-                                                <strong class="">Email:</strong><input placeholder="Leave empty to hide field"  type="text" name="shop_email" class="form-control" value="{{$kostenvoranschlag->shop_email}}" />
-                                                <strong class="">Web:</strong><input placeholder="Leave empty to hide field"  type="text" name="web" class="form-control" value="{{$kostenvoranschlag->web}}" />
+                                                <strong class="">Shop:</strong><input placeholder="Leave empty to hide field" type="text" name="shop" class="form-control" value="{{$rechnungHandDif->shop}}"/>
+                                                <strong class="">Tel:</strong><input placeholder="Leave empty to hide field" type="text" name="shop_tel" class="form-control" value="{{$rechnungHandDif->shop_tel}}" />
+                                                <strong class="">Email:</strong><input placeholder="Leave empty to hide field" type="text" name="shop_email" class="form-control" value="{{$rechnungHandDif->shop_email}}" />
+                                                <strong class="">Web:</strong><input placeholder="Leave empty to hide field" type="text" name="web" class="form-control" value="{{$rechnungHandDif->web}}" />
 
                                                 <strong class="">Ihr Kundenbetreuer:</strong>
-                                                <input type="text" class="form-control" name="kundenbetreuer" placeholder="Leave empty to hide field"  value="{{$kostenvoranschlag->kundenbetreuer}}" />
+                                                <input placeholder="Leave empty to hide field" type="text" class="form-control" name="kundenbetreuer" value="{{$rechnungHandDif->kundenbetreuer}}" />
 
                                                 <strong class="">Zahlungmodalität:</strong>
                                                 <select name="zahlungsmodalitat" class="form-control">
-                                                    <option selected hidden value="{{$kostenvoranschlag->zahlungsmodalitat}}">{{$kostenvoranschlag->zahlungsmodalitat}}</option>
+                                                    <option selected hidden value="{{$rechnungHandDif->zahlungsmodalitat}}">{{$rechnungHandDif->zahlungsmodalitat}}</option>
                                                     <option value="Karte">Karte</option>
                                                     <option value="Bar">Bar</option>
                                                 </select>
@@ -168,17 +160,17 @@
                                         <div class="col-md-4 text-sm-right">
                                             <h4 class="font-weight-bold">An:</h4>
                                             <span style="white-space: pre-line; font-size:14px;">
-                                            <strong>Kunde:</strong><input type="text" placeholder="Leave empty to hide field"  name="kunde" width="50%" class="form-control" value="{{$kostenvoranschlag->kunde}}" />
-                                            <strong >Telefon:</strong><input type="text" placeholder="Leave empty to hide field"  name="kunde_tel" class="form-control" value="{{$kostenvoranschlag->kunde_tel}}" />
-                                            <strong >Email:</strong><input type="text" placeholder="Leave empty to hide field"  name="kunde_email" class="form-control" value="{{$kostenvoranschlag->kunde_email}}" />
+                                            <strong>Kunde:</strong><input placeholder="Leave empty to hide field" type="text" name="kunde" width="50%" class="form-control" value="{{$rechnungHandDif->kunde}}" />
+                                            <strong >Telefon:</strong><input placeholder="Leave empty to hide field" type="text" name="kunde_tel" class="form-control" value="{{$rechnungHandDif->kunde_tel}}" />
+                                            <strong >Email:</strong><input placeholder="Leave empty to hide field" type="text" name="kunde_email" class="form-control" value="{{$rechnungHandDif->kunde_email}}" />
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row">
                                     <div class="col-md-12">
-                                    <input placeholder="Leave empty to hide field"  style="font-size: 16px;" class="form-control col-md-4" name="text_head" value="{{$kostenvoranschlag->text_head}}" />
+                                    <input placeholder="Leave empty to hide field"  style="font-size: 16px;" class="form-control col-md-4" name="text_head" value="{{$rechnungHandDif->text_head}}" />
                                     <br>
-                                    <textarea placeholder="Leave empty to hide field"  style="font-size: 16px;" name="text_body" cols="10" rows="5" class="form-control">{{$kostenvoranschlag->text_body}}</textarea>
+                                    <textarea placeholder="Leave empty to hide field" style="font-size: 16px;" name="text_body" cols="10" rows="5" class="form-control">{{$rechnungHandDif->text_body}}</textarea>
                                     <br>
                                     </div>
                                     </div>
@@ -213,18 +205,6 @@
                                                         </td>
                                                     </tr>
                                                     @endforeach
-                                                    @if($kostenvoranschlag->kost29 == 1)
-                                                    <tr id="kost29-tr">
-                                                        <th scope="row">Kostenvoranschlag + Arbeitszeit €29.00</th>
-                                                        <td></td>
-                                                        <td>
-                                                            <input class=" form-control preis-input" type="number"
-                                                                placeholder="Unit" value="29.00" name="preis[]">
-                                                        </td>
-                                                        <td>
-                                                        </td>
-                                                    </tr>
-                                                    @endif
                                                 </tbody>
                                             </table>
                                             <button class="btn btn-primary float-right mb-4" type="button" id="add-item">Add Item</button>
@@ -232,18 +212,11 @@
                                         </div>
 
                                         <div class="col-md-12">
-                                            <div class="col-md-3">
-                                            Kostenvoranschlag + Arbeitszeit €29.00 
-                                            <input type="hidden" name="kost29" value="0">
-                                            <input type="checkbox" @if($kostenvoranschlag->kost29 == 1){{'checked'}}@endif id="kost29" value="1" name="kost29" class="form-control col-md-1">
-                                            </div>
                                             <div class="invoice-summary">
                                             <button type="button" id="show-prices" class="btn">Show Final Prices</button>
                                                 <br><br>
                                                 <div id="final-prices" style="display: none">
-                                                <p>Nettobetrag: <span id="netto">23.20</span>€</p>
-                                                <p>MwSt. 20%: <span id="mwst20">5.80</span>€</p>
-                                                <h5 class="font-weight-bold">Gesamt:<span id="gesamt">29.00</span>€</h5>
+                                                <h5 class="font-weight-bold">Gesamt:<span id="gesamt">00.00</span>€</h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -316,23 +289,17 @@
     
     //function to show prices on click
     $("#show-prices").click(function(){
-        var netto = 0;
-        var mwst20 = 0;
         var gesamt = 0;
 
         //sum prices of all inputs
         $(".preis-input").each(function(){
             var preis = parseFloat($(this).val());
             if(!isNaN(preis)){
-                mwst20 += preis*0.2;
-                netto += preis - preis*0.2;
                 gesamt += preis;
             }
         });
 
         //set prices
-        javascript:document.getElementById('netto').innerHTML= netto.toFixed(2);
-        javascript:document.getElementById('mwst20').innerHTML= mwst20.toFixed(2);
         javascript:document.getElementById('gesamt').innerHTML= gesamt.toFixed(2);
 
         //edit button text
@@ -341,26 +308,6 @@
         //show prices
         $("#final-prices").show();
     });
-
-</script>
-<script>
-
-//show/hide kost29
-
-var kost29 = "<tr id='kost29-tr'>" + 
-                "<th scope='row'>Kostenvoranschlag + Arbeitszeit €29.00</th>" +
-                "<td></td>" +
-                "<td>" +
-                "<input class='form-control preis-input' type='number'placeholder='Unit' value='29.00' name='preis[]'>" +
-                "</td>" +
-                "<td>" +
-                "</td>" +
-                "</tr>";
-
-$("#kost29").on('change', function(){
-    if($(this).is(':checked')) $("#tbody-item").append(kost29);
-    else $("#kost29-tr").remove(); 
-});
 
 </script>
 <script src="{{asset('assets/js/vendor/dropzone.min.js')}}"></script>

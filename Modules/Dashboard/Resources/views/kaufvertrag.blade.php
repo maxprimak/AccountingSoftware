@@ -1,92 +1,184 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META http-equiv="X-UA-Compatible" content="IE=8">
-<TITLE>bcl_294794885.htm</TITLE>
-<META name="generator" content="BCL easyConverter SDK 5.0.140">
-<STYLE type="text/css">
+@extends('layouts.master')
+@section('page-css')
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.date.css')}}">
+@endsection
 
-body {margin-top: 0px;margin-left: 0px;}
+@section('main-content')
+    <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs justify-content-end mb-4" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="invoice-tab" data-toggle="tab" href="#invoice" role="tab"
+                                aria-controls="invoice" aria-selected="true">Invoice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit"
+                                aria-selected="false">Edit</a>
+                        </li>
 
-#page_1 {position:relative; overflow: hidden;margin: 0px 0px 0px 0px;padding: 0px;border: none;width: 747px;}
+                    </ul>
+                    <div class="card">
 
-#page_1 #p1dimg1 {position:absolute;top:0px;left:0px;z-index:-1;width:699px;height:180px;}
-#page_1 #p1dimg1 #p1img1 {width:699px;height:180px;}
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
+                                <div class="d-sm-flex mb-5" data-view="print">
+                                    <span class="m-auto"></span>
+                                    <button id="doc-without-logo" style="margin-left: 5px;" class="btn btn-primary">Doc without logo</button>
+                                    <button id="doc-with-logo" style="margin-left: 5px; display:none" class="btn btn-primary">Doc with logo</button>
+                                    <button style="margin-left: 5px;" class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>                                </div>
+                                <!---===== Print Area =======-->
+                                <div id="print-area">
+                                <center><img id="image-edit" src="{{asset('assets/images/logo_phone_factory_2.jpg')}}" style="margin-bottom: 30px;"></center>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="font-weight-bold">Kaufvertrag</h4>
+                                            @if($kaufvertrag->ort_datum != null)<p style="font-size: 14px;">{{$kaufvertrag->ort_datum}}</p>@endif
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3 mb-sm-0">
+                                            <span style="white-space: pre-line; font-size: 14px;">
+                                                @if($kaufvertrag->name != null)<h5><strong>Name des Varkäufers: </strong></h5>{{$kaufvertrag->name}}<br><br>@endif
+                                                @if($kaufvertrag->telefon != null)<h5><strong>Telefon Nr.: </strong></h5>{{$kaufvertrag->telefon}}<br><br>@endif
+                                                @if($kaufvertrag->adresse != null)<h5><strong>Adresse: </strong></h5>{{$kaufvertrag->adresse}}<br><br>@endif
+                                                @if($kaufvertrag->ort_plz != null)<h5><strong>Ort/PLZ: </strong></h5>{{$kaufvertrag->ort_plz}}<br><br>@endif
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6 text-sm-right">
+                                            <span style="white-space: pre-line; font-size:14px;">
+                                                @if($kaufvertrag->modell != null)<h5><strong>Modell: </strong></h5>{{$kaufvertrag->modell}}<br><br>@endif
+                                                @if($kaufvertrag->imei != null)<h5><strong>IMEI: </strong></h5>{{$kaufvertrag->imei}}<br><br>@endif
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row">
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-1">
+                                            <input @if($kaufvertrag->mobil == 1){{'checked'}}@endif type="checkbox" class="form-control" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h5 style="line-height:32px;"><strong>Mobiltelefon</strong><h5>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input @if($kaufvertrag->tablet == 1){{'checked'}}@endif type="checkbox" class="form-control" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h5 style="line-height:32px;"><strong>Tablet</strong><h5>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-4">
+                                        @if($kaufvertrag->text_body != null)<p style="font-size: 16px;">{{$kaufvertrag->text_body}}</p>@endif
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                        <p style="font-size: 16px;"><strong>Unterschrift des Verkäufers: ______________________</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--==== / Print Area =====-->
+                            </div>
+                            <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                                <!--==== Edit Area =====-->
+                                <form action="/kaufvertrag/update/{{$kaufvertrag->id}}" method="POST">
+                                @csrf
+                                <div class="d-flex mb-5">
+                                    <span class="m-auto"></span>
+                                    <button class="btn btn-primary">Save</button>
+                                </div>
+                                <center><img id="image-doc" src="{{asset('assets/images/logo_phone_factory_2.jpg')}}" style="margin-bottom: 30px;"></center>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="font-weight-bold">Kaufvertrag</h4>
+                                            <input class="form-control col-md-4" placeholder="Leave empty to hide field" style="font-size: 14px;" name="ort_datum" value="{{$kaufvertrag->ort_datum}}" />
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row">
+                                        <div class="col-md-8 mb-3 mb-sm-0">
+                                            <span style="white-space: pre-line; font-size: 14px;">
+                                                <h5><strong>Name des Varkäufers: </strong></h5><input type="text" placeholder="Leave empty to hide field" name="name" class="form-control col-md-5" value="{{$kaufvertrag->name}}" />
+                                                <h5><strong>Telefon Nr.: </strong></h5><input type="text" placeholder="Leave empty to hide field" name="telefon" class="form-control col-md-5" value="{{$kaufvertrag->telefon}}" />
+                                                <h5><strong>Adresse: </strong></h5><input type="text" placeholder="Leave empty to hide field" name="adresse" class="form-control col-md-5" value="{{$kaufvertrag->adresse}}" />
+                                                <h5><strong>Ort/PLZ: </strong></h5><input type="text" placeholder="Leave empty to hide field" name="ort_plz" class="form-control col-md-5" value="{{$kaufvertrag->ort_plz}}" />
+                                            </span>
+                                        </div>
+                                        <div class="col-md-4 text-sm-right">
+                                            <span style="white-space: pre-line; font-size:14px;">
+                                                <h5><strong>Modell: </strong></h5><input type="text" placeholder="Leave empty to hide field" class="form-control" name="modell" value="{{$kaufvertrag->modell}}" />
+                                                <h5><strong>IMEI: </strong></h5><input type="text" placeholder="Leave empty to hide field" class="form-control" name="imei" value="{{$kaufvertrag->imei}}" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row">
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-1">
+                                            <input type="hidden" name="mobil" value="0">
+                                            <input type="checkbox" @if($kaufvertrag->mobil == 1){{'checked'}}@endif name="mobil" value="1" class="form-control" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h5 style="line-height:32px;"><strong>Mobiltelefon</strong><h5>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input type="hidden" name="tablet" value="0">
+                                            <input type="checkbox" @if($kaufvertrag->tablet == 1){{'checked'}}@endif name="tablet" value="1" class="form-control" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h5 style="line-height:32px;"><strong>Tablet</strong><h5>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-4 border-top"></div>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-4">
+                                        <textarea placeholder="Leave empty to hide field" name="text_body" cols="200" rows="10" class="form-control" style="font-size: 16px;">{{$kaufvertrag->text_body}}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-5">
+                                    <span class="m-auto"></span>
+                                    <button class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                                <!--==== / Edit Area =====-->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
 
 
+@endsection
 
-.dclr {clear:both;float:none;height:1px;margin:0px;padding:0px;overflow:hidden;}
+@section('page-js')
+<script>
 
-.ft0{font: bold 32px 'Arial';text-decoration: underline;line-height: 37px;}
-.ft1{font: 17px 'Arial';line-height: 19px;}
-.ft2{font: 17px 'Arial';line-height: 22px;}
+    //remove/add logo
+    
+    //remove logo
+    $("#doc-without-logo").click(function(){
+        $(this).hide();
+        $("#doc-with-logo").show();
+        $("#image-edit").hide();
+        $("#image-doc").hide();
+    });
 
-.p0{text-align: left;padding-left: 261px;margin-top: 214px;margin-bottom: 0px;}
-.p1{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p2{text-align: left;padding-left: 18px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p3{text-align: left;padding-left: 16px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p4{text-align: left;padding-left: 86px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p5{text-align: left;padding-left: 157px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-.p6{text-align: left;padding-left: 30px;margin-top: 56px;margin-bottom: 0px;}
-.p7{text-align: left;padding-left: 30px;margin-top: 21px;margin-bottom: 0px;}
-.p8{text-align: left;padding-left: 30px;padding-right: 106px;margin-top: 21px;margin-bottom: 0px;}
-.p9{text-align: left;padding-left: 259px;margin-top: 29px;margin-bottom: 0px;}
-.p10{text-align: left;padding-left: 309px;margin-top: 5px;margin-bottom: 0px;}
-.p11{text-align: left;padding-left: 30px;margin-top: 77px;margin-bottom: 0px;}
-.p12{text-align: left;padding-left: 30px;margin-top: 5px;margin-bottom: 0px;}
+    //add logo
+    $("#doc-with-logo").click(function(){
+        $(this).hide();
+        $("#doc-without-logo").show();
+        $("#image-edit").show();
+        $("#image-doc").show();
+    })
 
-.td0{padding: 0px;margin: 0px;width: 211px;vertical-align: bottom;}
-.td1{padding: 0px;margin: 0px;width: 326px;vertical-align: bottom;}
-
-.tr0{height: 29px;}
-.tr1{height: 39px;}
-.tr2{height: 40px;}
-.tr3{height: 60px;}
-
-.t0{width: 537px;margin-left: 30px;margin-top: 64px;font: 17px 'Arial';}
-
-</STYLE>
-</HEAD>
-
-<BODY>
-<DIV id="page_1">
-<DIV id="p1dimg1">
-<center><IMG src="assets/images/logo_phone_factory.png" id="p1img1"></center>
-</DIV>
-
-<DIV class="dclr"></DIV>
-<P class="p0 ft0">Kaufvertrag</P>
-<TABLE cellpadding=0 cellspacing=0 class="t0">
-<TR>
-	<TD class="tr0 td0"><P class="p1 ft1">Name des Verkäufers:</P></TD>
-	<TD class="tr0 td1"><P class="p2 ft1">{{$name}}</P></TD>
-</TR>
-<TR>
-	<TD class="tr1 td0"><P class="p1 ft1">Telefon Nr.:</P></TD>
-	<TD class="tr1 td1"><P class="p3 ft1">{{$telefon}}</P></TD>
-</TR>
-<TR>
-	<TD class="tr2 td0"><P class="p1 ft1">Adresse:</P></TD>
-	<TD class="tr2 td1"><P class="p3 ft1">{{$adresse}}</P></TD>
-</TR>
-<TR>
-	<TD class="tr2 td0"><P class="p1 ft1">Ort/PLZ:</P></TD>
-	<TD class="tr2 td1"><P class="p2 ft1">{{$ort}}</P></TD>
-</TR>
-<TR>
-	<TD class="tr3 td0"><P class="p4 ft1"><input type="checkbox" <?php if($is_mobil != null) echo 'checked' ?>/> Mobiltelefon</P></TD>
-	<TD class="tr3 td1"><P class="p5 ft1"><input type="checkbox" <?php if($is_tablet != null) echo 'checked' ?>/> Tablet</P></TD>
-</TR>
-</TABLE>
-<P class="p6 ft1">Modell: {{$modell}}</P>
-<P class="p7 ft1">IMEI: {{$imei}}</P>
-<P class="p8 ft2">Der/Die Verkäufer/in ist laut Allgemeine Bürgerliche Gesetzbuch §2 (ABGB) volljährig, und der rechtmäßige Eigentümer des Gerätes. Er/Sie garantiert dass, das Gerät nicht als gestohlen gemeldet ist!</P>
-<P class="p9 ft1">___________________</P>
-<P class="p10 ft1">Ort, Datum</P>
-<P class="p11 ft1">___________________________________________</P>
-<P class="p12 ft1">Unterschrift des Verkäufers</P>
-</DIV>
-</BODY>
-</HTML>
+</script>
+<script src="{{asset('assets/js/vendor/pickadate/picker.js')}}"></script>
+<script src="{{asset('assets/js/vendor/pickadate/picker.date.js')}}"></script>
+<script src="{{asset('assets/js/invoice.script.js')}}"></script>
+@endsection

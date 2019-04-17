@@ -11,13 +11,10 @@
 |
 */
 Route::middleware(['auth'])->group(function () {
-    
-Route::get('/', function () {
-    return view('dashboard::dashboard');
-});
 
-Route::get('/home', function () {
-    return view('dashboard::dashboard');
-});
+    Route::get('/reg_steps', 'CompaniesController@showRegSteps');
+    Route::post('/reg_steps/submit', 'CompaniesController@submitRegSteps');
+    Route::get('/add_employees/{id}', 'CompaniesController@showAddEmployees');
 
 });
+
