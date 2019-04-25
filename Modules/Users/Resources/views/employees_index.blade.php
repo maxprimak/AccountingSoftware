@@ -88,7 +88,7 @@ use Modules\Login\Entities\Login;
                               <form id="form-addEmployee" action="/employees/addEmployee" method="POST">
                               {{ csrf_field() }}
                               {{ method_field('PATCH') }}
-                                  <center><strong><img width="170" class="rounded-circle" src="http://localhost:8888/assets/images/faces/00.jpg"></strong></center><br>
+                                  <center><strong><img width="170" class="rounded-circle" src="/assets/images/faces/00.jpg"></strong></center><br>
                                 <div class="form-group">
                                   <label for="handy_bezeichnung">Login *:</label>
                                   <input required type="text" class="form-control" id="handy_bezeichnung" placeholder="Enter your username" name="new_login">
