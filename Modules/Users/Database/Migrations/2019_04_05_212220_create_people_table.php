@@ -17,7 +17,7 @@ class CreatePeopleTable extends Migration
             $table->increments('id');
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
-            $table->string('adress')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
         });
 
