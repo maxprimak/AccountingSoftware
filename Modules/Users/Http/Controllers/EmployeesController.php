@@ -43,7 +43,7 @@ class EmployeesController extends Controller
         $login->email = $request->new_email;
         $login->save();
         // new User
-        $user = new Users;
+        $user = new User;
         $user->login_id = $login->id;
         $user->person_id = $person->id;
         $user->role_id = $request->new_role;
