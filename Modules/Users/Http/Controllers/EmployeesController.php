@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Users\Entities\People;
-use Modules\Users\Entities\Users;
+use Modules\Users\Entities\User;
 use Modules\Users\Entities\Role;
 use Modules\Login\Entities\Login;
 
@@ -19,7 +19,7 @@ class EmployeesController extends Controller
      */
     public function index()
     {   $people = People::all();
-        $users = Users::all();
+        $users = User::all();
         $roles = Role::all();
         $logins = Login::all();
         return view('users::employees_index',compact('people','users','roles'));
