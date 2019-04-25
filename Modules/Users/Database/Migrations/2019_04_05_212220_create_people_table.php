@@ -15,9 +15,9 @@ class CreatePeopleTable extends Migration
     {
         Schema::create('people', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('phone');
-            $table->string('address');
+            $table->string('name')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
         });
 
@@ -25,7 +25,7 @@ class CreatePeopleTable extends Migration
         Schema::table('users', function(Blueprint $table)
         {
             $table->index('INSERT_INDEX_HERE');
-        }); 
+        });
         */
     }
 
@@ -42,7 +42,7 @@ class CreatePeopleTable extends Migration
         Schema::table('users', function (Blueprint $table)
         {
             $table->dropIndex(['INSERT_INDEX_HERE']);
-        }); 
+        });
         */
     }
 }

@@ -4,8 +4,9 @@ namespace Modules\Users\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Users\Entities\Users;
 
-class UsersDatabaseSeeder extends Seeder
+class UserDatabaseTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,8 +17,11 @@ class UsersDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(PeopleDatabaseSeeder::class);
-        $this->call(RoleDatabaseTableSeeder::class);
-        $this->call(UserDatabaseTableSeeder::class);
+        $user = new Users();
+        $user->login_id = "1";
+        $user->person_id = "1";
+        $user->role_id = "1";
+        $user->branch_id = "1";
+        $user->save();
     }
 }
