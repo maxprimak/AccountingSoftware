@@ -14,7 +14,7 @@
 <link id="gull-theme" rel="stylesheet" href="{{mix('assets/styles/css/themes/lite-purple.min.css')}}">
  <link rel="stylesheet" href="{{asset('assets/styles/vendor/perfect-scrollbar.css')}}">
  {{-- page specific css --}}
- @yield('page-css')
+@yield('page-css')
 </head>
 
 <body class="text-left">

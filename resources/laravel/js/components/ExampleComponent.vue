@@ -6,10 +6,10 @@
             ref="table"
             paginated
             per-page="10"
-            :opened-detailed="defaultOpenedDetails"
+            :opened-detailed="[]"
             detailed
             detail-key="id"
-            @details-open="(row, index) => $toast.open(`Expanded ${row.user.first_name}`)"
+            @details-open="(row, index) => $toast.open(`Expanded ${row.name}`)"
             aria-next-label="Next page"
             aria-previous-label="Previous page"
             aria-page-label="Page"
@@ -117,18 +117,6 @@
                                     </div>
                                 </div>
                                 <div class="level-right">
-                                    <div class="level-item">
-                                        <b-dropdown hoverable aria-role="list">
-                                            <button class="button is-light" type="button" slot="trigger">
-                                                <v-icon name="print" />
-                                            </button>
-
-                                            <b-dropdown-item aria-role="listitem">Ticket</b-dropdown-item>
-                                            <b-dropdown-item aria-role="listitem">Check</b-dropdown-item>
-                                            <b-dropdown-item aria-role="listitem">Warranty</b-dropdown-item>
-                                            <b-dropdown-item aria-role="listitem">Invoice</b-dropdown-item>
-                                        </b-dropdown>
-                                    </div>
                                     <div class="level-item">
                                          <b-button type="is-danger">
                                             <v-icon name="trash" scale="0.7"/> Delete
