@@ -14,9 +14,8 @@
             aria-previous-label="Previous page"
             aria-page-label="Page"
             aria-current-label="Current page">
-
             <template slot-scope="props">
-                
+
                 <b-table-column field="id" label="ID" width="40" numeric>
                     <template>
                         <a @click="toggle(props.row)">
@@ -129,14 +128,14 @@
                                         <p>Name</p>
                                     </div>
                                     <div class="column">
-                                        <b-input type="text" name="name" v-model="props.row.name"></b-input>  
+                                        <b-input type="text" name="name" v-model="props.row.name"></b-input>
                                     </div>
                                     <div class="column is-one-fifth"></div>
                                     <div class="column">
                                         <p>Price</p>
                                     </div>
                                    <div class="column">
-                                        <b-input type="text" name="price" v-model="props.row.price"></b-input>  
+                                        <b-input type="text" name="price" v-model="props.row.price"></b-input>
                                    </div>
                                    <div class="column"></div>
                             </div>
@@ -160,7 +159,7 @@
                                                 <option v-bind:value="props.row.price1" disabled hidden>{{props.row.price1}}</option>
                                                 <option value="canceled">canceled</option>
                                                 <option value="in work">in work</option>
-                                        </b-select> 
+                                        </b-select>
                                    </div>
                                    <div class="column"></div>
                             </div>
@@ -207,7 +206,7 @@ import axios from 'axios'
                        'price3': i + ' EUR',
                        'price4': i + ' EUR',
                        'price5': i + ' EUR'
-                   } 
+                   }
                    data.push(item);
                 }
                 this.data = data;
