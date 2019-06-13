@@ -12,12 +12,13 @@
             @details-open="(row, index) => $toast.open(`Expanded ${row.name}`)"
             aria-next-label="Next page"
             aria-previous-label="Previous page"
+            :show-detail-icon="false"
             aria-page-label="Page"
             aria-current-label="Current page"
-            style="width: 100%">
+            style="width: 100%; font-family: Nunito;">
             <template slot-scope="props">
 
-                <b-table-column field="id" label="ID" numeric>
+                <b-table-column field="id" label="ID">
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.id }}
@@ -25,7 +26,7 @@
                 </template>
                 </b-table-column>
 
-                <b-table-column field="name" label="Name" numeric>
+                <b-table-column field="name" label="Name">
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.name }}
@@ -33,15 +34,17 @@
                 </template>
                 </b-table-column>
 
-                <b-table-column field="status" label="status" numeric>
+                <b-table-column field="status" label="Status" >
                     <template>
                         <a @click="toggle(props.row)">
+                            <span class="badge badge-success">
                             {{ props.row.status }}
+                            </span>
                         </a>
                     </template>
                 </b-table-column>
 
-                <b-table-column field="age" label="age" numeric>
+                <b-table-column field="age" label="age" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.age }}
@@ -49,7 +52,7 @@
                 </template>
                 </b-table-column>
 
-                <b-table-column field="price" label="price" numeric>
+                <b-table-column field="price" label="price" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price }}
@@ -57,7 +60,7 @@
                     </template>
                 </b-table-column>
 
-                 <b-table-column field="price1" label="price1" numeric>
+                 <b-table-column field="price1" label="price1" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price1 }}
@@ -65,7 +68,7 @@
                     </template>
                 </b-table-column>
 
-                 <b-table-column field="price2" label="price2" numeric>
+                 <b-table-column field="price2" label="price2" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price2 }}
@@ -73,7 +76,7 @@
                     </template>
                 </b-table-column>
 
-                 <b-table-column field="price3" label="price3" numeric>
+                 <b-table-column field="price3" label="price3" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price3 }}
@@ -81,7 +84,7 @@
                     </template>
                 </b-table-column>
 
-                <b-table-column field="price4" label="price4" numeric>
+                <b-table-column field="price4" label="price4" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price4 }}
@@ -89,7 +92,7 @@
                     </template>
                 </b-table-column>
 
-                <b-table-column field="price5" label="price5" numeric>
+                <b-table-column field="price5" label="price5" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price5 }}
