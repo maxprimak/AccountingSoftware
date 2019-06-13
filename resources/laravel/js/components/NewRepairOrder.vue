@@ -146,22 +146,68 @@
                     </div>
                 </div>
                 <div class="column">
-                    <div class="level">
-                        <div class="level-right">
-                            <div class="level-item" style="width: 100%">
+                    <div class="columns">
+                        <div class="column">
                             <b-input placeholder="Search..."
                             type="search"
                             size="is-small"
                             icon="magnify" rounded>
                             </b-input>
-                            </div>
-
-
                         </div>
-                        <div class="level-left">
-                            <a href="/repair-orders/create" class="btn btn-primary" style="margin-right: 22%">ADD NEW CLIENT</a>
+                        <div class="column">
+                            <div class="level">
+                            <div class="level-left"></div>
+                            <div class="level-right">
+                            <a href="/repair-orders/create" class="btn btn-primary">ADD NEW CLIENT</a>
+                            </div>
+                            </div>
                         </div>
                     </div>
+                    <div class="level">
+                        <b-table
+                        :data="data"
+                        :columns="columns"
+                        paginated
+                        per-page="3"
+                        style="width: 100%; font-family: Nunito;"></b-table>
+                    </div>
+                    <div class="level">
+                        <p class="subtitle" style="font-weight: bold">Client device list</p>
+                    </div>
+                    <div class="level">
+                        <b-table
+                        :data="data"
+                        :columns="columns"
+                        style="width: 100%; font-family: Nunito;"></b-table>
+                    </div>
+                    <div class="row justify-content-center">
+                            <v-icon name="plus-circle" scale="2" />
+                    </div>
+                        <div class="columns" style="margin-top: 5%">
+                            <div class="column">
+                                <label class="label" style="font-weight: bold" for="">Service</label>
+                                <b-autocomplete
+                                    rounded
+                                    :data="data2"
+                                    v-model="name"
+                                    size="is-small"
+                                    icon="magnify"
+                                    @select="option => selected = option">
+                                    <template slot="empty">No results found</template>
+                                </b-autocomplete>
+                            </div>
+                            <div class="column" style="text-align: center;">
+                                    <label class="label" style="font-weight: bold" for="">Order type</label>
+                                    <button class="btn btn-primary btn-rounded" style="width: 50%; margin-bottom: 5%">Pay</button>
+                                    <button class="btn btn-primary btn-rounded" style="width: 50%; margin-bottom: 5%">Warranty</button>
+                                    <button class="btn btn-primary btn-rounded" style="width: 50%; margin-bottom: 5%">Rework</button>
+                            </div>
+                            <div class="column" style="text-align: right;">
+                                    <label class="label" style="font-weight: bold" for="">Payment method</label>
+                                    <button class="btn btn-primary btn-rounded" style="width: 50%; margin-bottom: 5%">Cash</button>
+                                    <button class="btn btn-primary btn-rounded" style="width: 50%; margin-bottom: 5%">Card</button>
+                            </div>
+                        </div>
                 </div>
         </div>
     </div>
@@ -169,8 +215,41 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        data() {
+            return {
+                data: [
+                    { 'id': 1, 'first_name': 'Jesse', 'last_name': 'Simmons', 'date': '2016-10-15 13:43:27', 'gender': 'Male' },
+                    { 'id': 2, 'first_name': 'John', 'last_name': 'Jacobs', 'date': '2016-12-15 06:00:53', 'gender': 'Male' },
+                    { 'id': 3, 'first_name': 'Tina', 'last_name': 'Gilbert', 'date': '2016-04-26 06:26:28', 'gender': 'Female' },
+                    { 'id': 4, 'first_name': 'Clarence', 'last_name': 'Flores', 'date': '2016-04-10 10:28:46', 'gender': 'Male' }                ],
+                    data2: [
+                        'maxon',
+                         'primakson'
+                    ],
+                     name: '',
+                    selected: null,
+                columns: [
+                    {
+                        field: 'id',
+                        label: 'ID',
+                        width: '40',
+                        numeric: true
+                    },
+                    {
+                        field: 'first_name',
+                        label: 'First Name',
+                    },
+                    {
+                        field: 'last_name',
+                        label: 'Last Name',
+                    },
+                    {
+                        field: 'date',
+                        label: 'Date',
+                        centered: true
+                    }
+                ]
+            }
         }
     }
 </script>
