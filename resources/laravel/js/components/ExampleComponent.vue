@@ -13,10 +13,11 @@
             aria-next-label="Next page"
             aria-previous-label="Previous page"
             aria-page-label="Page"
-            aria-current-label="Current page">
+            aria-current-label="Current page"
+            style="width: 100%">
             <template slot-scope="props">
 
-                <b-table-column field="id" label="ID" width="40" numeric>
+                <b-table-column field="id" label="ID" numeric>
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.id }}
@@ -24,7 +25,7 @@
                 </template>
                 </b-table-column>
 
-                <b-table-column field="name" label="Name" width="40" numeric>
+                <b-table-column field="name" label="Name" numeric>
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.name }}
@@ -32,7 +33,7 @@
                 </template>
                 </b-table-column>
 
-                <b-table-column field="status" label="status" width="40" numeric>
+                <b-table-column field="status" label="status" numeric>
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.status }}
@@ -40,7 +41,7 @@
                     </template>
                 </b-table-column>
 
-                <b-table-column field="age" label="age" width="40" numeric>
+                <b-table-column field="age" label="age" numeric>
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.age }}
@@ -48,7 +49,7 @@
                 </template>
                 </b-table-column>
 
-                <b-table-column field="price" label="price" width="40" numeric>
+                <b-table-column field="price" label="price" numeric>
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price }}
@@ -56,7 +57,7 @@
                     </template>
                 </b-table-column>
 
-                 <b-table-column field="price1" label="price1" width="40" numeric>
+                 <b-table-column field="price1" label="price1" numeric>
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price1 }}
@@ -64,7 +65,7 @@
                     </template>
                 </b-table-column>
 
-                 <b-table-column field="price2" label="price2" width="40" numeric>
+                 <b-table-column field="price2" label="price2" numeric>
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price2 }}
@@ -72,7 +73,7 @@
                     </template>
                 </b-table-column>
 
-                 <b-table-column field="price3" label="price3" width="40" numeric>
+                 <b-table-column field="price3" label="price3" numeric>
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price3 }}
@@ -80,7 +81,7 @@
                     </template>
                 </b-table-column>
 
-                <b-table-column field="price4" label="price4" width="40" numeric>
+                <b-table-column field="price4" label="price4" numeric>
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price4 }}
@@ -88,7 +89,7 @@
                     </template>
                 </b-table-column>
 
-                <b-table-column field="price5" label="price5" width="40" numeric>
+                <b-table-column field="price5" label="price5" numeric>
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price5 }}
