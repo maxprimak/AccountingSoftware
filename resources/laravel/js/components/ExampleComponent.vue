@@ -81,6 +81,22 @@
                     </template>
                 </b-table-column>
 
+                <b-table-column field="price4" label="price4" width="40" numeric>
+                    <template>
+                        <a @click="toggle(props.row)">
+                            {{ props.row.price4 }}
+                        </a>
+                    </template>
+                </b-table-column>
+
+                <b-table-column field="price5" label="price5" width="40" numeric>
+                    <template>
+                        <a @click="toggle(props.row)">
+                            {{ props.row.price5 }}
+                        </a>
+                    </template>
+                </b-table-column>
+
             </template>
 
             <template slot="detail" slot-scope="props">
@@ -223,7 +239,9 @@ import axios from 'axios'
                        'price': i + ' EUR',
                        'price1': i + ' EUR',
                        'price2': i + ' EUR',
-                       'price3': i + ' EUR'
+                       'price3': i + ' EUR',
+                       'price4': i + ' EUR',
+                       'price5': i + ' EUR'
                    } 
                    data.push(item);
                 }

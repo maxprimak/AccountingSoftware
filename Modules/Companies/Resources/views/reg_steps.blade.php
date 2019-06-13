@@ -8,17 +8,10 @@
 <link rel="stylesheet" href="{{asset('assets/styles/vendor/pickadate/classic.date.css')}}">
 <link rel="stylesheet" href="{{asset('assets/styles/vendor/toastr.css')}}">
 @endsection
-<head>
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<script src="{{asset('/assets/js/laravel/app.js')}}" defer></script>
-</head>
 
 @section('main-content')
             <div>
                 <h1>Welcome!</h1>
-            </div>
-            <div id="app">
-                <example-component></example-component>
             </div>
             <div>
                 <h4>This quick registration to will help you to set Relist in a few steps</h4>
