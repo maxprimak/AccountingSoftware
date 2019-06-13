@@ -9,8 +9,8 @@
                         </a>
                         <div class="triangle"></div>
                     </li>
-                    <li class="nav-item" data-item="uikits">
-                        <a class="nav-item-hold" href="#">
+                    <li class="nav-item {{ request()->is('repair-orders') ? 'active' : '' }}">
+                        <a class="nav-item-hold" href="/repair-orders">
                             <i class="nav-icon i-Library"></i>
                             <span class="nav-text">Orders</span>
                         </a>
@@ -218,8 +218,8 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="childNav" data-parent="uikits">
-                    <li class="nav-item">
+                {{-- <ul class="childNav" data-parent="uikits">
+                    <li class="nav-item"> --}}
                     <!-- <a href="#alerts">
                             <i class="nav-icon i-Bell1"></i>
                             <span class="item-name">Alerts</span>
@@ -285,12 +285,12 @@
                             <span class="item-name">Progressbar</span>
                         </a>
                     </li> -->
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a href="#tables">
                             <i class="nav-icon i-File-Horizontal-Text"></i>
                             <span class="item-name">Create Order</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <!-- <li class="nav-item">
                         <a href="#tabs">
                             <i class="nav-icon i-New-Tab"></i>

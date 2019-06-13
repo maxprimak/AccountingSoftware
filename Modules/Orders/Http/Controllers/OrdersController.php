@@ -12,18 +12,18 @@ class OrdersController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function showRepairOrdersPage()
     {
-        return view('orders::index');
+        return view('orders::RepairOrders');
     }
 
     /**
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function create()
+    public function createRepairOrder()
     {
-        return view('orders::create');
+        return view('orders::CreateRepairOrders');
     }
 
     /**

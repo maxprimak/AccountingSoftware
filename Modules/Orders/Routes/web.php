@@ -11,6 +11,9 @@
 |
 */
 
-Route::prefix('orders')->group(function() {
-    Route::get('/', 'OrdersController@index');
-});
+
+Route::get('/repair-orders', 'OrdersController@showRepairOrdersPage');
+Route::get('/repair-orders/create', 'OrdersController@createRepairOrder');
+// Route::prefix('orders')->group(function() {
+//
+// });
