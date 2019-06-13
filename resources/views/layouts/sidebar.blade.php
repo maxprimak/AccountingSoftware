@@ -5,11 +5,10 @@
                     <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}" data-item="dashboard">
                         <a class="nav-item-hold" href="/dashboard">
                             <i class="nav-icon i-Bar-Chart"></i>
-                            <span class="nav-text"><!-- Dashboard --> My Invoices</span>
+                            <span class="nav-text"><!-- Dashboard --> Dashboard</span>
                         </a>
                         <div class="triangle"></div>
                     </li>
-                                         <!--
                     <li class="nav-item" data-item="uikits">
                         <a class="nav-item-hold" href="#">
                             <i class="nav-icon i-Library"></i>
@@ -20,54 +19,45 @@
                     <li class="nav-item" data-item="extrakits">
                         <a class="nav-item-hold" href="#">
                             <i class="nav-icon i-Suitcase"></i>
-                            <span class="nav-text">Extra kits</span>
+                            <span class="nav-text">Warehouses</span>
                         </a>
                         <div class="triangle"></div>
                     </li>
                     <li class="nav-item" data-item="apps">
                         <a class="nav-item-hold" href="#">
                             <i class="nav-icon i-Computer-Secure"></i>
-                            <span class="nav-text">Apps</span>
-                        </a>
-                        <div class="triangle"></div>
-                    </li>
-                    <li class="nav-item" data-item="forms">
-                        <a class="nav-item-hold" href="#">
-                            <i class="nav-icon i-File-Clipboard-File--Text"></i>
-                            <span class="nav-text">Forms</span>
+                            <span class="nav-text">Goods & parts</span>
                         </a>
                         <div class="triangle"></div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-item-hold" href="#basic-tables">
                             <i class="nav-icon i-File-Horizontal-Text"></i>
-                            <span class="nav-text">Datatables</span>
+                            <span class="nav-text">Services</span>
                         </a>
                         <div class="triangle"></div>
                     </li>
-                     -->
-                    <li class="nav-item" {{ request()->is('employees/*') ? 'active' : '' }}>
+                    <li class="nav-item" {{ request()->is('employees/*') ? 'active' : '' }} data-item="users">
                         <a class="nav-item-hold" href="/employees">
                             <i class="nav-icon i-Administrator"></i>
-                            <span class="nav-text">Employees</span>
+                            <span class="nav-text">Users</span>
                         </a>
                         <div class="triangle"></div>
                     </li>
-                    <!--
                     <li class="nav-item" data-item="others">
                         <a class="nav-item-hold" href="/test.html">
                             <i class="nav-icon i-Double-Tap"></i>
-                            <span class="nav-text">Others</span>
+                            <span class="nav-text">Accounting</span>
                         </a>
                         <div class="triangle"></div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-item-hold" href="http://demos.ui-lib.com/gull-html-doc/" target="_blank">
                             <i class="nav-icon i-Safe-Box1"></i>
-                            <span class="nav-text">Doc</span>
+                            <span class="nav-text">My Company</span>
                         </a>
                         <div class="triangle"></div>
-                    </li> -->
+                    </li>
                 </ul>
             </div>
 
@@ -92,13 +82,34 @@
                             <span class="item-name">Kaufverträge</span>
                         </a>
                     </li>
+                    </ul>
+                    <ul class="childNav" data-parent="users">
+                        <li class="nav-item">
+                            <a class="{{ Route::currentRouteName()=='dashboard_version_1' ? 'open' : '' }}" href="{{route('rechnung_hand_dif.all')}}">
+                                <i class="nav-icon i-Money-2"></i>
+                                <span class="item-name">Customers</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('kostenvoranschlag.all')}}">
+                                <i class="nav-icon i-Gear"></i>
+                                <span class="item-name">Suppliers</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('kaufvertrag.all')}}">
+                                <i class="nav-icon i-Financial"></i>
+                                <span class="item-name">Employees</span>
+                            </a>
+                        </li>
+                        </ul>
                     <!-- <li class="nav-item">
                         <a href="#dashboard_version_4">
                             <i class="nav-icon i-Clock"></i>
                             <span class="item-name">Version 4</span>
                         </a>
                     </li>
-                </ul> -->
+                -->
                 <ul class="childNav" data-parent="forms">
                     <li class="nav-item">
                         <a href="#forms-basic">
