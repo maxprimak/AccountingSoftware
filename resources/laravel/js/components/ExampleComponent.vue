@@ -130,30 +130,6 @@
                                         </b-dropdown>
                                     </div>
                                     <div class="level-item">
-                                        <b-dropdown hoverable aria-role="list" position="is-bottom-left">
-                                            <button class="button is-light" type="button" slot="trigger">
-                                                <v-icon name="history" />
-                                            </button>
-                                            <b-tabs v-model="activeTab">
-                                                <b-tab-item :visible="showBooks" label="History">
-                                                    <b-dropdown-item aria-role="listitem">Skywalker changed Payment method to Card</b-dropdown-item>
-                                                    <b-dropdown-item aria-role="listitem">Skywalker changed Total price to 12.33 EUR</b-dropdown-item>
-                                                    <b-dropdown-item aria-role="listitem">Skywalker changed Payment method to Card</b-dropdown-item>
-                                                    <b-dropdown-item aria-role="listitem">Skywalker changed Payment method to Card</b-dropdown-item>
-                                                </b-tab-item>
-
-                                                <b-tab-item label="Comments">
-                                                        <b-dropdown-item aria-role="listitem">Here you can edit comments related to an order</b-dropdown-item>
-                                                        <b-input maxlength="500" type="textarea"></b-input>
-                                                        <div class="level-left"></div>
-                                                        <div class="level-right">
-                                                            <button type="button" class="button is-primary">Publish</button>
-                                                        </div>
-                                                </b-tab-item>
-                                            </b-tabs>
-                                        </b-dropdown>
-                                    </div>
-                                    <div class="level-item">
                                          <b-button type="is-danger">
                                             <v-icon name="trash" scale="0.7"/> Delete
                                         </b-button>
@@ -224,7 +200,8 @@ import axios from 'axios'
         data: function(){
             return{
                 data: [],
-                defaultOpenedDetails: [1]
+                defaultOpenedDetails: [0],
+                activeTab: 0
             }
         },
         methods: {
