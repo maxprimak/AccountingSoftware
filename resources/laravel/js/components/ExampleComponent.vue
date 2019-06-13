@@ -1,5 +1,31 @@
 <template>
     <div class="container">
+    <div class="columns is-centered">
+        <div class="column">
+            <div class="row">
+                <a href="#" style="margin-right: 8%"><p class="title is-4">Repair orders</p></a>
+                <a href="#"><p style="color: grey;">Sales orders</p></a>
+            </div>
+        </div>
+        <div class="column">
+            <b-input placeholder="Search..."
+                type="search"
+                size="is-small"
+                style="width: 80%"
+                icon="magnify" rounded>
+            </b-input>
+        </div>
+        <div class="column">
+            <div class="level">
+                <div class="level-left"></div>
+                <div class="level-right">
+                    <a style="margin-right: 20%"><v-icon name="cog" scale="1.4"/></a>
+                    <a href="/repair-orders/create" class="btn btn-primary" style="margin-right: 22%">NEW ORDER</a>
+                </div>  
+            </div>
+            
+        </div>
+    </div>
         <div class="row justify-content-center">
             <b-table
             :data="data"
@@ -18,7 +44,7 @@
             style="width: 100%; font-family: Nunito;">
             <template slot-scope="props">
 
-                <b-table-column field="id" label="ID">
+                <b-table-column field="id" label="Order ID">
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.id }}
@@ -26,7 +52,7 @@
                 </template>
                 </b-table-column>
 
-                <b-table-column field="name" label="Name">
+                <b-table-column field="name" label="Created by">
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.name }}
@@ -34,7 +60,7 @@
                 </template>
                 </b-table-column>
 
-                <b-table-column field="status" label="Status" >
+                <b-table-column field="status" label="Manager" >
                     <template>
                         <a @click="toggle(props.row)">
                             <span class="badge badge-success">
@@ -44,7 +70,7 @@
                     </template>
                 </b-table-column>
 
-                <b-table-column field="age" label="age" >
+                <b-table-column field="age" label="Status" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.age }}
@@ -52,7 +78,7 @@
                 </template>
                 </b-table-column>
 
-                <b-table-column field="price" label="price" >
+                <b-table-column field="price" label="Device" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price }}
@@ -60,7 +86,7 @@
                     </template>
                 </b-table-column>
 
-                 <b-table-column field="price1" label="price1" >
+                 <b-table-column field="price1" label="Cost" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price1 }}
@@ -68,7 +94,7 @@
                     </template>
                 </b-table-column>
 
-                 <b-table-column field="price2" label="price2" >
+                 <b-table-column field="price2" label="Paid" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price2 }}
@@ -76,7 +102,7 @@
                     </template>
                 </b-table-column>
 
-                 <b-table-column field="price3" label="price3" >
+                 <b-table-column field="price3" label="Customer" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price3 }}
@@ -84,7 +110,7 @@
                     </template>
                 </b-table-column>
 
-                <b-table-column field="price4" label="price4" >
+                <b-table-column field="price4" label="Located" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price4 }}
@@ -92,7 +118,7 @@
                     </template>
                 </b-table-column>
 
-                <b-table-column field="price5" label="price5" >
+                <b-table-column field="price5" label="Deadline" >
                     <template>
                         <a @click="toggle(props.row)">
                             {{ props.row.price5 }}
