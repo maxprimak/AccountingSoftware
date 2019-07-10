@@ -16,5 +16,18 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Sales Manager'],
             ['name' => 'Tech']
         ]);
+
+        DB::table('logins')->insert([
+            ['username' => 'person',
+            'password' => bcrypt('123456789'),
+            'email' => 'email@mail.com']
+        ]);
+
+        DB::table('people')->insert([
+            ['name' => 'Max Mustermann',
+            'phone' => '+43 333 44 55 712',
+            'address' => 'Brigittaplatz 14, Vienna']
+        ]);
+
     }
 }
