@@ -23,6 +23,8 @@ class EmployeesController extends Controller
         $roles = Role::all();
         $logins = Login::all();
         return view('users::employees_index',compact('people','users','roles'));
+        //return response()->json($people);
+        
     }
 
     /**
