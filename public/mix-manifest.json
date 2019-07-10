@@ -4,5 +4,6 @@
     "/assets/styles/css/themes/lite-blue.min.css": "/assets/styles/css/themes/lite-blue.min.css",
     "/assets/styles/css/themes/dark-purple.min.css": "/assets/styles/css/themes/dark-purple.min.css",
     "/assets/js/script.js": "/assets/js/script.js",
+    "/vue-assets/js/app.js": "/vue-assets/js/app.js",
     "/assets/js/common-bundle-script.js": "/assets/js/common-bundle-script.js"
 }

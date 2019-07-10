@@ -37,3 +37,7 @@ Route::get('/home', function () {
 });
 
 });
+
+Route::get("/v2", function(){
+   return view("main");
+});
