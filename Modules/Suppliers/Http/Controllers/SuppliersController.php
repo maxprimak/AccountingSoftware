@@ -1,35 +1,29 @@
 <?php
 
-namespace Modules\Orders\Http\Controllers;
+namespace Modules\Suppliers\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
-class OrdersController extends Controller
+class SuppliersController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      * @return Response
      */
-    public function showRepairOrdersPage()
+    public function index()
     {
-        return view('orders::RepairOrders');
+        return view('suppliers::index');
     }
 
     /**
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function createRepairOrder()
+    public function create()
     {
-        return view('orders::CreateRepairOrders');
-    }
-
-    public function index(Request $request)
-    {
-        
+        return view('suppliers::create');
     }
 
     /**
@@ -49,7 +43,17 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        return view('orders::show');
+        return view('suppliers::show');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     * @param int $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        return view('suppliers::edit');
     }
 
     /**
