@@ -10,9 +10,71 @@ use Modules\Users\Entities\People;
 use Modules\Users\Entities\Role;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
+use Modules\Companies\Http\Requests\StoreCompanyRequest;
+use Modules\Companies\Http\Requests\UpdateCompanyRequest;
 
 class CompaniesController extends Controller
-{
+{   
+
+    /**
+     * Display a listing of the resource.
+     * @return Response
+     */
+    public function index()
+    {   
+        $companies = Company::all();
+        return view('companies::index')->with(compact('companies'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     * @return Response
+     */
+    public function create()
+    {
+        return view('companies::create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * @param Request $request
+     * @return Response
+     */
+    public function store(StoreCompanyRequest $request)
+    {   
+        $company = new Company();
+        $company = $company->store($request);
+
+        return response()->json($company);
+    }
+    
+    /**
+     * Update the specified resource in storage.
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function update(UpdateCompanyRequest $request, $id)
+    {
+        $company = Company::find($id);
+        $company = $company->storeUpdated($request);
+
+        return response()->json($company);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     * @param int $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        $company = Company::find($id);
+        return view('companies::edit')->with(compact('company'));
+    }
+
+
+    /////////////////////////DELETE THEN//////////////////////////////
     /**
      * Display a listing of the resource.
      * @return Response
@@ -82,25 +144,6 @@ class CompaniesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        return view('companies::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Show the specified resource.
      * @param int $id
      * @return Response
@@ -108,27 +151,6 @@ class CompaniesController extends Controller
     public function show($id)
     {
         return view('companies::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('companies::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**

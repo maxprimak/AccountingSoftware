@@ -9,9 +9,9 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import Buefy from 'buefy'
+import Icon from 'vue-awesome/components/Icon'
 import 'buefy/dist/buefy.css'
 import 'vue-awesome/icons'
-import Icon from 'vue-awesome/components/Icon'
 
 Vue.use(Buefy);
 
@@ -28,6 +28,7 @@ Vue.use(Buefy);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('new-repair', require('./components/NewRepairOrder.vue').default);
+Vue.component('companies-table', require('./components/CompaniesTableComponent.vue').default);
 Vue.component('v-icon', Icon)
 
 /**
