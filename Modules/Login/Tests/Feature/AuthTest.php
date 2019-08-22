@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use Modules\Login\Entities\Login;
+use Modules\Users\Entities\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 
 class AuthTest extends TestCase
 {
@@ -32,23 +34,26 @@ class AuthTest extends TestCase
 
     public function test_user_can_login_with_correct_credentials()
     {
-        $user = factory(Login::class)->create();
+        $login = factory(Login::class)->create();
         $response = $this->post('/login', [
-            'username' => $user->username,
+            'username' => $login->username,
             'password' => '123456789',
         ]);
+
+        $this->assertAuthenticated($guard = null);
         $response->assertRedirect('/dashboard');
-        $this->assertAuthenticatedAs($user);
+        $this->assertAuthenticatedAs($login);
     }
 
     public function test_email_sent_to_new_user_after_registration()
     {
         Notification::fake();
       
-        $user = factory(User::class)->create();
+        $login = factory(Login::class)->create();
       
         $response = $this->post('/register', [
-            'email' => $user->email,
+            // $login->sendEmailVerificationNotification()
         ]);
+        Notification::assertSentTo($login, SendEmailVerificationNotification::class);
     }
 }
