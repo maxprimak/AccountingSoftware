@@ -17,12 +17,13 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('login_id');
             $table->unsignedInteger('person_id');
-            $table->unsignedInteger('role_id');
+            //$table->unsignedInteger('role_id');
             $table->unsignedInteger('branch_id');
             $table->timestamps();
-            $table->foreign('login_id')->references('id')->on('logins');
-            $table->foreign('person_id')->references('id')->on('people');
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('login_id')->references('id')->on('logins')->onDelete('cascade');
+            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
+            //$table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            //$table->foreign('role_id')->references('id')->on('roles');
         });
 
         /* FOR FUTURE USE OF INDEXES
