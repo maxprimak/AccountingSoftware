@@ -16,7 +16,10 @@ class LoginDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(LoginsSeederTableSeeder::class);
+        //Create login data of user oliinykm95
+        factory('Modules\Login\Entities\Login')->create([
+            'username' => 'oliinykm95',
+        ]);
         
     }
 }

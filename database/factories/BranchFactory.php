@@ -6,8 +6,12 @@ use App\Model;
 use Faker\Generator as Faker;
 use Modules\Companies\Entities\Branch;
 
-$factory->define(Model::class, function (Faker $faker) {
+$factory->define(Branch::class, function (Faker $faker) {
     return [
-        //
+        'name' => $faker->unique()->word . ' branch',
+        'company_id' => 1,
+        'color' => '#F64272',
+        'address' => $faker->address,
+        'phone' => $faker->phoneNumber
     ];
 });

@@ -9,8 +9,8 @@ use Modules\Companies\Entities\Currency;
 $factory->define(Currency::class, function (Faker $faker) {
 
     return [
-        'name' => 'KZT',
-        'symbol' => 'Kazakhstan Tenge'
+        'name' => 'Kazakhstan Tenge',
+        'symbol' => 'KZT'
     ];
 
 });

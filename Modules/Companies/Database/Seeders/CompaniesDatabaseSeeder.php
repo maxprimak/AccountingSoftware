@@ -17,16 +17,14 @@ class CompaniesDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        //Users (ONLY TEMPORARY, DELETE THEN AND MOVE TO ANOTHER MODULES)
-        factory('Modules\Login\Entities\Login')->create(['username' => 'oliinykm95']);
-        factory('Modules\Users\Entities\People')->create();
-        factory('Modules\Users\Entities\User')->create();
-
         //Add currency (Kazakstan Tenge)
         factory('Modules\Companies\Entities\Currency')->create();
 
         //Create Company of oliinykm95
-        //TODO
+        factory('Modules\Companies\Entities\Company')->create();
+
+        //Create 5 Branches of this company
+        factory('Modules\Companies\Entities\Branch', 5)->create();
         
     }
 }

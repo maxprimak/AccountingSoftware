@@ -16,8 +16,17 @@ class UsersDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(PeopleDatabaseSeeder::class);
-        $this->call(RoleDatabaseTableSeeder::class);
-        $this->call(UserDatabaseTableSeeder::class);
+        //Create personal data for user oliinykm95
+        factory('Modules\Users\Entities\People')->create();
+
+        //Create user instance of oliinykm95
+        factory('Modules\Users\Entities\User')->create();
+
+        //TODO - roles
+        /*DB::table('roles')->insert([
+            ['name' => 'Head'],
+            ['name' => 'Sales Manager'],
+            ['name' => 'Tech']
+        ]);*/
     }
 }
