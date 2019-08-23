@@ -14,10 +14,10 @@ class UpdateCompanyRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {
+    {   
         return [
             'currency_id' => 'required',
-            'name' => 'required | unique:companies',
+            'name' => 'required | unique:companies,name,' . $this->route('company_id'),
             'address' => 'required',
             'phone' => 'required'
         ];
@@ -32,7 +32,7 @@ class UpdateCompanyRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
 
-        throw new HttpResponseException(response()->json($validator->errors()));
+        throw new HttpResponseException(response()->json($validator->errors()->all()[0]));
 
     }
 

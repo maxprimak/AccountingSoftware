@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use Modules\Users\Entities\People;
 use Modules\Users\Entities\Role;
 use Modules\Companies\Entities\Company;
+use Modules\Companies\Entities\Currency;
 use Modules\Companies\Entities\Branch;
 use Modules\Companies\Http\Requests\StoreCompanyRequest;
 use Modules\Companies\Http\Requests\UpdateCompanyRequest;
@@ -22,8 +23,11 @@ class CompaniesController extends Controller
      */
     public function index()
     {   
-        $companies = Company::all();
-        return view('companies::index')->with(compact('companies'));
+        $company = Company::all()->first();
+        $currencies = Currency::all();
+        $branches = Branch::where('company_id', $company->id)->get();
+
+        return view('companies::companies.index')->with(compact('company', 'currencies', 'branches'));
     }
 
     /**
@@ -32,7 +36,7 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        return view('companies::create');
+        return view('companies::companies.create');
     }
 
     /**
@@ -59,7 +63,7 @@ class CompaniesController extends Controller
         $company = Company::find($id);
         $company = $company->storeUpdated($request);
 
-        return response()->json($company);
+        return response()->json('Successfully updated!');
     }
 
     /**
@@ -70,7 +74,7 @@ class CompaniesController extends Controller
     public function edit($id)
     {
         $company = Company::find($id);
-        return view('companies::edit')->with(compact('company'));
+        return view('companies::companies.edit')->with(compact('company'));
     }
 
 

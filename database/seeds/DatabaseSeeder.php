@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Modules\Login\Database\Seeders\LoginDatabaseSeeder;
+use Modules\Users\Database\Seeders\UsersDatabaseSeeder;
+use Modules\Companies\Database\Seeders\CompaniesDatabaseSeeder;
+use Modules\Employees\Database\Seeders\EmployeesDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,23 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('roles')->insert([
-            ['name' => 'Head'],
-            ['name' => 'Sales Manager'],
-            ['name' => 'Tech']
-        ]);
-
-        DB::table('logins')->insert([
-            ['username' => 'person',
-            'password' => bcrypt('123456789'),
-            'email' => 'email@mail.com']
-        ]);
-
-        DB::table('people')->insert([
-            ['name' => 'Max Mustermann',
-            'phone' => '+43 333 44 55 712',
-            'address' => 'Brigittaplatz 14, Vienna']
-        ]);
-
+        $this->call(CompaniesDatabaseSeeder::class);
+        $this->call(LoginDatabaseSeeder::class);
+        $this->call(UsersDatabaseSeeder::class);
+        $this->call(EmployeesDatabaseSeeder::class);
+        
     }
 }

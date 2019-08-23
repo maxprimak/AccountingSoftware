@@ -28,8 +28,15 @@ Vue.use(Buefy);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('new-repair', require('./components/NewRepairOrder.vue').default);
-Vue.component('companies-table', require('./components/CompaniesTableComponent.vue').default);
+
+//Companies module
+Vue.component('companies-table', require('./components/Companies/CompaniesTableComponent.vue').default);
+Vue.component('branches-table', require('./components/Companies/BranchesTableComponent.vue').default);
+Vue.component('create-branch', require('./components/Companies/CreateBranchComponent.vue').default);
 Vue.component('v-icon', Icon)
+
+Vue.prototype.$colors = ['#F64272', '#F6648B', '#F493A7', '#F891A6', '#FFCCD5'];
+Vue.prototype.$color = '#F64272';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
