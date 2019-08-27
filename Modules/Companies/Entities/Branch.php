@@ -3,9 +3,6 @@
 namespace Modules\Companies\Entities;
 use Modules\Companies\Http\Requests\StoreBranchRequest;
 use Modules\Companies\Http\Requests\UpdateBranchRequest;
-
-use Modules\Companies\Http\Requests\StoreBranchRequest;
-use Modules\Companies\Http\Requests\UpdateBranchRequest;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
