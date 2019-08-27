@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Users\Entities\People;
-use Modules\Users\Entities\Role;
+use Modules\Employees\Entities\Role;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Currency;
 use Modules\Companies\Entities\Branch;

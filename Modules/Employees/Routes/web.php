@@ -11,6 +11,6 @@
 |
 */
 
-Route::prefix('employees')->group(function() {
-    Route::get('/', 'EmployeesController@index');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/employees', 'EmployeesController');
 });
