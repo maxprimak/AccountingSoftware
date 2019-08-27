@@ -13,15 +13,16 @@ class UpdateEmployeeRequest extends FormRequest
      *
      * @return array
      */
+
     public function rules()
     {
         return [
-            'new_full_name' => 'required',
-            'new_username' => 'required|min:6|unique:logins,username,',
-            'new_password' => 'required|min:8',
-            're_password' => 'required|same:new_password',
-            'new_email' => 'required|email|unique:logins,email',
-            'new_phone' => 'required|unique:people,phone',  
+            'full_name' => 'required',
+            'username' => 'required|min:6|unique:logins,username,' . $_REQUEST['login_id'],
+            'password' => 'required|min:8',
+            're_password' => 'required|same:password',
+            'email' => 'required|email|unique:logins,email,' . $_REQUEST['login_id'],
+            'phone' => 'required|unique:people,phone,' . $_REQUEST['person_id'],  
             'role_id' => 'required',
             'branch_id' => 'required'
         ];
@@ -32,11 +33,12 @@ class UpdateEmployeeRequest extends FormRequest
      *
      * @return array
      */
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json($validator->errors()));
+    // protected function failedValidation(Validator $validator)
+    // {
+    //     dd($_REQUEST['login_id']);
+    //     throw new HttpResponseException(response()->json($validator->errors()));
 
-    }
+    // }
 
     /**
      * Determine if the user is authorized to make this request.

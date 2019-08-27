@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Modules\Users\Entities\People;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
@@ -61,31 +62,37 @@ class EmployeesController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-        // new Person
-        $person = new People;
-        $person->name = $request->new_full_name;
-        $person->phone = $request->new_phone;
-        $person->address = $request->new_address;
-        $person->save();
-        // new Login
-        $login = new Login;
-        $login->username = $request->new_username;
-        $login->password = Hash::make($request->new_password);
-        $login->email = $request->new_email;
-        $login->save();
-        // new User
-        $user = new User;
-        $user->login_id = $login->id;
-        $user->person_id = $person->id;
-        $user->branch_id = $request->branch_id;
-        $user->save();
-        //new employee
-        $employee = new Employee;
-        $employee->user_id = $user->id;
-        $employee->role_id = $request->role_id;
-        $employee->save();
+        $input = Input::all();
+        $validation = Validator::make($input, $request->rules());
 
-        return response()->json('create employee successfully', $employee);
+        if ($validation->passes()){
+
+            // new Person
+            $person = new People;
+            $person->name = $request->new_full_name;
+            $person->phone = $request->new_phone;
+            $person->address = $request->new_address;
+            $person->save();
+            // new Login
+            $login = new Login;
+            $login->username = $request->new_username;
+            $login->password = Hash::make($request->new_password);
+            $login->email = $request->new_email;
+            $login->save();
+            // new User
+            $user = new User;
+            $user->login_id = $login->id;
+            $user->person_id = $person->id;
+            $user->branch_id = $request->branch_id;
+            $user->save();
+            //new employee
+            $employee = new Employee;
+            $employee->user_id = $user->id;
+            $employee->role_id = $request->role_id;
+            $employee->save();
+        }
+
+        return response()->json('create employee successfully');
     }
 
     /**
@@ -110,7 +117,7 @@ class EmployeesController extends Controller
                         ->leftjoin('people', 'people.id', '=', 'users.person_id')
                         // ->where('employees.id',$id)
                         ->select('employees.id', 'employees.user_id', 'employees.role_id', 'users.branch_id',
-                                 'logins.username', 'logins.password', 'logins.email', 'people.name',
+                                 'logins.username', 'users.login_id', 'users.person_id', 'logins.password', 'logins.email', 'people.name',
                                  'people.phone')
                         ->find($id);
                         // dd($e);
@@ -129,27 +136,30 @@ class EmployeesController extends Controller
         $user = Employee::join('users', 'users.id', '=', 'employees.user_id')
                                 ->select('users.id', 'employees.role_id', 'users.login_id', 'users.person_id')
                                 ->find($id);
+        $input = Input::all();
+        $validation = Validator::make($input, $request->rules());
 
-        // dd($user);
-        // update Person
-        People::find($user->person_id)->update([
-            'name' => $request->new_full_name,
-            'phone' => $request->new_phone,
-            'address' => $request->new_address
-        ]);
-        // update Login
-        Login::find($user->login_id)->update([
-            'username' => $request->new_username,
-            'password' => Hash::make($request->new_password),
-            'email' => $request->new_email
-        ]);
+        if ($validation->passes()){
+            // update Person
+            People::find($user->person_id)->update([
+                'name' => $request->full_name,
+                'phone' => $request->phone,
+                'address' => $request->address
+            ]);
+            // update Login
+            Login::find($user->login_id)->update([
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+                'email' => $request->email
+            ]);
 
-        // update User
-        User::find($user->id)->update(['branch_id' => $request->new_branch]);
-        
-        //update Employee
-        Employee::find($id)->update(['role_id' => $request->role_id]);
+            // update User
+            User::find($user->id)->update(['branch_id' => $request->branch_id]);
+            
+            //update Employee
+            Employee::find($id)->update(['role_id' => $request->role_id]);
 
+        }
         return response()->json('Update employee successfully');
     }
 
@@ -160,6 +170,18 @@ class EmployeesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = Employee::join('users', 'users.id', '=', 'employees.user_id')
+                                ->select('users.id', 'users.login_id', 'users.person_id')
+                                ->find($id);
+
+        Employee::find($id)->delete();
+
+        User::find($user->id)->delete();
+
+        Login::find($user->login_id)->delete();
+
+        People::find($user->person_id)->delete();
+
+        return response()->json('delete employee successfully');
     }
 }
