@@ -12,6 +12,7 @@
 */
 Route::middleware(['auth'])->group(function () {
 
+    //Will be deleted soon from here
     Route::get('/reg_steps', 'CompaniesController@showRegSteps');
     Route::post('/reg_steps/submit', 'CompaniesController@submitRegSteps');
     Route::get('/add_employees/{id}', 'CompaniesController@showAddEmployees');
