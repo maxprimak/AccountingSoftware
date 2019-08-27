@@ -11,6 +11,8 @@ use Modules\Users\Entities\Role;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Currency;
 use Modules\Companies\Entities\Branch;
+use Modules\Users\Entities\User;
+use Modules\Login\Entities\Login;
 use Modules\Companies\Http\Requests\StoreCompanyRequest;
 use Modules\Companies\Http\Requests\UpdateCompanyRequest;
 
@@ -23,8 +25,12 @@ class CompaniesController extends Controller
      */
     public function index()
     {   
-        $company = Company::all()->first();
+        $user = User::where('login_id', auth()->user()->id)->first();
+        $branch_of_user = Branch::find($user->branch_id);
+        $company = Company::find($branch_of_user->company_id);
+
         $currencies = Currency::all();
+        
         $branches = Branch::where('company_id', $company->id)->get();
 
         return view('companies::companies.index')->with(compact('company', 'currencies', 'branches'));

@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->foreign('login_id')->references('id')->on('logins')->onDelete('cascade');
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
-            //$table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             //$table->foreign('role_id')->references('id')->on('roles');
         });
 

@@ -33,6 +33,10 @@ Vue.component('new-repair', require('./components/NewRepairOrder.vue').default);
 Vue.component('companies-table', require('./components/Companies/CompaniesTableComponent.vue').default);
 Vue.component('branches-table', require('./components/Companies/BranchesTableComponent.vue').default);
 Vue.component('create-branch', require('./components/Companies/CreateBranchComponent.vue').default);
+
+//Registration module
+Vue.component('registration', require('./components/Registration/RegistrationComponent.vue').default);
+
 Vue.component('v-icon', Icon)
 
 Vue.prototype.$colors = ['#F64272', '#F6648B', '#F493A7', '#F891A6', '#FFCCD5'];
