@@ -20,6 +20,6 @@ class LoginDatabaseSeeder extends Seeder
         factory('Modules\Login\Entities\Login')->create([
             'username' => 'oliinykm95',
         ]);
-        
+                
     }
 }
