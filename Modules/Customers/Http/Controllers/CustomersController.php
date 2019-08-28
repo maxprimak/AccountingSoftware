@@ -25,7 +25,10 @@ class CustomersController extends Controller
                                   ->firstOrFail();
           $company_id = $company->company_id;
 
-
+          $branch_ids = UserHasBranch::where('user_id',auth()->user()->id)->pluck('branch_id')->toArray();
+          $customer_ids = CustomerHasBranch::whereIn('branch_id',$branch_ids)->pluck('customer_id')->toArray();
+          $customers = Customer::whereIn('id',$customer_ids)->get();
+          dd($customers);
         } catch (\Exception $e) {
           dd($company);
         }

@@ -19,12 +19,14 @@ class CreateCustomersTable extends Migration
             $table->string('address');
             $table->unsignedInteger('stars_number');
             $table->unsignedInteger('type_id');
+            $table->unsignedInteger('company_id');
             $table->timestamps();
         });
 
         Schema::table('customers', function($table) {
           $table->foreign('person_id')->references('id')->on('people');
           $table->foreign('type_id')->references('id')->on('customer_types');
+          $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 
