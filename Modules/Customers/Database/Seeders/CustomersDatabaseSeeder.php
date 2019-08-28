@@ -16,6 +16,10 @@ class CustomersDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call("OthersTableSeeder");
+        //Create 5 Customers
+        factory('Modules\Customers\Entities\Customer')->create();
+
+        factory('Modules\Customers\Entities\CustomerHasBranch')->create();
+
     }
 }

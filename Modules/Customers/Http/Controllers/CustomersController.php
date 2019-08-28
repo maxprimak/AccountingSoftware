@@ -8,6 +8,9 @@ use Modules\Users\Entities\People;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
 use Modules\Users\Entities\User;
+use Modules\Users\Entities\UserHasBranch;
+use Modules\Customers\Entities\Customer;
+use Modules\Customers\Entities\CustomerHasBranch;
 use Illuminate\Routing\Controller;
 
 class CustomersController extends Controller
@@ -28,15 +31,12 @@ class CustomersController extends Controller
           $branch_ids = UserHasBranch::where('user_id',auth()->user()->id)->pluck('branch_id')->toArray();
           $customer_ids = CustomerHasBranch::whereIn('branch_id',$branch_ids)->pluck('customer_id')->toArray();
           $customers = Customer::whereIn('id',$customer_ids)->get();
-          dd($customers);
+          
         } catch (\Exception $e) {
-          dd($company);
+
         }
 
-
-
-
-        return view('customers::index', compact('array_test'));
+        return view('customers::index', compact('customers'));
     }
 
     /**
