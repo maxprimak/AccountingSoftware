@@ -41,6 +41,8 @@ Vue.component('employees-table', require('./components/Employees/EmployeesTableC
 //Registration module
 Vue.component('registration', require('./components/Registration/RegistrationComponent.vue').default);
 
+Vue.component('customers-table', require('./components/Customers/CustomersTableComponent.vue').default);
+
 Vue.component('v-icon', Icon)
 
 Vue.prototype.$colors = ['#F64272', '#F6648B', '#F493A7', '#F891A6', '#FFCCD5'];
