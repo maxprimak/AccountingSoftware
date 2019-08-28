@@ -4,15 +4,15 @@
 
     <div class="form-group">
         <label for="password">user id</label>
-        <input name="user_id" id="password" class="form-control form-control-rounded" type="text" value="{{ $e->user_id }}" hidden>
+        <input name="user_id" id="password" class="form-control form-control-rounded" type="text" value="{{ $e->user_id }}">
     </div>
     <div class="form-group">
         <label for="password">login id</label>
-        <input name="login_id" id="password" class="form-control form-control-rounded" type="text" value="{{ $e->login_id }}" hidden>
+        <input name="login_id" id="password" class="form-control form-control-rounded" type="text" value="{{ $e->login_id }}" >
     </div>
     <div class="form-group">
         <label for="password">people id</label>
-        <input name="person_id" id="password" class="form-control form-control-rounded" type="text" value="{{ $e->person_id }}" hidden>
+        <input name="person_id" id="password" class="form-control form-control-rounded" type="text" value="{{ $e->person_id }}">
     </div>
         <div class="form-group">
             <label for="username">new_full_name</label>

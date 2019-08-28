@@ -14,9 +14,10 @@ class Employee extends Model
         parent::__construct($attributes);
     }
 
-    public function store(StoreEmployeeRequest $request){
-        $this->user_id = $request->user_id;
-        $this->role_id = $request->role_id;
+    public function store($request){
+        // dd($request['user_id']);
+        $this->user_id = $request['user_id'];
+        $this->role_id = $request['role_id'];
         $this->save();
 
         return $this;
