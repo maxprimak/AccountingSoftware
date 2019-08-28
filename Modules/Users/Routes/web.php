@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/employees', 'EmployeesController@index');
-Route::patch('/employees/edit', 'EmployeesController@edit');
-Route::patch('/employees/addEmployee', 'EmployeesController@create');
+// Route::get('/employees', 'EmployeesController@index');
+// Route::patch('/employees/edit', 'EmployeesController@edit');
+// Route::patch('/employees/addEmployee', 'EmployeesController@create');
 
 
 // Route::prefix('users')->group(function() {

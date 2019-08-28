@@ -21,6 +21,8 @@ mix
 
 /* JS */
 
+mix
+    .js('resources/assets/js/app.js', 'public/vue-assets/js/app.js');
 /* Laravel JS */
 
 

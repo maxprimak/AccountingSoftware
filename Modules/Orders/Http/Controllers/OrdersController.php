@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 
 class OrdersController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      * @return Response
@@ -24,6 +25,11 @@ class OrdersController extends Controller
     public function createRepairOrder()
     {
         return view('orders::CreateRepairOrders');
+    }
+
+    public function index(Request $request)
+    {
+        
     }
 
     /**
@@ -44,16 +50,6 @@ class OrdersController extends Controller
     public function show($id)
     {
         return view('orders::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('orders::edit');
     }
 
     /**

@@ -9,9 +9,9 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import Buefy from 'buefy'
+import Icon from 'vue-awesome/components/Icon'
 import 'buefy/dist/buefy.css'
 import 'vue-awesome/icons'
-import Icon from 'vue-awesome/components/Icon'
 
 Vue.use(Buefy);
 
@@ -28,7 +28,23 @@ Vue.use(Buefy);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('new-repair', require('./components/NewRepairOrder.vue').default);
+
+//Companies module
+Vue.component('companies-table', require('./components/Companies/CompaniesTableComponent.vue').default);
+Vue.component('branches-table', require('./components/Companies/BranchesTableComponent.vue').default);
+Vue.component('create-branch', require('./components/Companies/CreateBranchComponent.vue').default);
+
+//Employees module
+Vue.component('employees-table', require('./components/Employees/EmployeesTableComponent.vue').default);
+// Vue.component('create-employee', require('./components/Employees/CreateEmployeeComponent.vue').default);
+
+//Registration module
+Vue.component('registration', require('./components/Registration/RegistrationComponent.vue').default);
+
 Vue.component('v-icon', Icon)
+
+Vue.prototype.$colors = ['#F64272', '#F6648B', '#F493A7', '#F891A6', '#FFCCD5'];
+Vue.prototype.$color = '#F64272';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
