@@ -53,15 +53,16 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        // $branches = Branch::where('company_id', )->all('id','name');
-        // $roles = Role::all('id', 'name');
+        $company_id = User::join('branches', 'branches.id', '=', 'users.branch_id')
+                                ->select('branches.company_id')
+                                ->where('users.login_id',auth()->user()->id)
+                                ->first();
+        $company_id = $company_id->company_id;
 
+        $branchs = Branch::where('company_id', $company_id)->get('id','name');
+        $roles = Role::all('id', 'name');
 
-        return view('employees::test');
-        // return response()->json([
-        //     $branches, $roles]);
-
-        // return view('employees::create');
+        return view('employees::create', compact('branchs', 'roles'));
     }
 
     /**
