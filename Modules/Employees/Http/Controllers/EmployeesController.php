@@ -28,17 +28,19 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        
-        $user = new User;
-        $company_id = $user->getCompany(auth()->user()->id);
-        // dd($company_id);
+        $company_id = User::join('branches', 'branches.id', '=', 'users.branch_id')
+                                ->select('branches.company_id')
+                                ->where('users.login_id',auth()->user()->id)
+                                ->first();
+        $company_id = $company_id->company_id;
+
         $employees = Employee::join('users', 'users.id', '=', 'employees.user_id')
                                 ->join('logins', 'logins.id', '=', 'users.login_id')
                                 ->join('people', 'people.id', '=', 'users.person_id')
                                 ->join('branches', 'branches.id', '=', 'users.branch_id')
                                 ->where('branches.company_id',$company_id)  
                                 ->select('employees.id', 'employees.user_id', 'employees.role_id', 'users.branch_id',
-                                'logins.username', 'users.login_id', 'users.person_id', 'logins.password', 'logins.email', 'people.name',
+                                'logins.username', 'users.login_id', 'users.person_id', 'logins.email', 'people.name',
                                 'people.phone')
                                 ->paginate(20);
         dd($employees);
@@ -69,11 +71,6 @@ class EmployeesController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-        // $input = Input::all();
-        // $validation = Validator::make($input, $request->rules());
-
-        // if ($validation->passes()){
-            // new Person
             $person = new People;
             $person->name = $request->new_full_name;
             $person->phone = $request->new_phone;
@@ -91,14 +88,10 @@ class EmployeesController extends Controller
             $user->person_id = $person->id;
             $user->branch_id = $request->branch_id;
             $user->save();
+
             //new employee
-            // $employee = new Employee;
-            // $employee->user_id = $user->id;
-            // $employee->role_id = $request->role_id;
-            // $employee->save();
             $employee = new Employee();
             $employee = $employee->store(['user_id' => $user->id,'role_id' => $request->role_id]);
-        // }
 
         return response()->json($employee);
     }
@@ -120,8 +113,12 @@ class EmployeesController extends Controller
      */
     public function edit($id)
     {
-        $user = new User;
-        $company_id = $user->getCompany(auth()->user()->id);
+        $company_id = User::join('branches', 'branches.id', '=', 'users.branch_id')
+                                ->select('branches.company_id')
+                                ->where('users.login_id',auth()->user()->id)
+                                ->first();
+        $company_id = $company_id->company_id;
+
         $e = Employee::join('users', 'users.id', '=', 'employees.user_id')
                         ->join('logins', 'logins.id', '=', 'users.login_id')
                         ->join('people', 'people.id', '=', 'users.person_id')
@@ -146,33 +143,27 @@ class EmployeesController extends Controller
     {
         
         $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
-                                ->select('users.id', 'employees.role_id', 'users.login_id', 'users.person_id')
+                                ->select('employees.user_id', 'employees.role_id', 'users.login_id', 'users.person_id')
                                 ->find($id);
 
-        //check employee is auth own company
-        $user = new User;
-        $auth_company = $user->getCompany(auth()->user()->id);
-        $user_company = $user->getCompany($employee->login_id);
+        People::find($employee->person_id)->update([
+            'name' => $request->full_name,
+            'phone' => $request->phone,
+            'address' => $request->address
+        ]);
+        // update Login
+        Login::find($employee->login_id)->update([
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'email' => $request->email
+        ]);
 
-        if($auth_company == $user_company){
-            People::find($employee->person_id)->update([
-                'name' => $request->full_name,
-                'phone' => $request->phone,
-                'address' => $request->address
-            ]);
-            // update Login
-            Login::find($employee->login_id)->update([
-                'username' => $request->username,
-                'password' => Hash::make($request->password),
-                'email' => $request->email
-            ]);
-
-            // update User
-            User::find($employee->id)->update(['branch_id' => $request->branch_id]);
-            
-            //update Employee
-            Employee::find($id)->update(['role_id' => $request->role_id]);
-        }
+        // update User
+        User::find($employee->user_id)->update(['branch_id' => $request->branch_id]);
+        
+        //update Employee
+        $employee = new Employee();
+        $employee = $employee->storeUpdated(['id' => $id, 'role_id' => $request->role_id]);
 
         return response()->json('Update employee successfully');
     }
@@ -188,19 +179,9 @@ class EmployeesController extends Controller
                                 ->select('employees.user_id', 'users.login_id', 'users.person_id')
                                 ->find($id);
 
-        $user = new User;
-        $auth_company = $user->getCompany(auth()->user()->id);
-        $user_company = $user->getCompany($user->login_id);
-        if($auth_company == $user_company){
-            dd("noooooooooooo");
-        }else{
-            dd($auth_company, $user_company);
-        }
-        // dd($user->login_id);
-
         Employee::find($id)->delete();
 
-        User::find($employee->id)->delete();
+        User::find($employee->user_id)->delete();
 
         Login::find($employee->login_id)->delete();
 
