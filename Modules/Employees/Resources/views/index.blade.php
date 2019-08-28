@@ -1,9 +1,11 @@
-@extends('employees::layouts.master')
+@extends('layouts.master')
+<head>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <script src="{{asset('/assets/js/laravel/app.js')}}" defer></script>
+</head>
 
-@section('content')
-    <h1>Hello World</h1>
-
-    <p>
-        This view is loaded from module: {!! config('employees.name') !!}
-    </p>
-@stop
+@section('main-content')
+<div id="app">
+    <employees-table :employees="{{ $employees }}"></employees-table>
+</div>
+@endsection

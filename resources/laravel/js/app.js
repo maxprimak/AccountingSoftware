@@ -34,6 +34,10 @@ Vue.component('companies-table', require('./components/Companies/CompaniesTableC
 Vue.component('branches-table', require('./components/Companies/BranchesTableComponent.vue').default);
 Vue.component('create-branch', require('./components/Companies/CreateBranchComponent.vue').default);
 
+//Employees module
+Vue.component('employees-table', require('./components/Employees/EmployeesTableComponent.vue').default);
+// Vue.component('create-employee', require('./components/Employees/CreateEmployeeComponent.vue').default);
+
 //Registration module
 Vue.component('registration', require('./components/Registration/RegistrationComponent.vue').default);
 

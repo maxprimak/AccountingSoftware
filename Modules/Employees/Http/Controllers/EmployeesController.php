@@ -43,8 +43,8 @@ class EmployeesController extends Controller
                                 'logins.username', 'users.login_id', 'users.person_id', 'logins.email', 'people.name',
                                 'people.phone')
                                 ->paginate(20);
-        dd($employees);
-        return response()->json($employees);
+
+        return view('employees::index')->with(compact('employees'));
     }
 
     /**
@@ -129,7 +129,6 @@ class EmployeesController extends Controller
                                  'logins.username', 'users.login_id', 'users.person_id', 'logins.password', 'logins.email', 'people.name',
                                  'people.phone')
                         ->find($id);
-        if($e==null) dd('nooo');
         return view('employees::update', compact('e'));
         // return view('employees::edit');
     }
