@@ -33,7 +33,7 @@
                 </b-table-column>
 
                 <b-table-column field="role" label="Role" sortable>
-                    {{ props.row.role_id }}
+                    {{ props.row.role_name }}
                 </b-table-column>
 
                 <b-table-column field="full_name" label="Full name" sortable>
@@ -76,11 +76,11 @@
 
                         <b-field horizontal >
                             <b-field label="Password">
-                                <b-input  type="password" name="password" password-reveal expanded></b-input>
+                                <b-input v-model="password" type="password" name="password" password-reveal expanded></b-input>
                             </b-field>
 
                             <b-field label="Confirm password">
-                                <b-input  type="password" name="re_password" password-reveal expanded></b-input>
+                                <b-input v-model="re_password" type="password" name="re_password" password-reveal expanded></b-input>
                             </b-field>
                         </b-field>
                         
@@ -115,12 +115,9 @@
                             </b-field>
                         </b-field>
 
-                        <b-input v-model="props.row.login_id" expanded></b-input>
-                        <b-input v-model="props.row.person_id" expanded></b-input>
-
                         <b-field horizontal><!-- Label left empty for spacing -->
                             <p class="control">
-                                <b-button @click="updateEmployee(props.row.id , props.row)" native-type="button" type="is-primary">Save</b-button>
+                                <b-button @click="updateEmployee(props.row.id, props.row)" native-type="button" type="is-primary">Save</b-button>
                             </p>
                         </b-field>
                     <!-- </form> -->
@@ -143,6 +140,8 @@ import { Dialog } from 'buefy/dist/components/dialog';
             return {
                 data: this.employees,
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                password: '',
+                re_password: ''
             }
         },
         methods: {
@@ -155,7 +154,7 @@ import { Dialog } from 'buefy/dist/components/dialog';
                     full_name: row.name,
                     username: row.username,
                     password: this.password,
-                    re_password: row.re_password,
+                    re_password: this.re_password,
                     email: row.email,
                     phone: row.phone,
                     role_id: row.role_id,
@@ -166,6 +165,8 @@ import { Dialog } from 'buefy/dist/components/dialog';
                     
                 }).then(response => {
                     Toast.open(response.data.message);
+                    this.password = '';
+                    this.re_password = '';
                 }).catch(function (error) {
                     Toast.open('Error happened! Please contact the support team')
                 });

@@ -38,10 +38,11 @@ class EmployeesController extends Controller
                                 ->join('logins', 'logins.id', '=', 'users.login_id')
                                 ->join('people', 'people.id', '=', 'users.person_id')
                                 ->join('branches', 'branches.id', '=', 'users.branch_id')
+                                ->join('roles', 'roles.id', '=', 'employees.role_id')
                                 ->where('branches.company_id',$company)  
                                 ->select('employees.id', 'employees.user_id', 'employees.role_id', 'users.branch_id',
                                 'logins.username', 'users.login_id', 'users.person_id', 'logins.email', 'people.name',
-                                'people.phone', 'people.address')
+                                'people.phone', 'people.address', 'roles.name AS role_name')
                                 ->get();
                             
         $branchs = Branch::where('company_id', $company)->get();
@@ -151,7 +152,7 @@ class EmployeesController extends Controller
         User::find($employee->user_id)->update(['branch_id' => $request->branch_id]);
         
         //update Employee
-        $employee = new Employee();
+        $employee = Employee::find($id);
         $employee = $employee->storeUpdated($request);
 
         return response()->json(['message' => 'Successfully updated!']);

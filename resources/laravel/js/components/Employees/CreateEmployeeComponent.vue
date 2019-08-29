@@ -114,7 +114,7 @@ export default {
             })
       },
       clearForm: function(){
-          this.name = '',
+            this.name = '',
             this.email = '',
             this.username = '',
             this.password = '',
