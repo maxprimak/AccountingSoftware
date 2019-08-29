@@ -76,11 +76,11 @@
 
                         <b-field horizontal >
                             <b-field label="Password">
-                                <b-input v-model="props.row.password" type="password" name="password" password-reveal expanded></b-input>
+                                <b-input  type="password" name="password" password-reveal expanded></b-input>
                             </b-field>
 
                             <b-field label="Confirm password">
-                                <b-input v-model="props.row.password" type="password" name="re_password" password-reveal expanded></b-input>
+                                <b-input  type="password" name="re_password" password-reveal expanded></b-input>
                             </b-field>
                         </b-field>
                         
@@ -94,13 +94,7 @@
                                     <option v-for="branch in branchs" :value="branch.id" :key="branch.name">{{ branch.name }}</option>
                                 </b-select>
                             </b-field>
-                            
-                            <b-field label="Role">
-                                <b-select v-model="props.row.role_id" name="role_id">
-                                    <option v-for="role in roles" :value="role.id" :key="role.name">{{ role.name }}</option>
-                                </b-select>
-                            </b-field>
-
+          
                         </b-field>
 
                         <b-field horizontal>
@@ -108,13 +102,21 @@
                                 <b-input name="email" v-model="props.row.email" expanded></b-input>
                             </b-field>
                             
+                            <b-field label="Role">
+                                <b-select v-model="props.row.role_id" name="role_id">
+                                    <option v-for="role in roles" :value="role.id" :key="role.name">{{ role.name }}</option>
+                                </b-select>
+                            </b-field>
+                        </b-field>
+
+                        <b-field horizontal>
                             <b-field label="Address">
                                 <b-input name="address" v-model="props.row.address" expanded></b-input>
                             </b-field>
                         </b-field>
 
-                        <b-input name="login" v-model="props.row.login_id" expanded hidden></b-input>
-                        <b-input name="login" v-model="props.row.person_id" expanded hidden></b-input>
+                        <b-input v-model="props.row.login_id" expanded></b-input>
+                        <b-input v-model="props.row.person_id" expanded></b-input>
 
                         <b-field horizontal><!-- Label left empty for spacing -->
                             <p class="control">
@@ -149,7 +151,7 @@ import { Dialog } from 'buefy/dist/components/dialog';
             },
 
             updateEmployee(employee_id, row){
-                axios.post('/employees/'+employee_id, {
+                axios.post('employees/'+employee_id, {
                     full_name: row.name,
                     username: row.username,
                     password: this.password,

@@ -18,11 +18,11 @@ class UpdateEmployeeRequest extends FormRequest
     {
         return [
             'full_name' => 'required',
-            'username' => 'required|min:6|unique:logins,username,' . $_REQUEST['login_id'],
+            'username' => 'required|min:6|unique:logins,username,',
             'password' => 'required|min:8',
             're_password' => 'required|same:password',
-            'email' => 'required|email|unique:logins,email,' . $_REQUEST['login_id'],
-            'phone' => 'required|unique:people,phone,' . $_REQUEST['person_id'],  
+            'email' => 'required|email|unique:logins,email,',
+            'phone' => 'required|unique:people,phone,',
             'role_id' => 'required',
             'branch_id' => 'required'
         ];
@@ -35,7 +35,8 @@ class UpdateEmployeeRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        // dd($_REQUEST);
+        // dd($_REQUEST['login_id']);
+        dd($this->route('login_id'));
         throw new HttpResponseException(response()->json([
             'error' => $validator->errors()->all()[0],
             'message' => $validator->errors()->all()[0]

@@ -118,23 +118,7 @@ class EmployeesController extends Controller
      */
     public function edit($id)
     {
-        $company = User::join('branches', 'branches.id', '=', 'users.branch_id')
-                                ->select('branches.company_id')
-                                ->where('users.login_id',auth()->user()->id)
-                                ->first();
-        $company = $company->company_id;
-
-        $e = Employee::join('users', 'users.id', '=', 'employees.user_id')
-                        ->join('logins', 'logins.id', '=', 'users.login_id')
-                        ->join('people', 'people.id', '=', 'users.person_id')
-                        ->join('branches', 'branches.id', '=', 'users.branch_id')
-                        ->where('branches.company_id', $company)
-                        ->select('employees.id', 'employees.user_id', 'employees.role_id', 'users.branch_id',
-                                 'logins.username', 'users.login_id', 'users.person_id', 'logins.password', 'logins.email', 'people.name',
-                                 'people.phone')
-                        ->where('employees.id',$id)
-                        ->firstOrFail();
-        return view('employees::edit', compact('e'));
+        // return view('employees::edit');
     }
 
     /**
@@ -145,7 +129,7 @@ class EmployeesController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, $id)
     {
-        dd($request);
+        // dd($request);
 
         $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
                                 ->select('employees.user_id', 'employees.role_id', 'users.login_id', 'users.person_id')

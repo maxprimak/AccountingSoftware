@@ -36,9 +36,7 @@
                     </b-field>
 
                     <b-field grouped position="is-centered">
-                        <b-field label="Address">
-                            <b-input v-model="address"></b-input>
-                        </b-field>
+                        
                         <b-field label="Branch">
                             <b-select name="branch_id" v-model="branch_id">
                                 <option v-for="branch in branchs" :value="branch.id" :key="branch.name">{{ branch.name }}</option>
@@ -48,6 +46,12 @@
                             <b-select name="role_id" v-model="role_id">
                                 <option v-for="role in roles" :value="role.id" :key="role.name">{{ role.name }}</option>
                             </b-select>
+                        </b-field>
+                    </b-field>
+
+                    <b-field grouped position="is-centered">
+                        <b-field label="Address">
+                            <b-input v-model="address"></b-input>
                         </b-field>
                     </b-field>
                     
