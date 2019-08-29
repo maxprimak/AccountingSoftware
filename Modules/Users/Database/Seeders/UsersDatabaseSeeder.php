@@ -22,6 +22,9 @@ class UsersDatabaseSeeder extends Seeder
         //Create user instance of oliinykm95
         factory('Modules\Users\Entities\User')->create();
 
+        factory('Modules\Users\Entities\UserHasBranch')->create();
+
+
         //TODO - roles
         /*DB::table('roles')->insert([
             ['name' => 'Head'],
