@@ -22,8 +22,10 @@ class Employee extends Model
         return $this;
     }
 
-    public function storeUpdated($request){
-        $this::find($request['id'])->update(['role_id' => $request['role_id']]);
+    public function storeUpdated(UpdateEmployeeRequest $request){
+        // $this::find($request['id'])->update(['role_id' => $request['role_id']]);
+        $this->role_id = $request->role_id;
+        $this->save();
 
         return $this;
     }

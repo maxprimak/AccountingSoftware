@@ -33,12 +33,12 @@ class UpdateEmployeeRequest extends FormRequest
      *
      * @return array
      */
-    // protected function failedValidation(Validator $validator)
-    // {
-    //     dd($_REQUEST['login_id']);
-    //     throw new HttpResponseException(response()->json($validator->errors()));
+    protected function failedValidation(Validator $validator)
+    {
+        // dd($_REQUEST);
+        throw new HttpResponseException(response()->json($validator->errors()->all()[0]));
 
-    // }
+    }
 
     /**
      * Determine if the user is authorized to make this request.

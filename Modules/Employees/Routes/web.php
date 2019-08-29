@@ -12,5 +12,13 @@
 */
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('/employees', 'EmployeesController');
+    // Route::resource('/employees', 'EmployeesController');
+
+    //Employees
+    Route::get('/employees', 'EmployeesController@index')->name('employees.index');
+    Route::post('/employees', 'EmployeesController@store')->name('employees.store');
+    Route::get('/employees/create', 'EmployeesController@create')->name('employees.create');
+    Route::post('/employees/{employee_id}', 'EmployeesController@update')->name('employees.update');
+    Route::get('/employees/{employee_id}/edit', 'EmployeesController@edit')->name('employees.edit');
+    Route::delete('/employees/{employee_id}', 'EmployeesController@destroy')->name('employees.destroy');
 });

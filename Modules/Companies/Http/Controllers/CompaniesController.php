@@ -68,7 +68,7 @@ class CompaniesController extends Controller
     {
         $company = Company::find($id);
         $company = $company->storeUpdated($request);
-
+        
         return response()->json('Successfully updated!');
     }
 

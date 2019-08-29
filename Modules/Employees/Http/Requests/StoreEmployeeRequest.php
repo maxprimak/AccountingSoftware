@@ -32,12 +32,10 @@ class StoreEmployeeRequest extends FormRequest
      *
      * @return array
      */
-    // protected function failedValidation(Validator $validator)
-    // {
-    //     // return redirect()->back()->with('message', $validator);
-    //     throw new HttpResponseException(response()->json($validator->errors()));
-
-    // }
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json($validator->errors()));
+    }
 
     /**
      * Determine if the user is authorized to make this request.
