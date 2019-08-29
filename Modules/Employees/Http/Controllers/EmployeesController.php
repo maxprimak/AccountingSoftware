@@ -133,7 +133,6 @@ class EmployeesController extends Controller
                         ->where('employees.id',$id)
                         ->firstOrFail();
         return view('employees::edit', compact('e'));
-        // return view('employees::edit');
     }
 
     /**
@@ -169,7 +168,7 @@ class EmployeesController extends Controller
         $employee = new Employee();
         $employee = $employee->storeUpdated($request);
 
-        return response()->json('Successfully updated!');
+        return response()->json(['message' => 'Successfully updated!']);
     }
 
     /**
@@ -191,6 +190,6 @@ class EmployeesController extends Controller
 
         People::find($employee->person_id)->delete();
 
-        return response()->json('Successfully deleted!');
+        return response()->json(['message' => 'Successfully deleted!']);
     }
 }
