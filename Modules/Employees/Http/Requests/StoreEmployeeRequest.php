@@ -34,7 +34,10 @@ class StoreEmployeeRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json($validator->errors()));
+        throw new HttpResponseException(response()->json([
+            'error' => $validator->errors()->all()[0],
+            'message' => $validator->errors()->all()[0]
+        ]));
     }
 
     /**

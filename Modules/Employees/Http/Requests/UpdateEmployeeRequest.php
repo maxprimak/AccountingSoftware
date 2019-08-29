@@ -36,7 +36,10 @@ class UpdateEmployeeRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         // dd($_REQUEST);
-        throw new HttpResponseException(response()->json($validator->errors()->all()[0]));
+        throw new HttpResponseException(response()->json([
+            'error' => $validator->errors()->all()[0],
+            'message' => $validator->errors()->all()[0]
+        ]));
 
     }
 

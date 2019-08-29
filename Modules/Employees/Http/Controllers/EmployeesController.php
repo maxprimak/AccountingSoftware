@@ -44,9 +44,11 @@ class EmployeesController extends Controller
                                 'people.phone', 'people.address')
                                 ->get();
                             
+        $branchs = Branch::where('company_id', $company)->get();
+
         $roles = Role::all();
 
-        return view('employees::index')->with(compact('employees', 'roles'));
+        return view('employees::index')->with(compact('employees', 'roles', 'branchs'));
     }
 
     /**
@@ -61,8 +63,8 @@ class EmployeesController extends Controller
                                 ->first();
         $company = $company->company_id;
 
-        $branchs = Branch::where('company_id', $company)->get('id','name');
-        $roles = Role::all('id', 'name');
+        $branchs = Branch::where('company_id', $company)->get();
+        $roles = Role::all();
 
         return view('employees::create', compact('branchs', 'roles'));
     }
@@ -96,7 +98,7 @@ class EmployeesController extends Controller
             $employee = new Employee();
             $employee = $employee->store(['user_id' => $user->id,'role_id' => $request->role_id]);
 
-        return response()->json($employee);
+            return response()->json(['message' => 'Successfully created!']);
     }
 
     /**

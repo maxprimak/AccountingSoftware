@@ -6,6 +6,9 @@
                 <b-switch v-model="showDetailIcon">Show detail icon</b-switch>
             </div>
         </b-field> -->
+        <div class="column">
+            <b-button @click="toCreateEmployee" type="is-primary" class="is-pulled-right">NEW EMPLOYEE</b-button>
+        </div>
 
         <b-table
             :data="data"
@@ -20,6 +23,7 @@
             aria-current-label="Current page">
 
             <template slot-scope="props">
+                
                 <b-table-column field="id" label="ID" width="40" numeric>
                     {{ props.row.id }}
                 </b-table-column>
@@ -84,12 +88,19 @@
                             <b-field label="Phone">
                                 <b-input v-model="props.row.phone" name="phone" expanded></b-input>
                             </b-field>
+
+                            <b-field label="Branch">
+                                <b-select v-model="props.row.branch_id" name="branch_id">
+                                    <option v-for="branch in branchs" :value="branch.id" :key="branch.name">{{ branch.name }}</option>
+                                </b-select>
+                            </b-field>
                             
                             <b-field label="Role">
                                 <b-select v-model="props.row.role_id" name="role_id">
                                     <option v-for="role in roles" :value="role.id" :key="role.name">{{ role.name }}</option>
                                 </b-select>
                             </b-field>
+
                         </b-field>
 
                         <b-field horizontal>
@@ -114,7 +125,7 @@
                 </section>
             </template>
         </b-table>
-
+    
     </section>
 </template>
 
@@ -124,7 +135,7 @@ import { Toast } from 'buefy/dist/components/toast';
 import { Dialog } from 'buefy/dist/components/dialog';
 
     export default {
-        props:['employees', 'roles'],
+        props:['employees', 'roles', 'branchs'],
   
         data() {
             return {
@@ -145,7 +156,8 @@ import { Dialog } from 'buefy/dist/components/dialog';
                     re_password: row.re_password,
                     email: row.email,
                     phone: row.phone,
-                    role_id: row.role_id, 
+                    role_id: row.role_id,
+                    branch_id: row.branch_id,
                     address: row.address,
                     login_id: row.login_id,
                     person_id: row.person_id
@@ -173,6 +185,10 @@ import { Dialog } from 'buefy/dist/components/dialog';
                                     })
                 })
             },
+
+            toCreateEmployee: function() {
+                window.location.href = "/employees/create"
+            }
         }
     }
 </script>
