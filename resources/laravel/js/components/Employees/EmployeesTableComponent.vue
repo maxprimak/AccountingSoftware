@@ -1,15 +1,10 @@
 <template>
   <section>
-    <!-- <b-field grouped group-multiline>
-            <div class="control">
-                <b-switch v-model="showDetailIcon">Show detail icon</b-switch>
-            </div>
-    </b-field>-->
     <div class="columns">
-        <div class="column is-3">
+        <div class="column is-4">
             <h3 class="title">Employees</h3>
         </div>
-        <div class="column is-7">
+        <div class="column is-6">
             <b-field grouped>
             <b-input placeholder="Search..." type="search" icon="magnify">
             </b-input>
@@ -27,7 +22,7 @@
       :data="data"
       ref="table"
       paginated
-      per-page="5"
+      per-page="10"
       detailed
       detail-key="id"
       aria-next-label="Next page"

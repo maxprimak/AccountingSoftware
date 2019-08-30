@@ -24,5 +24,17 @@ class LoginDatabaseSeeder extends Seeder
         factory('Modules\Login\Entities\Login')->create([
             'username' => 'maxim_primak',
         ]);
+
+        factory('Modules\Login\Entities\Login')->create([
+            'username' => 'Lee_duy_vn',
+        ]);
+
+        factory('Modules\Login\Entities\Login')->create([
+            'username' => 'bomman_getwife',
+        ]);
+
+        factory('Modules\Login\Entities\Login')->create([
+            'username' => 'vanduycr7',
+        ]);
     }
 }
