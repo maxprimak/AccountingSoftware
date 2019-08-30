@@ -5,6 +5,7 @@ namespace Modules\Employees\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Modules\Employees\Entities\Employee;
 
 class UpdateEmployeeRequest extends FormRequest
 {
@@ -16,13 +17,22 @@ class UpdateEmployeeRequest extends FormRequest
 
     public function rules()
     {
+        $employee = null;
+ 
+        if($this->route('employee_id'))
+        {  
+            $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
+                                ->select('users.login_id', 'users.person_id')
+                                ->find($this->route('employee_id'));
+        }
+
         return [
             'full_name' => 'required',
-            'username' => 'required|min:6|unique:logins,username,' . $_REQUEST['login_id'],
+            'username' => 'required|min:6|unique:logins,username,' . $employee->login_id,
             'password' => 'required|min:8',
             're_password' => 'required|same:password',
-            'email' => 'required|email|unique:logins,email,' . $_REQUEST['login_id'],
-            'phone' => 'required|unique:people,phone,' . $_REQUEST['person_id'],  
+            'email' => 'required|email|unique:logins,email,' . $employee->login_id,
+            'phone' => 'required|unique:people,phone,' . $employee->person_id,
             'role_id' => 'required',
             'branch_id' => 'required'
         ];
@@ -33,12 +43,16 @@ class UpdateEmployeeRequest extends FormRequest
      *
      * @return array
      */
-    // protected function failedValidation(Validator $validator)
-    // {
-    //     dd($_REQUEST['login_id']);
-    //     throw new HttpResponseException(response()->json($validator->errors()));
+    protected function failedValidation(Validator $validator)
+    {
+        // dd($employee_id);
+        // dd($this->route('login_id'));
+        throw new HttpResponseException(response()->json([
+            'error' => $validator->errors()->all()[0],
+            'message' => $validator->errors()->all()[0]
+        ]));
 
-    // }
+    }
 
     /**
      * Determine if the user is authorized to make this request.

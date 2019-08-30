@@ -28,23 +28,28 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        $company_id = User::join('branches', 'branches.id', '=', 'users.branch_id')
+        $company = User::join('branches', 'branches.id', '=', 'users.branch_id')
                                 ->select('branches.company_id')
                                 ->where('users.login_id',auth()->user()->id)
                                 ->first();
-        $company_id = $company_id->company_id;
+        $company = $company->company_id;
 
         $employees = Employee::join('users', 'users.id', '=', 'employees.user_id')
                                 ->join('logins', 'logins.id', '=', 'users.login_id')
                                 ->join('people', 'people.id', '=', 'users.person_id')
                                 ->join('branches', 'branches.id', '=', 'users.branch_id')
-                                ->where('branches.company_id',$company_id)  
+                                ->join('roles', 'roles.id', '=', 'employees.role_id')
+                                ->where('branches.company_id',$company)  
                                 ->select('employees.id', 'employees.user_id', 'employees.role_id', 'users.branch_id',
                                 'logins.username', 'users.login_id', 'users.person_id', 'logins.email', 'people.name',
-                                'people.phone')
-                                ->paginate(20);
+                                'people.phone', 'people.address', 'roles.name AS role_name')
+                                ->get();
+                            
+        $branchs = Branch::where('company_id', $company)->get();
 
-        return view('employees::index')->with(compact('employees'));
+        $roles = Role::all();
+
+        return view('employees::index')->with(compact('employees', 'roles', 'branchs'));
     }
 
     /**
@@ -53,14 +58,14 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        $company_id = User::join('branches', 'branches.id', '=', 'users.branch_id')
+        $company = User::join('branches', 'branches.id', '=', 'users.branch_id')
                                 ->select('branches.company_id')
                                 ->where('users.login_id',auth()->user()->id)
                                 ->first();
-        $company_id = $company_id->company_id;
+        $company = $company->company_id;
 
-        $branchs = Branch::where('company_id', $company_id)->get('id','name');
-        $roles = Role::all('id', 'name');
+        $branchs = Branch::where('company_id', $company)->get();
+        $roles = Role::all();
 
         return view('employees::create', compact('branchs', 'roles'));
     }
@@ -94,7 +99,7 @@ class EmployeesController extends Controller
             $employee = new Employee();
             $employee = $employee->store(['user_id' => $user->id,'role_id' => $request->role_id]);
 
-        return response()->json($employee);
+            return response()->json(['message' => 'Successfully created!']);
     }
 
     /**
@@ -114,22 +119,6 @@ class EmployeesController extends Controller
      */
     public function edit($id)
     {
-        $company_id = User::join('branches', 'branches.id', '=', 'users.branch_id')
-                                ->select('branches.company_id')
-                                ->where('users.login_id',auth()->user()->id)
-                                ->first();
-        $company_id = $company_id->company_id;
-
-        $e = Employee::join('users', 'users.id', '=', 'employees.user_id')
-                        ->join('logins', 'logins.id', '=', 'users.login_id')
-                        ->join('people', 'people.id', '=', 'users.person_id')
-                        ->join('branches', 'branches.id', '=', 'users.branch_id')
-                        ->where('branches.company_id', $company_id)
-                        ->select('employees.id', 'employees.user_id', 'employees.role_id', 'users.branch_id',
-                                 'logins.username', 'users.login_id', 'users.person_id', 'logins.password', 'logins.email', 'people.name',
-                                 'people.phone')
-                        ->find($id);
-        return view('employees::update', compact('e'));
         // return view('employees::edit');
     }
 
@@ -141,7 +130,8 @@ class EmployeesController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, $id)
     {
-        
+        // dd($request);
+
         $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
                                 ->select('employees.user_id', 'employees.role_id', 'users.login_id', 'users.person_id')
                                 ->find($id);
@@ -162,10 +152,10 @@ class EmployeesController extends Controller
         User::find($employee->user_id)->update(['branch_id' => $request->branch_id]);
         
         //update Employee
-        $employee = new Employee();
-        $employee = $employee->storeUpdated(['id' => $id, 'role_id' => $request->role_id]);
+        $employee = Employee::find($id);
+        $employee = $employee->storeUpdated($request);
 
-        return response()->json('Update employee successfully');
+        return response()->json(['message' => 'Successfully updated!']);
     }
 
     /**
@@ -187,6 +177,6 @@ class EmployeesController extends Controller
 
         People::find($employee->person_id)->delete();
 
-        return response()->json('delete employee successfully');
+        return response()->json(['message' => 'Successfully deleted!']);
     }
 }
