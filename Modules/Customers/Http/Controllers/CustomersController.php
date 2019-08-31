@@ -22,20 +22,14 @@ class CustomersController extends Controller
     public function index()
     {
         try {
-          $company = User::join('branches', 'branches.id', '=', 'users.branch_id')
-                                  ->select('branches.company_id')
-                                  ->where('users.login_id',auth()->user()->id)
-                                  ->firstOrFail();
-          $company_id = $company->company_id;
-
           $branch_ids = UserHasBranch::where('user_id',auth()->user()->id)->pluck('branch_id')->toArray();
           $customer_ids = CustomerHasBranch::whereIn('branch_id',$branch_ids)->pluck('customer_id')->toArray();
           $customers = Customer::whereIn('id',$customer_ids)->get();
           
+          // throw new \Exception($e->getMessage(), 1);
         } catch (\Exception $e) {
 
         }
-
         return view('customers::index', compact('customers'));
     }
 
