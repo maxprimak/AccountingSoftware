@@ -30,12 +30,14 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
-        <b-table-column field="id" label="ID" width="40" numeric>{{ props.row.id }}</b-table-column>
+        <b-table-column field="id" label="ID" width="40" numeric>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.id }}</a>
+        </b-table-column>
 
         <b-table-column field="photo" label="Photo" sortable>
           <a @click="toggle(props.row)">
             <figure class="image is-32x32">
-              <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" />
+              <img class="is-rounded" :src="'/avatars/' + props.row.user_id + '_avatar.png'" @error="imageLoadError"/>
             </figure>
           </a>
         </b-table-column>
@@ -44,24 +46,30 @@
 
         <b-table-column field="active" label="Active" sortable>
           <template v-if="props.row.is_active == 0">
-            <a @click="toggle(props.row)">Not active</a>
+            <a @click="toggle(props.row)" class="has-text-danger">Not active</a>
           </template>
           <template v-else>
-            <a @click="toggle(props.row)">Active</a>
+            <a @click="toggle(props.row)" class="has-text-success">Active</a>
           </template>
         </b-table-column>
 
         <b-table-column field="pasword" label="Password" sortable>
-          <a @click="toggle(props.row)">Set</a>
+          <a @click="toggle(props.row)" class="has-text-success">Set</a>
         </b-table-column>
 
-        <b-table-column field="role" label="Role" sortable>{{ props.row.role_name }}</b-table-column>
+        <b-table-column class="has-text-link" field="role" label="Role" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.role_name }}</a>
+        </b-table-column>
 
         <b-table-column field="full_name" label="Full name" sortable>{{ props.row.name }}</b-table-column>
 
-        <b-table-column field="phone" label="Phone" sortable>{{ props.row.phone }}</b-table-column>
+        <b-table-column field="phone" label="Phone" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.phone }}</a>
+        </b-table-column>
 
-        <b-table-column field="email" label="Email" sortable>{{ props.row.email }}</b-table-column>
+        <b-table-column field="email" label="Email" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.email }}</a>
+        </b-table-column>
       </template>
 
       <template slot="detail" slot-scope="props">
@@ -182,7 +190,12 @@
                   <b-field label="Photo">
                     <div class="file">
                       <label class="file-label">
-                        <input class="file-input" type="file" name="resume" />
+                        <input
+                          class="file-input"
+                          v-on:change="onImageChange"
+                          type="file"
+                          name="resume"
+                        />
                         <span class="file-cta">
                           <span class="file-label">Load</span>
                         </span>
@@ -223,12 +236,31 @@ export default {
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content"),
       password: "",
+      image: "",
       selects: [{ value: 0, key: "No active" }, { value: 1, key: "Active" }]
     };
   },
   methods: {
     toggle(row) {
       this.$refs.table.toggleDetails(row);
+    },
+
+    imageLoadError (event) {
+      event.target.src = "https://bulma.io/images/placeholders/32x32.png"
+    },
+
+    onImageChange(e) {
+      let files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      let reader = new FileReader();
+      let vm = this;
+      reader.onload = e => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
     },
 
     updateEmployee(employee_id, row) {
@@ -244,7 +276,8 @@ export default {
           branch_id: row.branch_id,
           address: row.address,
           login_id: row.login_id,
-          person_id: row.person_id
+          person_id: row.person_id,
+          image: this.image
         })
         .then(response => {
           Toast.open(response.data.message);

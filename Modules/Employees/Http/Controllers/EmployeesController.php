@@ -131,7 +131,7 @@ class EmployeesController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, $id)
     {
-        // dd($request->is_active);
+        // dd($request->image);
         $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
                                 ->select('employees.user_id', 'employees.role_id', 'users.login_id', 'users.person_id')
                                 ->find($id);
@@ -157,6 +157,14 @@ class EmployeesController extends Controller
         //update Employee
         $employee = Employee::find($id);
         $employee = $employee->storeUpdated($request);
+
+        //upload photo avatar
+        if($request->get('image'))
+       {
+          $image = $request->get('image');
+          $name = $employee->user_id.'_avatar'.'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+          \Image::make($request->get('image'))->save(public_path('avatars/').$name);
+        }
 
         return response()->json(['message' => 'Successfully updated!']);
     }
