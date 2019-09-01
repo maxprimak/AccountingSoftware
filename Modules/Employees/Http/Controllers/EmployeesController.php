@@ -93,7 +93,6 @@ class EmployeesController extends Controller
             $user->login_id = $login->id;
             $user->person_id = $person->id;
             $user->branch_id = $request->branch_id;
-            $user->is_active = $request->is_active;
             $user->save();
 
             //new employee
@@ -162,7 +161,7 @@ class EmployeesController extends Controller
         if($request->get('image'))
        {
           $image = $request->get('image');
-          $name = $employee->user_id.'_avatar'.'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+	  $name = $employee->user_id.'_avatar' . '.png';	
           \Image::make($request->get('image'))->save(public_path('avatars/').$name);
         }
 

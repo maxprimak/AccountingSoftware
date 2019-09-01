@@ -23,8 +23,7 @@ class StoreEmployeeRequest extends FormRequest
             'new_email' => 'required|email|unique:logins,email',
             'new_phone' => 'required|unique:people,phone',
             'role_id' => 'required',
-            'branch_id' => 'required',
-            'is_active' => 'required'
+            'branch_id' => 'required'
         ];
     }
 
