@@ -83,18 +83,13 @@
           </div>
 
           <div class="columns">
-            <div class="column is-half">
+            <div class="column">
               <b-field label="Address">
                 <b-input v-model="address"></b-input>
               </b-field>
             </div>
-          </div>
-
-          <div class="columns">
             <div class="column">
-              <b-field grouped position="is-centered">
-                <b-button native-type="submit" type="is-primary">ADD</b-button>
-              </b-field>
+              <b-button style="margin-top:31px" class="is-pulled-right" native-type="submit" type="is-primary">ADD</b-button>
             </div>
           </div>
         </form>

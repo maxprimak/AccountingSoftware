@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class User extends Model
 {
-    protected $fillable = ['login_id', 'person_id', 'branch_id'];
+    protected $fillable = ['login_id', 'person_id', 'branch_id', 'is_active'];
 
     public function store($login, $person, FormRequest $request){
             $this->login_id = $login->id;

@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('person_id');
             //$table->unsignedInteger('role_id');
             $table->unsignedInteger('branch_id')->nullable();
+            $table->boolean('is_active')->nullable()->default(false);
             $table->timestamps();
             $table->foreign('login_id')->references('id')->on('logins')->onDelete('cascade');
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');

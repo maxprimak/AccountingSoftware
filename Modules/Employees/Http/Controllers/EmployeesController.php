@@ -41,7 +41,7 @@ class EmployeesController extends Controller
                                 ->join('roles', 'roles.id', '=', 'employees.role_id')
                                 ->where('branches.company_id',$company)  
                                 ->select('employees.id', 'employees.user_id', 'employees.role_id', 'users.branch_id',
-                                'logins.username', 'users.login_id', 'users.person_id', 'logins.email', 'people.name',
+                                'logins.username', 'users.login_id', 'users.person_id', 'users.is_active', 'logins.email', 'people.name',
                                 'people.phone', 'people.address', 'roles.name AS role_name')
                                 ->get();
                             
@@ -130,8 +130,7 @@ class EmployeesController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, $id)
     {
-        // dd($request);
-
+        // dd($request->image);
         $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
                                 ->select('employees.user_id', 'employees.role_id', 'users.login_id', 'users.person_id')
                                 ->find($id);
@@ -149,11 +148,22 @@ class EmployeesController extends Controller
         ]);
 
         // update User
-        User::find($employee->user_id)->update(['branch_id' => $request->branch_id]);
+        User::find($employee->user_id)->update([
+            'branch_id' => $request->branch_id,
+            'is_active' => $request->is_active
+            ]);
         
         //update Employee
         $employee = Employee::find($id);
         $employee = $employee->storeUpdated($request);
+
+        //upload photo avatar
+        if($request->get('image'))
+       {
+          $image = $request->get('image');
+	  $name = $employee->user_id.'_avatar' . '.png';	
+          \Image::make($request->get('image'))->save(public_path('avatars/').$name);
+        }
 
         return response()->json(['message' => 'Successfully updated!']);
     }
