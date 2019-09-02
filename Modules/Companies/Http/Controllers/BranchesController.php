@@ -19,7 +19,7 @@ class BranchesController extends Controller
      * @return Response
      */
     public function create()
-    {
+    {   
         return view('companies::branches.create');
     }
 

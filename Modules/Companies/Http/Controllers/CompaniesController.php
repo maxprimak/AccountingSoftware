@@ -41,7 +41,7 @@ class CompaniesController extends Controller
      * @return Response
      */
     public function create()
-    {
+    {   
         return view('companies::companies.create');
     }
 
@@ -65,10 +65,13 @@ class CompaniesController extends Controller
      * @return Response
      */
     public function update(UpdateCompanyRequest $request, $id)
-    {
-        $company = Company::find($id);
-        $company = $company->storeUpdated($request);
-        
+    {   
+        try{
+            $company = Company::findOrFail($id);
+            $company = $company->storeUpdated($request);
+        }catch( \Exception $e){
+            return response()->json($e->getMessage(), 500);
+        }
         return response()->json('Successfully updated!');
     }
 

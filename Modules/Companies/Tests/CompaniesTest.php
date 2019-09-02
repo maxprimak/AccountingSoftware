@@ -12,8 +12,19 @@ class CompaniesTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
-    {
-        $this->assertTrue(true);
-    }
+    public function testIndex()
+{
+    $response = $this->get('/companies');
+
+    $response->assertViewHas('company');
+
+    /*$routedata = $response->original->getData()['routedata'];
+    $client = $response->original->getData()['client'];
+    $clientProfile = $response->original->getData()['clientProfile '];
+
+    $response->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $routedata);
+    $response->assertInstanceOf('\App\Client', $client);
+    $response->assertInstanceOf('\App\ClientProfile', $clientProfile);*/
+
+}
 }

@@ -5,6 +5,7 @@ namespace Modules\Companies\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Companies\Http\Requests\StoreCompanyRequest;
 use Modules\Companies\Http\Requests\UpdateCompanyRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
 class Company extends Model
 {
@@ -14,7 +15,7 @@ class Company extends Model
         parent::__construct($attributes);
     }
 
-    public function store(StoreCompanyRequest $request){
+    public function store(FormRequest $request){
         $this->currency_id = $request->currency_id;
         $this->name = $request->name;
         $this->address = $request->address;
@@ -24,7 +25,7 @@ class Company extends Model
         return $this;
     }
 
-    public function storeUpdated(UpdateCompanyRequest $request){
+    public function storeUpdated(FormRequest $request){
         $this->currency_id = $request->currency_id;
         $this->name = $request->name;
         $this->address = $request->address;
