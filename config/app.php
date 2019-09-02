@@ -229,7 +229,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'CreateUsersService' => Modules\Users\Facades\CreateUsersService::class,
-        
         'Image' => Intervention\Image\Facades\Image::class,
     ],
 
