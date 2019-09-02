@@ -17,22 +17,13 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('login_id');
             $table->unsignedInteger('person_id');
-            //$table->unsignedInteger('role_id');
-            $table->unsignedInteger('branch_id')->nullable();
-            $table->boolean('is_active')->nullable()->default(false);
+            $table->unsignedInteger('company_id')->nullable();
+            $table->boolean('is_active')->nullable()->default(true);
             $table->timestamps();
             $table->foreign('login_id')->references('id')->on('logins')->onDelete('cascade');
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
-            //$table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            //$table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
-
-        /* FOR FUTURE USE OF INDEXES
-        Schema::table('users', function(Blueprint $table)
-        {
-            $table->index('INSERT_INDEX_HERE');
-        }); 
-        */
     }
 
     /**

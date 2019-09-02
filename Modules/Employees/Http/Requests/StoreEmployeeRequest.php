@@ -16,14 +16,13 @@ class StoreEmployeeRequest extends FormRequest
     public function rules()
     {
         return [
-            'new_full_name' => 'required',
-            'new_username' => 'required|min:6|unique:logins,username',
-            'new_password' => 'required|min:8',
-            're_password' => 'required|same:new_password',
-            'new_email' => 'required|email|unique:logins,email',
-            'new_phone' => 'required|unique:people,phone',
-            'role_id' => 'required',
-            'branch_id' => 'required'
+            'name' => 'required',
+            'username' => 'required|min:6|unique:logins,username',
+            'password' => 'required|min:8',
+            're_password' => 'same:password',
+            'email' => 'required|email|unique:logins,email',
+            'phone' => 'required|unique:people,phone',
+            'role_id' => 'required'
         ];
     }
 

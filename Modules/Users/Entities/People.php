@@ -10,9 +10,9 @@ class People extends Model
     protected $fillable = ['name', 'phone', 'address'];
 
     public function store(FormRequest $request){
-            $this->name = $request->new_full_name;
-            $this->phone = $request->new_phone;
-            $this->address = $request->new_address;
+            $this->name = $request->name;
+            $this->phone = $request->phone;
+            $this->address = $request->address;
             $this->save();
 
             return $this;

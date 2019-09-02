@@ -10,7 +10,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateUsers{
 
-    public function createEmployee(Request $request){
+    public function createEmployee(FormRequest $request){
+
             $person = new People();
             $person = $person->store($request);
 

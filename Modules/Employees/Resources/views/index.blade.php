@@ -7,6 +7,6 @@
 
 @section('main-content')
 <div id="app">
-    <employees-table :employees="{{ $employees }}" :branchs="{{ $branchs }}" :roles="{{ $roles }}"></employees-table>
+    <employees-table :employees="{{ $employees }}" :branches="{{ $branches }}" :roles="{{ $roles }}"></employees-table>
 </div>
 @endsection

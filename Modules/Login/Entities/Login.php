@@ -17,9 +17,9 @@ class Login extends Authenticatable implements MustVerifyEmail
     public $timestamps = false;
 
     public function store(FormRequest $request){
-        $this->username = $request->new_username;
-        $this->password = Hash::make($request->new_password);
-        $this->email = $request->new_email;
+        $this->username = $request->username;
+        $this->password = bcrypt($request->password);
+        $this->email = $request->email;
         $this->save();
 
         return $this;

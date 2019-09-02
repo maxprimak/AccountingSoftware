@@ -9,6 +9,7 @@ use Modules\Employees\Http\Requests\UpdateEmployeeRequest;
 class Employee extends Model
 {
     protected $fillable = ['user_id', 'role_id'];
+    protected $appends = ['branch_id'];
 
     public function __construct(array $attributes = array()){
         parent::__construct($attributes);
@@ -28,5 +29,10 @@ class Employee extends Model
         $this->save();
 
         return $this;
+    }
+
+    public function getBranchIdAttribute()
+    {
+        return $this->attributes['branch_id'];
     }
 }

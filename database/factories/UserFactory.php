@@ -8,6 +8,6 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'login_id' => 1,
         'person_id' => 1,
-        'branch_id' =>  1,
+        'company_id' =>  1,
     ];
 });

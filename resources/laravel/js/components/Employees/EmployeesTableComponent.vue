@@ -116,10 +116,6 @@
                   <b-field label="Password">
                     <b-input
                       v-model="password"
-                      type="password"
-                      name="password"
-                      password-reveal
-                      expanded
                     ></b-input>
                   </b-field>
                 </div>
@@ -160,16 +156,23 @@
 
               <div class="columns">
                 <div class="column">
+                  <b-field label="Address">
+                    <b-input name="address" v-model="props.row.address" expanded></b-input>
+                  </b-field>
+                </div>
+                                <div class="column">
                   <div class="control">
-                    <b-field label="Branch">
+                    <b-field label="Works in Branches">
                       <div class="select">
                         <b-select
+                          multiple
+                          native-size="2"
                           v-model="props.row.branch_id"
                           name="branch_id"
                           placeholder="Select a branch"
                         >
                           <option
-                            v-for="branch in branchs"
+                            v-for="branch in branches"
                             :value="branch.id"
                             :key="branch.name"
                           >{{ branch.name }}</option>
@@ -177,11 +180,6 @@
                       </div>
                     </b-field>
                   </div>
-                </div>
-                <div class="column">
-                  <b-field label="Address">
-                    <b-input name="address" v-model="props.row.address" expanded></b-input>
-                  </b-field>
                 </div>
               </div>
 
@@ -227,7 +225,7 @@ import { Toast } from "buefy/dist/components/toast";
 import { Dialog } from "buefy/dist/components/dialog";
 
 export default {
-  props: ["employees", "roles", "branchs"],
+  props: ["employees", "roles", "branches"],
 
   data() {
     return {
@@ -235,9 +233,9 @@ export default {
       csrf: document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content"),
-      password: "",
+      password: "********",
       image: "",
-      selects: [{ value: 0, key: "No active" }, { value: 1, key: "Active" }]
+      selects: [{ value: 0, key: "Not active" }, { value: 1, key: "Active" }]
     };
   },
   methods: {
@@ -281,7 +279,6 @@ export default {
         })
         .then(response => {
           Toast.open(response.data.message);
-          this.password = "";
         })
         .catch(function(error) {
           Toast.open("Error happened! Please contact the support team");

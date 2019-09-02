@@ -7,6 +7,6 @@
 
 @section('main-content')
 <div id="app">
-    <create-employee :branchs="{{ $branchs }}" :roles="{{ $roles }}"></create-employee>
+    <create-employee :branches="{{ $branches }}" :roles="{{ $roles }}"></create-employee>
 </div>
 @endsection
