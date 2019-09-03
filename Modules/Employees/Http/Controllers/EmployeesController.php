@@ -32,8 +32,7 @@ class EmployeesController extends Controller
      * @return Response
      */
     public function index()
-    {   
-        
+    {
         try{
             $user = User::where('login_id', auth()->id())->firstOrFail();
             $employees = BranchesService::getEmployeesUserCanSee($user->id);
@@ -42,7 +41,6 @@ class EmployeesController extends Controller
         }catch(\Exception $e){
             return redirect('/registration');
         }
-
         return view('employees::index')->with(compact('employees', 'roles', 'branches'));
     }
 
@@ -69,7 +67,7 @@ class EmployeesController extends Controller
      * @return Response
      */
     public function store(StoreEmployeeRequest $request)
-    {       
+    {
 
             $employee = CreateUsersService::createEmployee($request);
 
@@ -96,11 +94,11 @@ class EmployeesController extends Controller
      * @return Response
      */
     public function destroy($id)
-    {   
+    {
         try{
             $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
             ->select('employees.user_id', 'users.login_id', 'users.person_id')
-            ->findOrFail($id);   
+            ->findOrFail($id);
         }catch(ModelNotFoundException $e){
             return response()->json(['message' => $e->getMessage()], 500);
         }
