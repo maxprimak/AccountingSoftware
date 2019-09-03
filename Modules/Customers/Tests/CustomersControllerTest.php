@@ -33,6 +33,7 @@ class CustomersControllerTest extends TestCase
             }
         ]);
 
+
         $customers = factory(Customer::class,50)->create([
             'company_id' => function () {
                 return $randomNumberForCompanyId = rand(1,Company::all()->count());
@@ -46,7 +47,7 @@ class CustomersControllerTest extends TestCase
         $company_id = Company::find(auth()->user()->company_id);
         $customers = Customer::where('company_id',$company_id)->get()->toArray();
         dd($customers);
-        $correct_customers = array()
+        $correct_customers = array();
 
         $this->assertTrue(true);
     }
