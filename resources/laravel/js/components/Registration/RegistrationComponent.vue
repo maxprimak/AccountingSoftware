@@ -81,7 +81,7 @@
                     company_phone: this.company_phone,
                     currency_id: this.currency_id
                 }).then(function (response) {
-                    Toast.open(response.data)
+                    window.location.href = "/companies";
                 }).catch(function (error) {
                     console.log(error.response.data)
                 });
