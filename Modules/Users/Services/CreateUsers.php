@@ -75,6 +75,16 @@ class CreateUsers{
         return 2;
     }
 
+    public function loginIsActive($login_id){
+        try{
+            $user = User::where('login_id', $login_id)->firstOrFail();
+        }catch(\Exception $e){
+            return true;
+        }
+
+        return $user->is_active;
+    }
+
     public function updateEmployee(FormRequest $request, $employee_id){
 
         $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
@@ -89,7 +99,7 @@ class CreateUsers{
         // update Login
         Login::find($employee->login_id)->update([
             'username' => $request->username,
-            //'password' => Hash::make($request->password),
+            'password' => bcrypt($request->password),
             'email' => $request->email
         ]);
 

@@ -18,6 +18,7 @@ use Modules\Employees\Entities\Employee;
 use Illuminate\Routing\Controller;
 use Modules\Employees\Http\Requests\StoreEmployeeRequest;
 use Modules\Employees\Http\Requests\UpdateEmployeeRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use BranchesService;
 use CreateUsersService;
@@ -64,7 +65,7 @@ class EmployeesController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param StoreEmployeeRequest $request
      * @return Response
      */
     public function store(StoreEmployeeRequest $request)
@@ -77,7 +78,7 @@ class EmployeesController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
+     * @param UpdateEmployeeRequest $request
      * @param int $id
      * @return Response
      */

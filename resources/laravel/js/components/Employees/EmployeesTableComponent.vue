@@ -118,7 +118,7 @@
               <div class="columns">
                 <div class="column">
                   <b-field label="Password">
-                    <b-input v-model="password"></b-input>
+                    <b-input placeholder="**********" v-model="props.row.password"></b-input>
                   </b-field>
                 </div>
                 <div class="column">
@@ -269,7 +269,7 @@ export default {
           full_name: row.name,
           is_active: row.is_active,
           username: row.username,
-          password: this.password,
+          password: row.password,
           email: row.email,
           phone: row.phone,
           role_id: row.role_id,

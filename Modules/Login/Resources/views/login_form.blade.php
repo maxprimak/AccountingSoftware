@@ -41,6 +41,9 @@
                             <div class="mt-3 text-center">
                                 <a href="/password/reset" class="text-muted"><u>Forgot Password?</u></a>
                             </div>
+                            <div class="mt-3 text-center">
+                                <a href="/register" class="text-muted"><u>Register in 10 seconds</u></a>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6 text-center " style="background-size: cover;background-image: url({{asset('assets/images/photo-long-3.jpg')}}">
