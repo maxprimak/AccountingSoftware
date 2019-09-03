@@ -66,7 +66,6 @@ class CreateUsers{
         $employee = new Employee();
         $employee->user_id = $user->id;
         $employee->role_id = 1;
-        //error here
         $employee->save();
 
         return $employee;

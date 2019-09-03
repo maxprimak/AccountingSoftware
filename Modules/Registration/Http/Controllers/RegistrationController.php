@@ -49,7 +49,7 @@ class RegistrationController extends Controller
         }
 
         return response()->json([
-            'employee' => $employee
+            'message' => 'Successfully created!'
         ]);
     }
 

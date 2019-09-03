@@ -35,7 +35,7 @@ class EmployeesController extends Controller
         
         try{
             $user = User::where('login_id', auth()->id())->firstOrFail();
-            $employees = BranchesService::getEmployeesUserCanSee($user->id);#
+            $employees = BranchesService::getEmployeesUserCanSee($user->id);
             $branches = BranchesService::getUserBranches($user->id);
             $roles = Role::all();
         }catch(\Exception $e){
