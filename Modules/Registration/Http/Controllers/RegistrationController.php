@@ -5,6 +5,11 @@ namespace Modules\Registration\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Registration\Http\Requests\RegistrationRequest;
+use Modules\Companies\Entities\Company;
+use Modules\Companies\Entities\Currency;
+
+use CreateUsersService;
 
 class RegistrationController extends Controller
 {
@@ -14,7 +19,11 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-        return view('registration::index');
+
+        $currencies = Currency::all();
+
+        return view('registration::index')->with(compact('currencies'));
+
     }
 
     /**
@@ -31,9 +40,17 @@ class RegistrationController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(RegistrationRequest $request)
+    {   
+        try{
+            $employee = CreateUsersService::registerFirstEmployee($request, auth()->id());
+        }catch( \Exception $e ){
+            return response()->json($e->getMessage(), 500);
+        }
+
+        return response()->json([
+            'employee' => $employee
+        ]);
     }
 
     /**

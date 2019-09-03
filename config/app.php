@@ -174,6 +174,11 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Modules\Users\Providers\UsersServiceProvider::class,
+        Modules\Companies\Providers\CompaniesServiceProvider::class,
+
+        //upload image
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -224,6 +229,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'CreateUsersService' => Modules\Users\Facades\CreateUsersService::class,
+        'BranchesService' => Modules\Companies\Facades\BranchesService::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

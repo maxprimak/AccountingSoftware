@@ -1,10 +1,7 @@
 <?php
-
 namespace Modules\Companies\Providers;
-
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
-
 class CompaniesServiceProvider extends ServiceProvider
 {
     /**
@@ -20,7 +17,6 @@ class CompaniesServiceProvider extends ServiceProvider
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
-
     /**
      * Register the service provider.
      *
@@ -29,8 +25,8 @@ class CompaniesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->bind('getUserBranches', 'Modules\Companies\Services\GetUserBranches');
     }
-
     /**
      * Register config.
      *
@@ -45,7 +41,6 @@ class CompaniesServiceProvider extends ServiceProvider
             __DIR__.'/../Config/config.php', 'companies'
         );
     }
-
     /**
      * Register views.
      *
@@ -54,18 +49,14 @@ class CompaniesServiceProvider extends ServiceProvider
     public function registerViews()
     {
         $viewPath = resource_path('views/modules/companies');
-
         $sourcePath = __DIR__.'/../Resources/views';
-
         $this->publishes([
             $sourcePath => $viewPath
         ],'views');
-
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return $path . '/modules/companies';
         }, \Config::get('view.paths')), [$sourcePath]), 'companies');
     }
-
     /**
      * Register translations.
      *
@@ -74,14 +65,12 @@ class CompaniesServiceProvider extends ServiceProvider
     public function registerTranslations()
     {
         $langPath = resource_path('lang/modules/companies');
-
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'companies');
         } else {
             $this->loadTranslationsFrom(__DIR__ .'/../Resources/lang', 'companies');
         }
     }
-
     /**
      * Register an additional directory of factories.
      *
@@ -93,7 +82,6 @@ class CompaniesServiceProvider extends ServiceProvider
             app(Factory::class)->load(__DIR__ . '/../Database/factories');
         }
     }
-
     /**
      * Get the services provided by the provider.
      *
@@ -104,3 +92,4 @@ class CompaniesServiceProvider extends ServiceProvider
         return [];
     }
 }
+

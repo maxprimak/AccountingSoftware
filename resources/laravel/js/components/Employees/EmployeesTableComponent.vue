@@ -1,18 +1,17 @@
 <template>
   <section>
     <div class="columns">
-        <div class="column is-4">
-            <h3 class="title">Employees</h3>
-        </div>
-        <div class="column is-6">
-            <b-field grouped>
-            <b-input placeholder="Search..." type="search" icon="magnify">
-            </b-input>
-            <p class="control">
-                <button class="button is-info">Search</button>
-            </p>
+      <div class="column is-4">
+        <h3 class="title">Employees</h3>
+      </div>
+      <div class="column is-6">
+        <b-field grouped>
+          <b-input placeholder="Search..." type="search" icon="magnify"></b-input>
+          <p class="control">
+            <button class="button is-info">Search</button>
+          </p>
         </b-field>
-        </div>
+      </div>
       <div class="column">
         <b-button @click="toCreateEmployee" type="is-primary">NEW EMPLOYEE</b-button>
       </div>
@@ -31,27 +30,61 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
-        <b-table-column field="id" label="ID" width="40" numeric>{{ props.row.id }}</b-table-column>
+        <b-table-column field="id" label="ID" width="40" numeric>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.id }}</a>
+        </b-table-column>
+
+        <b-table-column field="photo" label="Photo" sortable>
+          <a @click="toggle(props.row)">
+            <figure class="image is-32x32">
+              <img
+                class="is-rounded"
+                :src="'/avatars/' + props.row.user_id + '_avatar.png'"
+                @error="imageLoadError"
+              />
+            </figure>
+          </a>
+        </b-table-column>
 
         <b-table-column field="username" label="Username" sortable>{{ props.row.username }}</b-table-column>
 
-        <b-table-column field="role" label="Role" sortable>{{ props.row.role_name }}</b-table-column>
+        <b-table-column field="active" label="Active" sortable>
+          <template v-if="props.row.is_active == 0">
+            <a @click="toggle(props.row)" class="has-text-danger">Not active</a>
+          </template>
+          <template v-else>
+            <a @click="toggle(props.row)" class="has-text-success">Active</a>
+          </template>
+        </b-table-column>
+
+        <b-table-column field="pasword" label="Password" sortable>
+          <a @click="toggle(props.row)" class="has-text-success">Set</a>
+        </b-table-column>
+
+        <b-table-column class="has-text-link" field="role" label="Role" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.role_name }}</a>
+        </b-table-column>
 
         <b-table-column field="full_name" label="Full name" sortable>{{ props.row.name }}</b-table-column>
 
-        <b-table-column field="phone" label="Phone" sortable>{{ props.row.phone }}</b-table-column>
+        <b-table-column field="phone" label="Phone" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.phone }}</a>
+        </b-table-column>
 
-        <b-table-column field="email" label="Email" sortable>{{ props.row.email }}</b-table-column>
+        <b-table-column field="email" label="Email" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.email }}</a>
+        </b-table-column>
       </template>
 
       <template slot="detail" slot-scope="props">
         <section>
           <div class="columns">
-            <div class="column is-11">
+            <div class="column">
               <h4 class="title">Edit employee info</h4>
             </div>
             <div class="column">
               <b-button
+                class="is-pulled-right"
                 @click="deleteEnployee(props.row.id, props.row.username, props)"
                 type="is-danger"
               >Delete</b-button>
@@ -70,9 +103,12 @@
                   <div class="control">
                     <b-field label="Active/not active">
                       <div class="select">
-                        <b-select name="active" placeholder="Select">
-                          <option checked value="1">Active</option>
-                          <option value="2">No active</option>
+                        <b-select v-model="props.row.is_active" name="active" placeholder="Select">
+                          <option
+                            v-for="active in selects"
+                            :value="active.value"
+                            :key="active.key"
+                          >{{ active.key }}</option>
                         </b-select>
                       </div>
                     </b-field>
@@ -82,42 +118,63 @@
               <div class="columns">
                 <div class="column">
                   <b-field label="Password">
-                    <b-input
-                      v-model="password"
-                      type="password"
-                      name="password"
-                      password-reveal
-                      expanded
-                    ></b-input>
+                    <b-input v-model="password"></b-input>
                   </b-field>
                 </div>
                 <div class="column">
-                  <b-field label="Confirm password">
-                    <b-input
-                      v-model="re_password"
-                      type="password"
-                      name="re_password"
-                      password-reveal
-                      expanded
-                    ></b-input>
+                  <b-field label="Phone">
+                    <b-input v-model="props.row.phone" name="phone" expanded></b-input>
                   </b-field>
                 </div>
               </div>
 
               <div class="columns">
                 <div class="column">
-                  <b-field label="Phone">
-                    <b-input v-model="props.row.phone" name="phone" expanded></b-input>
-                  </b-field>
+                  <div class="control">
+                    <b-field label="Role">
+                      <div class="select">
+                        <b-select
+                          v-model="props.row.role_id"
+                          name="role_id"
+                          placeholder="Select a role"
+                        >
+                          <option
+                            v-for="role in roles"
+                            :value="role.id"
+                            :key="role.name"
+                          >{{ role.name }}</option>
+                        </b-select>
+                      </div>
+                    </b-field>
+                  </div>
                 </div>
 
                 <div class="column">
+                  <b-field label="Email">
+                    <b-input name="email" v-model="props.row.email" expanded></b-input>
+                  </b-field>
+                </div>
+              </div>
+
+              <div class="columns">
+                <div class="column">
+                  <b-field label="Address">
+                    <b-input name="address" v-model="props.row.address" expanded></b-input>
+                  </b-field>
+                </div>
+                <div class="column">
                   <div class="control">
-                    <b-field label="Branch">
+                    <b-field label="Works in Branches">
                       <div class="select">
-                        <b-select v-model="props.row.branch_id" name="branch_id" placeholder="Select a branch">
+                        <b-select
+                          multiple
+                          native-size="2"
+                          v-model="props.row.branch_id"
+                          name="branch_id"
+                          placeholder="Select a branch"
+                        >
                           <option
-                            v-for="branch in branchs"
+                            v-for="branch in branches"
                             :value="branch.id"
                             :key="branch.name"
                           >{{ branch.name }}</option>
@@ -130,46 +187,33 @@
 
               <div class="columns">
                 <div class="column">
-                  <b-field label="Email">
-                    <b-input name="email" v-model="props.row.email" expanded></b-input>
-                  </b-field>
-                </div>
-                <div class="column">
-                  <div class="control">
-                    <b-field label="Role">
-                      <div class="select">
-                        <b-select v-model="props.row.role_id" name="role_id" placeholder="Select a role">
-                          <option
-                            v-for="role in roles"
-                            :value="role.id"
-                            :key="role.name"
-                          >{{ role.name }}</option>
-                        </b-select>
-                      </div>
-                    </b-field>
-                  </div>
-                </div>
-              </div>
-
-              <div class="columns">
-                <div class="column is-half">
-                  <b-field label="Address">
-                    <b-input name="address" v-model="props.row.address" expanded></b-input>
+                  <b-field label="Photo">
+                    <div class="file">
+                      <label class="file-label">
+                        <input
+                          class="file-input"
+                          v-on:change="onImageChange"
+                          type="file"
+                          name="resume"
+                        />
+                        <span class="file-cta">
+                          <span class="file-label">Load</span>
+                        </span>
+                      </label>
+                    </div>
                   </b-field>
                 </div>
               </div>
-
-              <div class="columns">
-                <div class="column">
-                  <p class="control">
-                    <b-button
-                      @click="updateEmployee(props.row.id, props.row)"
-                      native-type="button"
-                      type="is-primary"
-                    >Save</b-button>
-                  </p>
-                </div>
-              </div>
+            </div>
+          </div>
+          <div class="columns is-mobile">
+            <div class="column">
+              <b-button
+                class="is-pulled-right"
+                @click="updateEmployee(props.row.id, props.row)"
+                native-type="button"
+                type="is-primary"
+              >Save</b-button>
             </div>
           </div>
         </section>
@@ -183,7 +227,7 @@ import { Toast } from "buefy/dist/components/toast";
 import { Dialog } from "buefy/dist/components/dialog";
 
 export default {
-  props: ["employees", "roles", "branchs"],
+  props: ["employees", "roles", "branches"],
 
   data() {
     return {
@@ -191,8 +235,9 @@ export default {
       csrf: document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content"),
-      password: "",
-      re_password: ""
+      password: "********",
+      image: "",
+      selects: [{ value: 0, key: "Not active" }, { value: 1, key: "Active" }]
     };
   },
   methods: {
@@ -200,25 +245,42 @@ export default {
       this.$refs.table.toggleDetails(row);
     },
 
+    imageLoadError(event) {
+      event.target.src = "https://bulma.io/images/placeholders/32x32.png";
+    },
+
+    onImageChange(e) {
+      let files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      let reader = new FileReader();
+      let vm = this;
+      reader.onload = e => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+
     updateEmployee(employee_id, row) {
       axios
         .post("employees/" + employee_id, {
           full_name: row.name,
+          is_active: row.is_active,
           username: row.username,
           password: this.password,
-          re_password: this.re_password,
           email: row.email,
           phone: row.phone,
           role_id: row.role_id,
           branch_id: row.branch_id,
           address: row.address,
           login_id: row.login_id,
-          person_id: row.person_id
+          person_id: row.person_id,
+          image: this.image
         })
         .then(response => {
           Toast.open(response.data.message);
-          this.password = "";
-          this.re_password = "";
         })
         .catch(function(error) {
           Toast.open("Error happened! Please contact the support team");

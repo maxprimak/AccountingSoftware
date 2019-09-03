@@ -90,7 +90,7 @@
                 .then(function (response) {
                     Toast.open(response.data)
                 }).catch(function (error) {
-                    Toast.open('Error happened! Please contact the support team')
+                    Toast.open(error.response.data)
                 });
             },
             toCreateBranch: function() {

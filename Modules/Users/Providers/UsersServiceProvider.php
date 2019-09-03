@@ -1,10 +1,7 @@
 <?php
-
 namespace Modules\Users\Providers;
-
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
-
 class UsersServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +10,6 @@ class UsersServiceProvider extends ServiceProvider
      * @var bool
      */
     protected $defer = false;
-
     /**
      * Boot the application events.
      *
@@ -27,7 +23,6 @@ class UsersServiceProvider extends ServiceProvider
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
-
     /**
      * Register the service provider.
      *
@@ -36,8 +31,8 @@ class UsersServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->bind('createUsers', 'Modules\Users\Services\CreateUsers');
     }
-
     /**
      * Register config.
      *
@@ -52,7 +47,6 @@ class UsersServiceProvider extends ServiceProvider
             __DIR__.'/../Config/config.php', 'users'
         );
     }
-
     /**
      * Register views.
      *
@@ -61,18 +55,14 @@ class UsersServiceProvider extends ServiceProvider
     public function registerViews()
     {
         $viewPath = resource_path('views/modules/users');
-
         $sourcePath = __DIR__.'/../Resources/views';
-
         $this->publishes([
             $sourcePath => $viewPath
         ],'views');
-
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return $path . '/modules/users';
         }, \Config::get('view.paths')), [$sourcePath]), 'users');
     }
-
     /**
      * Register translations.
      *
@@ -81,14 +71,12 @@ class UsersServiceProvider extends ServiceProvider
     public function registerTranslations()
     {
         $langPath = resource_path('lang/modules/users');
-
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'users');
         } else {
             $this->loadTranslationsFrom(__DIR__ .'/../Resources/lang', 'users');
         }
     }
-
     /**
      * Register an additional directory of factories.
      * 
@@ -100,7 +88,6 @@ class UsersServiceProvider extends ServiceProvider
             app(Factory::class)->load(__DIR__ . '/../Database/factories');
         }
     }
-
     /**
      * Get the services provided by the provider.
      *
