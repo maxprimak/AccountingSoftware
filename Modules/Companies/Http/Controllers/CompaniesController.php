@@ -28,7 +28,7 @@ class CompaniesController extends Controller
     public function index()
     {   
         try{
-            $user = User::where('login_id', auth()->user()->id)->first();
+            $user = User::where('login_id', auth()->user()->id)->firstOrFail();
             $company = Company::findOrFail($user->company_id);
             $currencies = Currency::all();
             $branches = BranchesService::getUserBranches($user->id);
