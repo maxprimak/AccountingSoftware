@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Registration\Http\Requests\RegistrationRequest;
-use Modules\Companies\Database\Entities\Company;
+use Modules\Companies\Entities\Company;
+use Modules\Companies\Entities\Currency;
+
 use CreateUsersService;
-//use RegistrationService;
 
 class RegistrationController extends Controller
 {
@@ -18,7 +19,11 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-        return view('registration::index');
+
+        $currencies = Currency::all();
+
+        return view('registration::index')->with(compact('currencies'));
+
     }
 
     /**
@@ -38,19 +43,13 @@ class RegistrationController extends Controller
     public function store(RegistrationRequest $request)
     {   
         try{
-            //$company = RegistrationService::registerFirstCompanyAndBranch();
             $employee = CreateUsersService::registerFirstEmployee($request, auth()->id());
-
-            //$company = new Company();
-            //$company = $company->store($request);
-
         }catch( \Exception $e ){
             return response()->json($e->getMessage(), 500);
         }
 
         return response()->json([
             'employee' => $employee
-            //'company' => $company
         ]);
     }
 

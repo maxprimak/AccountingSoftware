@@ -5,6 +5,8 @@ use Modules\Employees\Http\Requests\StoreEmployeeRequest;
 use Modules\Users\Entities\People;
 use Modules\Users\Entities\User;
 use Modules\Login\Entities\Login;
+use Modules\Companies\Entities\Company;
+use Modules\Companies\Entities\Branch;
 use Modules\Employees\Entities\Employee;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -31,16 +33,41 @@ class CreateUsers{
     }
 
     public function registerFirstEmployee(FormRequest $request, $login_id){
+
         $person = new People();
         $person = $person->store($request);
 
         $login = Login::find($login_id);
-        
+
+        $company = new Company();
+        $company->name = $request->company_name;
+        $company->address = $request->company_address;
+        $company->phone = $request->company_phone;
+        $company->currency_id = $request->currency_id;
+        $company->save();
+
         $user = new User();
-        $user = $user->store($login, $person, $request);
+        $user->login_id = $login->id;
+        $user->person_id = $person->id;
+        $user->company_id = $company->id;
+        $user->is_active = true;
+        $user->save();
+
+        $branch = new Branch();
+        $branch->company_id = $company->id;
+        $branch->name = $company->name . ' Main Branch';
+        $branch->address = $company->address;
+        $branch->phone = $company->phone;
+        $branch->color = "#F64272";
+        $branch->save();
+
+        BranchesService::addUserToBranches($user->id, array($branch->id));
 
         $employee = new Employee();
-        $employee = $employee->store(['user_id' => $user->id,'role_id' => 1]);
+        $employee->user_id = $user->id;
+        $employee->role_id = 1;
+        //error here
+        $employee->save();
 
         return $employee;
 }

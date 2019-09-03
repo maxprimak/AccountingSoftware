@@ -16,6 +16,8 @@ use Modules\Login\Entities\Login;
 use Modules\Companies\Http\Requests\StoreCompanyRequest;
 use Modules\Companies\Http\Requests\UpdateCompanyRequest;
 
+use BranchesService;
+
 class CompaniesController extends Controller
 {   
 
@@ -25,13 +27,14 @@ class CompaniesController extends Controller
      */
     public function index()
     {   
-        $user = User::where('login_id', auth()->user()->id)->first();
-        $branch_of_user = Branch::find($user->branch_id);
-        $company = Company::find($branch_of_user->company_id);
-
-        $currencies = Currency::all();
-        
-        $branches = Branch::where('company_id', $company->id)->get();
+        try{
+            $user = User::where('login_id', auth()->user()->id)->first();
+            $company = Company::findOrFail($user->company_id);
+            $currencies = Currency::all();
+            $branches = BranchesService::getUserBranches($user->id);
+        }catch(\Exception $e){
+            return redirect('/registration');
+        }
 
         return view('companies::companies.index')->with(compact('company', 'currencies', 'branches'));
     }

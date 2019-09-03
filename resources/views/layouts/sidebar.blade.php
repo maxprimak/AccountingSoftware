@@ -52,7 +52,7 @@
                         <div class="triangle"></div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item-hold" href="http://demos.ui-lib.com/gull-html-doc/" target="_blank">
+                        <a class="nav-item-hold" href="{{route('companies.index')}}">
                             <i class="nav-icon i-Safe-Box1"></i>
                             <span class="nav-text">My Company</span>
                         </a>
@@ -97,7 +97,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('kaufvertrag.all')}}">
+                            <a href="{{route('employees.index')}}">
                                 <i class="nav-icon i-Financial"></i>
                                 <span class="item-name">Employees</span>
                             </a>

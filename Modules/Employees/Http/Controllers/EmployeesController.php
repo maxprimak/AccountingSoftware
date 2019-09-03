@@ -39,7 +39,7 @@ class EmployeesController extends Controller
             $branches = BranchesService::getUserBranches($user->id);
             $roles = Role::all();
         }catch(\Exception $e){
-            return abort(500);
+            return redirect('/registration');
         }
 
         return view('employees::index')->with(compact('employees', 'roles', 'branches'));
