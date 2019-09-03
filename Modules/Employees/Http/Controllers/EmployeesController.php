@@ -83,45 +83,8 @@ class EmployeesController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, $id)
     {
-        $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
-                                ->select('employees.user_id', 'employees.role_id', 'users.login_id', 'users.person_id')
-                                ->find($id);
 
-        People::find($employee->person_id)->update([
-            'name' => $request->full_name,
-            'phone' => $request->phone,
-            'address' => $request->address
-        ]);
-        // update Login
-        Login::find($employee->login_id)->update([
-            'username' => $request->username,
-            //'password' => Hash::make($request->password),
-            'email' => $request->email
-        ]);
-
-        // update User
-        $user = User::find($employee->user_id);
-        $user->is_active = $request->is_active;
-        $user->save();
-
-        BranchesService::deleteUserFromAllBranches($user->id);
-        BranchesService::addUserToBranches($user->id, $request->branch_id);
-        
-        //update Employee
-        $employee = Employee::find($id);
-        $employee = $employee->storeUpdated($request);
-
-        //upload photo avatar
-        if (! File::exists(public_path('avatars/'))) {
-            File::makeDirectory(public_path('avatars/'));
-        }
-
-        if($request->get('image'))
-        {
-          $image = $request->get('image');
-	        $name = $employee->user_id.'_avatar' . '.png';	
-          \Image::make($request->get('image'))->save(public_path('avatars/').$name);
-        }
+        $employee = CreateUsersService::updateEmployee($request, $id);
 
         return response()->json(['message' => 'Successfully updated!']);
     }

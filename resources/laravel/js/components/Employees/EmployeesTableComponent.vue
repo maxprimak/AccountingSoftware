@@ -37,7 +37,11 @@
         <b-table-column field="photo" label="Photo" sortable>
           <a @click="toggle(props.row)">
             <figure class="image is-32x32">
-              <img class="is-rounded" :src="'/avatars/' + props.row.user_id + '_avatar.png'" @error="imageLoadError"/>
+              <img
+                class="is-rounded"
+                :src="'/avatars/' + props.row.user_id + '_avatar.png'"
+                @error="imageLoadError"
+              />
             </figure>
           </a>
         </b-table-column>
@@ -114,9 +118,7 @@
               <div class="columns">
                 <div class="column">
                   <b-field label="Password">
-                    <b-input
-                      v-model="password"
-                    ></b-input>
+                    <b-input v-model="password"></b-input>
                   </b-field>
                 </div>
                 <div class="column">
@@ -160,7 +162,7 @@
                     <b-input name="address" v-model="props.row.address" expanded></b-input>
                   </b-field>
                 </div>
-                                <div class="column">
+                <div class="column">
                   <div class="control">
                     <b-field label="Works in Branches">
                       <div class="select">
@@ -243,8 +245,8 @@ export default {
       this.$refs.table.toggleDetails(row);
     },
 
-    imageLoadError (event) {
-      event.target.src = "https://bulma.io/images/placeholders/32x32.png"
+    imageLoadError(event) {
+      event.target.src = "https://bulma.io/images/placeholders/32x32.png";
     },
 
     onImageChange(e) {
