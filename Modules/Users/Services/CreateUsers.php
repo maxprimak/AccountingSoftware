@@ -8,6 +8,9 @@ use Modules\Login\Entities\Login;
 use Modules\Employees\Entities\Employee;
 use Illuminate\Foundation\Http\FormRequest;
 
+use BranchesService;
+use File;
+
 class CreateUsers{
 
     public function createEmployee(FormRequest $request){
@@ -44,6 +47,51 @@ class CreateUsers{
 
     public function createCustomer(){
         return 2;
+    }
+
+    public function updateEmployee(FormRequest $request, $employee_id){
+
+        $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
+                                ->select('employees.user_id', 'employees.role_id', 'users.login_id', 'users.person_id')
+                                ->find($employee_id);
+
+        People::find($employee->person_id)->update([
+            'name' => $request->full_name,
+            'phone' => $request->phone,
+            'address' => $request->address
+        ]);
+        // update Login
+        Login::find($employee->login_id)->update([
+            'username' => $request->username,
+            //'password' => Hash::make($request->password),
+            'email' => $request->email
+        ]);
+
+        // update User
+        $user = User::find($employee->user_id);
+        $user->is_active = $request->is_active;
+        $user->save();
+
+        BranchesService::deleteUserFromAllBranches($user->id);
+        BranchesService::addUserToBranches($user->id, $request->branch_id);
+        
+        //update Employee
+        $employee = Employee::find($employee_id);
+        $employee = $employee->storeUpdated($request);
+
+        //upload photo avatar
+        if (! File::exists(public_path('avatars/'))) {
+            File::makeDirectory(public_path('avatars/'));
+        }
+
+        if($request->get('image'))
+        {
+          $image = $request->get('image');
+	        $name = $employee->user_id.'_avatar' . '.png';	
+          \Image::make($request->get('image'))->save(public_path('avatars/').$name);
+        }
+
+        return $employee;
     }
 
 }
