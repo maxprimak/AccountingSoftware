@@ -12,17 +12,19 @@ class CreateUsersTable extends Migration
      * @return void
      */
     public function up()
-    {   
+    {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('login_id');
             $table->unsignedInteger('person_id');
             //$table->unsignedInteger('role_id');
             $table->unsignedInteger('branch_id');
+            $table->unsignedInteger('company_id')->nullable();
             $table->timestamps();
             $table->foreign('login_id')->references('id')->on('logins')->onDelete('cascade');
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             //$table->foreign('role_id')->references('id')->on('roles');
         });
 
@@ -30,7 +32,7 @@ class CreateUsersTable extends Migration
         Schema::table('users', function(Blueprint $table)
         {
             $table->index('INSERT_INDEX_HERE');
-        }); 
+        });
         */
     }
 
@@ -47,7 +49,7 @@ class CreateUsersTable extends Migration
         Schema::table('users', function (Blueprint $table)
         {
             $table->dropIndex(['INSERT_INDEX_HERE']);
-        }); 
+        });
         */
     }
 }
