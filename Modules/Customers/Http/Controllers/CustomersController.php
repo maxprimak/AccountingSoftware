@@ -22,7 +22,8 @@ class CustomersController extends Controller
     public function index()
     {
         try {
-          $branch_ids = UserHasBranch::where('user_id',auth()->user()->id)->pluck('branch_id')->toArray();
+          $user = User::where('login_id',auth()->user()->id)->firstOrFail();
+          $branch_ids = UserHasBranch::where('user_id',$user->id)->pluck('branch_id')->toArray();
           $customer_ids = CustomerHasBranch::whereIn('branch_id',$branch_ids)->pluck('customer_id')->toArray();
           $customers = Customer::whereIn('id',$customer_ids)->get();
         } catch (\Exception $e) {

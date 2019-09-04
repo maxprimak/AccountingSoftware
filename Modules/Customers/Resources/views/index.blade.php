@@ -6,6 +6,6 @@
 
 @section('main-content')
 <div id="app">
-  <customers-table :array_test="{{2}}"></customers-table>
+  <customers-table :customers="{{$customers}}"></customers-table>
 </div>
 @endsection
