@@ -6,7 +6,8 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Login\Entities\Login;
-use Faker\Generator as Faker;
+use \Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class EmployeesTest extends TestCase
 {
@@ -17,7 +18,7 @@ class EmployeesTest extends TestCase
      */
     public function test_head_created_two_techs()
     {
-        $response = $this->post('/login', [
+        $login = $this->post('/login', [
             'username' => 'oliinykm95',
             'password' => '123456789'
         ]);
@@ -53,7 +54,7 @@ class EmployeesTest extends TestCase
 
     public function test_head_created_two_sales_managers()
     {
-        $response = $this->post('/login', [
+        $login = $this->post('/login', [
             'username' => 'oliinykm95',
             'password' => '123456789'
         ]);
@@ -85,5 +86,55 @@ class EmployeesTest extends TestCase
 
         $response1->assertStatus(200);
         $response2->assertStatus(200);
+    }
+
+    public function test_head_edited_sales_manager()
+    {
+        $login = $this->post('/login', [
+            'username' => 'oliinykm95',
+            'password' => '123456789'
+        ]);
+
+        $data = [
+            'id' => 14,
+            'full_name' => 'sale manager 2 edit',
+            'username' => 'salemanger2',
+            'password' => '123456789',
+            'email' => 'salemanager2@example.com',
+            'phone' => '1234567',
+            'role_id' => '2',
+            'branch_id' => '1',
+            'is_active' => '2',
+        ];
+
+        $response = $this->post('employees/'.$data['id'], $data);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_tech_changes_his_photo()
+    {
+
+        $login = $this->post('/login', [
+            'username' => 'oliinykm95',
+            'password' => '123456789'
+        ]);
+
+        $data = [
+            'id' => '1',
+            'full_name' => 'Loy Dickens DVMok edit',
+            'username' => 'oliinykm95',
+            'password' => '123456789',
+            'email' => 'bergstrom.wayne.edit@bergstrom.org',
+            'phone' => '1234567',
+            'role_id' => '1',
+            'branch_id' => '1',
+            'is_active' => '1',
+            'image' => UploadedFile::fake()->image('test_image.png')
+        ];
+        
+        $response = $this->post('employees/'.$data['id'], $data);
+
+        $response->assertStatus(200);
     }
 }

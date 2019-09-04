@@ -1,24 +1,19 @@
 <template>
   <section>
     <div class="columns">
-      <div class="column is-4">
+      <div class="column">
         <h3 class="title">Employees</h3>
       </div>
-      <div class="column is-6">
-        <b-field grouped>
-          <b-input placeholder="Search..." type="search" icon="magnify"></b-input>
-          <p class="control">
-            <button class="button is-info">Search</button>
-          </p>
-        </b-field>
+      <div class="column">
+        <b-input v-model="search" placeholder="Search..." type="search" icon="magnify"></b-input>
       </div>
       <div class="column">
-        <b-button @click="toCreateEmployee" type="is-primary">NEW EMPLOYEE</b-button>
+        <b-button class="is-pulled-right" @click="toCreateEmployee" type="is-primary">NEW EMPLOYEE</b-button>
       </div>
     </div>
 
     <b-table
-      :data="data"
+      :data="filteredEmployees"
       ref="table"
       paginated
       per-page="10"
@@ -237,6 +232,7 @@ export default {
       csrf: document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content"),
+      search: "",
       password: "",
       image: "",
       selects: [{ value: 0, key: "Not active" }, { value: 1, key: "Active" }]
@@ -314,6 +310,19 @@ export default {
 
     toCreateEmployee: function() {
       window.location.href = "/employees/create";
+    }
+  },
+
+  computed: {
+    filteredEmployees: function() {
+      return this.data.filter(employee => {
+        return (
+          employee.username.match(this.search) ||
+          employee.name.match(this.search) ||
+          employee.phone.match(this.search) ||
+          employee.email.match(this.search)
+        );
+      });
     }
   }
 };

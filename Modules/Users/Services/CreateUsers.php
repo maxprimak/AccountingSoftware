@@ -91,13 +91,14 @@ class CreateUsers{
                                 ->select('employees.user_id', 'employees.role_id', 'users.login_id', 'users.person_id')
                                 ->find($employee_id);
 
+        // update person
         People::find($employee->person_id)->update([
             'name' => $request->full_name,
             'phone' => $request->phone,
             'address' => $request->address
         ]);
+
         // update Login
-        
         if($request->password){
             Login::find($employee->login_id)->update([
                 'username' => $request->username,

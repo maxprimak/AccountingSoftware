@@ -68,7 +68,6 @@ class EmployeesController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-
             $employee = CreateUsersService::createEmployee($request);
 
             return response()->json(['message' => 'Successfully created!']);
