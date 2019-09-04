@@ -224,6 +224,7 @@
 import { Toast } from "buefy/dist/components/toast";
 import { Dialog } from "buefy/dist/components/dialog";
 
+
 export default {
   props: ["employees", "roles", "branches"],
 
