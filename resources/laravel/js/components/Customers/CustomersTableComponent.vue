@@ -1,106 +1,216 @@
 <template>
-    <section>
-
-        <b-field grouped group-multiline>
-            <div class="control">
-                <b-switch v-model="showDetailIcon">Show detail icon</b-switch>
-            </div>
+  <section>
+    <div class="columns">
+      <div class="column is-4">
+        <h3 class="title">Customers</h3>
+      </div>
+      <div class="column is-6">
+        <b-field grouped>
+          <b-input placeholder="Search..." type="search" icon="magnify"></b-input>
+          <p class="control">
+            <button class="button is-info">Search</button>
+          </p>
         </b-field>
+      </div>
+      <div class="column">
+        <b-button @click="toCreateCustomer" type="is-primary">New Customer</b-button>
+      </div>
+    </div>
 
-        <b-table
-            :data="data"
-            ref="table"
-            paginated
-            per-page="5"
-            :opened-detailed="defaultOpenedDetails"
-            detailed
-            detail-key="id"
-            @details-open="(row, index) => $buefy.toast.open(`Expanded ${row.user.first_name}`)"
-            :show-detail-icon="showDetailIcon"
-            aria-next-label="Next page"
-            aria-previous-label="Previous page"
-            aria-page-label="Page"
-            aria-current-label="Current page">
+    <b-table
+      :data="data"
+      ref="table"
+      paginated
+      per-page="10"
+      detailed
+      detail-key="id"
+      aria-next-label="Next page"
+      aria-previous-label="Previous page"
+      aria-page-label="Page"
+      aria-current-label="Current page"
+    >
+      <template slot-scope="props">
+        <b-table-column field="id" label="ID" width="40" numeric>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.id }}</a>
+        </b-table-column>
 
-            <template slot-scope="props">
-                <b-table-column field="id" label="ID" width="40" numeric>
-                    {{ this.id }}
-                </b-table-column>
+        <b-table-column field="full_name" label="Full name" sortable>{{ props.row.name }}</b-table-column>
 
-                <b-table-column field="user.first_name" label="First Name" sortable>
-                    <!-- <template v-if="showDetailIcon">
-                        {{ this.first_name }}
-                    </template> -->
-                    <!-- <template v-else>
-                        <a @click="toggle(props.row)">
-                            {{ this.first_name }}
-                        </a>
-                    </template> -->
-                </b-table-column>
+        <b-table-column field="phone" label="Phone" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.phone }}</a>
+        </b-table-column>
 
-                <b-table-column field="user.last_name" label="Last Name" sortable>
-                    {{ this.last_name }}
-                </b-table-column>
+        <b-table-column field="email" label="Email" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.email }}</a>
+        </b-table-column>
+      </template>
 
-                <b-table-column field="date" label="Date" sortable centered>
-                    <span class="tag is-success">
-                        {{ new Date(props.row.date).toLocaleDateString() }}
-                    </span>
-                </b-table-column>
+      <template slot="detail" slot-scope="props">
+        <section>
+          <div class="columns">
+            <div class="column">
+              <h4 class="title">Edit customer info</h4>
+            </div>
+            <div class="column">
+              <b-button
+                class="is-pulled-right"
+                @click="deleteCustomer(props.row.id, props.row.username, props)"
+                type="is-danger"
+              >Delete</b-button>
+            </div>
+          </div>
 
-                <b-table-column label="Gender">
-                    <span>
-                        <b-icon pack="fas"
-                            :icon="props.row.gender === 'Male' ? 'mars' : 'venus'">
-                        </b-icon>
-                        {{ this.first_name }}
-                    </span>
-                </b-table-column>
-            </template>
+          <div class="columns is-centered">
+            <div class="column is-two-thirds">
+              <div class="columns">
+                <div class="column">
+                  <b-field label="Full name">
+                    <b-input v-model="props.row.name" name="full_name" expanded></b-input>
+                  </b-field>
+                </div>
+              </div>
 
-            <template slot="detail" slot-scope="props">
-                <article class="media">
-                    <figure class="media-left">
-                        <p class="image is-64x64">
-                            <img src="/static/img/placeholder-128x128.png">
-                        </p>
-                    </figure>
-                    <div class="media-content">
-                        <div class="content">
-                            <p>
-                                <strong>{{ this.first_name }} {{ this.user.last_name }}</strong>
-                                <small>@{{ this.first_name }}</small>
-                                <small>31m</small>
-                                <br>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Proin ornare magna eros, eu pellentesque tortor vestibulum ut.
-                                Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
-                            </p>
-                        </div>
-                    </div>
-                </article>
-            </template>
-        </b-table>
+              <div class="columns">
+                <div class="column">
+                  <b-field label="Phone">
+                    <b-input v-model="props.row.phone" name="phone" expanded></b-input>
+                  </b-field>
+                </div>
+                <div class="column">
+                  <b-field label="Email">
+                    <b-input name="email" v-model="props.row.email" expanded></b-input>
+                  </b-field>
+                </div>
+              </div>
 
-    </section>
+              <div class="columns">
+                <div class="column">
+                  <b-field label="Address">
+                    <b-input name="address" v-model="props.row.address" expanded></b-input>
+                  </b-field>
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <b-field label="Belongs to folowing Branches:">
+                      <div class="select">
+                        <b-select
+                          multiple
+                          native-size="2"
+                          v-model="props.row.branch_id"
+                          name="branch_id"
+                          placeholder="Select a branch"
+                        >
+                          <option
+                            v-for="branch in branches"
+                            :value="branch.id"
+                            :key="branch.name"
+                          >{{ branch.name }}</option>
+                        </b-select>
+                      </div>
+                    </b-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="columns is-mobile">
+            <div class="column">
+              <b-button
+                class="is-pulled-right"
+                @click="updateCustomer(props.row.id, props.row)"
+                native-type="button"
+                type="is-primary"
+              >Save</b-button>
+            </div>
+          </div>
+        </section>
+      </template>
+    </b-table>
+  </section>
 </template>
 
 <script>
+import { Toast } from "buefy/dist/components/toast";
+import { Dialog } from "buefy/dist/components/dialog";
+
+    // export default {
+    //     data() {
+    //         return {
+    //           id: 1,
+    //           first_name: "Maxim",
+    //           last_name: "Primak",
+    //         }
+    //     },
+    //     methods: {
+    //         toggle(row) {
+    //             this.$refs.table.toggleDetails(row)
+    //         }
+    //     }
+    // }
 
     export default {
-        data() {
-            return {
-              id: 1,
-              first_name: "Maxim",
-              last_name: "Primak",
-            }
+      props: ["customers", "branches"],
+
+      mounted(){
+        console.log(this.customers)
+      },
+      data() {
+        return {
+          data: this.customers,
+          csrf: document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        };
+      },
+      methods: {
+        toggle(row) {
+          this.$refs.table.toggleDetails(row);
         },
-        methods: {
-            toggle(row) {
-                this.$refs.table.toggleDetails(row)
-            }
+
+        updateCustomer(customer_id, row) {
+          axios
+            .post("customers/" + customer_id, {
+              full_name: row.name,
+              email: row.email,
+              phone: row.phone,
+              branch_id: row.branch_id,
+              address: row.address,
+              person_id: row.person_id,
+            })
+            .then(response => {
+              Toast.open(response.data.message);
+            })
+            .catch(function(error) {
+              Toast.open("Error happened! Please contact the support team");
+            });
+        },
+
+        deleteCustomer(customer_id, customer_name, props) {
+          Dialog.confirm({
+            title: "Deleting customer",
+            message:
+              "Are you sure you want to <b>delete</b> this customer? This action cannot be undone.",
+            confirmText: 'Delete customer "' + customer_name + '"',
+            type: "is-danger",
+            hasIcon: true,
+            onConfirm: () =>
+              axios
+                .delete("customers/" + customer_id)
+                .then(response => {
+                  this.data.splice(props.index, 1);
+                  Toast.open(response.data.message);
+                })
+                .catch(function(error) {
+                  Toast.open("Error happened! Please contact the support team");
+                })
+          });
+        },
+
+        toCreateCustomer: function() {
+          window.location.href = "/customers/create";
         }
-    }
+      }
+    };
 </script>
 
 <!-- // <script>

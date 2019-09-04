@@ -46,7 +46,6 @@ class CustomersControllerTest extends TestCase
 
         $company_id = Company::find(auth()->user()->company_id);
         $customers = Customer::where('company_id',$company_id)->get()->toArray();
-        dd($customers);
         $correct_customers = array();
 
         $this->assertTrue(true);
