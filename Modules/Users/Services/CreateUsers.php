@@ -132,7 +132,7 @@ class CreateUsers{
         if($request->get('image'))
         {
           $image = $request->get('image');
-	        $name = $employee->user_id.'_avatar' . '.png';	
+	        $name = $employee->user_id.'_avatar' . '.png';
           \Image::make($request->get('image'))->save(public_path('avatars/').$name);
         }
 
