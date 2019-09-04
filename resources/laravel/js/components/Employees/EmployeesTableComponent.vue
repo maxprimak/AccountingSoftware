@@ -79,7 +79,7 @@
             </div>
             <div class="column">
               <b-button
-                v-if="auth_id != props.row.id"
+                v-if="auth_id != props.row.login_id"
                 class="is-pulled-right"
                 @click="deleteEnployee(props.row.id, props.row.username, props)"
                 type="is-danger"
@@ -274,8 +274,6 @@ export default {
           role_id: row.role_id,
           branch_id: row.branch_id,
           address: row.address,
-          login_id: row.login_id,
-          person_id: row.person_id,
           image: this.image
         })
         .then(response => {
