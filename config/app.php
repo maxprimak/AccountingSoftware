@@ -176,8 +176,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Modules\Users\Providers\UsersServiceProvider::class,
         Modules\Companies\Providers\CompaniesServiceProvider::class,
-
-        //upload image
         Intervention\Image\ImageServiceProvider::class,
 
     ],
@@ -232,6 +230,7 @@ return [
         'CreateUsersService' => Modules\Users\Facades\CreateUsersService::class,
         'BranchesService' => Modules\Companies\Facades\BranchesService::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        
     ],
 
 ];

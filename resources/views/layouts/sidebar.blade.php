@@ -2,13 +2,28 @@
   <div class="side-content-wrap">
             <div class="sidebar-left open rtl-ps-none" data-perfect-scrollbar data-suppress-scroll-x="true">
                 <ul class="navigation-left">
-                    <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}" data-item="dashboard">
-                        <a class="nav-item-hold" href="/dashboard">
-                            <i class="nav-icon i-Bar-Chart"></i>
-                            <span class="nav-text"><!-- Dashboard --> Dashboard</span>
+                    <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}">
+                        <a class="nav-item-hold" href="/customers">
+                            <i class="nav-icon i-Suitcase"></i>
+                            <span class="nav-text">Customers</span>
                         </a>
                         <div class="triangle"></div>
                     </li>
+                    <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}">
+                        <a class="nav-item-hold" href="/employees">
+                            <i class="nav-icon i-Administrator"></i>
+                            <span class="nav-text">Employees</span>
+                        </a>
+                        <div class="triangle"></div>
+                    </li>
+                    <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}">
+                        <a class="nav-item-hold" href="/companies">
+                            <i class="nav-icon i-Bar-Chart"></i>
+                            <span class="nav-text">My Company</span>
+                        </a>
+                        <div class="triangle"></div>
+                    </li>
+                    {{-- 
                     <li class="nav-item {{ request()->is('repair-orders') ? 'active' : '' }}">
                         <a class="nav-item-hold" href="/repair-orders">
                             <i class="nav-icon i-Library"></i>
@@ -52,12 +67,12 @@
                         <div class="triangle"></div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item-hold" href="http://demos.ui-lib.com/gull-html-doc/" target="_blank">
+                        <a class="nav-item-hold" href="{{route('companies.index')}}">
                             <i class="nav-icon i-Safe-Box1"></i>
                             <span class="nav-text">My Company</span>
                         </a>
                         <div class="triangle"></div>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
 
@@ -97,7 +112,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('kaufvertrag.all')}}">
+                            <a href="{{route('employees.index')}}">
                                 <i class="nav-icon i-Financial"></i>
                                 <span class="item-name">Employees</span>
                             </a>

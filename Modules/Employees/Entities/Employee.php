@@ -5,6 +5,9 @@ namespace Modules\Employees\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Employees\Http\Requests\StoreEmployeeRequest;
 use Modules\Employees\Http\Requests\UpdateEmployeeRequest;
+use Modules\Users\Entities\User;
+
+use BranchesService;
 
 class Employee extends Model
 {
@@ -32,7 +35,9 @@ class Employee extends Model
     }
 
     public function getBranchIdAttribute()
-    {
+    {   
+
         return $this->attributes['branch_id'];
+
     }
 }

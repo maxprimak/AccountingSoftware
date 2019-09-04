@@ -67,6 +67,9 @@
                                     @endif
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-block btn-rounded mt-3">Sign Up</button>
+                                <div class="mt-3 text-center">
+                                    <a href="/login" class="text-muted"><u>Already have an account? Log in</u></a>
+                                </div>
                             </form>
                         </div>
                     </div>

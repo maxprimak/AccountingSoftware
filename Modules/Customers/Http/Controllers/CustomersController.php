@@ -25,10 +25,8 @@ class CustomersController extends Controller
           $branch_ids = UserHasBranch::where('user_id',auth()->user()->id)->pluck('branch_id')->toArray();
           $customer_ids = CustomerHasBranch::whereIn('branch_id',$branch_ids)->pluck('customer_id')->toArray();
           $customers = Customer::whereIn('id',$customer_ids)->get();
-          
-          // throw new \Exception($e->getMessage(), 1);
         } catch (\Exception $e) {
-
+            return abort(500);
         }
         return view('customers::index', compact('customers'));
     }
@@ -39,6 +37,7 @@ class CustomersController extends Controller
      */
     public function create()
     {
+
         return view('customers::create');
     }
 

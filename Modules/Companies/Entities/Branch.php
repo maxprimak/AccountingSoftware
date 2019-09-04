@@ -9,6 +9,7 @@ use Modules\Companies\Entities\Branch;
 use Modules\Users\Entities\User;
 use Illuminate\Foundation\Http\FormRequest;
 
+use BranchesService;
 
 class Branch extends Model
 {
@@ -21,14 +22,15 @@ class Branch extends Model
     public function store(FormRequest $request){
 
         $user = User::where('login_id', auth()->user()->id)->first();
-        $branch_of_user = Branch::find($user->branch_id);
 
-        $this->company_id = Company::find($branch_of_user->company_id)->id; 
+        $this->company_id = Company::find($user->company_id)->id; 
         $this->name = $request->name;
         $this->address = $request->address;
         $this->phone = $request->phone;
         $this->color = $request->color;
         $this->save();
+
+        BranchesService::addUserToBranches($user->id, array($this->id));
 
         return $this;
     }

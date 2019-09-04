@@ -38,12 +38,12 @@
           <div class="columns">
             <div class="column">
               <b-field label="Password">
-                <b-input v-model="password" password-reveal></b-input>
+                <b-input type="password" v-model="password" password-reveal></b-input>
               </b-field>
             </div>
             <div class="column">
               <b-field label="Confirm password">
-                <b-input v-model="re_password" password-reveal></b-input>
+                <b-input type="password" v-model="re_password" password-reveal></b-input>
               </b-field>
             </div>
           </div>

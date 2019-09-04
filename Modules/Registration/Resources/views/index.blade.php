@@ -6,6 +6,6 @@
 
 @section('main-content')
 <div id="app">
-    <registration></registration>
+    <registration :currencies="{{$currencies}}"></registration>
 </div>
 @endsection

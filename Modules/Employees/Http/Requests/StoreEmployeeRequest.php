@@ -22,7 +22,8 @@ class StoreEmployeeRequest extends FormRequest
             're_password' => 'same:password',
             'email' => 'required|email|unique:logins,email',
             'phone' => 'required|unique:people,phone',
-            'role_id' => 'required'
+            'role_id' => 'required',
+            'branch_id' => 'required'
         ];
     }
 
