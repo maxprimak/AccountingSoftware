@@ -36,6 +36,8 @@ class CustomersServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        // $this->app->bind('CustomerService', 'Modules\Customers\Services\CustomerService');
+        $this->app->bind('customerServices', 'Modules\Customers\Services\CustomerServices');
     }
 
     /**
@@ -91,7 +93,7 @@ class CustomersServiceProvider extends ServiceProvider
 
     /**
      * Register an additional directory of factories.
-     * 
+     *
      * @return void
      */
     public function registerFactories()

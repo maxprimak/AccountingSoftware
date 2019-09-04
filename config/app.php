@@ -177,6 +177,7 @@ return [
         Modules\Users\Providers\UsersServiceProvider::class,
         Modules\Companies\Providers\CompaniesServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Modules\Customers\Providers\CustomersServiceProvider::class,
 
     ],
 
@@ -230,7 +231,7 @@ return [
         'CreateUsersService' => Modules\Users\Facades\CreateUsersService::class,
         'BranchesService' => Modules\Companies\Facades\BranchesService::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        
+        'CustomerServiceFacad' => Modules\Customers\Facades\CustomerServiceFacad::class,
     ],
 
 ];
