@@ -29,6 +29,7 @@ class UpdateEmployeeRequest extends FormRequest
         return [
             'full_name' => 'required',
             'username' => 'required|min:6|unique:logins,username,' . $employee->login_id,
+            'password' => 'nullable|min:8',
             'email' => 'required|email|unique:logins,email,' . $employee->login_id,
             'phone' => 'required|unique:people,phone,' . $employee->person_id,
             'role_id' => 'required',

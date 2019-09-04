@@ -81,9 +81,12 @@
                     company_phone: this.company_phone,
                     currency_id: this.currency_id
                 }).then(function (response) {
-                    window.location.href = "/companies";
+                    if(!response.data.hasOwnProperty("error"))
+                    window.location.href = "/companies"
+                    else
+                    Toast.open(response.data.message)
                 }).catch(function (error) {
-                    console.log(error.response.data)
+                    Toast.open('Error happened! Please contact the support team')
                 });
             }
         }

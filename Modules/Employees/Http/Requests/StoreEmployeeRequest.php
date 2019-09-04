@@ -19,10 +19,11 @@ class StoreEmployeeRequest extends FormRequest
             'name' => 'required',
             'username' => 'required|min:6|unique:logins,username',
             'password' => 'required|min:8',
-            're_password' => 'same:password',
+            're_password' => 'required|same:password',
             'email' => 'required|email|unique:logins,email',
             'phone' => 'required|unique:people,phone',
-            'role_id' => 'required'
+            'role_id' => 'required',
+            'branch_id' => 'required'
         ];
     }
 

@@ -1,24 +1,19 @@
 <template>
   <section>
     <div class="columns">
-      <div class="column is-4">
+      <div class="column">
         <h3 class="title">Employees</h3>
       </div>
-      <div class="column is-6">
-        <b-field grouped>
-          <b-input placeholder="Search..." type="search" icon="magnify"></b-input>
-          <p class="control">
-            <button class="button is-info">Search</button>
-          </p>
-        </b-field>
+      <div class="column">
+        <b-input v-model="search" placeholder="Search..." type="search" icon="magnify"></b-input>
       </div>
       <div class="column">
-        <b-button @click="toCreateEmployee" type="is-primary">NEW EMPLOYEE</b-button>
+        <b-button class="is-pulled-right" @click="toCreateEmployee" type="is-primary">NEW EMPLOYEE</b-button>
       </div>
     </div>
 
     <b-table
-      :data="data"
+      :data="filteredEmployees"
       ref="table"
       paginated
       per-page="10"
@@ -84,6 +79,7 @@
             </div>
             <div class="column">
               <b-button
+                v-if="auth_id != props.row.id"
                 class="is-pulled-right"
                 @click="deleteEnployee(props.row.id, props.row.username, props)"
                 type="is-danger"
@@ -118,7 +114,7 @@
               <div class="columns">
                 <div class="column">
                   <b-field label="Password">
-                    <b-input v-model="password"></b-input>
+                    <b-input placeholder="**********" v-model="props.row.password"></b-input>
                   </b-field>
                 </div>
                 <div class="column">
@@ -197,7 +193,8 @@
                           name="resume"
                         />
                         <span class="file-cta">
-                          <span class="file-label">Load</span>
+                          <span v-if="image" class="file-label">Loaded</span>
+                          <span v-else class="file-label">Load</span>
                         </span>
                       </label>
                     </div>
@@ -227,7 +224,7 @@ import { Toast } from "buefy/dist/components/toast";
 import { Dialog } from "buefy/dist/components/dialog";
 
 export default {
-  props: ["employees", "roles", "branches"],
+  props: ["employees", "roles", "branches", "auth_id"],
 
   data() {
     return {
@@ -235,11 +232,13 @@ export default {
       csrf: document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content"),
-      password: "********",
+      search: "",
+      password: "",
       image: "",
       selects: [{ value: 0, key: "Not active" }, { value: 1, key: "Active" }]
     };
   },
+
   methods: {
     toggle(row) {
       this.$refs.table.toggleDetails(row);
@@ -269,7 +268,7 @@ export default {
           full_name: row.name,
           is_active: row.is_active,
           username: row.username,
-          password: this.password,
+          password: row.password,
           email: row.email,
           phone: row.phone,
           role_id: row.role_id,
@@ -280,6 +279,7 @@ export default {
           image: this.image
         })
         .then(response => {
+          this.image = "";
           Toast.open(response.data.message);
         })
         .catch(function(error) {
@@ -310,6 +310,19 @@ export default {
 
     toCreateEmployee: function() {
       window.location.href = "/employees/create";
+    }
+  },
+
+  computed: {
+    filteredEmployees: function() {
+      return this.data.filter(employee => {
+        return (
+          employee.username.match(this.search) ||
+          employee.name.match(this.search) ||
+          employee.phone.match(this.search) ||
+          employee.email.match(this.search)
+        );
+      });
     }
   }
 };

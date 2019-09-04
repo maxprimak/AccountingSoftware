@@ -27,7 +27,6 @@ class Employee extends Model
     }
 
     public function storeUpdated(UpdateEmployeeRequest $request){
-        // $this::find($request['id'])->update(['role_id' => $request['role_id']]);
         $this->role_id = $request->role_id;
         $this->save();
 

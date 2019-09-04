@@ -5,9 +5,9 @@ namespace Modules\Registration\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Registration\Http\Requests\RegistrationRequest;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Currency;
+use Modules\Registration\Http\Requests\RegistrationRequest;
 
 use CreateUsersService;
 
@@ -42,6 +42,7 @@ class RegistrationController extends Controller
      */
     public function store(RegistrationRequest $request)
     {   
+        
         try{
             $employee = CreateUsersService::registerFirstEmployee($request, auth()->id());
         }catch( \Exception $e ){

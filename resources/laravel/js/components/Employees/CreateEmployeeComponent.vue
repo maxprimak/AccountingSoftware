@@ -132,6 +132,7 @@ export default {
           email: this.email,
           username: this.username,
           password: this.password,
+          re_password: this.re_password,
           address: this.address,
           phone: this.phone,
           role_id: this.role_id,

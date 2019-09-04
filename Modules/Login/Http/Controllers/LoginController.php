@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use CreateUsersService;
+
 class LoginController extends Controller
 {
     /*
@@ -52,13 +54,14 @@ class LoginController extends Controller
      *
      */
     public function authenticate(Request $request){
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password]))
-        {
-            return redirect()->intended($this->redirectPath());
-        }
-        else{
-            return redirect()->back()->withInput()->with('message', 'Username or password incorrect');
-        }
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password]))
+            {   
+                if(CreateUsersService::loginIsActive(auth()->id())) return redirect()->intended($this->redirectPath());
+                else return redirect()->back()->withInput()->with('message', 'Username or password incorrect');
+            }
+            else{
+                return redirect()->back()->withInput()->with('message', 'Username or password incorrect');
+            }
     }
 
     /**
