@@ -75,8 +75,6 @@ class CreateUsers{
         return 2;
     }
 
-<<<<<<< HEAD
-=======
     public function loginIsActive($login_id){
         try{
             $user = User::where('login_id', $login_id)->firstOrFail();
@@ -87,7 +85,6 @@ class CreateUsers{
         return $user->is_active;
     }
 
->>>>>>> e88cc98d1d32742a2a2c48475d4fd96e8f21b3dc
     public function updateEmployee(FormRequest $request, $employee_id){
 
         $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
@@ -100,16 +97,20 @@ class CreateUsers{
             'address' => $request->address
         ]);
         // update Login
-        Login::find($employee->login_id)->update([
-            'username' => $request->username,
-<<<<<<< HEAD
-            //'password' => Hash::make($request->password),
-=======
-            'password' => bcrypt($request->password),
->>>>>>> e88cc98d1d32742a2a2c48475d4fd96e8f21b3dc
-            'email' => $request->email
-        ]);
-
+        
+        if($request->password){
+            Login::find($employee->login_id)->update([
+                'username' => $request->username,
+                'password' => bcrypt($request->password),
+                'email' => $request->email
+            ]);
+        }else {
+            Login::find($employee->login_id)->update([
+                'username' => $request->username,
+                'email' => $request->email
+            ]);
+        }
+        
         // update User
         $user = User::find($employee->user_id);
         $user->is_active = $request->is_active;

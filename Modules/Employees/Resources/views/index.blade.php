@@ -8,6 +8,6 @@
 
 @section('main-content')
 <div id="app">
-    <employees-table :employees="{{ $employees }}" :branches="{{ $branches }}" :roles="{{ $roles }}"></employees-table>
+    <employees-table :employees="{{ $employees }}" :branches="{{ $branches }}" :roles="{{ $roles }}" :auth_id="{{ Auth::user()->id }}"></employees-table>
 </div>
 @endsection

@@ -84,6 +84,7 @@
             </div>
             <div class="column">
               <b-button
+                v-if="auth_id != props.row.id"
                 class="is-pulled-right"
                 @click="deleteEnployee(props.row.id, props.row.username, props)"
                 type="is-danger"
@@ -197,7 +198,8 @@
                           name="resume"
                         />
                         <span class="file-cta">
-                          <span class="file-label">Load</span>
+                          <span v-if="image" class="file-label">Loaded</span>
+                          <span v-else class="file-label">Load</span>
                         </span>
                       </label>
                     </div>
@@ -226,9 +228,8 @@
 import { Toast } from "buefy/dist/components/toast";
 import { Dialog } from "buefy/dist/components/dialog";
 
-
 export default {
-  props: ["employees", "roles", "branches"],
+  props: ["employees", "roles", "branches", "auth_id"],
 
   data() {
     return {
@@ -236,11 +237,12 @@ export default {
       csrf: document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content"),
-      password: "********",
+      password: "",
       image: "",
       selects: [{ value: 0, key: "Not active" }, { value: 1, key: "Active" }]
     };
   },
+
   methods: {
     toggle(row) {
       this.$refs.table.toggleDetails(row);
@@ -281,6 +283,7 @@ export default {
           image: this.image
         })
         .then(response => {
+          this.image = "";
           Toast.open(response.data.message);
         })
         .catch(function(error) {
