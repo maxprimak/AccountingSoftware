@@ -40,8 +40,8 @@ class EmployeesTest extends TestCase
             're_password' => '123456789',
             'email' => 'holo232@example.com',
             'phone' => '12345',
-            'role_id' => ['3'],
-            'branch_id' => '1',
+            'role_id' => '3',
+            'branch_id' => ['1'],
         ];
       
         $response1 = $this->post('/employees', $data1);
