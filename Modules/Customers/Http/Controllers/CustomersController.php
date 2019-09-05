@@ -13,6 +13,10 @@ use Modules\Customers\Entities\Customer;
 use Modules\Customers\Entities\CustomerHasBranch;
 use Illuminate\Routing\Controller;
 
+
+use BranchesService;
+use CustomerServiceFacad;
+
 class CustomersController extends Controller
 {
     /**
@@ -22,12 +26,11 @@ class CustomersController extends Controller
     public function index()
     {
         try {
-          $user = User::where('login_id',auth()->user()->id)->firstOrFail();
-          $branch_ids = UserHasBranch::where('user_id',$user->id)->pluck('branch_id')->toArray();
-          $customer_ids = CustomerHasBranch::whereIn('branch_id',$branch_ids)->pluck('customer_id')->toArray();
-          $customers = Customer::whereIn('id',$customer_ids)->get();
+          $user = User::where('login_id',auth()->id())->firstOrFail();
+          $customers = CustomerServiceFacad::getCustomerUserCanSee($user->id);
         } catch (\Exception $e) {
-            return abort(500);
+            dd($e->getMessage());
+            return abort(500,$e->getMessage());
         }
         return view('customers::index', compact('customers'));
     }

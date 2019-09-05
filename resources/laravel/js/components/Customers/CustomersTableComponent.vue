@@ -40,9 +40,30 @@
           <a @click="toggle(props.row)" class="has-text-link">{{ props.row.phone }}</a>
         </b-table-column>
 
+        <b-table-column field="address" label="Address" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.address }}</a>
+        </b-table-column>
+
         <b-table-column field="email" label="Email" sortable>
           <a @click="toggle(props.row)" class="has-text-link">{{ props.row.email }}</a>
         </b-table-column>
+
+        <b-table-column field="created_at" label="Date of registration" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.created_at }}</a>
+        </b-table-column>
+
+        <b-table-column field="stars_number" label="Star" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.stars_number }}</a>
+        </b-table-column>
+
+        <b-table-column field="stars_number" label="Star" sortable>
+          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.stars_number }}</a>
+        </b-table-column>
+
+        <b-tab-item label="Checked rows">
+                <pre>{{ checkedRows }}</pre>
+        </b-tab-item>
+
       </template>
 
       <template slot="detail" slot-scope="props">
@@ -104,7 +125,7 @@
                             v-for="branch in branches"
                             :value="branch.id"
                             :key="branch.name"
-                          >{{ branch.name }}</option>
+                          >{{ branch.id }}</option>
                         </b-select>
                       </div>
                     </b-field>
@@ -149,7 +170,7 @@ import { Dialog } from "buefy/dist/components/dialog";
     // }
 
     export default {
-      props: ["customers", "branches"],
+      props: ["customers"],
 
       mounted(){
         console.log(this.customers)
