@@ -17,6 +17,7 @@
       </div>
     </div>
 
+
     <b-table
       :data="data"
       ref="table"
@@ -30,6 +31,17 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
+        <!-- <b-table-column field = "grouped group-multiline">
+            <button class="button field is-danger" @click="props.checkedRows = []"
+                :disabled="!props.checkedRows.length">
+                <b-icon icon="close"></b-icon>
+                <span>Clear checked</span>
+            </button>
+            <b-select v-model="checkboxPosition">
+                <option value="left">Checkbox at left</option>
+                <option value="right">Checkbox at right</option>
+            </b-select>
+        </b-table-column> -->
         <b-table-column field="id" label="ID" width="40" numeric>
           <a @click="toggle(props.row)" class="has-text-link">{{ props.row.id }}</a>
         </b-table-column>
@@ -56,13 +68,10 @@
           <a @click="toggle(props.row)" class="has-text-link">{{ props.row.stars_number }}</a>
         </b-table-column>
 
-        <b-table-column field="stars_number" label="Star" sortable>
-          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.stars_number }}</a>
-        </b-table-column>
-
         <b-tab-item label="Checked rows">
                 <pre>{{ checkedRows }}</pre>
         </b-tab-item>
+
 
       </template>
 
@@ -178,6 +187,7 @@ import { Dialog } from "buefy/dist/components/dialog";
       data() {
         return {
           data: this.customers,
+          checkboxPosition: 'right',
           csrf: document
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content"),
