@@ -34,7 +34,7 @@ class UpdateEmployeeRequest extends FormRequest
             'phone' => 'required|unique:people,phone,' . $employee->person_id,
             'role_id' => 'required',
             'branch_id' => 'required',
-            'is_active' => 'required'
+            'is_active' => 'required',
         ];
     }
 
