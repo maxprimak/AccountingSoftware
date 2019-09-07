@@ -19,7 +19,6 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-
         $currencies = Currency::all();
 
         return view('registration::index')->with(compact('currencies'));
@@ -41,8 +40,7 @@ class RegistrationController extends Controller
      * @return Response
      */
     public function store(RegistrationRequest $request)
-    {   
-        
+    {
         try{
             $employee = CreateUsersService::registerFirstEmployee($request, auth()->id());
         }catch( \Exception $e ){

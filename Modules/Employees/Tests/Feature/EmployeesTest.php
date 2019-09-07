@@ -23,7 +23,7 @@ class EmployeesTest extends TestCase
             'password' => '123456789'
         ]);
     }
-     
+
     public function test_head_created_two_techs()
     {
         $this->login();
@@ -51,7 +51,7 @@ class EmployeesTest extends TestCase
             'role_id' => '3',
             'branch_id' => ['1'],
         ];
-      
+
         $response1 = $this->post('/employees', $data1);
         $response1->assertJson(['message' => 'Successfully created!']);
         $this->assertDatabaseHas('logins', [
@@ -67,7 +67,7 @@ class EmployeesTest extends TestCase
             'email' => $data2['email'],
         ]);
         $response2->assertStatus(200);
-    
+
     }
 
     public function test_head_created_two_sales_managers()
@@ -97,7 +97,7 @@ class EmployeesTest extends TestCase
             'role_id' => '2',
             'branch_id' => ['1'],
         ];
-      
+
         $response1 = $this->post('/employees', $data1);
         $response1->assertJson(['message' => 'Successfully created!']);
         $this->assertDatabaseHas('logins', [
@@ -126,13 +126,13 @@ class EmployeesTest extends TestCase
             'name' => $this->faker->name,
             'username' => $this->faker->username . 'user',
             'password' => '123',  //password uncorrect
-            're_password' => '12345678',  
+            're_password' => '12345678',
             'email' => $this->faker->email,
             'phone' => $this->faker->phonenumber,
             'role_id' => '3',
             'branch_id' => ['1'],
         ];
-      
+
         $response = $this->post('/employees', $data);
         $response->assertJson(['error' => 'The password must be at least 8 characters.']);
     }
@@ -153,7 +153,7 @@ class EmployeesTest extends TestCase
             'role_id' => '3',
             'branch_id' => ['1'],
         ];
-      
+
         $response = $this->post('/employees', $data);
         $response->assertJson(['error' => 'The re password and password must match.']);
     }
@@ -190,7 +190,7 @@ class EmployeesTest extends TestCase
         $response = $this->get('/employees');
 
         $response->assertSuccessful();
-        
+
         $response = $response->original->getData()['employees'];
 
         foreach ($response as $item) {
@@ -214,7 +214,7 @@ class EmployeesTest extends TestCase
             'is_active' => true,
             'image' => UploadedFile::fake()->image('test_image.png')
         ];
-        
+
         $response = $this->post('employees/'.$data['id'], $data);
         $response->assertJson(['message' => 'Successfully updated!']);
         $response->assertStatus(200);

@@ -1,19 +1,16 @@
 <template>
   <section>
     <div class="columns">
-      <div class="column is-4">
-        <h3 class="title">Customers</h3>
-      </div>
-      <div class="column is-6">
-        <b-field grouped>
-          <b-input placeholder="Search..." type="search" icon="magnify"></b-input>
-          <p class="control">
-            <button class="button is-info">Search</button>
-          </p>
-        </b-field>
-      </div>
-      <div class="column">
-        <b-button @click="toCreateCustomer" type="is-primary">New Customer</b-button>
+      <div class="columns">
+        <div class="column">
+          <h3 class="title">Customers</h3>
+        </div>
+        <div class="column">
+          <b-input v-model="search" placeholder="Search..." type="search" icon="magnify"></b-input>
+        </div>
+        <div class="column">
+          <b-button class="is-pulled-right" @click="toCreateCustomer" type="is-primary">New Customer</b-button>
+        </div>
       </div>
     </div>
 
@@ -31,22 +28,12 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
-        <!-- <b-table-column field = "grouped group-multiline">
-            <button class="button field is-danger" @click="props.checkedRows = []"
-                :disabled="!props.checkedRows.length">
-                <b-icon icon="close"></b-icon>
-                <span>Clear checked</span>
-            </button>
-            <b-select v-model="checkboxPosition">
-                <option value="left">Checkbox at left</option>
-                <option value="right">Checkbox at right</option>
-            </b-select>
-        </b-table-column> -->
+
         <b-table-column field="id" label="ID" width="40" numeric>
           <a @click="toggle(props.row)" class="has-text-link">{{ props.row.id }}</a>
         </b-table-column>
 
-        <b-table-column field="full_name" label="Full name" sortable>{{ props.row.name }}</b-table-column>
+        <b-table-column field="name" label="Full name" sortable>{{ props.row.name }}</b-table-column>
 
         <b-table-column field="phone" label="Phone" sortable>
           <a @click="toggle(props.row)" class="has-text-link">{{ props.row.phone }}</a>
@@ -67,11 +54,6 @@
         <b-table-column field="stars_number" label="Star" sortable>
           <a @click="toggle(props.row)" class="has-text-link">{{ props.row.stars_number }}</a>
         </b-table-column>
-
-        <b-tab-item label="Checked rows">
-                <pre>{{ checkedRows }}</pre>
-        </b-tab-item>
-
 
       </template>
 
@@ -95,15 +77,20 @@
               <div class="columns">
                 <div class="column">
                   <b-field label="Full name">
-                    <b-input v-model="props.row.name" name="full_name" expanded></b-input>
+                    <b-input v-model="props.row.name" name="name" expanded></b-input>
+                  </b-field>
+                </div>
+                <div class="column">
+                  <b-field label="Phone">
+                    <b-input v-model="props.row.phone" name="phone" expanded></b-input>
                   </b-field>
                 </div>
               </div>
 
               <div class="columns">
                 <div class="column">
-                  <b-field label="Phone">
-                    <b-input v-model="props.row.phone" name="phone" expanded></b-input>
+                  <b-field label="Address">
+                    <b-input name="address" v-model="props.row.address" expanded></b-input>
                   </b-field>
                 </div>
                 <div class="column">
@@ -115,10 +102,20 @@
 
               <div class="columns">
                 <div class="column">
-                  <b-field label="Address">
-                    <b-input name="address" v-model="props.row.address" expanded></b-input>
+                  <div class="control">
+                    <b-field label="Customer type">
+                    <div class="select">
+                      <b-select placeholder="Select" name="customer_type_id" v-model="customer_type_id">
+                        <option
+                          v-for="customer_type in customer_types"
+                          :value="customer_type.id"
+                          :key="customer_type.name"
+                        >{{ customer_type.name }}</option>
+                      </b-select>
+                    </div>
                   </b-field>
-                </div>
+              </div>
+            </div>
                 <div class="column">
                   <div class="control">
                     <b-field label="Belongs to folowing Branches:">
@@ -134,7 +131,7 @@
                             v-for="branch in branches"
                             :value="branch.id"
                             :key="branch.name"
-                          >{{ branch.id }}</option>
+                          >{{ branch.name }}</option>
                         </b-select>
                       </div>
                     </b-field>
@@ -163,23 +160,8 @@
 import { Toast } from "buefy/dist/components/toast";
 import { Dialog } from "buefy/dist/components/dialog";
 
-    // export default {
-    //     data() {
-    //         return {
-    //           id: 1,
-    //           first_name: "Maxim",
-    //           last_name: "Primak",
-    //         }
-    //     },
-    //     methods: {
-    //         toggle(row) {
-    //             this.$refs.table.toggleDetails(row)
-    //         }
-    //     }
-    // }
-
     export default {
-      props: ["customers"],
+      props: ["customers","customer_types","branches"],
 
       mounted(){
         console.log(this.customers)
@@ -201,12 +183,12 @@ import { Dialog } from "buefy/dist/components/dialog";
         updateCustomer(customer_id, row) {
           axios
             .post("customers/" + customer_id, {
-              full_name: row.name,
+              name: row.name,
               email: row.email,
-              phone: row.phone,
-              branch_id: row.branch_id,
               address: row.address,
-              person_id: row.person_id,
+              phone: row.phone,
+              customer_type_id: row.customer_type_id,
+              branch_id: row.branch_id,
             })
             .then(response => {
               Toast.open(response.data.message);
@@ -239,6 +221,19 @@ import { Dialog } from "buefy/dist/components/dialog";
 
         toCreateCustomer: function() {
           window.location.href = "/customers/create";
+        }
+      },
+
+      computed: {
+        filteredCustomers: function() {
+          return this.data.filter(customers => {
+            return (
+              customers.mail.match(this.search) ||
+              customers.name.match(this.search) ||
+              customers.phone.match(this.search) ||
+              customers.email.match(this.search)
+            );
+          });
         }
       }
     };

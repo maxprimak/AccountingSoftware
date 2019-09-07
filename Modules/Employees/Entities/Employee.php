@@ -34,7 +34,7 @@ class Employee extends Model
     }
 
     public function getBranchIdAttribute()
-    {   
+    {
 
         return $this->attributes['branch_id'];
 
