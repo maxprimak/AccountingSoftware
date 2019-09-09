@@ -297,7 +297,7 @@ export default {
           axios
             .delete("employees/" + employee_id)
             .then(response => {
-              this.data.splice(props.index, 1);
+              this.filteredEmployees.splice(props.index, 1);
               Toast.open(response.data.message);
             })
             .catch(function(error) {

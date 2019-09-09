@@ -163,7 +163,7 @@ class EmployeesTest extends TestCase
         $this->login();
 
         $data = [
-            'id' => '14',
+            'id' => '4',
             'full_name' => 'sale manager 2 edit',
             'username' => 'salemanger2',
             'password' => '123456789',
