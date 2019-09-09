@@ -5,60 +5,79 @@ namespace Modules\Customers\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Users\Entities\People;
-use Modules\Companies\Entities\Company;
-use Modules\Companies\Entities\Branch;
 use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
+use Modules\Companies\Entities\Company;
+use Modules\Companies\Entities\Branch;
 use Modules\Customers\Entities\Customer;
 use Modules\Customers\Entities\CustomerHasBranch;
+use Modules\Customers\Entities\CustomerType;
+use Modules\Customers\Http\Requests\StoreCustomerRequest;
+// use Modules\Employees\Http\Requests\UpdateEmployeeRequest;
 use Illuminate\Routing\Controller;
-
 
 use BranchesService;
 use CustomerServiceFacad;
+use CreateUsersService;
 
 class CustomersController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return Response
+     * @return View
      */
     public function index()
     {
         try {
           $user = User::where('login_id',auth()->id())->firstOrFail();
           $customers = CustomerServiceFacad::getCustomerUserCanSee($user->id);
+          $customer_types = CustomerType::all();
+          $branches = BranchesService::getUserBranches($user->id);
         } catch (\Exception $e) {
             dd($e->getMessage());
-            return abort(500,$e->getMessage());
+            return abort(500);
         }
-        return view('customers::index', compact('customers'));
+        return view('customers::index', compact('customers','customer_types','branches'));
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Response
+     * @return View
      */
     public function create()
     {
-
-        return view('customers::create');
+      try{
+          $user = User::where('login_id', auth()->id())->firstOrFail();
+          $branches = BranchesService::getUserBranches($user->id);
+          $customer_types = CustomerType::all();
+      }catch(\Exception $e){
+          dd($e->getMessage());
+          return abort(500);
+      }
+        return view('customers::create', compact('user','branches','customer_types'));
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param StoreCustomerRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreCustomerRequest $request)
     {
-        //
+        // try {
+            $user = User::findOrFail($request->user_id);
+            $company_id = Company::findOrFail($user->company_id)->id;
+            $customer = CreateUsersService::createCustomer($request,$company_id);
+        // } catch (\Exception $e) {
+        //   return response()->json(['message' => $e->getMessage()]);
+        // }
+        return response()->json(['message' => 'Successfully created!']);
     }
 
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Response
+     * @return View
      */
     public function show($id)
     {
@@ -77,13 +96,13 @@ class CustomersController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
+     * @param StoreCustomerRequest $request
      * @param int $id
      * @return Response
      */
     public function update(Request $request, $id)
     {
-        //
+          dd($request);
     }
 
     /**

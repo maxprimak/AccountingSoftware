@@ -41,7 +41,9 @@ Vue.component('create-employee', require('./components/Employees/CreateEmployeeC
 //Registration module
 Vue.component('registration', require('./components/Registration/RegistrationComponent.vue').default);
 
+//Customers module
 Vue.component('customers-table', require('./components/Customers/CustomersTableComponent.vue').default);
+Vue.component('create-customer', require('./components/Customers/CreateCustomerComponent.vue').default);
 
 Vue.component('v-icon', Icon)
 

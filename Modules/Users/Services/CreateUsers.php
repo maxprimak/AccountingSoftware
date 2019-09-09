@@ -8,23 +8,42 @@ use Modules\Login\Entities\Login;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
 use Modules\Employees\Entities\Employee;
+use Modules\Customers\Entities\Customer;
 use Illuminate\Foundation\Http\FormRequest;
 
 use BranchesService;
+use CustomerServiceFacad;
 use File;
 
 class CreateUsers{
 
+    public function createPerson(FormRequest $request){
+      $person = new People();
+      $person = $person->store($request);
+      return $person;
+    }
+
+    public function createLogin(FormRequest $request){
+      $login = new Login();
+      $login = $login->store($request);
+      return $login;
+    }
+
+    public function createUser(FormRequest $request){
+
+      $person = $this->createPerson($request);
+
+      $login = $this->createLogin($request);
+
+      $user = new User();
+      $user = $user->store($login, $person, $request);
+
+      return $user;
+    }
+
     public function createEmployee(FormRequest $request){
 
-            $person = new People();
-            $person = $person->store($request);
-
-            $login = new Login();
-            $login = $login->store($request);
-            
-            $user = new User();
-            $user = $user->store($login, $person, $request);
+            $user = $this->createUser($request);
 
             $employee = new Employee();
             $employee = $employee->store(['user_id' => $user->id,'role_id' => $request->role_id]);
@@ -71,8 +90,17 @@ class CreateUsers{
         return $employee;
 }
 
-    public function createCustomer(){
-        return 2;
+    public function createCustomer($request,$company_id){
+
+        $person = $this->createPerson($request);
+
+        $customer = new Customer();
+
+        $customer = $customer->store(['person_id' => $person->id,'email' => $request->email,
+                                      'type_id' => $request->customer_type_id ,'company_id' => $company_id,
+                                      'created_by' => $request->user_id]);
+        CustomerServiceFacad::addCustomerToBranches($customer->id,$request->branch_id);
+        return $customer;
     }
 
     public function loginIsActive($login_id){
@@ -111,7 +139,7 @@ class CreateUsers{
                 'email' => $request->email
             ]);
         }
-        
+
         // update User
         $user = User::find($employee->user_id);
         $user->is_active = $request->is_active;
@@ -119,7 +147,7 @@ class CreateUsers{
 
         BranchesService::deleteUserFromAllBranches($user->id);
         BranchesService::addUserToBranches($user->id, $request->branch_id);
-        
+
         //update Employee
         $employee = Employee::find($employee_id);
         $employee = $employee->storeUpdated($request);

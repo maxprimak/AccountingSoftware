@@ -16,9 +16,11 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('person_id')->unique();
-            $table->unsignedInteger('stars_number');
-            $table->unsignedInteger('type_id');
+            $table->string('email')->nullable();
+            $table->double('stars_number')->nullable();
+            $table->unsignedInteger('type_id')->nullable();
             $table->unsignedInteger('company_id');
+            $table->unsignedInteger('created_by')->nullable();
             $table->timestamps();
         });
 
@@ -26,6 +28,7 @@ class CreateCustomersTable extends Migration
           $table->foreign('person_id')->references('id')->on('people');
           $table->foreign('type_id')->references('id')->on('customer_types');
           $table->foreign('company_id')->references('id')->on('companies');
+          $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

@@ -22,7 +22,7 @@ class CustomerServices{
                     ->join('people', 'people.id', '=', 'customers.person_id')
                     ->join('customer_types', 'customer_types.id', '=', 'customers.type_id')
                     ->join('companies', 'companies.id', '=', 'customers.company_id')
-                    ->select('customers.*', 'companies.name AS company_name' ,'customer_types.name AS type_name','people.name',
+                    ->select('customers.*', 'companies.id','people.name',
                     'people.phone', 'people.address')
                     ->whereIn('customers.id',$customer_ids)
                     ->get();
@@ -35,20 +35,19 @@ class CustomerServices{
         return $customers;
     }
 
-    public function addCustomerToBranches($user_id, $branch_id){
-
+    public function addCustomerToBranches($customer_id, $branch_id){
         if(!empty($branch_id) && is_array($branch_id))
         foreach($branch_id as $id){
-            $permission = new UserHasBranch();
-            $permission->user_id = $user_id;
+            $permission = new CustomerHasBranch();
+            $permission->customer_id = $customer_id;
             $permission->branch_id = $id;
             $permission->save();
         }
     }
 
-    public function deleteCustomerFromAllBranches($user_id){
+    public function deleteCustomerFromAllBranches($customer_id){
 
-        $permissions = UserHasBranch::where('user_id', $user_id);
+        $permissions = CustomerHasBranch::where('customer_id', $customer_id);
         $permissions->delete();
 
     }
