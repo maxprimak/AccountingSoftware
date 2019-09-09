@@ -142,6 +142,7 @@ export default {
           console.log(response)
           if (!response.data.hasOwnProperty("error")) {
             this.clearForm();
+            this.branch_id = [];
           }
           Toast.open({
             message:
