@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Login\Entities\Login;
+use Modules\Employees\Entities\Employee;
 use \Illuminate\Http\UploadedFile;
 use Faker\Factory as Faker;
 
@@ -17,6 +18,22 @@ class EmployeesTest extends TestCase
      * @return void
      */
 
+    public $id_sale_manager;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->login();
+    }
+
+    // public function tearDown(): void
+    // {
+    //     parent::tearDown();
+
+    //     $this->id_sale_manager = '2';
+    // }
+
     public function login(){
         $response = $this->post('/login', [
             'username' => 'oliinykm95',
@@ -24,10 +41,18 @@ class EmployeesTest extends TestCase
         ]);
     }
 
+    public function get_employee($username){
+        $employee_id = Login::where('username', $username)
+                            ->join('users', 'users.login_id', "=", 'logins.id')
+                            ->join('employees', 'employees.user_id', '=', 'users.id')
+                            ->select('employees.id')
+                            ->first();
+
+        return $employee_id->id;
+    }
+
     public function test_head_created_two_techs()
     {
-        $this->login();
-
         $this->faker = Faker::create();
 
         $data1 = [
@@ -59,6 +84,9 @@ class EmployeesTest extends TestCase
             'email' => $data1['email'],
         ]);
         $response1->assertStatus(200);
+
+        $id_employee = $this->get_employee($data1['username']);
+        $this->delete('employees/'.$id_employee);
 
         $response2 = $this->post('/employees', $data2);
         $response2->assertJson(['message' => 'Successfully created!']);
@@ -68,12 +96,13 @@ class EmployeesTest extends TestCase
         ]);
         $response2->assertStatus(200);
 
+        $id_employee = $this->get_employee($data2['username']);
+        $this->delete('employees/'.$id_employee);
+
     }
 
     public function test_head_created_two_sales_managers()
     {
-        $this->login();
-
         $this->faker = Faker::create();
 
         $data1 = [
@@ -105,6 +134,9 @@ class EmployeesTest extends TestCase
             'email' => $data1['email'],
         ]);
         $response1->assertStatus(200);
+
+        $id_employee = $this->get_employee($data1['username']);
+        $this->delete('employees/'.$id_employee);
 
         $response2 = $this->post('/employees', $data2);
         $response2->assertJson(['message' => 'Successfully created!']);
@@ -118,8 +150,6 @@ class EmployeesTest extends TestCase
 
     public function test_head_can_not_created_with_password_uncorrect()
     {
-        $this->login();
-
         $this->faker = Faker::create();
 
         $data = [
@@ -139,8 +169,6 @@ class EmployeesTest extends TestCase
 
     public function test_head_can_not_created_with_password_doesnt_match_re_password()
     {
-        $this->login();
-
         $this->faker = Faker::create();
 
         $data = [
@@ -160,10 +188,10 @@ class EmployeesTest extends TestCase
 
     public function test_head_edited_sales_manager()
     {
-        $this->login();
+        $employee_id = Employee::select('id')->orderBy('created_at', 'desc')->first()->id;
 
         $data = [
-            'id' => '4',
+            'id' => $employee_id,
             'full_name' => 'sale manager 2 edit',
             'username' => 'salemanger2',
             'password' => '123456789',
@@ -181,12 +209,12 @@ class EmployeesTest extends TestCase
             'email' => $data['email'],
         ]);
         $response->assertStatus(200);
+
+        $this->delete('employees/'.$employee_id);
     }
 
     public function test_user_does_not_see_employees_from_another_company()
     {
-        $this->login();
-
         $response = $this->get('/employees');
 
         $response->assertSuccessful();
@@ -200,8 +228,6 @@ class EmployeesTest extends TestCase
 
     public function test_tech_changes_his_photo()
     {
-        $this->login();
-
         $data = [
             'id' => '1',
             'full_name' => 'Loy Dickens DVM edit',
