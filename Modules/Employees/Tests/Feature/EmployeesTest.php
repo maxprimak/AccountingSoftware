@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Login\Entities\Login;
 use Modules\Employees\Entities\Employee;
+use Modules\Companies\Entities\Branch;
 use \Illuminate\Http\UploadedFile;
 use Faker\Factory as Faker;
 
@@ -213,7 +214,10 @@ class EmployeesTest extends TestCase
         $response = $response->original->getData()['employees'];
 
         foreach ($response as $item) {
-            $this->assertEquals('1', $item->branch_id[0]);
+            foreach ($item->branch_id as $id) {
+                $company_id = Branch::select('company_id')->where('id', $id)->first()->company_id;
+                $this->assertEquals('1', $company_id);
+            }
         }
     }
 
