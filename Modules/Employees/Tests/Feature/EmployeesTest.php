@@ -18,21 +18,12 @@ class EmployeesTest extends TestCase
      * @return void
      */
 
-    public $id_sale_manager;
-
     public function setUp(): void
     {
         parent::setUp();
 
         $this->login();
     }
-
-    // public function tearDown(): void
-    // {
-    //     parent::tearDown();
-
-    //     $this->id_sale_manager = '2';
-    // }
 
     public function login(){
         $response = $this->post('/login', [
