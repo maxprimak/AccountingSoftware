@@ -182,13 +182,15 @@ class EmployeesTest extends TestCase
     {
         $employee_id = Employee::select('id')->orderBy('created_at', 'desc')->first()->id;
 
+        $this->faker = Faker::create();
+
         $data = [
             'id' => $employee_id,
-            'full_name' => 'sale manager 2 edit',
-            'username' => 'salemanger2',
+            'full_name' => $this->faker->name,
+            'username' => $this->faker->username . 'user',
             'password' => '123456789',
-            'email' => 'salemanager2.edit@example.com',
-            'phone' => '1234567',
+            'email' => $this->faker->email,
+            'phone' => $this->faker->phonenumber,
             'role_id' => '2',
             'branch_id' => ['1'],
             'is_active' => true,
