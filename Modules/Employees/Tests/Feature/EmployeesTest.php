@@ -49,10 +49,10 @@ class EmployeesTest extends TestCase
 
         $data1 = [
             'name' => $this->faker->name,
-            'username' => $this->faker->username . 'user',
+            'username' => $this->faker->username . str_random(20),
             'password' => '123456789',
             're_password' => '123456789',
-            'email' => $this->faker->email,
+            'email' => $this->faker->email  . str_random(20),
             'phone' => $this->faker->phonenumber,
             'role_id' => '3',
             'branch_id' => ['1'],
@@ -60,10 +60,10 @@ class EmployeesTest extends TestCase
 
         $data2 = [
             'name' => $this->faker->name,
-            'username' => $this->faker->username . 'user',
+            'username' => $this->faker->username . str_random(20),
             'password' => '123456789',
             're_password' => '123456789',
-            'email' => $this->faker->email,
+            'email' => $this->faker->email  . str_random(20),
             'phone' => $this->faker->phonenumber,
             'role_id' => '3',
             'branch_id' => ['1'],
@@ -99,10 +99,10 @@ class EmployeesTest extends TestCase
 
         $data1 = [
             'name' => $this->faker->name,
-            'username' => $this->faker->username . 'user',
+            'username' => $this->faker->username . str_random(20),
             'password' => '123456789',
             're_password' => '123456789',
-            'email' => $this->faker->email,
+            'email' => $this->faker->email  . str_random(20),
             'phone' => $this->faker->phonenumber,
             'role_id' => '2',
             'branch_id' => ['1'],
@@ -110,10 +110,10 @@ class EmployeesTest extends TestCase
 
         $data2 = [
             'name' => $this->faker->name,
-            'username' => $this->faker->username . 'user',
+            'username' => $this->faker->username . str_random(20),
             'password' => '123456789',
             're_password' => '123456789',
-            'email' => $this->faker->email,
+            'email' => $this->faker->email  . str_random(20),
             'phone' => $this->faker->phonenumber,
             'role_id' => '2',
             'branch_id' => ['1'],
@@ -146,10 +146,10 @@ class EmployeesTest extends TestCase
 
         $data = [
             'name' => $this->faker->name,
-            'username' => $this->faker->username . 'user',
+            'username' => $this->faker->username . str_random(20),
             'password' => '123',  //password uncorrect
             're_password' => '12345678',
-            'email' => $this->faker->email,
+            'email' => $this->faker->email  . str_random(20),
             'phone' => $this->faker->phonenumber,
             'role_id' => '3',
             'branch_id' => ['1'],
@@ -165,10 +165,10 @@ class EmployeesTest extends TestCase
 
         $data = [
             'name' => $this->faker->name,
-            'username' => $this->faker->username . 'user',
+            'username' => $this->faker->username . str_random(20),
             'password' => '12345678',
             're_password' => 'adasdasdsa',  //password doesnt match re_password
-            'email' => $this->faker->email,
+            'email' => $this->faker->email  . str_random(20),
             'phone' => $this->faker->phonenumber,
             'role_id' => '3',
             'branch_id' => ['1'],
@@ -187,9 +187,9 @@ class EmployeesTest extends TestCase
         $data = [
             'id' => $employee_id,
             'full_name' => $this->faker->name,
-            'username' => $this->faker->username . 'user',
+            'username' => $this->faker->username . str_random(20),
             'password' => '123456789',
-            'email' => $this->faker->email,
+            'email' => $this->faker->email  . str_random(20),
             'phone' => $this->faker->phonenumber,
             'role_id' => '2',
             'branch_id' => ['1'],
