@@ -22,10 +22,16 @@ class RolesDatabaseSeeder extends Seeder
                 'name' => 'Head',
             ],
             [
-                'name' => 'Sales Manager',
+                'name' => 'Top Manager',
             ],
             [
                 'name' => 'Tech',
+            ],
+            [
+                'name' => 'Sales Manager',
+            ],
+            [
+                'name' => 'Courier',
             ]
         ]);
     }

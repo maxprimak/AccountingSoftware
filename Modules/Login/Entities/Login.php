@@ -25,4 +25,13 @@ class Login extends Authenticatable implements MustVerifyEmail
         return $this;
     }
 
+    public function checkRole(){
+        $role_id = Login::join('users', 'users.login_id', '=', 'logins.id')
+                            ->join('employees', 'employees.user_id', '=', 'users.id')
+                            ->select('employees.role_id')
+                            ->find($this->id)->role_id;
+        
+        return $role_id;
+}
+
 }
