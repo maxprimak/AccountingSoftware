@@ -4,6 +4,8 @@ namespace Modules\Companies\Services;
 
 use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
+use Modules\Customers\Entities\Customer;
+use Modules\Customers\Entities\CustomerHasBranch;
 use Modules\Companies\Entities\Branch;
 use Modules\Employees\Entities\Employee;
 use Illuminate\Foundation\Http\FormRequest;
@@ -57,6 +59,21 @@ class GetUserBranches{
         $permissions = UserHasBranch::where('user_id', $user_id);
         $permissions->delete();
 
+    }
+
+    public function addCustomerToBranches($customer_id, $branch_id){
+        if(!empty($branch_id) && is_array($branch_id))
+        foreach($branch_id as $id){
+            $permission = new CustomerHasBranch();
+            $permission->customer_id = $customer_id;
+            $permission->branch_id = $id;
+            $permission->save();
+        }
+    }
+
+    public function deleteCustomerFromAllBranches($customer_id){
+        $permissions = CustomerHasBranch::where('customer_id', $customer_id);
+        $permissions->delete();
     }
 
 }

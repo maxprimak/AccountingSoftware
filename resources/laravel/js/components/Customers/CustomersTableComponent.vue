@@ -52,8 +52,9 @@
         </b-table-column>
 
         <b-table-column field="stars_number" label="Star" sortable>
-          <a @click="toggle(props.row)" class="has-text-link">{{ props.row.stars_number }}</a>
+          <star-rating @rating-selected ="setRating($event,props.row.id)" :border-width="4" :star-size="20" border-color="#d8d8d8" :rounded-corners="true" v-model="props.row.stars_number"></star-rating>
         </b-table-column>
+
 
       </template>
 
@@ -105,12 +106,12 @@
                   <div class="control">
                     <b-field label="Customer type">
                     <div class="select">
-                      <b-select placeholder="Select" name="customer_type_id" v-model="customer_type_id">
+                      <b-select placeholder="Select" name="type_id" v-model="props.row.type_id">
                         <option
-                          v-for="customer_type in customer_types"
-                          :value="customer_type.id"
-                          :key="customer_type.name"
-                        >{{ customer_type.name }}</option>
+                          v-for="type in customer_types"
+                          :value="type.id"
+                          :key="type.name"
+                        >{{ type.name }}</option>
                       </b-select>
                     </div>
                   </b-field>
@@ -118,7 +119,7 @@
             </div>
                 <div class="column">
                   <div class="control">
-                    <b-field label="Belongs to folowing Branches:">
+                    <b-field label="Belongs to following Branches:">
                       <div class="select">
                         <b-select
                           multiple
@@ -187,7 +188,7 @@ import { Dialog } from "buefy/dist/components/dialog";
               email: row.email,
               address: row.address,
               phone: row.phone,
-              customer_type_id: row.customer_type_id,
+              type_id: row.type_id,
               branch_id: row.branch_id,
             })
             .then(response => {
@@ -221,6 +222,19 @@ import { Dialog } from "buefy/dist/components/dialog";
 
         toCreateCustomer: function() {
           window.location.href = "/customers/create";
+        },
+
+        setRating: function(stars_number,customer_id){
+          axios
+            .post("customers/set_stars_number/" + customer_id, {
+              stars_number: stars_number,
+            })
+            .then(response => {
+              Toast.open(response.data.message);
+            })
+            .catch(function(error) {
+              Toast.open("Error happened! Please contact the support team");
+            });
         }
       },
 

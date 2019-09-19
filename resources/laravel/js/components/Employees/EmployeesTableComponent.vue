@@ -60,7 +60,7 @@
           <a @click="toggle(props.row)" class="has-text-link">{{ props.row.role_name }}</a>
         </b-table-column>
 
-        <b-table-column field="full_name" label="Full name" sortable>{{ props.row.name }}</b-table-column>
+        <b-table-column field="name" label="Full name" sortable>{{ props.row.name }}</b-table-column>
 
         <b-table-column field="phone" label="Phone" sortable>
           <a @click="toggle(props.row)" class="has-text-link">{{ props.row.phone }}</a>
@@ -92,7 +92,7 @@
               <div class="columns">
                 <div class="column">
                   <b-field label="Full name">
-                    <b-input v-model="props.row.name" name="full_name" expanded></b-input>
+                    <b-input v-model="props.row.name" name="name" expanded></b-input>
                   </b-field>
                 </div>
                 <div class="column">
@@ -265,7 +265,7 @@ export default {
     updateEmployee(employee_id, row) {
       axios
         .post("employees/" + employee_id, {
-          full_name: row.name,
+          name: row.name,
           is_active: row.is_active,
           username: row.username,
           password: row.password,

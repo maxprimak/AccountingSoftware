@@ -18,16 +18,16 @@ class UpdateEmployeeRequest extends FormRequest
     public function rules()
     {
         $employee = null;
- 
+
         if($this->route('employee_id'))
-        {  
+        {
             $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
                                 ->select('users.login_id', 'users.person_id')
                                 ->find($this->route('employee_id'));
         }
 
         return [
-            'full_name' => 'required',
+            'name' => 'required',
             'username' => 'required|min:6|unique:logins,username,' . $employee->login_id,
             'password' => 'nullable|min:8',
             'email' => 'required|email|unique:logins,email,' . $employee->login_id,
