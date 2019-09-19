@@ -2,6 +2,8 @@
   <div class="side-content-wrap">
             <div class="sidebar-left open rtl-ps-none" data-perfect-scrollbar data-suppress-scroll-x="true">
                 <ul class="navigation-left">
+
+                    @if(auth()->user()->isNotCourier() )
                     <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}">
                         <a class="nav-item-hold" href="/customers">
                             <i class="nav-icon i-Suitcase"></i>
@@ -9,6 +11,9 @@
                         </a>
                         <div class="triangle"></div>
                     </li>
+                    @endif
+
+                    @if(auth()->user()->isHead() || auth()->user()->isTopManager())
                     <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}">
                         <a class="nav-item-hold" href="/employees">
                             <i class="nav-icon i-Administrator"></i>
@@ -16,6 +21,9 @@
                         </a>
                         <div class="triangle"></div>
                     </li>
+                    @endif
+
+                    @if(auth()->user()->isHead() || auth()->user()->isTopManager())
                     <li class="nav-item {{ request()->is('dashboard/*') ? 'active' : '' }}">
                         <a class="nav-item-hold" href="/companies">
                             <i class="nav-icon i-Bar-Chart"></i>
@@ -23,6 +31,8 @@
                         </a>
                         <div class="triangle"></div>
                     </li>
+                    @endif
+
                     {{-- 
                     <li class="nav-item {{ request()->is('repair-orders') ? 'active' : '' }}">
                         <a class="nav-item-hold" href="/repair-orders">

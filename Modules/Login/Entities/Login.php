@@ -8,6 +8,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Users\Entities\User;
+use Modules\Employees\Entities\Employee;
 
 class Login extends Authenticatable implements MustVerifyEmail
 {   
@@ -32,6 +34,14 @@ class Login extends Authenticatable implements MustVerifyEmail
                             ->find($this->id)->role_id;
         
         return $role_id;
-}
+    }
+
+    public function isHead(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id == 1; }
+    public function isTopManager(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id == 2; }
+    public function isTech(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id == 3; }
+    public function isSalesManager(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id == 4; }
+    public function isCourier(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id == 5; }
+    public function isNotCourier(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id != 5; }
+
 
 }
