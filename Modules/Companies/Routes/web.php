@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(['auth', 'company'])->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
 
     //Will be deleted soon from here
     Route::get('/reg_steps', 'CompaniesController@showRegSteps');

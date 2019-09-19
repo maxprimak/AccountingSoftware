@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'employee'])->group(function () {
     Route::get('/customers', 'CustomersController@index')->name('customers.index');
     Route::get('/customers/create', 'CustomersController@create')->name('customers.create');
     Route::post('/customers', 'CustomersController@store')->name('customers.store');
