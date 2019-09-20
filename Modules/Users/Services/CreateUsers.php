@@ -17,6 +17,7 @@ use File;
 
 class CreateUsers{
 
+//CREATE PART
     public function createPerson(FormRequest $request){
       $person = new People();
       $person = $person->store($request);
@@ -50,6 +51,41 @@ class CreateUsers{
 
             return $employee;
     }
+
+
+//UPDATE PART
+    public function updatePerson(FormRequest $request,$user){
+      // dd($request);
+        People::findOrFail($user->person_id)->update([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'address' => $request->address
+        ]);
+    }
+
+    public function updateLogin(FormRequest $request,$user){
+        if($request->password){
+            Login::findOrFail($user->login_id)->update([
+                'username' => $request->username,
+                'password' => bcrypt($request->password),
+                'email' => $request->email
+            ]);
+        }else {
+            Login::findOrFail($user->login_id)->update([
+                'username' => $request->username,
+                'email' => $request->email
+            ]);
+        }
+    }
+
+    public function updateUser(FormRequest $request,$user){
+        $user = User::findOrFail($user->user_id);
+        $user->is_active = $request->is_active;
+        $user->save();
+        return $user;
+    }
+
+
 
     public function registerFirstEmployee(FormRequest $request, $login_id){
 
@@ -90,19 +126,6 @@ class CreateUsers{
         return $employee;
 }
 
-    public function createCustomer($request,$company_id){
-
-        $person = $this->createPerson($request);
-
-        $customer = new Customer();
-
-        $customer = $customer->store(['person_id' => $person->id,'email' => $request->email,
-                                      'type_id' => $request->customer_type_id ,'company_id' => $company_id,
-                                      'created_by' => $request->user_id]);
-        CustomerServiceFacad::addCustomerToBranches($customer->id,$request->branch_id);
-        return $customer;
-    }
-
     public function loginIsActive($login_id){
         try{
             $user = User::where('login_id', $login_id)->firstOrFail();
@@ -119,31 +142,11 @@ class CreateUsers{
                                 ->select('employees.user_id', 'employees.role_id', 'users.login_id', 'users.person_id')
                                 ->find($employee_id);
 
-        // update person
-        People::find($employee->person_id)->update([
-            'name' => $request->full_name,
-            'phone' => $request->phone,
-            'address' => $request->address
-        ]);
+        $this->updatePerson($request,$employee);
 
-        // update Login
-        if($request->password){
-            Login::find($employee->login_id)->update([
-                'username' => $request->username,
-                'password' => bcrypt($request->password),
-                'email' => $request->email
-            ]);
-        }else {
-            Login::find($employee->login_id)->update([
-                'username' => $request->username,
-                'email' => $request->email
-            ]);
-        }
+        $this->updateLogin($request,$employee);
 
-        // update User
-        $user = User::find($employee->user_id);
-        $user->is_active = $request->is_active;
-        $user->save();
+        $user = $this->updateUser($request,$employee);
 
         BranchesService::deleteUserFromAllBranches($user->id);
         BranchesService::addUserToBranches($user->id, $request->branch_id);
@@ -166,5 +169,6 @@ class CreateUsers{
 
         return $employee;
     }
+
 
 }

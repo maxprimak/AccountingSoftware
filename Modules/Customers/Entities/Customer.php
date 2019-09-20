@@ -28,8 +28,18 @@ class Customer extends Model
       return $this;
   }
 
-  public function storeUpdated(UpdateEmployeeRequest $request){
-      $this->role_id = $request->role_id;
+  public function storeUpdated($request){
+
+      $this->email = $request->email;
+      $this->stars_number = $request->stars_number;
+      $this->type_id = $request->type_id;
+      $this->save();
+
+      return $this;
+  }
+
+  public function saveStarsNumber($request){
+      $this->stars_number = $request->stars_number;
       $this->save();
 
       return $this;

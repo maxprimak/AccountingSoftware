@@ -13,7 +13,7 @@ use Modules\Customers\Entities\Customer;
 use Modules\Customers\Entities\CustomerHasBranch;
 use Modules\Customers\Entities\CustomerType;
 use Modules\Customers\Http\Requests\StoreCustomerRequest;
-// use Modules\Employees\Http\Requests\UpdateEmployeeRequest;
+use Modules\Customers\Http\Requests\UpdateCustomerRequest;
 use Illuminate\Routing\Controller;
 
 use BranchesService;
@@ -64,13 +64,13 @@ class CustomersController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        // try {
+        try {
             $user = User::findOrFail($request->user_id);
             $company_id = Company::findOrFail($user->company_id)->id;
-            $customer = CreateUsersService::createCustomer($request,$company_id);
-        // } catch (\Exception $e) {
-        //   return response()->json(['message' => $e->getMessage()]);
-        // }
+            $customer = CustomerServiceFacad::createCustomer($request,$company_id);
+        } catch (\Exception $e) {
+          return response()->json(['message' => $e->getMessage()]);
+        }
         return response()->json(['message' => 'Successfully created!']);
     }
 
@@ -100,9 +100,15 @@ class CustomersController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+     // UpdateCustomerRequest
+    public function update(UpdateCustomerRequest $request, $id)
     {
-          dd($request);
+      try {
+        $customer = CustomerServiceFacad::updateCustomer($request, $id);
+      } catch (\Exception $e) {
+        return response()->json(['message' => $e->getMessage()], 500);
+      }
+      return response()->json(['message' => 'Successfully updated!']);
     }
 
     /**
@@ -112,6 +118,20 @@ class CustomersController extends Controller
      */
     public function destroy($id)
     {
-        //
+      // try{
+      //     $customer = Customer::findOrFail($id);
+      // }catch(ModelNotFoundException $e){
+      //     return response()->json(['message' => $e->getMessage()], 500);
+      // }
+      //
+      // Employee::find($id)->delete();
+      //
+      // User::find($employee->user_id)->delete();
+      //
+      // Login::find($employee->login_id)->delete();
+      //
+      // People::find($employee->person_id)->delete();
+      //
+      // return response()->json(['message' => 'Successfully deleted!']);
     }
 }

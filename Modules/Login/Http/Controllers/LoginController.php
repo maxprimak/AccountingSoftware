@@ -54,10 +54,9 @@ class LoginController extends Controller
      *
      */
     public function authenticate(Request $request){
-            if (Auth::attempt(['username' => $request->username, 'password' => $request->password]))
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password /*, 'is_active' => 1*/]))
             {   
-                if(CreateUsersService::loginIsActive(auth()->id())) return redirect()->intended($this->redirectPath());
-                else return redirect()->back()->withInput()->with('message', 'Username or password incorrect');
+                return redirect()->intended($this->redirectPath());
             }
             else{
                 return redirect()->back()->withInput()->with('message', 'Username or password incorrect');

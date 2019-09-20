@@ -12,8 +12,10 @@ import Buefy from 'buefy'
 import Icon from 'vue-awesome/components/Icon'
 import 'buefy/dist/buefy.css'
 import 'vue-awesome/icons'
+import StarRating from 'vue-star-rating'
 
 Vue.use(Buefy);
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -25,6 +27,7 @@ Vue.use(Buefy);
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+Vue.component('star-rating', StarRating);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('new-repair', require('./components/NewRepairOrder.vue').default);
