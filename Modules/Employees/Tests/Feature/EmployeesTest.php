@@ -186,7 +186,7 @@ class EmployeesTest extends TestCase
 
         $data = [
             'id' => $employee_id,
-            'full_name' => $this->faker->name,
+            'name' => $this->faker->name,
             'username' => $this->faker->username . str_random(20),
             'password' => '123456789',
             'email' => $this->faker->email  . str_random(20),
@@ -227,7 +227,7 @@ class EmployeesTest extends TestCase
     {
         $data = [
             'id' => '1',
-            'full_name' => 'Loy Dickens DVM edit',
+            'name' => 'Loy Dickens DVM edit',
             'username' => 'oliinykm95',
             'password' => '123456789',
             'email' => 'bergstrom.wayne.edit@bergstrom.org',

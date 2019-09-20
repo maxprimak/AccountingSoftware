@@ -11,6 +11,7 @@ use Modules\Users\Entities\People;
 use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Employees\Entities\Employee;
+use Modules\Customers\Entities\Customer;
 use Faker\Factory as Faker;
 
 class TopManagerTest extends TestCase
@@ -189,7 +190,7 @@ class TopManagerTest extends TestCase
 
         $employee_edit = [
             'id' => $id_employee,
-            'full_name' => $this->faker->name,
+            'name' => $this->faker->name,
             'username' => $this->faker->username . str_random(20),
             'password' => '123456789',
             'email' => $this->faker->email  . str_random(20),
@@ -204,6 +205,33 @@ class TopManagerTest extends TestCase
         $response->assertSuccessful();
 
         $this->delete('employees/'.$employee_edit['id']);
+    }
+
+    public function test_top_manager_can_edit_customers()
+    {
+        $customer = [
+            'name' => $this->faker->name,
+            'email' => $this->faker->email  . str_random(20),
+            'phone' => $this->faker->phonenumber,
+            'customer_type_id' => '1',
+            'branch_id' => ['1'],
+            'user_id' => $this->user->id,
+        ];
+        $response = $this->post('/customers', $customer);
+        $customer_id = Customer::where('email', $customer['email'])->first()->id;
+
+        $customer_edit = [
+            'id' => $customer_id,
+            'name' => $this->faker->name,
+            'email' => $this->faker->email . str_random(20),
+            'phone' => $this->faker->phonenumber,
+            'type_id' => '1',
+            'branch_id' => ['1'],
+        ];
+
+        $response = $this->post('customers/'.$customer_edit['id'], $customer_edit);
+        $response->assertJson(['message' => 'Successfully updated!']);
+        $response->assertSuccessful();
     }
 
 }

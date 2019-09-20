@@ -11,6 +11,7 @@ use Modules\Users\Entities\People;
 use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Employees\Entities\Employee;
+use Modules\Customers\Entities\Customer;
 use Faker\Factory as Faker;
 
 class SalesManagerTest extends TestCase
@@ -82,6 +83,7 @@ class SalesManagerTest extends TestCase
 
     public function test_sales_manager_can_create_and_edit_customers()
     {
+        //create customer
         $customer = [
             'name' => $this->faker->name,
             'email' => $this->faker->email  . str_random(20),
@@ -92,6 +94,22 @@ class SalesManagerTest extends TestCase
         ];
         $response = $this->post('/customers', $customer);
         $response->assertJson(['message' => 'Successfully created!']);
+        $response->assertSuccessful();
+
+        //edit customer
+        $customer_id = Customer::where('email', $customer['email'])->first()->id;
+
+        $customer_edit = [
+            'id' => $customer_id,
+            'name' => $this->faker->name,
+            'email' => $this->faker->email . str_random(20),
+            'phone' => $this->faker->phonenumber,
+            'type_id' => '1',
+            'branch_id' => ['1'],
+        ];
+
+        $response = $this->post('customers/'.$customer_edit['id'], $customer_edit);
+        $response->assertJson(['message' => 'Successfully updated!']);
         $response->assertSuccessful();
     }
 }
