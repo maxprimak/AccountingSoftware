@@ -79,5 +79,4 @@ class CourierTest extends TestCase
         $response = $this->get('/customers');
         $response->assertStatus(302);
     }
-
 }

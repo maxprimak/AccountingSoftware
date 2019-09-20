@@ -206,9 +206,4 @@ class TopManagerTest extends TestCase
         $this->delete('employees/'.$employee_edit['id']);
     }
 
-    // public function test_top_manager_can_edit_customers()
-    // {
-
-    // }
-
 }
