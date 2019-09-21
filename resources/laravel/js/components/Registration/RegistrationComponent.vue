@@ -84,7 +84,7 @@
                     window.location.href = "/companies"
                 }).catch(function (error) {
                     if(error.response.status == 422)
-                    Toast.open(error.response.data.errors.name[0])
+                    Toast.open(Object.values(error.response.data.errors)[0][0])
                     else
                     Toast.open('Error happened! Please contact the support team')
                 });
