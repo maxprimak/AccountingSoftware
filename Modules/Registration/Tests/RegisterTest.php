@@ -20,7 +20,6 @@ class RegisterTest extends TestCase
         parent::setUp();
     }
 
-    /*
     public function test_new_user_redirects_to_registration_page_on_companies_routes(){
 
         $login = factory('Modules\Login\Entities\Login')->create([
@@ -153,25 +152,24 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
 
     }
-    */
 
     public function test_registration_validation_rules(){
 
         $login = factory('Modules\Login\Entities\Login')->create([
             'username' => $this->faker->unique()->firstName()
         ]);
-
-        $response = $this->actingAs($login)->post(route('registration.store'),[
-            'company_name' => null,
+        
+        $data = [
+            'company_name' => $this->faker->name(),
             'company_phone' => $this->faker->phoneNumber(),
             'company_address' => $this->faker->address(),
             'currency_id' => 1,
             'name' => $this->faker->name(),
             'phone' => $this->faker->phoneNumber(),
             'address' => $this->faker->address()
-        ]);
+        ];
 
-        $response->assertStatus(422);
+        $this->checkValidationIfRequired($data, $login);
 
     }
 

@@ -26,21 +26,6 @@ class RegistrationRequest extends FormRequest
         ];
     }
 
-     /**
-     * Listener on validation fails.
-     *
-     * @return array
-     */
-    /*
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'error' => $validator->errors()->all()[0],
-            'message' => $validator->errors()->all()[0]
-        ]));
-    }
-    */
-
     /**
      * Determine if the user is authorized to make this request.
      *
