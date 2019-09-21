@@ -55,7 +55,6 @@ class CreateUsers{
 
 //UPDATE PART
     public function updatePerson(FormRequest $request,$user){
-      // dd($request);
         People::findOrFail($user->person_id)->update([
             'name' => $request->name,
             'phone' => $request->phone,

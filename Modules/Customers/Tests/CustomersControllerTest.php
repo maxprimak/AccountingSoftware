@@ -18,46 +18,49 @@ class CustomersControllerTest extends TestCase
      *
      * @return void
      */
-     // public function MigrateFreshSeedOnce()
-     // {
-     //       Artisan::call('migrate:fresh');
-     //       Artisan::call('db:seed', ['--class' => 'DatabaseSeeder']);
-     // }
 
+     // use RefreshDatabase;
 
-    public function testUserSeesCustomersFromHisCompany()
-    {
-        $users = factory(User::class,4)->create([
-            'company_id' => function () {
-                return factory(Company::class)->create()->id;
-            }
-        ]);
+     protected $login;
 
+     protected function setUp(): void{
+        // $this->login = ;
 
-        $customers = factory(Customer::class,50)->create([
-            'company_id' => function () {
-                return $randomNumberForCompanyId = rand(1,Company::all()->count());
-            }
-        ])->toArray();
+      }
 
-        $branch_ids = UserHasBranch::where('user_id',auth()->user()->id)->pluck('branch_id')->toArray();
-        $customer_ids = CustomerHasBranch::whereIn('branch_id',$branch_ids)->pluck('customer_id')->toArray();
-        $customers = Customer::whereIn('id',$customer_ids)->get();
-
-        $company_id = Company::find(auth()->user()->company_id);
-        $customers = Customer::where('company_id',$company_id)->get()->toArray();
-        $correct_customers = array();
-
-        $this->assertTrue(true);
-    }
-
-    /**
-     * @depends testUserSeesCustomersFromHisCompany
-     */
-    public function testUserSeesCustomersFromHisBranch()
-    {
-
-        $this->assertTrue(true);
-    }
+    // public function testUserSeesCustomersFromHisCompany()
+    // {
+    //     $users = factory(User::class,4)->create([
+    //         'company_id' => function () {
+    //             return factory(Company::class)->create()->id;
+    //         }
+    //     ]);
+    //
+    //
+    //     $customers = factory(Customer::class,50)->create([
+    //         'company_id' => function () {
+    //             return $randomNumberForCompanyId = rand(1,Company::all()->count());
+    //         }
+    //     ])->toArray();
+    //
+    //     $branch_ids = UserHasBranch::where('user_id',auth()->user()->id)->pluck('branch_id')->toArray();
+    //     $customer_ids = CustomerHasBranch::whereIn('branch_id',$branch_ids)->pluck('customer_id')->toArray();
+    //     $customers = Customer::whereIn('id',$customer_ids)->get();
+    //
+    //     $company_id = Company::find(auth()->user()->company_id);
+    //     $customers = Customer::where('company_id',$company_id)->get()->toArray();
+    //     $correct_customers = array();
+    //
+    //     $this->assertTrue(true);
+    // }
+    //
+    // /**
+    //  * @depends testUserSeesCustomersFromHisCompany
+    //  */
+    // public function testUserSeesCustomersFromHisBranch()
+    // {
+    //
+    //     $this->assertTrue(true);
+    // }
 
 }
