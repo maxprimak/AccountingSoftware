@@ -18,7 +18,7 @@ class CreateCompaniesTable extends Migration
             //account_id int
             //package_id int
             $table->string('name')->unique();
-            $table->unsignedInteger('currency_id');//->default(1);
+            $table->unsignedInteger('currency_id');
             $table->string('address');
             $table->string('phone');
             $table->timestamps();
