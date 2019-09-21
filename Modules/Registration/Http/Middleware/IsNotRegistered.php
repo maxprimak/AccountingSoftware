@@ -4,9 +4,10 @@ namespace Modules\Registration\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+
 use Modules\Users\Entities\User;
 
-class IsRegistered
+class IsNotRegistered
 {
     /**
      * Handle an incoming request.
@@ -17,9 +18,8 @@ class IsRegistered
      */
     public function handle(Request $request, Closure $next)
     {   
-
-        if (!User::where('login_id', auth()->id())->exists()) {
-            return redirect(route('registration.index'));
+        if (User::where('login_id', auth()->id())->exists()) {
+            return redirect()->back();
         }
 
         return $next($request);

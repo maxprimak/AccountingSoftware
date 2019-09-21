@@ -33,14 +33,12 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        try{
+
             $user = User::where('login_id', auth()->id())->firstOrFail();
             $employees = BranchesService::getEmployeesUserCanSee($user->id);
             $branches = BranchesService::getUserBranches($user->id);
             $roles = Role::all();
-        }catch(\Exception $e){
-            return redirect('/registration');
-        }
+
         return view('employees::index')->with(compact('employees', 'roles', 'branches'));
     }
 
@@ -50,13 +48,10 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        try{
-            $user = User::where('login_id', auth()->id())->firstOrFail();
-            $branches = BranchesService::getUserBranches($user->id);
-            $roles = Role::all();
-        }catch(\Exception $e){
-            return abort(500);
-        }
+
+        $user = User::where('login_id', auth()->id())->firstOrFail();
+        $branches = BranchesService::getUserBranches($user->id);
+        $roles = Role::all();
 
         return view('employees::create', compact('branches', 'roles'));
     }

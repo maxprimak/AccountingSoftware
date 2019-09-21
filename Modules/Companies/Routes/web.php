@@ -10,12 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(['auth', 'admin'])->group(function () {
-
-    //Will be deleted soon from here
-    Route::get('/reg_steps', 'CompaniesController@showRegSteps');
-    Route::post('/reg_steps/submit', 'CompaniesController@submitRegSteps');
-    Route::get('/add_employees/{id}', 'CompaniesController@showAddEmployees');
+Route::middleware(['auth', 'admin', 'is_registered'])->group(function () {
 
     //Companies
     Route::get('/companies', 'CompaniesController@index')->name('companies.index');
@@ -29,6 +24,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/branches', 'BranchesController@store')->name('branches.store');
     Route::post('/branches/{branch_id}', 'BranchesController@update')->name('branches.update');
     Route::delete('/branches/{branch_id}', 'BranchesController@destroy')->name('branches.destroy');
-
 
 });
