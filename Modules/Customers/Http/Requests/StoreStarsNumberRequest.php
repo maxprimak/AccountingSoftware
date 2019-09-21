@@ -16,7 +16,7 @@ class StoreStarsNumberRequest extends FormRequest
     public function rules()
     {
         return [
-            'stars_number' => 'required|min:1|max:5',
+            'stars_number' => 'numeric|min:1|max:5',
         ];
     }
 

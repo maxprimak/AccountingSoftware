@@ -11,12 +11,12 @@ use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
 
 class RegisterTest extends TestCase
-{   
+{
 
     use WithFaker;
 
     public function setUp(): void
-    {   
+    {
         parent::setUp();
     }
 
@@ -73,7 +73,7 @@ class RegisterTest extends TestCase
         $login = factory('Modules\Login\Entities\Login')->create([
             'username' => $this->faker->unique()->firstName()
         ]);
-        
+
         $response = $this->actingAs($login)->post(route('registration.store'),[
             'company_name' => $this->faker->name(),
             'company_phone' => $this->faker->phoneNumber(),
@@ -93,7 +93,7 @@ class RegisterTest extends TestCase
         $login = factory('Modules\Login\Entities\Login')->create([
             'username' => $this->faker->unique()->firstName()
         ]);
-        
+
         $response = $this->actingAs($login)->post(route('registration.store'),[
             'company_name' => $this->faker->name(),
             'company_phone' => $this->faker->phoneNumber(),
@@ -121,7 +121,7 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
 
         $user_comp_new = User::where('login_id', $login->id)->first()->company_id;
-        
+
         $this->assertEquals(1, User::where('login_id', $login->id)->get()->count());
         $this->assertEquals($user_comp, $user_comp_new);
 
@@ -132,7 +132,7 @@ class RegisterTest extends TestCase
         $login = factory('Modules\Login\Entities\Login')->create([
             'username' => $this->faker->unique()->firstName()
         ]);
-        
+
         $response = $this->actingAs($login)->post(route('registration.store'),[
             'company_name' => $this->faker->name(),
             'company_phone' => $this->faker->phoneNumber(),
@@ -154,7 +154,7 @@ class RegisterTest extends TestCase
     }
 
     public function test_registration_validation_rules(){
-        
+
         $login = factory('Modules\Login\Entities\Login')->create([
             'username' => $this->faker->unique()->firstName()
         ]);
@@ -172,5 +172,5 @@ class RegisterTest extends TestCase
         $this->checkValidationIfRequired($data, $login);
 
     }
-    
+
 }
