@@ -165,7 +165,6 @@ import { Dialog } from "buefy/dist/components/dialog";
       props: ["customers","customer_types","branches"],
 
       mounted(){
-        console.log(this.customers)
       },
       data() {
         return {
@@ -225,6 +224,7 @@ import { Dialog } from "buefy/dist/components/dialog";
         },
 
         setRating: function(stars_number,customer_id){
+          console.log(stars_number);
           axios
             .post("customers/set_stars_number/" + customer_id, {
               stars_number: stars_number,

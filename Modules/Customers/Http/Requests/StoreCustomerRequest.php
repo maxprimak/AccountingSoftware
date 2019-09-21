@@ -17,12 +17,12 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required|email|unique:logins,email',
+            'email' => 'required|email|unique:customers,email',
             'phone' => 'required|unique:people,phone',
             'stars_number' => 'double',
-            'customer_type_id' => 'required|integer',
+            'customer_type_id' => 'required|numeric',
             'branch_id' => 'required',
-            'user_id' => 'required|integer',
+            'user_id' => 'required|numeric',
         ];
     }
 
