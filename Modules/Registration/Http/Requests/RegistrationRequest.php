@@ -31,6 +31,7 @@ class RegistrationRequest extends FormRequest
      *
      * @return array
      */
+    /*
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
@@ -38,6 +39,7 @@ class RegistrationRequest extends FormRequest
             'message' => $validator->errors()->all()[0]
         ]));
     }
+    */
 
     /**
      * Determine if the user is authorized to make this request.
