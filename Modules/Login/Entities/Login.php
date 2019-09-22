@@ -28,20 +28,31 @@ class Login extends Authenticatable implements MustVerifyEmail
     }
 
     public function checkRole(){
-        $role_id = Login::join('users', 'users.login_id', '=', 'logins.id')
-                            ->join('employees', 'employees.user_id', '=', 'users.id')
-                            ->select('employees.role_id')
-                            ->find($this->id)->role_id;
+        $role_id = $this->getRoleId();
         
         return $role_id;
     }
 
-    public function isHead(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id == 1; }
-    public function isTopManager(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id == 2; }
-    public function isTech(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id == 3; }
-    public function isSalesManager(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id == 4; }
-    public function isCourier(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id == 5; }
-    public function isNotCourier(){ return Employee::where('user_id', User::where('login_id', $this->id)->first()->id)->first()->role_id != 5; }
+    public function getRoleId(){
+
+        try{
+
+            $user = User::where('login_id', $this->id)->firstOrFail();
+            $employee = Employee::where('user_id', $user->id)->firstOrFail();
+            return $employee->role_id;
+
+        }catch(\Exception $e){
+            return 1;
+        }
+
+    }
+
+    public function isHead(){ return $this->getRoleId() == 1; }
+    public function isTopManager(){ return $this->getRoleId() == 2; }
+    public function isTech(){ return $this->getRoleId() == 3; }
+    public function isSalesManager(){ return $this->getRoleId() == 4; }
+    public function isCourier(){ return $this->getRoleId() == 5; }
+    public function isNotCourier(){ return $this->getRoleId() != 5; }
 
 
 }

@@ -48,7 +48,7 @@ class TopManagerTest extends TestCase
 
         $this->employee = factory(Employee::class)->create([
             'user_id' => $this->user->id,
-            'role_id' => '2'
+            'role_id' => '2'  //role top manager
         ]);
 
         //login top manager

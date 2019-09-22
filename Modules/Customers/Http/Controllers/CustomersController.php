@@ -34,7 +34,6 @@ class CustomersController extends Controller
           $customer_types = CustomerType::all();
           $branches = BranchesService::getUserBranches($user->id);
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return abort(500);
         }
         return view('customers::index', compact('customers','customer_types','branches'));
@@ -51,7 +50,6 @@ class CustomersController extends Controller
           $branches = BranchesService::getUserBranches($user->id);
           $customer_types = CustomerType::all();
       }catch(\Exception $e){
-          dd($e->getMessage());
           return abort(500);
       }
         return view('customers::create', compact('user','branches','customer_types'));
@@ -118,20 +116,14 @@ class CustomersController extends Controller
      */
     public function destroy($id)
     {
-      // try{
-      //     $customer = Customer::findOrFail($id);
-      // }catch(ModelNotFoundException $e){
-      //     return response()->json(['message' => $e->getMessage()], 500);
-      // }
-      //
-      // Employee::find($id)->delete();
-      //
-      // User::find($employee->user_id)->delete();
-      //
-      // Login::find($employee->login_id)->delete();
-      //
-      // People::find($employee->person_id)->delete();
-      //
-      // return response()->json(['message' => 'Successfully deleted!']);
+      $customer = Customer::findOrFail($id);
+
+      BranchesService::deleteCustomerFromAllBranches($id);
+
+      Customer::findOrFail($id)->delete();
+
+      People::findOrFail($customer->person_id)->delete();
+
+      return response()->json(['message' => 'Successfully deleted!']);
     }
 }

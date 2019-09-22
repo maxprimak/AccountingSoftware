@@ -66,6 +66,10 @@ class Kernel extends HttpKernel
 
         //middleware employees
         'employee' => \App\Http\Middleware\EmployeesMiddleware::class,
+
+        //registration middlewares
+        'is_not_registered' => \Modules\Registration\Http\Middleware\IsNotRegistered::class,
+        'is_registered' => \Modules\Registration\Http\Middleware\IsRegistered::class
     ];
 
     /**

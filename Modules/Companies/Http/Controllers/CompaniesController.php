@@ -27,14 +27,10 @@ class CompaniesController extends Controller
      */
     public function index()
     {   
-        try{
-            $user = User::where('login_id', auth()->user()->id)->firstOrFail();
-            $company = Company::findOrFail($user->company_id);
-            $currencies = Currency::all();
-            $branches = BranchesService::getUserBranches($user->id);
-        }catch(\Exception $e){
-            return redirect('/registration');
-        }
+        $user = User::where('login_id', auth()->user()->id)->firstOrFail();
+        $company = Company::findOrFail($user->company_id);
+        $currencies = Currency::all();
+        $branches = BranchesService::getUserBranches($user->id);
 
         return view('companies::companies.index')->with(compact('company', 'currencies', 'branches'));
     }
@@ -87,28 +83,5 @@ class CompaniesController extends Controller
     {
         $company = Company::find($id);
         return view('companies::companies.edit')->with(compact('company'));
-    }
-
-
-    /////////////////////////DELETE THEN//////////////////////////////
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('companies::show');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

@@ -11,7 +11,7 @@
 |
 */
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', 'admin', 'is_registered'])->group(function () {
     // Route::resource('/employees', 'EmployeesController');
 
     //Employees
