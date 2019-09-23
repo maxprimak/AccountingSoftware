@@ -51,11 +51,11 @@ class TopManagerTest extends TestCase
             'role_id' => '2'  //role top manager
         ]);
 
-        //login top manager
-        $this->post('/login', [
-            'username' => $this->login->username,
-            'password' => '123456789'
-        ]);
+        // //login top manager
+        // $this->post('/login', [
+        //     'username' => $this->login->username,
+        //     'password' => '123456789'
+        // ]);
 
     }
 
@@ -76,6 +76,7 @@ class TopManagerTest extends TestCase
 
     public function test_top_manager_can_create_all_types_of_employees()
     {
+        //Create head
         $head = [
             'name' => $this->faker->name,
             'username' => $this->faker->username . str_random(20),
@@ -86,12 +87,13 @@ class TopManagerTest extends TestCase
             'role_id' => '1', //role head
             'branch_id' => ['1'],
         ];
-        $response = $this->post('/employees', $head);
+        $response = $this->actingAs($this->login)->post('/employees', $head);
         $response->assertJson(['message' => 'Successfully created!']);
         $response->assertSuccessful();
         $id_employee = $this->get_employee($head['username']);
         $this->delete('employees/'.$id_employee);
 
+        //Create top manager
         $top_manager = [
             'name' => $this->faker->name,
             'username' => $this->faker->username . str_random(20),
@@ -102,12 +104,13 @@ class TopManagerTest extends TestCase
             'role_id' => '2', //role top manager
             'branch_id' => ['1'],
         ];
-        $response = $this->post('/employees', $top_manager);
+        $response = $this->actingAs($this->login)->post('/employees', $top_manager);
         $response->assertJson(['message' => 'Successfully created!']);
         $response->assertSuccessful();
         $id_employee = $this->get_employee($top_manager['username']);
         $this->delete('employees/'.$id_employee);
 
+        //Create tech
         $tech = [
             'name' => $this->faker->name,
             'username' => $this->faker->username . str_random(20),
@@ -118,12 +121,13 @@ class TopManagerTest extends TestCase
             'role_id' => '3', //role tech
             'branch_id' => ['1'],
         ];
-        $response = $this->post('/employees', $tech);
+        $response = $this->actingAs($this->login)->post('/employees', $tech);
         $response->assertJson(['message' => 'Successfully created!']);
         $response->assertSuccessful();
         $id_employee = $this->get_employee($tech['username']);
         $this->delete('employees/'.$id_employee);
 
+        //Create sale manager
         $sale_manager = [
             'name' => $this->faker->name,
             'username' => $this->faker->username . str_random(20),
@@ -134,12 +138,13 @@ class TopManagerTest extends TestCase
             'role_id' => '4', //role sale manager
             'branch_id' => ['1'],
         ];
-        $response = $this->post('/employees', $sale_manager);
+        $response = $this->actingAs($this->login)->post('/employees', $sale_manager);
         $response->assertJson(['message' => 'Successfully created!']);
         $response->assertSuccessful();
         $id_employee = $this->get_employee($sale_manager['username']);
         $this->delete('employees/'.$id_employee);
 
+        //Create courier
         $courier = [
             'name' => $this->faker->name,
             'username' => $this->faker->username . str_random(20),
@@ -150,27 +155,12 @@ class TopManagerTest extends TestCase
             'role_id' => '5', //role courier
             'branch_id' => ['1'],
         ];
-        $response = $this->post('/employees', $courier);
+        $response = $this->actingAs($this->login)->post('/employees', $courier);
         $response->assertJson(['message' => 'Successfully created!']);
         $response->assertSuccessful();
         $id_employee = $this->get_employee($courier['username']);
         $this->delete('employees/'.$id_employee);
 
-    }
-
-    public function test_top_manager_can_create_customers()
-    {
-        $customer = [
-            'name' => $this->faker->name,
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'customer_type_id' => '1',
-            'branch_id' => ['1'],
-            'user_id' => $this->user->id,
-        ];
-        $response = $this->post('/customers', $customer);
-        $response->assertJson(['message' => 'Successfully created!']);
-        $response->assertSuccessful();
     }
 
     public function test_top_manager_can_edit_employees()
@@ -185,7 +175,7 @@ class TopManagerTest extends TestCase
             'role_id' => '3',
             'branch_id' => ['1'],
         ];
-        $response = $this->post('/employees', $employee);
+        $response = $this->actingAs($this->login)->post('/employees', $employee);
         $id_employee = $this->get_employee($employee['username']);
 
         $employee_edit = [
@@ -200,38 +190,11 @@ class TopManagerTest extends TestCase
             'is_active' => true,
         ];
 
-        $response = $this->post('employees/'.$employee_edit['id'], $employee_edit);
+        $response = $this->actingAs($this->login)->post('employees/'.$employee_edit['id'], $employee_edit);
         $response->assertJson(['message' => 'Successfully updated!']);
         $response->assertSuccessful();
 
         $this->delete('employees/'.$employee_edit['id']);
-    }
-
-    public function test_top_manager_can_edit_customers()
-    {
-        $customer = [
-            'name' => $this->faker->name,
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'customer_type_id' => '1',
-            'branch_id' => ['1'],
-            'user_id' => $this->user->id,
-        ];
-        $response = $this->post('/customers', $customer);
-        $customer_id = Customer::where('email', $customer['email'])->first()->id;
-
-        $customer_edit = [
-            'id' => $customer_id,
-            'name' => $this->faker->name,
-            'email' => $this->faker->email . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'type_id' => '1',
-            'branch_id' => ['1'],
-        ];
-
-        $response = $this->post('customers/'.$customer_edit['id'], $customer_edit);
-        $response->assertJson(['message' => 'Successfully updated!']);
-        $response->assertSuccessful();
     }
 
 }

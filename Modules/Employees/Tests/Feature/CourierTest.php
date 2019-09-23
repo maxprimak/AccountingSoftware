@@ -47,36 +47,70 @@ class CourierTest extends TestCase
 
         $this->employee = factory(Employee::class)->create([
             'user_id' => $this->user->id,
-            'role_id' => '5'
+            'role_id' => '5'  //role courier
         ]);
 
-        //login courier
-        $this->post('/login', [
-            'username' => $this->login->username,
-            'password' => '123456789'
-        ]);
+        // //login courier
+        // $this->post('/login', [
+        //     'username' => $this->login->username,
+        //     'password' => '123456789'
+        // ]);
 
     }
 
     public function tearDown(): void
     {
-        $response = $this->get('/logout');
-        $response = $this->post('/login', [
-            'username' => 'oliinykm95',
-            'password' => '123456789'
-        ]);
-        $response = $this->delete('employees/'.$this->employee->id);
+        $head_login = Login::find(1);
+        $this->actingAs($head_login)->delete('employees/'.$this->employee->id);
     }
 
     public function test_courier_can_not_access_any_page()
     {
-        $response = $this->get('/companies');
+        //-------------COMPANIES ROUTE----------------
+        //Courier can not ACCESS my_company_page
+        $response = $this->actingAs($this->login)->get(route('companies.index'));
         $response->assertStatus(302);
 
-        $response = $this->get('/employees');
+        //Courier can not CREATE my_company_page
+        $response = $this->actingAs($this->login)->post(route('companies.create'));
+        $response->assertStatus(302);
+        $response = $this->actingAs($this->login)->post(route('companies.store'));
         $response->assertStatus(302);
 
-        $response = $this->get('/customers');
+        //Courier can not UPDATE my_company_page
+        $response = $this->actingAs($this->login)->post(route('companies.update', '1'));
+        $response->assertStatus(302);
+        
+
+        //-------------EMPLOYEES ROUTE----------------
+        //Courier can not ACCESS employees_page
+        $response = $this->actingAs($this->login)->get(route('employees.index'));
+        $response->assertStatus(302);
+
+        //Courier can not CREATE employees_page
+        $response = $this->actingAs($this->login)->post(route('employees.create'));
+        $response->assertStatus(302);
+        $response = $this->actingAs($this->login)->post(route('employees.store'));
+        $response->assertStatus(302);
+
+        //Courier can not UPDATE employees_page
+        $response = $this->actingAs($this->login)->post(route('employees.update', '1'));
+        $response->assertStatus(302);
+
+
+        //-------------CUSTOMERS ROUTE----------------
+        //Courier can not ACCESS customers_page
+        $response = $this->actingAs($this->login)->get(route('customers.index'));
+        $response->assertStatus(302);
+
+        //Courier can not CREATE customers_page
+        $response = $this->actingAs($this->login)->post(route('customers.create'));
+        $response->assertStatus(302);
+        $response = $this->actingAs($this->login)->post(route('customers.store'));
+        $response->assertStatus(302);
+
+        //Courier can not UPDATE customers_page
+        $response = $this->actingAs($this->login)->post(route('customers.update', '1'));
         $response->assertStatus(302);
     }
 }

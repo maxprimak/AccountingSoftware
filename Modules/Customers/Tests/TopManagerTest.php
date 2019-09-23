@@ -71,6 +71,9 @@ class TopManagerTest extends TestCase
         $response = $this->actingAs($this->login)->post('/customers', $customer);
         $response->assertJson(['message' => 'Successfully created!']);
         $response->assertSuccessful();
+
+        $customer_id = Customer::where('email', $customer['email'])->first()->id;
+        $this->actingAs($this->login)->delete('customers/' . $customer_id);
     }
 
     public function test_top_manager_can_edit_customers()
@@ -83,7 +86,6 @@ class TopManagerTest extends TestCase
             'branch_id' => ['1'],
             'user_id' => $this->user->id,
         ];
-        // $response = $this->post('/customers', $customer);
         $response = $this->actingAs($this->login)->post('/customers', $customer);
         $customer_id = Customer::where('email', $customer['email'])->first()->id;
 
@@ -96,10 +98,11 @@ class TopManagerTest extends TestCase
             'branch_id' => ['1'],
         ];
 
-        // $response = $this->post('customers/'.$customer_edit['id'], $customer_edit);
         $response = $this->actingAs($this->login)->post('customers/'.$customer_edit['id'], $customer_edit);
         $response->assertJson(['message' => 'Successfully updated!']);
         $response->assertSuccessful();
+        
+        $this->actingAs($this->login)->delete('customers/' . $customer_id);
     }
 
 }
