@@ -5,12 +5,16 @@ namespace Modules\Customers\Tests;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Modules\Users\Entities\User;
 use Modules\Login\Entities\Login;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Users\Entities\People;
 use Modules\Companies\Entities\Company;
+use Modules\Companies\Entities\Currency;
+use Modules\Companies\Entities\Branch;
 use Modules\Customers\Entities\Customer;
+use Modules\Customers\Entities\CustomerType;
 use Modules\Customers\Entities\CustomerHasBranch;
 
 use Modules\Registration\Tests\RegisterTest;
@@ -20,43 +24,64 @@ use Illuminate\Support\Facades\Artisan;
 class CustomersTest extends TestCase
 {
     use WithFaker;
-
+    use RefreshDatabase;
     /**
      * A basic test example.
      *
      * @return void
      */
 
-     public function setUp(): void
+     public function setUp() : void
      {
          parent::setUp();
 
-         $this->faker = Faker::create();
+        $this->faker = Faker::create();
 
-         $this->login = Login::find(2);
+        $this->login = factory(Login::class)->create([
+             'username' => $this->faker->username . str_random(10),
+             'password' => Hash::make('123456789'),
+             'email' => $this->faker->email,
+         ]);
 
-         $this->user = User::where('login_id',$this->login->id)->firstOrFail();
+        $this->person = factory(People::class)->create();
 
-         $this->person = factory(People::class)->create();
+        $this->currency = factory(Currency::class)->create(['name' => $this->faker->currencyCode . str_random(10), 'symbol' => $this->faker->countryCode . str_random(10)]);
+
+        $this->company = factory(Company::class)->create(['name'=> $this->faker->name . str_random(10),'currency_id' => $this->currency->id]);
+
+        $this->branch = factory(Branch::class)->create(['name' => $this->faker->name . str_random(10),'company_id' => $this->company->id]);
+
+        $this->user = factory(User::class)->create([
+             'login_id' => $this->login->id,
+             'person_id' => $this->person->id,
+             'company_id' => $this->company->id,
+         ]);
+
+         $this->user_has_branch = factory(UserHasBranch::class)->create([
+             'user_id' => $this->user->id,
+             'branch_id' => $this->branch->id,
+         ]);
+
+         $this->type = factory(CustomerType::class)->create(['name' => $this->faker->name . str_random(10)]);
 
          $this->customer = factory(Customer::class)->create([
              'person_id' => $this->person->id,
              'email' => $this->faker->email  . str_random(20),
-             'type_id' => '1',
-             'company_id' => '2',
+             'type_id' => $this->type->id,
+             'company_id' => $this->company->id,
              'created_by' => $this->user->id
          ]);
 
-         $customer_has_branch = factory(CustomerHasBranch::class)->create([
+         $this->customer_has_branch = factory(CustomerHasBranch::class)->create([
              'customer_id' => $this->customer,
-             'branch_id' => '9',
+             'branch_id' => $this->branch->id,
          ]);
 
      }
 
      // public function tearDown(): void
      // {
-     //     $this->delete('employees/'.$this->employee->id);
+     //
      // }
 
      //TEST DELETE
@@ -68,10 +93,11 @@ class CustomersTest extends TestCase
              'name' => $this->faker->name,
              'email' => $this->faker->email  . str_random(20),
              'phone' => $this->faker->phonenumber,
-             'customer_type_id' => '1',
-             'branch_id' => ['1'],
+             'customer_type_id' => $this->type->id,
+             'branch_id' => [$this->branch->id],
              'user_id' => $this->user->id,
          ];
+
          $response = $this->actingAs($this->login)->post('/customers', $customer);
          $response->assertJson(['message' => 'Successfully created!']);
          $response->assertSuccessful();
@@ -108,9 +134,9 @@ class CustomersTest extends TestCase
             'stars_number' => $this->faker->numberBetween(6,10000)
         ];
 
-        $response = $this->actingAs($this->login)->post(route('set.stars.number',['customer_id' => $this->customer->id]),$request);
-        $response->assertJson(['message' => 'The stars number may not be greater than 5.']);
-        $response->assertStatus(200);
+        $response = $this->actingAs($this->login)->json('POST',route('set.stars.number',['customer_id' => $this->customer->id]),$request);
+        // $response->assertJson(['message' => 'The stars number may not be greater than 5.']);
+        $response->assertStatus(422);
      }
 
      public function test_user_can_not_set_stars_smaller_than_1()
@@ -121,9 +147,9 @@ class CustomersTest extends TestCase
             'stars_number' => $this->faker->numberBetween(-2000,0)
         ];
 
-        $response = $this->actingAs($this->login)->post(route('set.stars.number',['customer_id' => $this->customer->id]),$request);
-        $response->assertJson(['message' => 'The stars number must be at least 1.']);
-        $response->assertStatus(200);
+        $response = $this->actingAs($this->login)->json('POST',route('set.stars.number',['customer_id' => $this->customer->id]),$request);
+        // $response->assertJson(['message' => 'The stars number must be at least 1.']);
+        $response->assertStatus(422);
      }
 
      //TEST VALIDATION OF CUSTOMER
@@ -137,102 +163,30 @@ class CustomersTest extends TestCase
             'name' => $this->faker->name,
             'email' => $this->customer->email,
             'phone' => $this->faker->phonenumber,
-            'customer_type_id' => '1',
-            'branch_id' => ['1'],
+            'customer_type_id' => $this->type->id,
+            'branch_id' => [$this->branch->id],
             'user_id' => $this->user->id,
         ];
-        $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-        $response->assertJson(['message' => 'The email has already been taken.']);
-        $response->assertSuccessful();
+        $response = $this->actingAs($this->login)->json('POST','/customers', $test_customer);
+        // $response->assertJson(['message' => 'The email has already been taken.']);
+        $response->assertStatus(422);
 
         // TEST UNIQUE PHONE
          $test_customer = [
              'name' => $this->faker->name,
              'email' => $this->faker->email  . str_random(20),
              'phone' => $this->person->phone,
-             'customer_type_id' => '1',
-             'branch_id' => ['1'],
+             'customer_type_id' => $this->type->id,
+             'branch_id' => [$this->branch->id],
              'user_id' => $this->user->id,
          ];
-         $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-         $response->assertJson(['message' => 'The phone has already been taken.']);
-         $response->assertSuccessful();
+         $response = $this->actingAs($this->login)->json('POST','/customers', $test_customer);
+         $response->assertStatus(422);
 
      }
 
      public function test_customers_validation_if_required()
      {
-     //
-     //
-     //    // TEST required NAME
-     //    $test_customer = [
-     //        'name' => null,
-     //        'email' => $this->faker->email  . str_random(20),
-     //        'phone' => $this->faker->phonenumber,
-     //        'customer_type_id' => '1',
-     //        'branch_id' => ['1'],
-     //        'user_id' => $this->user->id,
-     //    ];
-     //    $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-     //    $response->assertJson(['message' => 'The name field is required.']);
-     //    $response->assertSuccessful();
-     //
-     //
-     //    // TEST required EMAIL
-     //    $test_customer = [
-     //        'name' => $this->faker->name,
-     //        'email' => null,
-     //        'phone' => $this->faker->phonenumber,
-     //        'customer_type_id' => '1',
-     //        'branch_id' => ['1'],
-     //        'user_id' => $this->user->id,
-     //    ];
-     //    $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-     //    $response->assertJson(['message' => 'The email field is required.']);
-     //    $response->assertSuccessful();
-     //
-     //
-     //    // TEST required PHONE
-     //    $test_customer = [
-     //        'name' => $this->faker->name,
-     //        'email' => $this->faker->email  . str_random(20),
-     //        'phone' => null,
-     //        'customer_type_id' => '1',
-     //        'branch_id' => ['1'],
-     //        'user_id' => $this->user->id,
-     //    ];
-     //    $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-     //    $response->assertJson(['message' => 'The phone field is required.']);
-     //    $response->assertSuccessful();
-     //
-     //
-     //    // TEST required customer_type_id
-     //    $test_customer = [
-     //        'name' => $this->faker->name,
-     //        'email' => $this->faker->email  . str_random(20),
-     //        'phone' => $this->faker->phonenumber,
-     //        'customer_type_id' => null,
-     //        'branch_id' => ['1'],
-     //        'user_id' => $this->user->id,
-     //    ];
-     //    $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-     //    $response->assertJson(['message' => 'The customer type id field is required.']);
-     //    $response->assertSuccessful();
-     //
-     //
-     //    // TEST required branch_id
-     //    $test_customer = [
-     //        'name' => $this->faker->name,
-     //        'email' => $this->faker->email  . str_random(20),
-     //        'phone' => $this->faker->phonenumber,
-     //        'customer_type_id' => '1',
-     //        'branch_id' => null,
-     //        'user_id' => $this->user->id,
-     //    ];
-     //    $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-     //    $response->assertJson(['message' => 'The branch id field is required.']);
-     //    $response->assertSuccessful();
-     //
 
         // TEST required user_id
         $test_customer = [
@@ -243,13 +197,9 @@ class CustomersTest extends TestCase
             'branch_id' => ['1'],
             'user_id' => null,
         ];
-        // $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-        // $response->assertJson(['message' => 'The user id field is required.']);
-        // $response->assertSuccessful();
 
-        $this->checkValidationIfRequired($test_customer,$this->login);
+        $this->checkValidationIfRequired($test_customer,$this->login,'customers.store');
 
      }
-
 
 }

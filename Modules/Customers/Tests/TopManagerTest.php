@@ -11,11 +11,16 @@ use Modules\Users\Entities\People;
 use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Employees\Entities\Employee;
+use Modules\Companies\Entities\Company;
+use Modules\Companies\Entities\Currency;
+use Modules\Companies\Entities\Branch;
 use Modules\Customers\Entities\Customer;
+use Modules\Customers\Entities\CustomerType;
 use Faker\Factory as Faker;
 
 class TopManagerTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic test example.
      *
@@ -35,28 +40,31 @@ class TopManagerTest extends TestCase
 
         $this->person = factory(People::class)->create();
 
+        $this->currency = factory(Currency::class)->create(['name' => $this->faker->currencyCode . str_random(10), 'symbol' => $this->faker->countryCode . str_random(10)]);
+
+        $this->company = factory(Company::class)->create(['name'=> $this->faker->name . str_random(10),'currency_id' => $this->currency->id]);
+
+        $this->branch = factory(Branch::class)->create(['name' => $this->faker->name . str_random(10),'company_id' => $this->company->id]);
+
+        $this->type = factory(CustomerType::class)->create(['name' => $this->faker->name . str_random(10)]);
+
         $this->user = factory(User::class)->create([
-            'login_id' => $this->login->id,
-            'person_id' => $this->person->id,
-            'company_id' => '1',
+                    'login_id' => $this->login->id,
+                    'person_id' => $this->person->id,
+                    'company_id' => $this->company->id,
         ]);
 
         $user_has_branch = factory(UserHasBranch::class)->create([
-            'user_id' => $this->user->id,
-            'branch_id' => '1',
-        ]);
-
-        $this->employee = factory(Employee::class)->create([
-            'user_id' => $this->user->id,
-            'role_id' => '2'  //role top manager
+                    'user_id' => $this->user->id,
+                    'branch_id' => $this->branch->id,
         ]);
 
     }
 
-    public function tearDown(): void
-    {
-        $this->delete('employees/'.$this->employee->id);
-    }
+    // public function tearDown(): void
+    // {
+    //     $this->delete('employees/'.$this->employee->id);
+    // }
 
     public function test_top_manager_can_create_customers()
     {
@@ -64,8 +72,8 @@ class TopManagerTest extends TestCase
             'name' => $this->faker->name,
             'email' => $this->faker->email  . str_random(20),
             'phone' => $this->faker->phonenumber,
-            'customer_type_id' => '1',
-            'branch_id' => ['1'],
+            'customer_type_id' => $this->type->id,
+            'branch_id' => [$this->branch->id],
             'user_id' => $this->user->id,
         ];
         $response = $this->actingAs($this->login)->post('/customers', $customer);
@@ -82,8 +90,8 @@ class TopManagerTest extends TestCase
             'name' => $this->faker->name,
             'email' => $this->faker->email  . str_random(20),
             'phone' => $this->faker->phonenumber,
-            'customer_type_id' => '1',
-            'branch_id' => ['1'],
+            'customer_type_id' => $this->type->id,
+            'branch_id' => [$this->branch->id],
             'user_id' => $this->user->id,
         ];
         $response = $this->actingAs($this->login)->post('/customers', $customer);
@@ -94,14 +102,14 @@ class TopManagerTest extends TestCase
             'name' => $this->faker->name,
             'email' => $this->faker->email . str_random(20),
             'phone' => $this->faker->phonenumber,
-            'type_id' => '1',
-            'branch_id' => ['1'],
+            'type_id' => $this->type->id,
+            'branch_id' => [$this->branch->id],
         ];
 
         $response = $this->actingAs($this->login)->post('customers/'.$customer_edit['id'], $customer_edit);
         $response->assertJson(['message' => 'Successfully updated!']);
         $response->assertSuccessful();
-        
+
         $this->actingAs($this->login)->delete('customers/' . $customer_id);
     }
 

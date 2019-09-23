@@ -195,7 +195,7 @@ import { Dialog } from "buefy/dist/components/dialog";
             })
             .catch(function (error) {
                 if(error.response.status == 422)
-                Toast.open(error.response.data.errors[0][1])
+                Toast.open(Object.values(error.response.data.errors)[0][0])
                 else
                 Toast.open('Error happened! Please contact the support team')
             });
@@ -218,7 +218,7 @@ import { Dialog } from "buefy/dist/components/dialog";
                 })
                 .catch(function (error) {
                     if(error.response.status == 422)
-                    Toast.open(error.response.data.errors[0][0])
+                    Toast.open(Object.values(error.response.data.errors)[0][0])
                     else
                     Toast.open('Error happened! Please contact the support team')
                 })
@@ -240,7 +240,7 @@ import { Dialog } from "buefy/dist/components/dialog";
             })
             .catch(function (error) {
                 if(error.response.status == 422)
-                Toast.open(error.response.data.errors[0][0])
+                Toast.open(Object.values(error.response.data.errors)[0][0])
                 else
                 Toast.open('Error happened! Please contact the support team')
             });
