@@ -51,66 +51,51 @@ class TechTest extends TestCase
             'role_id' => '3'
         ]);
 
-        //login tech
-        $this->post('/login', [
-            'username' => $this->login->username,
-            'password' => '123456789'
-        ]);
+        // //login tech
+        // $this->post('/login', [
+        //     'username' => $this->login->username,
+        //     'password' => '123456789'
+        // ]);
 
     }
 
     public function tearDown(): void
     {
-        $response = $this->get('/logout');
-        $response = $this->post('/login', [
-            'username' => 'oliinykm95',
-            'password' => '123456789'
-        ]);
-        $response = $this->delete('employees/'.$this->employee->id);
+        $head_login = Login::find(1);
+        $this->actingAs($head_login)->delete('employees/'.$this->employee->id);
     }
 
     public function test_tech_can_not_access_my_company_page()
     {
-        $response = $this->get('/companies');
+        //Courier can not ACCESS my_company_page
+        $response = $this->actingAs($this->login)->get(route('companies.index'));
+        $response->assertStatus(302);
+
+        //Courier can not CREATE my_company_page
+        $response = $this->actingAs($this->login)->post(route('companies.create'));
+        $response->assertStatus(302);
+        $response = $this->actingAs($this->login)->post(route('companies.store'));
+        $response->assertStatus(302);
+
+        //Courier can not UPDATE my_company_page
+        $response = $this->actingAs($this->login)->post(route('companies.update', '1'));
         $response->assertStatus(302);
     }
 
     public function test_tech_can_not_access_employees_page()
     {
-        $response = $this->get('/employees');
+        //Courier can not ACCESS employees_page
+        $response = $this->actingAs($this->login)->get(route('employees.index'));
         $response->assertStatus(302);
-    }
 
-    public function test_tech_can_create_and_edit_customers()
-    {
-        //create customer
-        $customer = [
-            'name' => $this->faker->name,
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'customer_type_id' => '1',
-            'branch_id' => ['1'],
-            'user_id' => $this->user->id,
-        ];
-        $response = $this->post('/customers', $customer);
-        $response->assertJson(['message' => 'Successfully created!']);
-        $response->assertSuccessful();
+        //Courier can not CREATE employees_page
+        $response = $this->actingAs($this->login)->post(route('employees.create'));
+        $response->assertStatus(302);
+        $response = $this->actingAs($this->login)->post(route('employees.store'));
+        $response->assertStatus(302);
 
-        //edit customer
-        $customer_id = Customer::where('email', $customer['email'])->first()->id;
-
-        $customer_edit = [
-            'id' => $customer_id,
-            'name' => $this->faker->name,
-            'email' => $this->faker->email . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'type_id' => '1',
-            'branch_id' => ['1'],
-        ];
-
-        $response = $this->post('customers/'.$customer_edit['id'], $customer_edit);
-        $response->assertJson(['message' => 'Successfully updated!']);
-        $response->assertSuccessful();
-
+        //Courier can not UPDATE employees_page
+        $response = $this->actingAs($this->login)->post(route('employees.update', '1'));
+        $response->assertStatus(302);
     }
 }
