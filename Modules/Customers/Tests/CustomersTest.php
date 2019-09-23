@@ -162,77 +162,77 @@ class CustomersTest extends TestCase
 
      public function test_customers_validation_if_required()
      {
-
-
-        // TEST required NAME
-        $test_customer = [
-            'name' => null,
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'customer_type_id' => '1',
-            'branch_id' => ['1'],
-            'user_id' => $this->user->id,
-        ];
-        $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-        $response->assertJson(['message' => 'The name field is required.']);
-        $response->assertSuccessful();
-
-
-        // TEST required EMAIL
-        $test_customer = [
-            'name' => $this->faker->name,
-            'email' => null,
-            'phone' => $this->faker->phonenumber,
-            'customer_type_id' => '1',
-            'branch_id' => ['1'],
-            'user_id' => $this->user->id,
-        ];
-        $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-        $response->assertJson(['message' => 'The email field is required.']);
-        $response->assertSuccessful();
-
-
-        // TEST required PHONE
-        $test_customer = [
-            'name' => $this->faker->name,
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => null,
-            'customer_type_id' => '1',
-            'branch_id' => ['1'],
-            'user_id' => $this->user->id,
-        ];
-        $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-        $response->assertJson(['message' => 'The phone field is required.']);
-        $response->assertSuccessful();
-
-
-        // TEST required customer_type_id
-        $test_customer = [
-            'name' => $this->faker->name,
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'customer_type_id' => null,
-            'branch_id' => ['1'],
-            'user_id' => $this->user->id,
-        ];
-        $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-        $response->assertJson(['message' => 'The customer type id field is required.']);
-        $response->assertSuccessful();
-
-
-        // TEST required branch_id
-        $test_customer = [
-            'name' => $this->faker->name,
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'customer_type_id' => '1',
-            'branch_id' => null,
-            'user_id' => $this->user->id,
-        ];
-        $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-        $response->assertJson(['message' => 'The branch id field is required.']);
-        $response->assertSuccessful();
-
+     //
+     //
+     //    // TEST required NAME
+     //    $test_customer = [
+     //        'name' => null,
+     //        'email' => $this->faker->email  . str_random(20),
+     //        'phone' => $this->faker->phonenumber,
+     //        'customer_type_id' => '1',
+     //        'branch_id' => ['1'],
+     //        'user_id' => $this->user->id,
+     //    ];
+     //    $response = $this->actingAs($this->login)->post('/customers', $test_customer);
+     //    $response->assertJson(['message' => 'The name field is required.']);
+     //    $response->assertSuccessful();
+     //
+     //
+     //    // TEST required EMAIL
+     //    $test_customer = [
+     //        'name' => $this->faker->name,
+     //        'email' => null,
+     //        'phone' => $this->faker->phonenumber,
+     //        'customer_type_id' => '1',
+     //        'branch_id' => ['1'],
+     //        'user_id' => $this->user->id,
+     //    ];
+     //    $response = $this->actingAs($this->login)->post('/customers', $test_customer);
+     //    $response->assertJson(['message' => 'The email field is required.']);
+     //    $response->assertSuccessful();
+     //
+     //
+     //    // TEST required PHONE
+     //    $test_customer = [
+     //        'name' => $this->faker->name,
+     //        'email' => $this->faker->email  . str_random(20),
+     //        'phone' => null,
+     //        'customer_type_id' => '1',
+     //        'branch_id' => ['1'],
+     //        'user_id' => $this->user->id,
+     //    ];
+     //    $response = $this->actingAs($this->login)->post('/customers', $test_customer);
+     //    $response->assertJson(['message' => 'The phone field is required.']);
+     //    $response->assertSuccessful();
+     //
+     //
+     //    // TEST required customer_type_id
+     //    $test_customer = [
+     //        'name' => $this->faker->name,
+     //        'email' => $this->faker->email  . str_random(20),
+     //        'phone' => $this->faker->phonenumber,
+     //        'customer_type_id' => null,
+     //        'branch_id' => ['1'],
+     //        'user_id' => $this->user->id,
+     //    ];
+     //    $response = $this->actingAs($this->login)->post('/customers', $test_customer);
+     //    $response->assertJson(['message' => 'The customer type id field is required.']);
+     //    $response->assertSuccessful();
+     //
+     //
+     //    // TEST required branch_id
+     //    $test_customer = [
+     //        'name' => $this->faker->name,
+     //        'email' => $this->faker->email  . str_random(20),
+     //        'phone' => $this->faker->phonenumber,
+     //        'customer_type_id' => '1',
+     //        'branch_id' => null,
+     //        'user_id' => $this->user->id,
+     //    ];
+     //    $response = $this->actingAs($this->login)->post('/customers', $test_customer);
+     //    $response->assertJson(['message' => 'The branch id field is required.']);
+     //    $response->assertSuccessful();
+     //
 
         // TEST required user_id
         $test_customer = [
@@ -243,9 +243,11 @@ class CustomersTest extends TestCase
             'branch_id' => ['1'],
             'user_id' => null,
         ];
-        $response = $this->actingAs($this->login)->post('/customers', $test_customer);
-        $response->assertJson(['message' => 'The user id field is required.']);
-        $response->assertSuccessful();
+        // $response = $this->actingAs($this->login)->post('/customers', $test_customer);
+        // $response->assertJson(['message' => 'The user id field is required.']);
+        // $response->assertSuccessful();
+
+        $this->checkValidationIfRequired($test_customer,$this->login);
 
      }
 

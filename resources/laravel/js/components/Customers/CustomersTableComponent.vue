@@ -193,8 +193,11 @@ import { Dialog } from "buefy/dist/components/dialog";
             .then(response => {
               Toast.open(response.data.message);
             })
-            .catch(function(error) {
-              Toast.open("Error happened! Please contact the support team");
+            .catch(function (error) {
+                if(error.response.status == 422)
+                Toast.open(error.response.data.errors[0][1])
+                else
+                Toast.open('Error happened! Please contact the support team')
             });
         },
 
@@ -213,8 +216,11 @@ import { Dialog } from "buefy/dist/components/dialog";
                   this.data.splice(props.index, 1);
                   Toast.open(response.data.message);
                 })
-                .catch(function(error) {
-                  Toast.open("Error happened! Please contact the support team");
+                .catch(function (error) {
+                    if(error.response.status == 422)
+                    Toast.open(error.response.data.errors[0][0])
+                    else
+                    Toast.open('Error happened! Please contact the support team')
                 })
           });
         },
@@ -232,8 +238,11 @@ import { Dialog } from "buefy/dist/components/dialog";
             .then(response => {
               Toast.open(response.data.message);
             })
-            .catch(function(error) {
-              Toast.open("Error happened! Please contact the support team");
+            .catch(function (error) {
+                if(error.response.status == 422)
+                Toast.open(error.response.data.errors[0][0])
+                else
+                Toast.open('Error happened! Please contact the support team')
             });
         }
       },
