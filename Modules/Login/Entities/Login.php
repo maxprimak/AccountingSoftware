@@ -5,6 +5,7 @@ namespace Modules\Login\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Foundation\Http\FormRequest;
@@ -13,7 +14,7 @@ use Modules\Employees\Entities\Employee;
 
 class Login extends Authenticatable implements MustVerifyEmail
 {   
-    use Notifiable;
+    use Notifiable, HasApiTokens;
 
     protected $fillable = ['id', 'username', 'password', 'remember_token', 'email', 'email_verified_at'];
     public $timestamps = false;
