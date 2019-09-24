@@ -158,7 +158,7 @@ class RegisterTest extends TestCase
         $login = factory('Modules\Login\Entities\Login')->create([
             'username' => $this->faker->unique()->firstName()
         ]);
-        
+
         $data = [
             'company_name' => $this->faker->name(),
             'company_phone' => $this->faker->phoneNumber(),
@@ -171,6 +171,13 @@ class RegisterTest extends TestCase
 
         $this->checkValidationIfRequired($data, $login);
 
+    }
+
+    public static function tearDownAfterClass()
+    {
+    shell_exec('php artisan migrate:fresh --seed');
+    print "\nMigration was done\n";
+    parent::tearDownAfterClass();
     }
 
 }

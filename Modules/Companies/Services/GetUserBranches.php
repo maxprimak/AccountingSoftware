@@ -76,4 +76,12 @@ class GetUserBranches{
         $permissions->delete();
     }
 
+    public function checkThisBranchHasEmployees(Branch $branch){
+      return UserHasBranch::where('branch_id',$branch->id)->exists();
+    }
+
+    public function checkThisBranchHasCustomers(Branch $branch){
+      return CustomerHasBranch::where('branch_id',$branch->id)->exists();
+    }
+
 }

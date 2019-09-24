@@ -19,7 +19,7 @@ use Modules\Companies\Http\Requests\UpdateCompanyRequest;
 use BranchesService;
 
 class CompaniesController extends Controller
-{   
+{
 
     /**
      * Display a listing of the resource.
@@ -46,7 +46,7 @@ class CompaniesController extends Controller
      * @return Response
      */
     public function create()
-    {   
+    {
         return view('companies::companies.create');
     }
 
@@ -56,13 +56,13 @@ class CompaniesController extends Controller
      * @return Response
      */
     public function store(StoreCompanyRequest $request)
-    {   
+    {
         $company = new Company();
         $company = $company->store($request);
 
         return response()->json($company);
     }
-    
+
     /**
      * Update the specified resource in storage.
      * @param Request $request
@@ -70,7 +70,7 @@ class CompaniesController extends Controller
      * @return Response
      */
     public function update(UpdateCompanyRequest $request, $id)
-    {   
+    {
         try{
             $company = Company::findOrFail($id);
             $company = $company->storeUpdated($request);

@@ -63,7 +63,7 @@
     import { Toast } from 'buefy/dist/components/toast';
 
     export default {
-        props:['company', 'currencies'], 
+        props:['company', 'currencies'],
         data() {
             return {
                 data: this.company,
@@ -90,7 +90,10 @@
                 .then(function (response) {
                     Toast.open(response.data)
                 }).catch(function (error) {
-                    Toast.open(error.response.data)
+                    if(error.response.status == 422)
+                    Toast.open(Object.values(error.response.data.errors)[0][0])
+                    else
+                    Toast.open('Error happened! Please contact the support team')
                 });
             },
             toCreateBranch: function() {
