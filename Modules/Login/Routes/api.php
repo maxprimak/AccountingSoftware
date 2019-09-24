@@ -14,5 +14,5 @@ use Illuminate\Http\Request;
 */
 
 Route::prefix('auth')->group(function () {
-    Route::post('login', 'LoginController@customLogin');
+    Route::post('login', 'AuthController@login');
 });
