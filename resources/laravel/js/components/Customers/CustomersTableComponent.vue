@@ -1,22 +1,20 @@
 <template>
   <section>
     <div class="columns">
-      <div class="columns">
-        <div class="column">
-          <h3 class="title">Customers</h3>
-        </div>
-        <div class="column">
-          <b-input v-model="search" placeholder="Search..." type="search" icon="magnify"></b-input>
-        </div>
-        <div class="column">
-          <b-button class="is-pulled-right" @click="toCreateCustomer" type="is-primary">New Customer</b-button>
-        </div>
+      <div class="column">
+        <h3 class="title">Customers</h3>
+      </div>
+      <div class="column">
+        <b-input v-model="search" placeholder="Search..." type="search" icon="magnify"></b-input>
+      </div>
+      <div class="column">
+        <b-button class="is-pulled-right" @click="toCreateCustomer" type="is-primary">New Customer</b-button>
       </div>
     </div>
 
 
     <b-table
-      :data="data"
+      :data="filteredCustomers"
       ref="table"
       paginated
       per-page="10"
@@ -173,6 +171,7 @@ import { Dialog } from "buefy/dist/components/dialog";
           csrf: document
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content"),
+          search: "",
         };
       },
       methods: {
@@ -251,7 +250,6 @@ import { Dialog } from "buefy/dist/components/dialog";
         filteredCustomers: function() {
           return this.data.filter(customers => {
             return (
-              customers.mail.match(this.search) ||
               customers.name.match(this.search) ||
               customers.phone.match(this.search) ||
               customers.email.match(this.search)

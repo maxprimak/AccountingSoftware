@@ -2,6 +2,7 @@
 <head>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <script src="{{asset('/assets/js/laravel/app.js')}}" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
 </head>
 
 @section('main-content')
