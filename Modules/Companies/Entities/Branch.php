@@ -21,7 +21,7 @@ class Branch extends Model
 
     public function store(FormRequest $request){
 
-        $user = User::where('login_id', auth()->user()->id)->first();
+        $user = User::where('login_id', auth('api')->user()->id)->first();
 
         $this->company_id = Company::find($user->company_id)->id; 
         $this->name = $request->name;
