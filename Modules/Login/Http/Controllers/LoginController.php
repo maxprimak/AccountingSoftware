@@ -56,10 +56,10 @@ class LoginController extends Controller
     public function authenticate(Request $request){
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password /*, 'is_active' => 1*/]))
             {   
-                return redirect()->intended($this->redirectPath());
+                return response()->json(['token' => auth()->user()->api_token, 'user' => auth()->user()], 200);
             }
             else{
-                return redirect()->back()->withInput()->with('message', 'Username or password incorrect');
+                return response()->json(['error' => 'login_error'], 401);
             }
     }
 

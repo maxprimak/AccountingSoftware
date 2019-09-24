@@ -27,12 +27,18 @@ class CompaniesController extends Controller
      */
     public function index()
     {   
+        /*
         $user = User::where('login_id', auth()->user()->id)->firstOrFail();
         $company = Company::findOrFail($user->company_id);
         $currencies = Currency::all();
         $branches = BranchesService::getUserBranches($user->id);
 
         return view('companies::companies.index')->with(compact('company', 'currencies', 'branches'));
+        */
+
+        $companies = Company::all();
+
+        return response()->json($companies, 200);
     }
 
     /**

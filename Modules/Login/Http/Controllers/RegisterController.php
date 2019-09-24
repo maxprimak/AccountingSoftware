@@ -97,8 +97,8 @@ class RegisterController extends Controller
         $login = Login::create([
             'username' => $data['username'],
             'email' => $data['email'],
-            'password' => $data['password'],
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
+            'api_token' => Str::random(60),
         ]);
 
         $login->sendEmailVerificationNotification();

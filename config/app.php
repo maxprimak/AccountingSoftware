@@ -178,7 +178,7 @@ return [
         Modules\Companies\Providers\CompaniesServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Modules\Customers\Providers\CustomersServiceProvider::class,
-
+        Barryvdh\Cors\ServiceProvider::class,
     ],
 
     /*

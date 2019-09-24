@@ -19,6 +19,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
+        \Barryvdh\Cors\HandleCors::class,
     ];
 
     /**
@@ -69,7 +70,9 @@ class Kernel extends HttpKernel
 
         //registration middlewares
         'is_not_registered' => \Modules\Registration\Http\Middleware\IsNotRegistered::class,
-        'is_registered' => \Modules\Registration\Http\Middleware\IsRegistered::class
+        'is_registered' => \Modules\Registration\Http\Middleware\IsRegistered::class,
+
+        'is_authorized' => \Modules\Login\Http\Middleware\IsAuthorized::class
     ];
 
     /**

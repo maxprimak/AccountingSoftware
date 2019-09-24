@@ -13,6 +13,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/companies', function (Request $request) {
-    return $request->user();
-});
+Route::get('companies', 'CompaniesController@index')->middleware('is_authorized');
