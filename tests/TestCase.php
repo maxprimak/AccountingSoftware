@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Hash;
 use Modules\Users\Entities\User;
 use Modules\Login\Entities\Login;
+use Modules\Employees\Entities\Employee;
+use Modules\Employees\Entities\Role;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Users\Entities\People;
 use Modules\Companies\Entities\Company;
@@ -67,21 +69,46 @@ abstract class TestCase extends BaseTestCase
         return $this->user_has_branch;
       }
 
+      public function setUpRole(){
+        $this->role = factory(Role::class)->create([
+            'name' => 'Head',
+        ]);
+        return $this->role;
+      }
 
-          // $this->type = factory(CustomerType::class)->create(['name' => $this->faker->name . str_random(10)]);
-          //
-          // $this->customer = factory(Customer::class)->create([
-          //     'person_id' => $this->person->id,
-          //     'email' => $this->faker->email  . str_random(20),
-          //     'type_id' => $this->type->id,
-          //     'company_id' => $this->company->id,
-          //     'created_by' => $this->user->id
-          // ]);
-          //
-          // $this->customer_has_branch = factory(CustomerHasBranch::class)->create([
-          //     'customer_id' => $this->customer,
-          //     'branch_id' => $this->branch->id,
-          // ]);
+      public function setUpEmployee($user,$role,$branch){
+        $employee = factory(Employee::class)->create([
+            'user_id' => $user->id,
+            'role_id' => $role->id
+        ]);
+        return $employee;
+      }
+
+      public function setUpCustomerType(){
+        $this->type = factory(CustomerType::class)->create([
+            'name' => 'Person',
+        ]);
+        return $this->type;
+      }
+
+      public function setUpCustomer($type,$person,$company,$user){
+        $this->customer = factory(Customer::class)->create([
+            'person_id' => $this->person->id,
+            'email' => $this->faker->email  . str_random(20),
+            'type_id' => $this->type->id,
+            'company_id' => $this->company->id,
+            'created_by' => $this->user->id
+        ]);
+        return $this->customer;
+      }
+
+      public function setUpCustomerHasBranch($customer,$branch){
+        $this->customer_has_branch = factory(CustomerHasBranch::class)->create([
+            'customer_id' => $this->customer,
+            'branch_id' => $this->branch->id,
+        ]);
+        return $this->customer_has_branch;
+      }
 
     public function checkValidationIfRequired($data, $login,$route,$keys_not_required = array()){
 

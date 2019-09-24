@@ -11,6 +11,8 @@ use Modules\Companies\Entities\Branch;
 use Modules\Companies\Http\Requests\StoreBranchRequest;
 use Modules\Companies\Http\Requests\UpdateBranchRequest;
 
+use BranchesService;
+
 class BranchesController extends Controller
 {
 
@@ -62,10 +64,16 @@ class BranchesController extends Controller
     public function destroy($id)
     {
         $branch = Branch::find($id);
-        $branch->delete();
 
-        return response()->json([
-            'message' => 'Successfully deleted!'
-        ]);
+        if(!BranchesService::checkThisBranchHasEmployees($branch) && !BranchesService::checkThisBranchHasCustomers($branch)){
+          $branch->delete();
+        }else{
+          return response()->json([
+              'message' => 'You can not delete this branch!'
+          ]);
+        }
+          return response()->json([
+              'message' => 'Successfully deleted!'
+          ]);
     }
 }
