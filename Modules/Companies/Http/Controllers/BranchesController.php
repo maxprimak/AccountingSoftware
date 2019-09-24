@@ -35,9 +35,10 @@ class BranchesController extends Controller
         $branch = new Branch();
         $branch = $branch->store($request);
 
-        return response()->json([
-            'message' => 'Successfully created!'
-        ]);
+        return $request;
+        // return response()->json([
+        //     'message' => 'Successfully created!'
+        // ]);
     }
 
     /**
