@@ -1927,9 +1927,9 @@
             "authors": [
                 {
                     "name": "Nicolas Widart",
-                    "role": "Developer",
                     "email": "n.widart@gmail.com",
-                    "homepage": "https://nicolaswidart.com"
+                    "homepage": "https://nicolaswidart.com",
+                    "role": "Developer"
                 }
             ],
             "description": "Laravel Module management",
@@ -4547,9 +4547,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
-                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de"
+                    "homepage": "https://beyondco.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
@@ -6603,8 +6603,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Utility class for timing",
