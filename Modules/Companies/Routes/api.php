@@ -13,4 +13,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('companies', 'CompaniesController@index')->middleware('is_authorized');
+Route::get('companies', 'CompaniesController@index');//->middleware('is_authorized');
