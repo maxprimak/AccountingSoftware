@@ -202,4 +202,10 @@ class CustomersTest extends TestCase
 
      }
 
+     public static function tearDownAfterClass()
+     {
+     shell_exec('php artisan migrate:fresh --seed');
+     print "\nMigration was done\n";
+     parent::tearDownAfterClass();
+     }
 }

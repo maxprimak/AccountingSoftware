@@ -22,7 +22,7 @@
                         <div class="level-left">
                             <div class="level-item">
                                 <b-field label="Color">
-                                    <swatches v-model="color" :colors="colors" row-length="6" shapes="circles" show-border popover-to="left"></swatches>                    
+                                    <swatches v-model="color" :colors="colors" row-length="6" shapes="circles" show-border popover-to="left"></swatches>
                                 </b-field>
                             </div>
                         </div>
@@ -32,12 +32,12 @@
                                     <b-button native-type="submit" type="is-primary">ADD</b-button>
                                 </b-field>
                             </div>
-                        </div> 
+                        </div>
                     </nav>
                 </form>
             </div>
         </div>
-    </div> 
+    </div>
 </template>
 
 <script>
@@ -81,8 +81,11 @@ export default {
                   duration: 5000
                 });
             }).catch(function (error) {
-                    Toast.open('Error happened! Please contact the support team')
-            })
+                if(error.response.status == 422)
+                Toast.open(Object.values(error.response.data.errors)[0][0])
+                else
+                Toast.open('Error happened! Please contact the support team')
+            });
       },
       clearForm: function(){
           this.name = '';

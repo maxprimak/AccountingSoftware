@@ -19,14 +19,14 @@ use Modules\Companies\Http\Requests\UpdateCompanyRequest;
 use BranchesService;
 
 class CompaniesController extends Controller
-{   
+{
 
     /**
      * Display a listing of the resource.
      * @return Response
      */
     public function index()
-    {   
+    {
         $user = User::where('login_id', auth()->user()->id)->firstOrFail();
         $company = Company::findOrFail($user->company_id);
         $currencies = Currency::all();
@@ -40,7 +40,7 @@ class CompaniesController extends Controller
      * @return Response
      */
     public function create()
-    {   
+    {
         return view('companies::companies.create');
     }
 
@@ -50,13 +50,13 @@ class CompaniesController extends Controller
      * @return Response
      */
     public function store(StoreCompanyRequest $request)
-    {   
+    {
         $company = new Company();
         $company = $company->store($request);
 
         return response()->json($company);
     }
-    
+
     /**
      * Update the specified resource in storage.
      * @param Request $request
@@ -64,7 +64,7 @@ class CompaniesController extends Controller
      * @return Response
      */
     public function update(UpdateCompanyRequest $request, $id)
-    {   
+    {
         try{
             $company = Company::findOrFail($id);
             $company = $company->storeUpdated($request);
