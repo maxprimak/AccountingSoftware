@@ -26,7 +26,7 @@ class CompaniesController extends Controller
      * @return Response
      */
     public function index()
-    {   
+    {
         /*
         $user = User::where('login_id', auth()->user()->id)->firstOrFail();
         $company = Company::findOrFail($user->company_id);
@@ -57,6 +57,7 @@ class CompaniesController extends Controller
      */
     public function store(StoreCompanyRequest $request)
     {
+
         $company = new Company();
         $company = $company->store($request);
 
