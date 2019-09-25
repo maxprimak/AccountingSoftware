@@ -17,6 +17,7 @@ use Modules\Customers\Entities\Customer;
 use Modules\Customers\Entities\CustomerType;
 use Modules\Customers\Entities\CustomerHasBranch;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -136,6 +137,12 @@ abstract class TestCase extends BaseTestCase
           ]);
 
           return $response;
+
+        }
+
+        public static function setUpEnvironment(){
+
+          Artisan::call('passport:install');
 
         }
 

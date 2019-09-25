@@ -19,7 +19,7 @@ class IsNotRegistered
     public function handle(Request $request, Closure $next)
     {   
         if (User::where('login_id', auth('api')->id())->exists()) {
-            return redirect()->back();
+            return response()->json(['error' => 'User is already registered in system '], 403);
         }
 
         return $next($request);
