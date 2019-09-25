@@ -33,10 +33,11 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-            $user = User::where('login_id', auth()->id())->firstOrFail();
+            $user = User::where('login_id', auth('api')->id())->firstOrFail();
             $employees = BranchesService::getEmployeesUserCanSee($user->id);
 
-        return view('employees::index')->with(compact('employees', 'roles', 'branches'));
+            return response()->json($employees);
+
     }
 
     /**
@@ -62,7 +63,10 @@ class EmployeesController extends Controller
     {
             $employee = CreateUsersService::createEmployee($request);
 
-            return response()->json(['message' => 'Successfully created!']);
+            return response()->json([
+                'message' => 'Successfully created!',
+                'employee' => $employee
+            ]);
     }
 
     /**
@@ -76,7 +80,10 @@ class EmployeesController extends Controller
 
         $employee = CreateUsersService::updateEmployee($request, $id);
 
-        return response()->json(['message' => 'Successfully updated!']);
+        return response()->json([
+            'message' => 'Successfully updated!',
+            'employee' => $employee
+        ]);
     }
 
     /**

@@ -14,7 +14,7 @@ class User extends Model
     public function store($login, $person, FormRequest $request){
             $this->login_id = $login->id;
             $this->person_id = $person->id;
-            $this->company_id = User::where('login_id', auth()->id())->first()->company_id;
+            $this->company_id = User::where('login_id', auth('api')->id())->first()->company_id;
             $this->is_active = true;
             $this->save();
 
