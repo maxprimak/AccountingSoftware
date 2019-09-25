@@ -13,16 +13,15 @@
 Route::middleware(['auth', 'admin', 'is_registered'])->group(function () {
 
     //Companies
-    Route::get('/companies', 'CompaniesController@index')->name('companies.index');
-    Route::post('/companies', 'CompaniesController@store')->name('companies.store');
-    Route::get('/companies/create', 'CompaniesController@create')->name('companies.create');
-    Route::post('/companies/{company_id}', 'CompaniesController@update')->name('companies.update');
-    Route::get('/companies/{company_id}/edit', 'CompaniesController@edit')->name('companies.edit');
-
+    Route::get('/companies', 'CompaniesController@index');
+    Route::post('/companies', 'CompaniesController@store');
+    Route::get('/companies/create', 'CompaniesController@create');
+    Route::post('/companies/{company_id}', 'CompaniesController@update');
+    Route::get('/companies/{company_id}/edit', 'CompaniesController@edit');
     //Branches
-    Route::get('/branches/create', 'BranchesController@create')->name('branches.create');
-    Route::post('/branches', 'BranchesController@store')->name('branches.store');
-    Route::post('/branches/{branch_id}', 'BranchesController@update')->name('branches.update');
-    Route::delete('/branches/{branch_id}', 'BranchesController@destroy')->name('branches.destroy');
+    Route::get('/branches/create', 'BranchesController@create');
+    Route::post('/branches', 'BranchesController@store');
+    Route::post('/branches/{branch_id}', 'BranchesController@update');
+    Route::delete('/branches/{branch_id}', 'BranchesController@destroy');
 
 });

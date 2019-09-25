@@ -18,7 +18,7 @@ class IsNotRegistered
      */
     public function handle(Request $request, Closure $next)
     {   
-        if (User::where('login_id', auth()->id())->exists()) {
+        if (User::where('login_id', auth('api')->id())->exists()) {
             return redirect()->back();
         }
 

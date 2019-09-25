@@ -20,7 +20,7 @@ class IsAuthorized
         if($user != null){
             return $next($request);
         }else{
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
 }

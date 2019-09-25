@@ -20,53 +20,39 @@ class RegisterTest extends TestCase
         parent::setUp();
     }
 
-    public function test_new_user_redirects_to_registration_page_on_companies_routes(){
+    public function test_new_user_can_not_access_companies_module_routes_without_registration(){
 
-        $login = factory('Modules\Login\Entities\Login')->create([
-            'username' => $this->faker->unique()->firstName()
-        ]);
+        $response = $this->makeResponseWithNewAuthLogin();
+        
+        $response->json('GET', route('companies.index'))->assertStatus(403);
+        $response->json('POST', route('companies.update', ['company_id' => 1]),[])->assertStatus(403);
 
-        $response = $this->actingAs($login)->get(route('companies.index'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->post(route('companies.store'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->get(route('companies.create'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->post(route('companies.update', ['company_id' => 1]))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->get(route('companies.edit' , ['company_id' => 1]))->assertRedirect(route('registration.index'));
+        $response->json('GET', route('branches.index'))->assertStatus(403);
+        $response->json('POST', route('branches.store'),[])->assertStatus(403);
+        $response->json('POST', route('branches.update', ['branch_id' => 1]),[])->assertStatus(403);
+        $response->json('DELETE', route('branches.destroy', ['branch_id' => 1]),[])->assertStatus(403);
 
-        $response = $this->actingAs($login)->get(route('branches.create'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->post(route('branches.store'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->delete(route('branches.destroy', ['branch_id' => 1]))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->post(route('branches.update', ['branch_id' => 1]))->assertRedirect(route('registration.index'));
+        $response->json('GET', route('currencies.index'))->assertStatus(403);
 
     }
 
-    public function test_new_user_redirects_to_registration_page_on_employees_routes(){
+    public function test_new_user_can_not_access_employees_module_routes_without_registration(){
 
-        $login = factory('Modules\Login\Entities\Login')->create([
-            'username' => $this->faker->unique()->firstName()
-        ]);
+        $response = $this->makeResponseWithNewAuthLogin();
 
-        $response = $this->actingAs($login)->get(route('employees.index'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->post(route('employees.store'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->get(route('employees.create'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->post(route('employees.update', ['employee_id' => 1]))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->delete(route('employees.destroy', ['employee_id' => 1]))->assertRedirect(route('registration.index'));
+        $response->json('GET', route('employees.index'))->assertStatus(403);
+        $response->json('POST', route('employees.store'),[])->assertStatus(403);
+        $response->json('POST', route('employees.update', ['employee_id' => 1]),[])->assertStatus(403);
+        $response->json('DELETE', route('employees.destroy', ['employee_id' => 1]),[])->assertStatus(403);
 
-    }
-
-    public function test_new_user_redirects_to_registration_page_on_customers_routes(){
-
-        $login = factory('Modules\Login\Entities\Login')->create([
-            'username' => $this->faker->unique()->firstName()
-        ]);
-
-        $response = $this->actingAs($login)->get(route('customers.index'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->get(route('customers.create'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->post(route('customers.store'))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->post(route('customers.update', ['customer_id' => 1]))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->delete(route('customers.destroy', ['customer_id' => 1]))->assertRedirect(route('registration.index'));
-        $response = $this->actingAs($login)->post(route('set.stars.number', ['customer_id' => 1]))->assertRedirect(route('registration.index'));
+        $response->json('GET', route('roles.index'))->assertStatus(403);
 
     }
+
+    //test_new_user_can_not_access_customers_module_routes_without_registration()
+}
+
+/*
 
     public function test_new_user_can_register(){
 
@@ -181,3 +167,4 @@ class RegisterTest extends TestCase
     }
 
 }
+    /*

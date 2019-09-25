@@ -13,16 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware(['is_authorized'])->group(function () {
+Route::middleware(['is_authorized', 'is_registered'])->group(function () {
 
-Route::get('companies', 'CompaniesController@index');
-Route::post('companies/{company_id}', 'CompaniesController@update');
+Route::get('companies', 'CompaniesController@index')->name('companies.index');
+Route::post('companies/{company_id}', 'CompaniesController@update')->name('companies.update');
 
-Route::get('branches', 'BranchesController@index');
-Route::post('branches', 'BranchesController@store');
-Route::post('branches/{branch_id}', 'BranchesController@update');
-Route::delete('branches/{branch_id}', 'BranchesController@destroy');
+Route::get('branches', 'BranchesController@index')->name('branches.index');
+Route::post('branches', 'BranchesController@store')->name('branches.store');
+Route::post('branches/{branch_id}', 'BranchesController@update')->name('branches.update');
+Route::delete('branches/{branch_id}', 'BranchesController@destroy')->name('branches.destroy');
 
-Route::get('currencies', 'CurrenciesController@index');
+Route::get('currencies', 'CurrenciesController@index')->name('currencies.index');
 
 });

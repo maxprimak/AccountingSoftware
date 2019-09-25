@@ -121,9 +121,23 @@ abstract class TestCase extends BaseTestCase
 
             $data[$key] = $value;
         }
+      }
 
+        public function makeResponseWithNewAuthLogin(){
 
+          $login = factory('Modules\Login\Entities\Login')->create([
+            'username' => $this->faker->firstName()
+          ]);
+        
+          $tokenResult = $login->createToken('Personal Access Token');
 
-    }
+          $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$tokenResult->accessToken
+          ]);
+
+          return $response;
+
+        }
+
 
 }

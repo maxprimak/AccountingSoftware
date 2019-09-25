@@ -18,8 +18,8 @@ class IsRegistered
     public function handle(Request $request, Closure $next)
     {   
 
-        if (!User::where('login_id', auth()->id())->exists()) {
-            return redirect(route('registration.index'));
+        if (!User::where('login_id', auth('api')->id())->exists()) {
+            return response()->json(['error' => 'User is not registered in system '], 403);
         }
 
         return $next($request);

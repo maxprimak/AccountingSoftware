@@ -32,7 +32,8 @@ class EmployeesController extends Controller
      * @return Response
      */
     public function index()
-    {
+    {       
+        
             $user = User::where('login_id', auth('api')->id())->firstOrFail();
             $employees = BranchesService::getEmployeesUserCanSee($user->id);
 

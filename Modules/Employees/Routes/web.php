@@ -15,9 +15,9 @@ Route::middleware(['auth', 'admin', 'is_registered'])->group(function () {
     // Route::resource('/employees', 'EmployeesController');
 
     //Employees
-    Route::get('/employees', 'EmployeesController@index')->name('employees.index');
-    Route::post('/employees', 'EmployeesController@store')->name('employees.store');
-    Route::get('/employees/create', 'EmployeesController@create')->name('employees.create');
-    Route::post('/employees/{employee_id}', 'EmployeesController@update')->name('employees.update');
-    Route::delete('/employees/{employee_id}', 'EmployeesController@destroy')->name('employees.destroy');
+    Route::get('/employees', 'EmployeesController@index');
+    Route::post('/employees', 'EmployeesController@store');
+    Route::get('/employees/create', 'EmployeesController@create');
+    Route::post('/employees/{employee_id}', 'EmployeesController@update');
+    Route::delete('/employees/{employee_id}', 'EmployeesController@destroy');
 });
