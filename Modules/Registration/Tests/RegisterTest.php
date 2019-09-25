@@ -9,12 +9,13 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Login\Entities\Login;
 use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
+use Modules\Companies\Entities\Currency;
 
 class RegisterTest extends TestCase
 {
 
-    use WithFaker,
-    RefreshDatabase;
+    use WithFaker;
+    use RefreshDatabase;
 
     public function setUp(): void
     {
@@ -54,4 +55,63 @@ class RegisterTest extends TestCase
     }
 
     //test_new_user_can_not_access_customers_module_routes_without_registration()
+
+    public function test_new_user_can_register(){
+
+        $response = $this->makeResponseWithNewAuthLogin();
+
+        $response->json('POST', route('registration.store'),[
+            'company_name' => $this->faker->name(),
+            'company_phone' => $this->faker->phoneNumber(),
+            'company_address' => $this->faker->address(),
+            'currency_id' => 1,
+            'name' => $this->faker->name(),
+            'phone' => $this->faker->phoneNumber(),
+            'address' => $this->faker->address()
+        ])->assertStatus(200);
+
+    }
+
+    public function test_user_can_not_register_for_second_time(){
+
+        $response = $this->makeResponseWithNewAuthLogin();
+
+        $response->json('POST', route('registration.store'),[
+            'company_name' => $this->faker->name(),
+            'company_phone' => $this->faker->phoneNumber(),
+            'company_address' => $this->faker->address(),
+            'currency_id' => 1,
+            'name' => $this->faker->name(),
+            'phone' => $this->faker->phoneNumber(),
+            'address' => $this->faker->address()
+        ])->assertStatus(200);
+
+        $response->json('POST', route('registration.store'),[
+            'company_name' => $this->faker->name(),
+            'company_phone' => $this->faker->phoneNumber(),
+            'company_address' => $this->faker->address(),
+            'currency_id' => 1,
+            'name' => $this->faker->name(),
+            'phone' => $this->faker->phoneNumber(),
+            'address' => $this->faker->address()
+        ])->assertStatus(403);
+
+    }
+
+    public function test_registration_validation_rules(){
+
+        $data = [
+            'company_name' => $this->faker->name(),
+            'company_phone' => $this->faker->phoneNumber(),
+            'company_address' => $this->faker->address(),
+            'currency_id' => 1,
+            'name' => $this->faker->name(),
+            'phone' => $this->faker->phoneNumber(),
+            'address' => $this->faker->address()
+        ];
+
+        $this->checkValidationRequired($data, 'registration.store');
+
+    }
+
 }

@@ -13,7 +13,7 @@
 
 Route::middleware(['auth', 'is_not_registered'])->group(function () {
 
-    Route::get('/registration', 'RegistrationController@index')->name('registration.index');
-    Route::post('/registration', 'RegistrationController@store')->name('registration.store');
+    Route::get('/registration', 'RegistrationController@index');
+    Route::post('/registration', 'RegistrationController@store');
 
 });

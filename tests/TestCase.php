@@ -113,16 +113,17 @@ abstract class TestCase extends BaseTestCase
 
     public function checkValidationIfRequired($data, $login,$route,$keys_not_required = array()){
 
-        foreach($data as $key => $value){
-            if(in_array($key, $keys_not_required)) continue;
+      foreach($data as $key => $value){
+          if(in_array($key, $keys_not_required)) continue;
 
-            $data[$key] = null;
-            $response = $this->actingAs($login)->json('POST', route($route),$data);
-            $response->assertStatus(422);
+          $data[$key] = null;
+          $response = $this->actingAs($login)->json('POST', route($route),$data);
+          $response->assertStatus(422);
 
-            $data[$key] = $value;
-        }
+          $data[$key] = $value;
       }
+
+    }
 
         public function makeResponseWithNewAuthLogin(){
 
@@ -144,7 +145,34 @@ abstract class TestCase extends BaseTestCase
 
           Artisan::call('passport:install');
 
+          if(Currency::all()->count() == 0){
+            factory(Currency::class)->create(['name' => 'Ukrainian HRYVNA', 'symbol' => 'UAH', 'id' => 1]);
+          }
+  
+          if(Role::all()->count() == 0){
+            factory(Role::class)->create(['name' => 'Head', 'id' => 1]);
+            factory(Role::class)->create(['name' => 'Top Manager', 'id' => 2]);
+            factory(Role::class)->create(['name' => 'Tech', 'id' => 3]);
+            factory(Role::class)->create(['name' => 'Sales Manager', 'id' => 4]);
+            factory(Role::class)->create(['name' => 'Courier', 'id' => 5]);
+          }
+
         }
 
+        public function checkValidationRequired($data, $route){
+
+          $response = $this->makeResponseWithNewAuthLogin();
+
+          foreach($data as $key => $value){
+    
+              $data[$key] = null;
+
+              $response->json('POST', route($route), $data)->assertStatus(422);
+
+              $data[$key] = $value;
+
+          }
+    
+        }
 
 }
