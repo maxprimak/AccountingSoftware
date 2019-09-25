@@ -14,8 +14,12 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware(['is_authorized'])->group(function () {
+
     Route::get('employees', 'EmployeesController@index');
     Route::post('employees', 'EmployeesController@store');
     Route::post('employees/{employee_id}', 'EmployeesController@update');
     Route::delete('employees/{employee_id}', 'EmployeesController@destroy');
+
+    Route::get('roles', 'RolesController@index');
+
 });

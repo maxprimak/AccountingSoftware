@@ -23,4 +23,6 @@ Route::post('branches', 'BranchesController@store');
 Route::post('branches/{branch_id}', 'BranchesController@update');
 Route::delete('branches/{branch_id}', 'BranchesController@destroy');
 
+Route::get('currencies', 'CurrenciesController@index');
+
 });
