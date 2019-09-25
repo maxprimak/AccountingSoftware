@@ -13,6 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/employees', function (Request $request) {
-    return $request->user();
+Route::middleware(['is_authorized'])->group(function () {
+
+    Route::get('employees', 'EmployeesController@index');
+    /*
+    Route::post('/employees', 'EmployeesController@store')
+    Route::get('/employees/create', 'EmployeesController@create')
+    Route::post('/employees/{employee_id}', 'EmployeesController@update')
+    Route::delete('/employees/{employee_id}', 'EmployeesController@destroy')
+    */
 });

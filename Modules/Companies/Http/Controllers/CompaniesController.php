@@ -36,9 +36,12 @@ class CompaniesController extends Controller
         return view('companies::companies.index')->with(compact('company', 'currencies', 'branches'));
         */
 
-        $companies = Company::all();
+        //$companies = Company::all();
 
-        return response()->json($companies, 200);
+        $user = User::where('login_id', auth('api')->user()->id)->firstOrFail();
+        $company = Company::findOrFail($user->company_id);
+
+        return response()->json(['company_of_user' => $company], 200);
     }
 
     /**
@@ -78,7 +81,10 @@ class CompaniesController extends Controller
         }catch( \Exception $e){
             return response()->json($e->getMessage(), 500);
         }
-        return response()->json('Successfully updated!');
+        return response()->json([
+            'message' => 'Successfully updated',
+            'company' => $company
+        ]);
     }
 
     /**

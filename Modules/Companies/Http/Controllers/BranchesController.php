@@ -8,6 +8,8 @@ use Illuminate\Routing\Controller;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Currency;
 use Modules\Companies\Entities\Branch;
+use Modules\Users\Entities\User;
+use Modules\Users\Entities\UserHasBranch;
 use Modules\Companies\Http\Requests\StoreBranchRequest;
 use Modules\Companies\Http\Requests\UpdateBranchRequest;
 
@@ -15,6 +17,18 @@ use BranchesService;
 
 class BranchesController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     * @return Response
+     */
+    public function index()
+    {
+        $user = User::where('login_id', auth('api')->user()->id)->firstOrFail();
+        $branches = BranchesService::getUserBranches($user->id);
+
+        return response()->json($branches);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -35,10 +49,10 @@ class BranchesController extends Controller
         $branch = new Branch();
         $branch = $branch->store($request);
 
-        return $request;
-        // return response()->json([
-        //     'message' => 'Successfully created!'
-        // ]);
+        return response()->json([
+             'message' => 'Successfully created!',
+             'branch' => $branch
+        ]);
     }
 
     /**
@@ -53,7 +67,8 @@ class BranchesController extends Controller
         $branch = $branch->storeUpdated($request);
 
         return response()->json([
-            'message' => 'Successfully updated!'
+            'message' => 'Successfully updated!',
+            'branch' => $branch
         ]);
     }
 

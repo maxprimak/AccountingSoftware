@@ -33,11 +33,8 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-
             $user = User::where('login_id', auth()->id())->firstOrFail();
             $employees = BranchesService::getEmployeesUserCanSee($user->id);
-            $branches = BranchesService::getUserBranches($user->id);
-            $roles = Role::all();
 
         return view('employees::index')->with(compact('employees', 'roles', 'branches'));
     }

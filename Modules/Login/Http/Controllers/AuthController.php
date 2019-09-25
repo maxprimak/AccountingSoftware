@@ -48,7 +48,6 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request){
 
-        //TODO:validation
         $user = Login::create([
             'username' => $request->username,
             'email' => $request->email,
@@ -72,11 +71,20 @@ class AuthController extends Controller
 
     public function logout(){
 
-        auth('api')->user()->tokens->each(function($token, $key){
-            $token->delete();
-        });
+        if(auth('api')->user() != null){
 
-        return response()->json(['status' => 'logged_out'], 200);
+            auth('api')->user()->tokens->each(function($token, $key){
+                $token->delete();
+            });
+    
+            return response()->json(['status' => 'logged_out'], 200);
+
+        }
+        else{
+
+            return response()->json(['status' => 'not_logged_in'], 401); 
+
+        }
 
     }
 

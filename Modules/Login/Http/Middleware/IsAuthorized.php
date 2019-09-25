@@ -16,7 +16,7 @@ class IsAuthorized
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = auth()->user();
+        $user = auth('api')->user();
         if($user != null){
             return $next($request);
         }else{

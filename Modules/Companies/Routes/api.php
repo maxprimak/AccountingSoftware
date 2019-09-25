@@ -13,8 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('companies', 'CompaniesController@index');//->middleware('is_authorized');
+Route::middleware(['is_authorized'])->group(function () {
 
-// Route::post('companies', 'CompaniesController@store');
+Route::get('companies', 'CompaniesController@index');
+Route::post('companies/{company_id}', 'CompaniesController@update');
 
+Route::get('branches', 'BranchesController@index');
 Route::post('branches', 'BranchesController@store');
+Route::post('branches/{branch_id}', 'BranchesController@update');
+Route::delete('branches/{branch_id}', 'BranchesController@destroy');
+
+});

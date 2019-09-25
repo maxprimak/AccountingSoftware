@@ -42,13 +42,14 @@ class RegistrationController extends Controller
     public function store(RegistrationRequest $request)
     {
         try{
-            $employee = CreateUsersService::registerFirstEmployee($request, auth()->id());
+            $employee = CreateUsersService::registerFirstEmployee($request, auth('api')->id());
         }catch( \Exception $e ){
             return response()->json($e->getMessage(), 500);
         }
 
         return response()->json([
-            'message' => 'Successfully created!'
+            'message' => 'Successfully created!',
+            'employee' => $employee
         ]);
     }
 

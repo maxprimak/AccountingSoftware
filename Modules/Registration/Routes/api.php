@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/registration', function (Request $request) {
-    return $request->user();
+Route::middleware(['is_authorized'])->group(function () {
+    Route::post('registration', 'RegistrationController@store');
 });
