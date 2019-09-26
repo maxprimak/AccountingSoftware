@@ -32,7 +32,7 @@ class CompaniesTest extends TestCase
       $login = $this->makeNewLoginWithCompanyAndBranch();
       Passport::actingAs($login);
 
-      $response = $this->json('GET', route('companies.index'));
+      $response = $this->json('GET', route('companies.index'))->assertJsonStructure(['*' => ['id', 'name']]);
       $response->assertStatus(200);
       
     }
@@ -48,7 +48,7 @@ class CompaniesTest extends TestCase
           'address' => $this->faker->address,
           'phone' => $this->faker->phonenumber,
           'currency_id' => 1
-      ]);
+      ])->assertJsonStructure(['message', 'company']);
       $response->assertStatus(200);
 
     }
@@ -59,7 +59,7 @@ class CompaniesTest extends TestCase
       $company = $this->getCompanyOfLogin($login);
       Passport::actingAs($login);
 
-      $logged_in_user = $this->json('GET', route('user'))->assertStatus(200);
+      $logged_in_user = $this->json('GET', route('user'))->assertJsonStructure(['id'])->assertStatus(200);
     
       $not_unique_data = [
         'name' => $company->name
@@ -75,7 +75,7 @@ class CompaniesTest extends TestCase
       $company = $this->getCompanyOfLogin($login);
       Passport::actingAs($login);
 
-      $new_logged_in_user = $this->json('GET', route('user'))->assertStatus(200);
+      $new_logged_in_user = $this->json('GET', route('user'))->assertJsonStructure(['id'])->assertStatus(200);
 
       $this->assertNotEquals($logged_in_user, $new_logged_in_user);
 

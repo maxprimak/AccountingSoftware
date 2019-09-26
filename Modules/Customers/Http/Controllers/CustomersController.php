@@ -29,14 +29,14 @@ class CustomersController extends Controller
     public function index()
     {
         try {
-          $user = User::where('login_id',auth()->id())->firstOrFail();
+
+          $user = User::where('login_id',auth('api')->id())->firstOrFail();
           $customers = CustomerServiceFacad::getCustomerUserCanSee($user->id);
-          $customer_types = CustomerType::all();
-          $branches = BranchesService::getUserBranches($user->id);
+
         } catch (\Exception $e) {
-            return abort(500);
+            return response()->json($e->getMessage());
         }
-        return view('customers::index', compact('customers','customer_types','branches'));
+        return response()->json($customers);
     }
 
     /**

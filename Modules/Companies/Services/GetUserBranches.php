@@ -77,7 +77,7 @@ class GetUserBranches{
     }
 
     public function checkThisBranchHasEmployees(Branch $branch){
-      return UserHasBranch::where('branch_id',$branch->id)->exists();
+      return UserHasBranch::where('branch_id',$branch->id)->count() > 1;
     }
 
     public function checkThisBranchHasCustomers(Branch $branch){

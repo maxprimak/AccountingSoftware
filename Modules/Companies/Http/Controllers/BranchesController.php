@@ -85,7 +85,7 @@ class BranchesController extends Controller
           $branch->delete();
         }else{
           return response()->json([
-              'message' => 'You can not delete this branch!'
+              'message' => 'You can not delete this branch(it has employees or customers)'
           ]);
         }
           return response()->json([

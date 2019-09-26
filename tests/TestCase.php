@@ -160,8 +160,17 @@ abstract class TestCase extends BaseTestCase
 
         }
 
+        public function getUserOfLogin($login){
+          return User::where('login_id', $login->id)->first();
+        }
+
         public function getCompanyOfLogin($login){
           return Company::find(User::where('login_id', $login->id)->firstOrFail()->company_id);
+        }
+
+        public function getBranchesOfLogin($login){
+          $user = $this->getUserOfLogin($login);
+          return Branch::whereIn('id', UserHasBranch::where('user_id', $user->id)->pluck('branch_id')->toArray())->get();
         }
 
         public static function setUpEnvironment(){
@@ -178,6 +187,22 @@ abstract class TestCase extends BaseTestCase
             factory(Role::class)->create(['name' => 'Tech', 'id' => 3]);
             factory(Role::class)->create(['name' => 'Sales Manager', 'id' => 4]);
             factory(Role::class)->create(['name' => 'Courier', 'id' => 5]);
+          }
+
+        }
+
+        public function addBranchesToLogin($login, $number_of_branches){
+
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $number_of_branches; $i++){
+
+            $response = $this->json('POST', route('branches.store'),[
+              'name' => $this->faker->unique()->firstName(),
+              'color' => '#F64272'
+            ])->assertJsonStructure(['message', 'branch']);
+            $response->assertStatus(200);
+
           }
 
         }

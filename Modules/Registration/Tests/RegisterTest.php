@@ -75,7 +75,7 @@ class RegisterTest extends TestCase
             'name' => $this->faker->name(),
             'phone' => $this->faker->phoneNumber(),
             'address' => $this->faker->address()
-        ])->assertStatus(200);
+        ])->assertJsonStructure(['message','employee'])->assertStatus(200);
 
     }
 
@@ -93,7 +93,7 @@ class RegisterTest extends TestCase
             'name' => $this->faker->name(),
             'phone' => $this->faker->phoneNumber(),
             'address' => $this->faker->address()
-        ])->assertStatus(200);
+        ])->assertJsonStructure(['message','employee'])->assertStatus(200);
 
         $response->json('POST', route('registration.store'),[
             'company_name' => $this->faker->name(),
