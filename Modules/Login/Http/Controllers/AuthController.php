@@ -15,7 +15,7 @@ class AuthController extends Controller
 {
     public function login(Request $request){
 
-        if(!Auth::attempt(['email' => $request->username, 'password' => $request->password /*'is_active' => 1*/]))
+        if(!Auth::attempt(['username' => $request->username, 'password' => $request->password /*'is_active' => 1*/]))
             return response()->json([
                 'error' => 'invalid_credentials'
             ], 401);
