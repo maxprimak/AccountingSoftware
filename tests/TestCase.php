@@ -18,6 +18,7 @@ use Modules\Customers\Entities\CustomerType;
 use Modules\Customers\Entities\CustomerHasBranch;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
+use Laravel\Passport\Passport;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -127,45 +128,13 @@ abstract class TestCase extends BaseTestCase
 
     /////////////////////////////////////////////
 
-        public function makeResponseWithNewAuthLogin(){
+        public function makeNewLogin(){
 
           $login = factory('Modules\Login\Entities\Login')->create([
             'username' => $this->faker->firstName()
           ]);
-        
-          $tokenResult = $login->createToken('Personal Access Token');
 
-          $response = $this->withHeaders([
-            'Authorization' => 'Bearer '.$tokenResult->accessToken
-          ]);
-
-          return $response;
-
-        }
-
-        public function makeResponseWithNewAuthRegisteredLogin(){
-
-          $login = factory('Modules\Login\Entities\Login')->create([
-            'username' => $this->faker->firstName()
-          ]);
-        
-          $tokenResult = $login->createToken('Personal Access Token');
-
-          $response = $this->withHeaders([
-            'Authorization' => 'Bearer '.$tokenResult->accessToken
-          ]);
-
-          $response->json('POST', route('registration.store'),[
-            'company_name' => $this->faker->name(),
-            'company_phone' => $this->faker->phoneNumber(),
-            'company_address' => $this->faker->address(),
-            'currency_id' => 1,
-            'name' => $this->faker->name(),
-            'phone' => $this->faker->phoneNumber(),
-            'address' => $this->faker->address()
-          ]);
-
-          return $response;
+          return $login;
 
         }
 
@@ -175,13 +144,9 @@ abstract class TestCase extends BaseTestCase
             'username' => $this->faker->firstName()
           ]);
         
-          $tokenResult = $login->createToken('Personal Access Token');
+          Passport::actingAs($login);
 
-          $response = $this->withHeaders([
-            'Authorization' => 'Bearer '.$tokenResult->accessToken
-          ]);
-
-          $response->json('POST', route('registration.store'),[
+          $this->json('POST', route('registration.store'),[
             'company_name' => $this->faker->name(),
             'company_phone' => $this->faker->phoneNumber(),
             'company_address' => $this->faker->address(),
@@ -192,24 +157,6 @@ abstract class TestCase extends BaseTestCase
           ])->assertStatus(200);
 
           return $login;
-
-        }
-
-        public function logOutAs($login, $response){
-
-          $response->json('POST', 'http://127.0.0.1:8000/api/auth/logout')->assertStatus(200);
-
-        }
-
-        public function getAuthorizedResponseAs($login){
-
-          $tokenResult = $login->createToken('Personal Access Token');
-
-          $response = $this->withHeaders([
-            'Authorization' => 'Bearer '.$tokenResult->accessToken
-          ]);
-
-          return $response;
 
         }
 
@@ -253,11 +200,15 @@ abstract class TestCase extends BaseTestCase
 
           foreach($required_data as $key => $value){
     
-            if(array_key_exists($key, $not_unique_data)) dd($key);
+            if(array_key_exists($key, $not_unique_data)){
 
-            $response->json('POST', $route, $data)->assertStatus(422);
+              $required_data[$key] = $not_unique_data[$key];
 
-            $required_data[$key] = $value;
+              $response->json('POST', $route, $required_data)->assertStatus(422);
+
+              $required_data[$key] = $value;
+
+            };
 
         }
 

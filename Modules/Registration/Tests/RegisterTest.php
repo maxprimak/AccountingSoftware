@@ -10,6 +10,7 @@ use Modules\Login\Entities\Login;
 use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Companies\Entities\Currency;
+use Laravel\Passport\Passport;
 
 class RegisterTest extends TestCase
 {
@@ -27,7 +28,9 @@ class RegisterTest extends TestCase
 
     public function test_new_user_can_not_access_companies_module_routes_without_registration(){
 
-        $response = $this->makeResponseWithNewAuthLogin();
+        $login = $this->makeNewLogin();
+        Passport::actingAs($login);
+        $response = $this;
         
         $response->json('GET', route('companies.index'))->assertStatus(403);
         $response->json('POST', route('companies.update', ['company_id' => 1]),[])->assertStatus(403);
@@ -43,7 +46,9 @@ class RegisterTest extends TestCase
 
     public function test_new_user_can_not_access_employees_module_routes_without_registration(){
 
-        $response = $this->makeResponseWithNewAuthLogin();
+        $login = $this->makeNewLogin();
+        Passport::actingAs($login);
+        $response = $this;
 
         $response->json('GET', route('employees.index'))->assertStatus(403);
         $response->json('POST', route('employees.store'),[])->assertStatus(403);
@@ -58,7 +63,9 @@ class RegisterTest extends TestCase
 
     public function test_new_user_can_register(){
 
-        $response = $this->makeResponseWithNewAuthLogin();
+        $login = $this->makeNewLogin();
+        Passport::actingAs($login);
+        $response = $this;
 
         $response->json('POST', route('registration.store'),[
             'company_name' => $this->faker->name(),
@@ -74,7 +81,9 @@ class RegisterTest extends TestCase
 
     public function test_user_can_not_register_for_second_time(){
 
-        $response = $this->makeResponseWithNewAuthLogin();
+        $login = $this->makeNewLogin();
+        Passport::actingAs($login);
+        $response = $this;
 
         $response->json('POST', route('registration.store'),[
             'company_name' => $this->faker->name(),
@@ -110,9 +119,10 @@ class RegisterTest extends TestCase
             'address' => $this->faker->address()
         ];
 
-        $response = $this->makeResponseWithNewAuthLogin();
+        $login = $this->makeNewLogin();
+        Passport::actingAs($login);
 
-        $this->checkValidationRequired($required_data, route('registration.store'), $response);
+        $this->checkValidationRequired($required_data, route('registration.store'), $this);
 
     }
 

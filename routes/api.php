@@ -17,4 +17,4 @@ use Modules\Login\Http\Controllers\LoginController;
 
 Route::middleware('is_authorized')->get('/user', function (Request $request) {
    return $request->user();
-});
+})->name('user');
