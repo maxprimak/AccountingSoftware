@@ -98,9 +98,9 @@ class RegisterTest extends TestCase
 
     }
 
-    public function test_registration_validation_rules(){
+    public function test_registration_validation_if_required(){
 
-        $data = [
+        $required_data = [
             'company_name' => $this->faker->name(),
             'company_phone' => $this->faker->phoneNumber(),
             'company_address' => $this->faker->address(),
@@ -110,7 +110,9 @@ class RegisterTest extends TestCase
             'address' => $this->faker->address()
         ];
 
-        $this->checkValidationRequired($data, 'registration.store');
+        $response = $this->makeResponseWithNewAuthLogin();
+
+        $this->checkValidationRequired($required_data, route('registration.store'), $response);
 
     }
 

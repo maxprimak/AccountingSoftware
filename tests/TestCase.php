@@ -125,6 +125,8 @@ abstract class TestCase extends BaseTestCase
 
     }
 
+    /////////////////////////////////////////////
+
         public function makeResponseWithNewAuthLogin(){
 
           $login = factory('Modules\Login\Entities\Login')->create([
@@ -139,6 +141,80 @@ abstract class TestCase extends BaseTestCase
 
           return $response;
 
+        }
+
+        public function makeResponseWithNewAuthRegisteredLogin(){
+
+          $login = factory('Modules\Login\Entities\Login')->create([
+            'username' => $this->faker->firstName()
+          ]);
+        
+          $tokenResult = $login->createToken('Personal Access Token');
+
+          $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$tokenResult->accessToken
+          ]);
+
+          $response->json('POST', route('registration.store'),[
+            'company_name' => $this->faker->name(),
+            'company_phone' => $this->faker->phoneNumber(),
+            'company_address' => $this->faker->address(),
+            'currency_id' => 1,
+            'name' => $this->faker->name(),
+            'phone' => $this->faker->phoneNumber(),
+            'address' => $this->faker->address()
+          ]);
+
+          return $response;
+
+        }
+
+        public function makeNewLoginWithCompanyAndBranch(){
+
+          $login = factory('Modules\Login\Entities\Login')->create([
+            'username' => $this->faker->firstName()
+          ]);
+        
+          $tokenResult = $login->createToken('Personal Access Token');
+
+          $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$tokenResult->accessToken
+          ]);
+
+          $response->json('POST', route('registration.store'),[
+            'company_name' => $this->faker->name(),
+            'company_phone' => $this->faker->phoneNumber(),
+            'company_address' => $this->faker->address(),
+            'currency_id' => 1,
+            'name' => $this->faker->name(),
+            'phone' => $this->faker->phoneNumber(),
+            'address' => $this->faker->address()
+          ])->assertStatus(200);
+
+          return $login;
+
+        }
+
+        public function logOutAs($login, $response){
+
+          $response->json('POST', 'http://127.0.0.1:8000/api/auth/logout')->assertStatus(200);
+
+        }
+
+        public function getAuthorizedResponseAs($login){
+
+          $tokenResult = $login->createToken('Personal Access Token');
+
+          $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$tokenResult->accessToken
+          ]);
+
+          return $response;
+
+        }
+
+        public function getCompanyOfLogin($login){
+          return Company::find(User::where('login_id', $login->id)->firstOrFail()->company_id);
         }
 
         public static function setUpEnvironment(){
@@ -159,20 +235,32 @@ abstract class TestCase extends BaseTestCase
 
         }
 
-        public function checkValidationRequired($data, $route){
-
-          $response = $this->makeResponseWithNewAuthLogin();
+        public function checkValidationRequired($data, $route, $response){
 
           foreach($data as $key => $value){
     
               $data[$key] = null;
 
-              $response->json('POST', route($route), $data)->assertStatus(422);
+              $response->json('POST', $route, $data)->assertStatus(422);
 
               $data[$key] = $value;
 
           }
     
+        }
+
+        public function checkValidationUnique($not_unique_data, $required_data, $route, $response){
+
+          foreach($required_data as $key => $value){
+    
+            if(array_key_exists($key, $not_unique_data)) dd($key);
+
+            $response->json('POST', $route, $data)->assertStatus(422);
+
+            $required_data[$key] = $value;
+
+        }
+
         }
 
 }

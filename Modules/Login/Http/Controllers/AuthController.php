@@ -76,7 +76,7 @@ class AuthController extends Controller
             auth('api')->user()->tokens->each(function($token, $key){
                 $token->delete();
             });
-    
+            
             return response()->json(['status' => 'logged_out'], 200);
 
         }

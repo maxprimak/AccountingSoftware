@@ -41,7 +41,7 @@ class CompaniesController extends Controller
         $user = User::where('login_id', auth('api')->user()->id)->firstOrFail();
         $company = Company::findOrFail($user->company_id);
 
-        return response()->json(['company_of_user' => $company], 200);
+        return response()->json(['company' => $company], 200);
     }
 
     /**
