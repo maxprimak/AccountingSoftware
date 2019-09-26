@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::prefix('auth')->group(function () {
-    Route::post('login', 'AuthController@login');
-    Route::post('register', 'AuthController@register');
-    Route::post('logout', 'AuthController@logout');
+    Route::post('login', 'AuthController@login')->name('login');
+    Route::post('register', 'AuthController@register')->name('register');
+    Route::post('logout', 'AuthController@logout')->name('logout');
 });

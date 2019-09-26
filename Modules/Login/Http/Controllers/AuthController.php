@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
 class AuthController extends Controller
@@ -46,7 +47,20 @@ class AuthController extends Controller
 
     }
 
-    public function register(RegisterRequest $request){
+    protected function regValidator(array $data)
+    {
+        return Validator::make($data, [
+            'username' => 'required|min:6|unique:logins,username',
+            'email' => 'required|email|unique:logins,email',
+            'password' => 'required|min:8',
+            'repassword' => 'required|same:password'
+        ]);
+    }
+
+    public function register(Request $request){
+
+        $validator = $this->regValidator($request->all());
+        if ($validator->fails()) return response()->json($validator->errors(), 422);
 
         $user = Login::create([
             'username' => $request->username,
