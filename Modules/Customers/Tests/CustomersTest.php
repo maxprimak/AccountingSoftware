@@ -202,6 +202,8 @@ class CustomersTest extends TestCase
 
      }
 
+     //test_new_customer_added_to_branch
+
      public static function tearDownAfterClass()
      {
      shell_exec('php artisan migrate:fresh --seed');

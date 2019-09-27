@@ -19,11 +19,15 @@ class StoreCustomerRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email|unique:customers,email',
             'phone' => 'required|unique:people,phone',
-            'stars_number' => 'double',
+            'stars_number' => 'numeric',
             'customer_type_id' => 'required | numeric',
             'branch_id' => 'required',
             'user_id' => 'required | numeric',
         ];
+    }
+
+    public function expectsJson(){
+        return true;
     }
 
     /**

@@ -5,14 +5,9 @@ namespace Modules\Customers\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Customers\Http\Requests\StoreStarsNumberRequest;
-use Modules\Customers\Entities\Customer;
+use Modules\Customers\Entities\CustomerType;
 
-
-use CustomerServiceFacad;
-
-
-class StarsNumberController extends Controller
+class CustomerTypesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +15,11 @@ class StarsNumberController extends Controller
      */
     public function index()
     {
-        return view('customers::index');
+
+        $types = CustomerType::all();
+
+        return response()->json($types, 200);
+
     }
 
     /**
@@ -37,14 +36,9 @@ class StarsNumberController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(StoreStarsNumberRequest $request, $customer_id)
-    {   
-
-        CustomerServiceFacad::storeStarsNumber($request, $customer_id);
-
-        $customer = Customer::find($customer_id);
-
-        return response()->json(['message' => 'Successfully updated!', 'customer' => $customer], 200);
+    public function store(Request $request)
+    {
+        //
     }
 
     /**

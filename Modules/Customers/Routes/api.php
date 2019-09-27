@@ -16,10 +16,12 @@ use Illuminate\Http\Request;
 Route::middleware(['is_authorized', 'is_registered'])->group(function () {
 
     Route::get('customers', 'CustomersController@index')->name('customers.index');
-    //Route::post('customers', 'CustomersController@store')->name('customers.store');
-    //Route::post('customers/{customer_id}', 'CustomersController@update')->name('customers.update');
-    //Route::delete('customers/{customer_id}', 'CustomersController@destroy')->name('customers.destroy');
+    Route::post('customers', 'CustomersController@store')->name('customers.store');
+    Route::post('customers/{customer_id}', 'CustomersController@update')->name('customers.update');
+    Route::delete('customers/{customer_id}', 'CustomersController@destroy')->name('customers.destroy');
 
-    //Route::get('customers/set_stars_number/{customer_id}', 'StarsNumberController@store')->name('set.stars.number');
+    Route::post('customers/set_stars_number/{customer_id}', 'StarsNumberController@store')->name('set.stars.number');
+
+    Route::get('customer_types', 'CustomerTypesController@index')->name('customer_types.index');
 
 });

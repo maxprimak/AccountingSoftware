@@ -21,10 +21,13 @@ class CustomerServices{
         $person = CreateUsersService::createPerson($request);
 
         $customer = new Customer();
-
-        $customer = $customer->store(['person_id' => $person->id,'email' => $request->email,
-                                      'type_id' => $request->customer_type_id ,'company_id' => $company_id,
-                                      'created_by' => $request->user_id]);
+        $customer->person_id = $person->id;
+        $customer->email = $request->email;
+        $customer->type_id = $request->customer_type_id;
+        $customer->company_id = $company_id;
+        $customer->created_by = $request->user_id;
+        $customer->save();
+        
         BranchesService::addCustomerToBranches($customer->id,$request->branch_id);
         return $customer;
     }

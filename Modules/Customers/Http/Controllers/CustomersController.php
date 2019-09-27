@@ -69,7 +69,7 @@ class CustomersController extends Controller
         } catch (\Exception $e) {
           return response()->json(['message' => $e->getMessage()]);
         }
-        return response()->json(['message' => 'Successfully created!']);
+        return response()->json(['message' => 'Successfully created!', 'customer' => $customer], 200);
     }
 
     /**
@@ -106,7 +106,7 @@ class CustomersController extends Controller
       } catch (\Exception $e) {
         return response()->json(['message' => $e->getMessage()], 500);
       }
-      return response()->json(['message' => 'Successfully updated!']);
+      return response()->json(['message' => 'Successfully updated!', 'customer' => $customer]);
     }
 
     /**

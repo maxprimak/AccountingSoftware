@@ -126,4 +126,6 @@ class RegisterTest extends TestCase
 
     }
 
+    //test_new_user_added_to_branch
+
 }

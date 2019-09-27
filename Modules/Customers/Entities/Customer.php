@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
   protected $fillable = ['person_id','email','stars_number','type_id','company_id','created_by'];
-  protected $appends = ['branch_id'];
 
   public function __construct(array $attributes = array()){
       parent::__construct($attributes);
