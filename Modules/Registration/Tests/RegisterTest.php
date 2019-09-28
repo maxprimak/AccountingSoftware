@@ -59,7 +59,21 @@ class RegisterTest extends TestCase
 
     }
 
-    //test_new_user_can_not_access_customers_module_routes_without_registration()
+    public function test_new_user_can_not_access_customers_module_routes_without_registration(){
+
+        $login = $this->makeNewLogin();
+        Passport::actingAs($login);
+        $response = $this;
+
+        $response->json('GET', route('customers.index'))->assertStatus(403);
+        $response->json('POST', route('customers.store'),[])->assertStatus(403);
+        $response->json('POST', route('customers.update', ['customer_id' => 1]),[])->assertStatus(403);
+        $response->json('DELETE', route('customers.destroy', ['customer_id' => 1]),[])->assertStatus(403);
+
+        $response->json('POST', route('set.stars.number', ['customer_id' => 1]))->assertStatus(403);
+        $response->json('GET', route('customer_types.index'))->assertStatus(403);
+
+    }
 
     public function test_new_user_can_register(){
 

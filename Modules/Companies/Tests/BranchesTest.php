@@ -25,13 +25,16 @@ class BranchesTest extends TestCase
 
     }
 
-    public function test_user_can_get_his_branches(){
+    public function test_user_can_get_all_his_branches(){
 
         $login = $this->makeNewLoginWithCompanyAndBranch();
+        $this->addBranchesToLogin($login, 10);
         Passport::actingAs($login);
 
         $response = $this->json('GET', route('branches.index'))->assertJsonStructure(['*' => ['id', 'name', 'company_id']]);
         $response->assertStatus(200);
+
+        $this->assertEquals(11, substr_count($response->getContent(), 'name')); //check that response contains all 11 branches of user
 
     }
 
@@ -106,57 +109,35 @@ class BranchesTest extends TestCase
 
     public function test_user_can_not_delete_branch_with_employees(){
 
-            /*
-            //FIRST WE GO TO COMPANY PAGE
-            $response = $this->actingAs($this->login)->get(route('companies.index'));
-            $response->assertStatus(200);
-            //NEW BRANCH
-            $new_branch = $this->setUpBranch($this->company);
-            //NEW USER
-            $new_login = $this->setUpLogin();
-            $new_person = $this->setUpPerson();
-            $new_user = $this->setUpUser($new_login,$new_person,$this->company);
-            $new_user_has_branch = $this->setUpUserHasBranch($new_user,$new_branch);
-            //NEW EMPLOYEE
-            $role = $this->setUpRole();
-            $employee = $this->setUpEmployee($new_user,$role,$new_branch);
-            //AND THEN TRY TO DELETE NEW BRANCH
-            $response = $this->actingAs($this->login)->json('delete',route('branches.destroy', ['branch_id' => $new_branch->id]));
-            $this->assertDatabaseHas('branches', [
-                'name' => $new_branch->name,
-                'phone' => $new_branch->phone,
-            ]);
-            $response->assertStatus(200); // HIER SHOULD BE 422
-            */
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $this->addBranchesToLogin($login, 1);
+        $branches = $this->getBranchesOfLogin($login);
+        $branch = $branches->get(1);
 
-            $this->assertTrue(true);
+        $this->addEmployeesToBranch($branch, $login, 3);    
+
+        Passport::actingAs($login);
+
+        $response = $this->json('delete',route('branches.destroy', ['branch_id' => $branch->id]))
+        ->assertJson(['message' => 'You can not delete this branch(it has employees or customers)']);
+        $response->assertStatus(403);
 
     }
 
     public function test_user_can_not_delete_branch_with_customers(){
     
-    /*
-    //FIRST WE GO TO COMPANY PAGE
-    $response = $this->actingAs($this->login)->get(route('companies.index'));
-    $response->assertStatus(200);
-    //NEW BRANCH
-    $new_branch = $this->setUpBranch($this->company);
-    //NEW PERSON
-    $new_person = $this->setUpPerson();
-    //NEW CUSTOMER
-    $type = $this->setUpCustomerType();
-    $new_customer = $this->setUpCustomer($type,$new_person,$this->company,$this->user);
-    $new_customer_has_branch = $this->setUpCustomerHasBranch($new_customer,$new_branch);
-    //AND THEN TRY TO DELETE NEW BRANCH
-    $response = $this->actingAs($this->login)->json('delete',route('branches.destroy', ['branch_id' => $new_branch->id]));
-    $this->assertDatabaseHas('branches', [
-        'name' => $new_branch->name,
-        'phone' => $new_branch->phone,
-    ]);
-    $response->assertStatus(200); // HIER SHOULD BE 422
-    */
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $this->addBranchesToLogin($login, 1);
+        $branches = $this->getBranchesOfLogin($login);
+        $branch = $branches->get(1);
 
-    $this->assertTrue(true);
+        $this->addCustomersToBranch($branch, $login, 3);   
+
+        Passport::actingAs($login);
+
+        $response = $this->json('delete',route('branches.destroy', ['branch_id' => $branch->id]))
+        ->assertJson(['message' => 'You can not delete this branch(it has employees or customers)']);
+        $response->assertStatus(403);
 
     }
 

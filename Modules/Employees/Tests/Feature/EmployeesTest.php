@@ -242,4 +242,7 @@ class EmployeesTest extends TestCase
         $response->assertJson(['message' => 'Successfully updated!']);
         $response->assertStatus(200);
     }
+
+    //test_validation_stops_request_if_branch_id_is_not_an_array
+
 }

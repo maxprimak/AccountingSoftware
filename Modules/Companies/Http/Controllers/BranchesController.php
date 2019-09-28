@@ -86,10 +86,10 @@ class BranchesController extends Controller
         }else{
           return response()->json([
               'message' => 'You can not delete this branch(it has employees or customers)'
-          ]);
+          ], 403);
         }
           return response()->json([
               'message' => 'Successfully deleted!'
-          ]);
+          ], 200);
     }
 }

@@ -189,6 +189,11 @@ abstract class TestCase extends BaseTestCase
             factory(Role::class)->create(['name' => 'Courier', 'id' => 5]);
           }
 
+          if(CustomerType::all()->count() == 0){
+            factory(CustomerType::class)->create(['name' => 'Person', 'id' => 1]);
+            factory(CustomerType::class)->create(['name' => 'Company', 'id' => 2]);
+          }
+
         }
 
         public function addBranchesToLogin($login, $number_of_branches){
@@ -236,6 +241,53 @@ abstract class TestCase extends BaseTestCase
             };
 
         }
+
+        }
+
+        public function addEmployeesToBranch($branch, $login, $number_of_employees){
+
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $number_of_employees; $i++){
+
+            $response = $this->json('POST', route('employees.store'), [
+              'name' => $this->faker->name,
+              'username' => $this->faker->name,
+              'password' => '123456789',
+              're_password' => '123456789',
+              'email' => $this->faker->safeEmail,
+              'phone' => $this->faker->phoneNumber,
+              'role_id' => 1, 
+              'branch_id' => array($branch->id)
+            ])->assertStatus(200);
+
+          }
+
+          $response = $this->json('GET', route('employees.index'))->assertStatus(200); //check if all employees added
+          $this->assertEquals($number_of_employees+1, substr_count($response->getContent(), 'email')); //check if all employees added
+
+        }
+
+        public function addCustomersToBranch($branch, $login, $number_of_customers){
+
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $number_of_customers; $i++){
+
+            $response = $this->json('POST', route('customers.store'), [
+              'name' => $this->faker->name,
+              'email' => $this->faker->safeEmail,
+              'phone' => $this->faker->phoneNumber,
+              'stars_number' => 2, 
+              'customer_type_id' => 1,
+              'branch_id' => array($branch->id),
+              'user_id' => $this->getUserOfLogin($login)->id
+            ])->assertStatus(200);
+
+          }
+
+          $response = $this->json('GET', route('customers.index'))->assertStatus(200); //check if all customers added
+          $this->assertEquals($number_of_customers, substr_count($response->getContent(), 'stars_number')); //check if all all customers added
 
         }
 

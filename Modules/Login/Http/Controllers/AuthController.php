@@ -69,7 +69,7 @@ class AuthController extends Controller
             'api_token' => 'shouldbedeleted',
         ]);
 
-        $user->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification(); //TODO: does NOT work on server
 
         $tokenResult = $this->getToken($user, $request);
 

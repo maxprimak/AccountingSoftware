@@ -4,6 +4,7 @@ namespace Modules\Users\Services;
 use Modules\Employees\Http\Requests\StoreEmployeeRequest;
 use Modules\Users\Entities\People;
 use Modules\Users\Entities\User;
+use Modules\Users\Entities\UserHasBranch;
 use Modules\Login\Entities\Login;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;

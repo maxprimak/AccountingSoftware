@@ -210,4 +210,6 @@ class CustomersTest extends TestCase
      print "\nMigration was done\n";
      parent::tearDownAfterClass();
      }
+
+     //test_validation_stops_request_if_branch_id_is_not_an_array
 }
