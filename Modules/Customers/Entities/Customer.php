@@ -40,7 +40,7 @@ class Customer extends Model
   public function saveStarsNumber($request){
       $this->stars_number = $request->stars_number;
       $this->save();
-
+      
       return $this;
   }
 

@@ -19,12 +19,6 @@ class EmployeesTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-
     public function setUp(): void
     {
 
@@ -32,7 +26,6 @@ class EmployeesTest extends TestCase
         TestCase::setUpEnvironment();
 
     }
-
 
     public function test_head_created_two_techs()
     {

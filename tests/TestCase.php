@@ -9,13 +9,13 @@ use Modules\Login\Entities\Login;
 use Modules\Employees\Entities\Employee;
 use Modules\Employees\Entities\Role;
 use Modules\Users\Entities\UserHasBranch;
+use Modules\Customers\Entities\Customer;
+use Modules\Customers\Entities\CustomerHasBranch;
 use Modules\Users\Entities\People;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Currency;
 use Modules\Companies\Entities\Branch;
-use Modules\Customers\Entities\Customer;
 use Modules\Customers\Entities\CustomerType;
-use Modules\Customers\Entities\CustomerHasBranch;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Passport;
@@ -173,6 +173,17 @@ abstract class TestCase extends BaseTestCase
           return Branch::whereIn('id', UserHasBranch::where('user_id', $user->id)->pluck('branch_id')->toArray())->get();
         }
 
+        public function getCustomersOfLogin($login){
+
+          $user = $this->getUserOfLogin($login);
+          $branch_ids = $this->getBranchesOfLogin($login)->pluck('id')->toArray();
+
+          $customers = Customer::whereIn('id', CustomerHasBranch::whereIn('branch_id', $branch_ids)->pluck('customer_id')->toArray())->get();
+
+          return $customers;
+
+        }
+
         public function getEmployeesOfLogin($login){
 
           $user = $this->getUserOfLogin($login);
@@ -251,7 +262,7 @@ abstract class TestCase extends BaseTestCase
 
             };
 
-        }
+          }
 
         }
 
@@ -276,7 +287,7 @@ abstract class TestCase extends BaseTestCase
 
         }
 
-        public function addCustomersToBranch($branch, $login, $number_of_customers){
+        public function addCustomersToBranch($branch, $login, $number_of_customers, $customer_type_id = 1){
 
           Passport::actingAs($login);
 
@@ -286,8 +297,7 @@ abstract class TestCase extends BaseTestCase
               'name' => $this->faker->name,
               'email' => $this->faker->safeEmail,
               'phone' => $this->faker->phoneNumber,
-              'stars_number' => 2, 
-              'customer_type_id' => 1,
+              'customer_type_id' => $customer_type_id,
               'branch_id' => array($branch->id),
               'user_id' => $this->getUserOfLogin($login)->id
             ])->assertStatus(200);

@@ -17,10 +17,16 @@ use Modules\Customers\Entities\CustomerType;
 use Modules\Employees\Entities\Employee;
 use Modules\Customers\Entities\Customer;
 use Faker\Factory as Faker;
+use Laravel\Passport\Passport;
 
 class SalesManagerTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
+
+    private $sales_login;
+    private $branch;
+
     /**
      * A basic test example.
      *
@@ -29,56 +35,34 @@ class SalesManagerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        TestCase::setUpEnvironment();
 
-        $this->faker = Faker::create();
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $this->branch = $this->getBranchesOfLogin($login)->first();
 
-        $this->login = factory(Login::class)->create([
-            'username' => $this->faker->username . str_random(10),
-            'password' => Hash::make('123456789'),
-            'email' => $this->faker->email,
-        ]);
+        $this->addEmployeesToBranch($this->branch, $login, 1, 4);
+        $employees = $this->getEmployeesOfLogin($login);
+        $sales_manager = $employees->where('role_id', 4)->first();
+        $this->sales_login = Login::find(User::find($sales_manager->user_id)->login_id);
 
-        $this->person = factory(People::class)->create();
-
-        $this->currency = factory(Currency::class)->create(['name' => $this->faker->currencyCode . str_random(10), 'symbol' => $this->faker->countryCode . str_random(10)]);
-
-        $this->company = factory(Company::class)->create(['name'=> $this->faker->name . str_random(10),'currency_id' => $this->currency->id]);
-
-        $this->branch = factory(Branch::class)->create(['name' => $this->faker->name . str_random(10),'company_id' => $this->company->id]);
-
-        $this->type = factory(CustomerType::class)->create(['name' => $this->faker->name . str_random(10)]);
-
-        $this->user = factory(User::class)->create([
-            'login_id' => $this->login->id,
-            'person_id' => $this->person->id,
-            'company_id' => $this->company->id,
-        ]);
-
-        $user_has_branch = factory(UserHasBranch::class)->create([
-            'user_id' => $this->user->id,
-            'branch_id' => $this->branch->id,
-        ]);
+        Passport::actingAs($this->sales_login);
 
     }
 
-    // public function tearDown(): void
-    // {
-    //     $head_login = Login::find(1);
-    //     $this->actingAs($head_login)->delete('employees/'.$this->employee->id);
-    // }
+    public function test_sales_manager_can_create_edit_and_delete_customers()
+    {   
 
-    public function test_tech_can_create_and_edit_customers()
-    {
         $customer = [
             'name' => $this->faker->name,
             'email' => $this->faker->email  . str_random(20),
             'phone' => $this->faker->phonenumber,
-            'customer_type_id' => $this->type->id,
-            'branch_id' => [$this->branch->id],
-            'user_id' => $this->user->id,
+            'customer_type_id' => $this->faker->numberBetween(1,2),
+            'branch_id' => array($this->branch->id),
+            'user_id' => $this->getUserOfLogin($this->sales_login)->id,
         ];
+
         //Create customer
-        $response = $this->actingAs($this->login)->post('/customers', $customer);
+        $response = $this->json('POST', route('customers.index'), $customer);
         $response->assertJson(['message' => 'Successfully created!']);
         $response->assertSuccessful();
 
@@ -89,15 +73,21 @@ class SalesManagerTest extends TestCase
             'name' => $this->faker->name,
             'email' => $this->faker->email . str_random(20),
             'phone' => $this->faker->phonenumber,
-            'type_id' => $this->type->id,
-            'branch_id' => [$this->branch->id],
+            'type_id' =>  $this->faker->numberBetween(1,2),
+            'branch_id' => array($this->branch->id)
         ];
 
         //Edit customer
-        $response = $this->actingAs($this->login)->post('customers/'.$customer_edit['id'], $customer_edit);
+        $response = $this->json('POST', route('customers.update', ['customer_id' => $customer_id]), $customer_edit);
         $response->assertJson(['message' => 'Successfully updated!']);
         $response->assertSuccessful();
 
-        $this->actingAs($this->login)->delete('customers/' . $customer_id);
+        //Delete customer
+        $response = $this->json( 'DELETE', route('customers.destroy', ['customer_id' => $customer_id]));
+        $response->assertJson(['message' => 'Successfully deleted!']);
+        $response->assertSuccessful();
+
+        $this->assertDatabaseMissing('customers', ['id' => $customer_id]);
+
     }
 }
