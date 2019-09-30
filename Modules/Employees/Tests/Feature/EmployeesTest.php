@@ -6,13 +6,19 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Login\Entities\Login;
+use Modules\Users\Entities\User;
 use Modules\Employees\Entities\Employee;
 use Modules\Companies\Entities\Branch;
 use \Illuminate\Http\UploadedFile;
+use Laravel\Passport\Passport;
 use Faker\Factory as Faker;
 
 class EmployeesTest extends TestCase
-{
+{   
+
+    use RefreshDatabase;
+    use WithFaker;
+
     /**
      * A basic test example.
      *
@@ -21,211 +27,133 @@ class EmployeesTest extends TestCase
 
     public function setUp(): void
     {
+
         parent::setUp();
+        TestCase::setUpEnvironment();
 
-        $this->login();
     }
 
-    public function login(){
-        $response = $this->post('/login', [
-            'username' => 'oliinykm95',
-            'password' => '123456789'
-        ]);
-    }
-
-    public function get_employee($username){
-        $employee_id = Login::where('username', $username)
-                            ->join('users', 'users.login_id', "=", 'logins.id')
-                            ->join('employees', 'employees.user_id', '=', 'users.id')
-                            ->select('employees.id')
-                            ->first();
-
-        return $employee_id->id;
-    }
 
     public function test_head_created_two_techs()
     {
-        $this->faker = Faker::create();
 
-        $data1 = [
-            'name' => $this->faker->name,
-            'username' => $this->faker->username . str_random(20),
-            'password' => '123456789',
-            're_password' => '123456789',
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'role_id' => '3',
-            'branch_id' => ['1'],
-        ];
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $branch = $this->getBranchesOfLogin($login)->first();
 
-        $data2 = [
-            'name' => $this->faker->name,
-            'username' => $this->faker->username . str_random(20),
-            'password' => '123456789',
-            're_password' => '123456789',
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'role_id' => '3',
-            'branch_id' => ['1'],
-        ];
-
-        $response1 = $this->post('/employees', $data1);
-        $response1->assertJson(['message' => 'Successfully created!']);
-        $this->assertDatabaseHas('logins', [
-            'username' => $data1['username'],
-            'email' => $data1['email'],
-        ]);
-        $response1->assertStatus(200);
-
-        $id_employee = $this->get_employee($data1['username']);
-        $this->delete('employees/'.$id_employee);
-
-        $response2 = $this->post('/employees', $data2);
-        $response2->assertJson(['message' => 'Successfully created!']);
-        $this->assertDatabaseHas('logins', [
-            'username' => $data2['username'],
-            'email' => $data2['email'],
-        ]);
-        $response2->assertStatus(200);
-
-        $id_employee = $this->get_employee($data2['username']);
-        $this->delete('employees/'.$id_employee);
+        $this->addEmployeesToBranch($branch, $login, 2, 3);
 
     }
 
     public function test_head_created_two_sales_managers()
     {
-        $this->faker = Faker::create();
+       
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $branch = $this->getBranchesOfLogin($login)->first();
 
-        $data1 = [
-            'name' => $this->faker->name,
-            'username' => $this->faker->username . str_random(20),
-            'password' => '123456789',
-            're_password' => '123456789',
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'role_id' => '2',
-            'branch_id' => ['1'],
-        ];
-
-        $data2 = [
-            'name' => $this->faker->name,
-            'username' => $this->faker->username . str_random(20),
-            'password' => '123456789',
-            're_password' => '123456789',
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'role_id' => '2',
-            'branch_id' => ['1'],
-        ];
-
-        $response1 = $this->post('/employees', $data1);
-        $response1->assertJson(['message' => 'Successfully created!']);
-        $this->assertDatabaseHas('logins', [
-            'username' => $data1['username'],
-            'email' => $data1['email'],
-        ]);
-        $response1->assertStatus(200);
-
-        $id_employee = $this->get_employee($data1['username']);
-        $this->delete('employees/'.$id_employee);
-
-        $response2 = $this->post('/employees', $data2);
-        $response2->assertJson(['message' => 'Successfully created!']);
-        $this->assertDatabaseHas('logins', [
-            'username' => $data2['username'],
-            'email' => $data2['email'],
-        ]);
-        $response2->assertStatus(200);
+        $this->addEmployeesToBranch($branch, $login, 2, 4);
 
     }
-
-    public function test_head_can_not_created_with_password_uncorrect()
+      
+    public function test_user_can_not_be_created_with_password_less_than_8_characters()
     {
-        $this->faker = Faker::create();
+       
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $branch = $this->getBranchesOfLogin($login)->first();
+        Passport::actingAs($login);
 
-        $data = [
+        $response = $this->json('POST', route('employees.store'), [
             'name' => $this->faker->name,
-            'username' => $this->faker->username . str_random(20),
-            'password' => '123',  //password uncorrect
-            're_password' => '12345678',
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'role_id' => '3',
-            'branch_id' => ['1'],
-        ];
+            'username' => $this->faker->name,
+            'password' => '12',
+            're_password' => '12',
+            'email' => $this->faker->safeEmail,
+            'phone' => $this->faker->phoneNumber,
+            'role_id' => 1, 
+            'branch_id' => array($branch->id)
+          ])->assertStatus(422);
 
-        $response = $this->post('/employees', $data);
-        $response->assertJson(['error' => 'The password must be at least 8 characters.']);
     }
-
-    public function test_head_can_not_created_with_password_doesnt_match_re_password()
+     
+    public function test_head_can_not_be_created_with_password_doesnt_match_re_password()
     {
-        $this->faker = Faker::create();
+        
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $branch = $this->getBranchesOfLogin($login)->first();
+        Passport::actingAs($login);
 
-        $data = [
+        $response = $this->json('POST', route('employees.store'), [
             'name' => $this->faker->name,
-            'username' => $this->faker->username . str_random(20),
-            'password' => '12345678',
-            're_password' => 'adasdasdsa',  //password doesnt match re_password
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'role_id' => '3',
-            'branch_id' => ['1'],
-        ];
+            'username' => $this->faker->name,
+            'password' => '123456789',
+            're_password' => '123456780',
+            'email' => $this->faker->safeEmail,
+            'phone' => $this->faker->phoneNumber,
+            'role_id' => 1, 
+            'branch_id' => array($branch->id)
+          ])->assertStatus(422);
 
-        $response = $this->post('/employees', $data);
-        $response->assertJson(['error' => 'The re password and password must match.']);
     }
 
     public function test_head_edited_sales_manager()
     {
-        $employee_id = Employee::select('id')->orderBy('created_at', 'desc')->first()->id;
+        
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $branch = $this->getBranchesOfLogin($login)->first();
 
-        $this->faker = Faker::create();
+        $this->addEmployeesToBranch($branch, $login, 1, 4);
+        $employees = $this->getEmployeesOfLogin($login);
+        $sales_manager = $employees->where('role_id', 4)->first();
 
-        $data = [
-            'id' => $employee_id,
+        Passport::actingAs($login);
+
+        $response = $this->json('POST', route('employees.update', ['employee_id' => $sales_manager->id]), [
             'name' => $this->faker->name,
-            'username' => $this->faker->username . str_random(20),
+            'username' => $this->faker->name,
             'password' => '123456789',
-            'email' => $this->faker->email  . str_random(20),
-            'phone' => $this->faker->phonenumber,
-            'role_id' => '2',
-            'branch_id' => ['1'],
-            'is_active' => true,
-        ];
-
-        $response = $this->post('employees/'.$data['id'], $data);
-        $response->assertJson(['message' => 'Successfully updated!']);
-        $this->assertDatabaseHas('logins', [
-            'username' => $data['username'],
-            'email' => $data['email'],
-        ]);
+            're_password' => '123456789',
+            'email' => $this->faker->safeEmail,
+            'phone' => $this->faker->phoneNumber,
+            'role_id' => 4, 
+            'branch_id' => array($branch->id),
+            'is_active' => 1
+          ])->assertJsonStructure(['message', 'employee']);
         $response->assertStatus(200);
 
-        $this->delete('employees/'.$employee_id);
     }
 
-    public function test_user_does_not_see_employees_from_another_company()
-    {
-        $response = $this->get('/employees');
+    public function test_user_does_not_see_employees_from_another_company(){
 
-        $response->assertSuccessful();
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $new_login = $this->makeNewLoginWithCompanyAndBranch();
 
-        $response = $response->original->getData()['employees'];
+        $branch = $this->getBranchesOfLogin($login)->first();
+        $new_branch = $this->getBranchesOfLogin($new_login)->first();
 
-        foreach ($response as $item) {
-            foreach ($item->branch_id as $id) {
-                $company_id = Branch::select('company_id')->where('id', $id)->first()->company_id;
-                $this->assertEquals('1', $company_id);
-            }
-        }
+        $this->addEmployeesToBranch($branch, $login, 3, 4);
+        $this->addEmployeesToBranch($new_branch, $new_login, 3, 4);
+
+        Passport::actingAs($login);
+
+        $this->assertEquals(8, Employee::all()->count());
+
+        $response = $this->json('GET', route('employees.index'))->assertStatus(200);
+        $this->assertEquals(4, substr_count($response->getContent(), 'email')); 
+
     }
 
-    public function test_tech_changes_his_photo()
-    {
-        $data = [
+    //WARNING: only head and top manager can access employees routes => it means that they can not edit their own profiles!!!
+    public function test_top_manager_changes_his_photo(){
+
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $branch = $this->getBranchesOfLogin($login)->first();
+        $this->addEmployeesToBranch($branch, $login, 1, 2);
+        $employees = $this->getEmployeesOfLogin($login);
+        $top_manager = $employees->where('role_id', 2)->first();
+        $top_login = Login::find(User::find($top_manager->user_id)->login_id);
+
+        Passport::actingAs($top_login);
+
+        $response = $this->json('POST', route('employees.update', ['employee_id' => $top_manager->id]), [
             'id' => '1',
             'name' => 'Loy Dickens DVM edit',
             'username' => 'oliinykm95',
@@ -233,16 +161,16 @@ class EmployeesTest extends TestCase
             'email' => 'bergstrom.wayne.edit@bergstrom.org',
             'phone' => '123456754323',
             'role_id' => '1',
-            'branch_id' => ['1'],
+            'branch_id' => array($branch->id),
             'is_active' => true,
             'image' => UploadedFile::fake()->image('test_image.png')
-        ];
-
-        $response = $this->post('employees/'.$data['id'], $data);
-        $response->assertJson(['message' => 'Successfully updated!']);
+          ])->assertJsonStructure(['message', 'employee']);
         $response->assertStatus(200);
+
     }
 
     //test_validation_stops_request_if_branch_id_is_not_an_array
+    //test_head_created_two_top_managers
+    //test_head_created_two_couriers
 
 }

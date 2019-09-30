@@ -20,10 +20,12 @@ class UpdateEmployeeRequest extends FormRequest
         $employee = null;
 
         if($this->route('employee_id'))
-        {
+        {   
+                        
             $employee = Employee::join('users', 'users.id', '=', 'employees.user_id')
                                 ->select('users.login_id', 'users.person_id')
-                                ->find($this->route('employee_id'));
+                                ->findOrFail($this->route('employee_id'));
+            
         }
 
         return [

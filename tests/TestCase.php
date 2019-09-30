@@ -173,6 +173,17 @@ abstract class TestCase extends BaseTestCase
           return Branch::whereIn('id', UserHasBranch::where('user_id', $user->id)->pluck('branch_id')->toArray())->get();
         }
 
+        public function getEmployeesOfLogin($login){
+
+          $user = $this->getUserOfLogin($login);
+          $branch_ids = $this->getBranchesOfLogin($login)->pluck('id')->toArray();
+
+          $employees = Employee::whereIn('user_id', UserHasBranch::whereIn('branch_id', $branch_ids)->pluck('user_id')->toArray())->get();
+
+          return $employees;
+
+        }
+
         public static function setUpEnvironment(){
 
           Artisan::call('passport:install');
@@ -244,7 +255,7 @@ abstract class TestCase extends BaseTestCase
 
         }
 
-        public function addEmployeesToBranch($branch, $login, $number_of_employees){
+        public function addEmployeesToBranch($branch, $login, $number_of_employees, $role_id = 1){
 
           Passport::actingAs($login);
 
@@ -257,14 +268,11 @@ abstract class TestCase extends BaseTestCase
               're_password' => '123456789',
               'email' => $this->faker->safeEmail,
               'phone' => $this->faker->phoneNumber,
-              'role_id' => 1, 
+              'role_id' => $role_id, 
               'branch_id' => array($branch->id)
             ])->assertStatus(200);
 
           }
-
-          $response = $this->json('GET', route('employees.index'))->assertStatus(200); //check if all employees added
-          $this->assertEquals($number_of_employees+1, substr_count($response->getContent(), 'email')); //check if all employees added
 
         }
 
@@ -285,9 +293,6 @@ abstract class TestCase extends BaseTestCase
             ])->assertStatus(200);
 
           }
-
-          $response = $this->json('GET', route('customers.index'))->assertStatus(200); //check if all customers added
-          $this->assertEquals($number_of_customers, substr_count($response->getContent(), 'stars_number')); //check if all all customers added
 
         }
 

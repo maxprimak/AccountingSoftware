@@ -12,10 +12,17 @@ use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Employees\Entities\Employee;
 use Modules\Customers\Entities\Customer;
+use Laravel\Passport\Passport;
 use Faker\Factory as Faker;
 
 class TechTest extends TestCase
-{
+{   
+
+    use RefreshDatabase;
+    use WithFaker;
+
+    private $tech_login;
+
     /**
      * A basic test example.
      *
@@ -24,78 +31,46 @@ class TechTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        TestCase::setUpEnvironment();
 
-        $this->faker = Faker::create();
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $branch = $this->getBranchesOfLogin($login)->first();
+        $this->addEmployeesToBranch($branch, $login, 1, 3);
 
-        $this->login = factory(Login::class)->create([
-            'username' => $this->faker->username . str_random(10),
-            'password' => Hash::make('123456789'),
-            'email' => $this->faker->email,
-        ]);
-
-        $this->person = factory(People::class)->create();
-
-        $this->user = factory(User::class)->create([
-            'login_id' => $this->login->id,
-            'person_id' => $this->person->id,
-            'company_id' => '1',
-        ]);
-
-        $user_has_branch = factory(UserHasBranch::class)->create([
-            'user_id' => $this->user->id,
-            'branch_id' => '1',
-        ]);
-
-        $this->employee = factory(Employee::class)->create([
-            'user_id' => $this->user->id,
-            'role_id' => '3'
-        ]);
-
-        // //login tech
-        // $this->post('/login', [
-        //     'username' => $this->login->username,
-        //     'password' => '123456789'
-        // ]);
+        $employees = $this->getEmployeesOfLogin($login);
+        $tech = $employees->where('role_id', 3)->first();
+        $this->tech_login = Login::find(User::find($tech->user_id)->login_id);
 
     }
 
-    public function tearDown(): void
+    public function test_tech_can_not_access_companies_routes()
     {
-        $head_login = Login::find(1);
-        $this->actingAs($head_login)->delete('employees/'.$this->employee->id);
+
+        Passport::actingAs($this->tech_login);
+
+        $response = $this->json('GET', route('companies.index'))->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
+        $response = $this->json('POST', route('companies.update', ['company_id' => 1]), [])->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
+
+        $response = $this->json('GET', route('branches.index'))->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
+        $response = $this->json('POST', route('branches.store'), [])->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
+        $response = $this->json('POST', route('branches.update', ['branch_id' => 1]), [])->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
+        $response = $this->json('DELETE', route('branches.destroy', ['branch_id' => 1]), [])->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
+
+        $response = $this->json('GET', route('currencies.index'), [])->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
+
     }
 
-    public function test_tech_can_not_access_my_company_page()
+    public function test_tech_can_not_access_employees_routes()
     {
-        //Courier can not ACCESS my_company_page
-        $response = $this->actingAs($this->login)->get(route('companies.index'));
-        $response->assertStatus(302);
 
-        //Courier can not CREATE my_company_page
-        $response = $this->actingAs($this->login)->post(route('companies.create'));
-        $response->assertStatus(302);
-        $response = $this->actingAs($this->login)->post(route('companies.store'));
-        $response->assertStatus(302);
+        Passport::actingAs($this->tech_login);
 
-        //Courier can not UPDATE my_company_page
-        $response = $this->actingAs($this->login)->post(route('companies.update', '1'));
-        $response->assertStatus(302);
-    }
+        $response = $this->json('GET', route('employees.index'))->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
+        $response = $this->json('POST', route('employees.store'), [])->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
+        $response = $this->json('POST', route('employees.update', ['employee_id' => 1]), [])->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
+        $response = $this->json('DELETE', route('employees.destroy', ['employee_id' => 1]), [])->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
 
-    public function test_tech_can_not_access_employees_page()
-    {
-        //Courier can not ACCESS employees_page
-        $response = $this->actingAs($this->login)->get(route('employees.index'));
-        $response->assertStatus(302);
+        $response = $this->json('GET', route('roles.index'))->assertJson(["message" => "Only top manager and head can access this route"])->assertStatus(403);
 
-        //Courier can not CREATE employees_page
-        $response = $this->actingAs($this->login)->post(route('employees.create'));
-        $response->assertStatus(302);
-        $response = $this->actingAs($this->login)->post(route('employees.store'));
-        $response->assertStatus(302);
-
-        //Courier can not UPDATE employees_page
-        $response = $this->actingAs($this->login)->post(route('employees.update', '1'));
-        $response->assertStatus(302);
     }
 }

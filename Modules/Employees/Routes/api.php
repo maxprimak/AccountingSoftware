@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::middleware(['is_authorized', 'is_registered'])->group(function () {
+Route::middleware(['is_authorized', 'employee', 'is_registered', 'admin'])->group(function () {
 
     Route::get('employees', 'EmployeesController@index')->name('employees.index');
     Route::post('employees', 'EmployeesController@store')->name('employees.store');

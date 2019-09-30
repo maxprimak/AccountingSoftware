@@ -11,6 +11,7 @@ class BranchesTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
+    
     /**
      * A basic test example.
      *

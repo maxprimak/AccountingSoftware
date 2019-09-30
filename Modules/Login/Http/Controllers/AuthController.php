@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Modules\Login\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
-    public function login(Request $request){
+    public function login(LoginRequest $request){
 
         if(!Auth::attempt(['username' => $request->username, 'password' => $request->password /*'is_active' => 1*/]))
             return response()->json([

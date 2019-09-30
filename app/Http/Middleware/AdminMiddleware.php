@@ -15,11 +15,11 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $role_id = auth()->user()->checkRole();
+        $role_id = auth()->user()->getRoleId();
         
         if($role_id != '1' && $role_id != '2')
         {
-            return redirect()->back();
+            return response()->json(["message" => "Only top manager and head can access this route"], 403);
         }
         return $next($request);
     }

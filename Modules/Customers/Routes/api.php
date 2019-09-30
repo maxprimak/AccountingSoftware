@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware(['is_authorized', 'is_registered'])->group(function () {
+Route::middleware(['is_authorized', 'employee', 'is_registered'])->group(function () {
 
     Route::get('customers', 'CustomersController@index')->name('customers.index');
     Route::post('customers', 'CustomersController@store')->name('customers.store');
