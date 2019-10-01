@@ -17,8 +17,9 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request){
 
-        if(!Auth::attempt(['username' => $request->username, 'password' => $request->password /*'is_active' => 1*/]))
-            return response()->json([
+        if(!Auth::guard('web')->attempt(['username' => $request->username, 'password' => $request->password /*'is_active' => 1*/]))
+            
+        return response()->json([
                 'error' => 'invalid_credentials'
             ], 401);
 
@@ -70,7 +71,7 @@ class AuthController extends Controller
             'api_token' => 'shouldbedeleted',
         ]);
 
-        $user->sendEmailVerificationNotification(); //TODO: does NOT work on server
+        //$user->sendEmailVerificationNotification(); //TODO: does NOT work on server
 
         $tokenResult = $this->getToken($user, $request);
 
