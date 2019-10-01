@@ -80,8 +80,9 @@ class CreateUsers{
 
     public function updateUser(FormRequest $request,$user){
         $user = User::findOrFail($user->user_id);
-        $user->is_active = $request->is_active;
-        $user->save();
+        $login = Login::find($user->login_id);
+        $login->is_active = $request->is_active;
+        $login->save();
         return $user;
     }
 
@@ -105,7 +106,6 @@ class CreateUsers{
         $user->login_id = $login->id;
         $user->person_id = $person->id;
         $user->company_id = $company->id;
-        $user->is_active = true;
         $user->save();
 
         $branch = new Branch();
@@ -125,16 +125,6 @@ class CreateUsers{
 
         return $employee;
 }
-
-    public function loginIsActive($login_id){
-        try{
-            $user = User::where('login_id', $login_id)->firstOrFail();
-        }catch(\Exception $e){
-            return true;
-        }
-
-        return $user->is_active;
-    }
 
     public function updateEmployee(FormRequest $request, $employee_id){
 

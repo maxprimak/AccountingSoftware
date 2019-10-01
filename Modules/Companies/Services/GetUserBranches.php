@@ -31,7 +31,7 @@ class GetUserBranches{
                                 ->join('people', 'people.id', '=', 'users.person_id')
                                 ->join('roles', 'roles.id', '=', 'employees.role_id')
                                 ->select('employees.id', 'employees.user_id', 'employees.role_id',
-                                'logins.username', 'users.login_id', 'users.person_id', 'users.is_active', 'logins.email', 'people.name',
+                                'logins.username', 'users.login_id', 'users.person_id', 'logins.is_active', 'logins.email', 'people.name',
                                 'people.phone', 'people.address', 'roles.name AS role_name')
                                 ->get();
 

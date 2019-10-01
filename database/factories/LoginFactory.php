@@ -13,6 +13,6 @@ $factory->define(Login::class, function (Faker $faker) {
         'password' => bcrypt('123456789'),
         'email' => $email,
         'email_verified_at' => now(),
-        'api_token' => Str::random(60)
+        'is_active' => 1,
     ];
 });

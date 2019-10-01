@@ -54,7 +54,7 @@ class LoginController extends Controller
      *
      */
     public function authenticate(Request $request){
-            if (Auth::attempt(['username' => $request->username, 'password' => $request->password /*'is_active' => 1*/]))
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'is_active' => 1 ]))
             {   
                 return response()->json(['token' => auth()->user()->api_token, 'user' => auth()->user()], 200);
             }

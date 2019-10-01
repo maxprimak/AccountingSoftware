@@ -23,6 +23,7 @@ class Login extends Authenticatable implements MustVerifyEmail
         $this->username = $request->username;
         $this->password = bcrypt($request->password);
         $this->email = $request->email;
+        $this->is_active = true;
         $this->save();
 
         return $this;

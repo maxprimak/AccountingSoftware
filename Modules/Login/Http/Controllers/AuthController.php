@@ -17,7 +17,7 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request){
 
-        if(!Auth::guard('web')->attempt(['username' => $request->username, 'password' => $request->password /*'is_active' => 1*/]))
+        if(!Auth::guard('web')->attempt(['username' => $request->username, 'password' => $request->password, 'is_active' => 1]))
             
         return response()->json([
                 'error' => 'invalid_credentials'
@@ -68,7 +68,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'api_token' => 'shouldbedeleted',
+            'is_active' => 1,
         ]);
 
         //$user->sendEmailVerificationNotification(); //TODO: does NOT work on server

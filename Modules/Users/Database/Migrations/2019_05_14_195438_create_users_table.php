@@ -18,7 +18,6 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('login_id')->unique();
             $table->unsignedInteger('person_id');
             $table->unsignedInteger('company_id')->nullable();
-            $table->boolean('is_active')->nullable()->default(true);
             $table->timestamps();
             $table->foreign('login_id')->references('id')->on('logins')->onDelete('cascade');
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
