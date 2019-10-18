@@ -14,10 +14,15 @@ class CreateModelsTable extends Migration
     public function up()
     {
         Schema::create('models', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+            $table->string('header_name');
+            $table->unsignedInteger('brand_id');
             $table->string('name');
-            $table->bigInteger('branch_id');
             $table->timestamps();
+        });
+
+        Schema::table('models', function($table) {
+          $table->foreign('brand_id')->references('id')->on('brands');
         });
     }
 

@@ -4,7 +4,7 @@ namespace Modules\Goods\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Model extends Model
+class Models extends Model
 {
     protected $fillable = [];
 }

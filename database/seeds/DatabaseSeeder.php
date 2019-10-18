@@ -8,6 +8,10 @@ use Modules\Employees\Database\Seeders\RolesDatabaseSeeder;
 use Modules\Employees\Database\Seeders\EmployeesDatabaseSeeder;
 use Modules\Customers\Database\Seeders\CustomersDatabaseSeeder;
 use Modules\Customers\Database\Seeders\CustomerTypesTableSeeder;
+use Modules\Goods\Database\Seeders\CategoriesSeederTableSeeder;
+use Modules\Goods\Database\Seeders\BrandsSeederTableSeeder;
+use Modules\Goods\Database\Seeders\ModelsSeederTableSeeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,5 +29,10 @@ class DatabaseSeeder extends Seeder
         $this->call(EmployeesDatabaseSeeder::class);
         $this->call(CustomerTypesTableSeeder::class);
         $this->call(CustomersDatabaseSeeder::class);
+        $this->call(CategoriesSeederTableSeeder::class);
+        $this->call(BrandsSeederTableSeeder::class);
+        $this->call(ModelsSeederTableSeeder::class);
+
+
     }
 }

@@ -14,17 +14,25 @@ class CreateGoodsTable extends Migration
     public function up()
     {
         Schema::create('goods', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name');
-            $table->bigInteger('category_id');
-            $table->bigInteger('location_id');
-            $table->bigInteger('model_id');
-            $table->double('amount', 8, 2);
-            $table->string('supplier_stock');
-            $table->date('expected_delivery');
+            $table->unsignedInteger('branch_id');
+            $table->unsignedInteger('category_id');
+            // $table->bigInteger('brand_id');
+            $table->unsignedInteger('model_id');
+            $table->integer('amount');
             $table->double('price', 8, 2);
             $table->timestamps();
+
+            // $table->string('supplier_stock');
+            // $table->date('expected_delivery');
+            // $table->bigInteger('location_id');
             //TODO: foreign keys
+        });
+
+        Schema::table('goods', function($table) {
+          $table->foreign('branch_id')->references('id')->on('branches');
+          $table->foreign('category_id')->references('id')->on('goods_categories');
         });
     }
 
@@ -36,5 +44,6 @@ class CreateGoodsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('goods');
+
     }
 }
