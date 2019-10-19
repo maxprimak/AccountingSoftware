@@ -5,6 +5,8 @@ namespace Modules\Goods\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Goods\Entities\Good;
+use Modules\Goods\Http\Requests\StoreGoodRequest;
 
 class GoodsController extends Controller
 {
@@ -31,9 +33,12 @@ class GoodsController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreGoodRequest $request)
     {
-        //
+        $good = new Good();
+        $good = $good->store($request);
+
+        return response()->json();
     }
 
     /**

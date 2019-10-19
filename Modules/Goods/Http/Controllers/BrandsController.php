@@ -5,6 +5,8 @@ namespace Modules\Goods\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Goods\Entities\Brand;
+
 
 class BrandsController extends Controller
 {
@@ -33,7 +35,10 @@ class BrandsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $brand = new Brand();
+        $brand->store($request);
+        
+        return response()->json();
     }
 
     /**

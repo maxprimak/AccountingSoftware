@@ -20,32 +20,27 @@ class ModelsSeederTableSeeder extends Seeder
         //CATEGORIES Models
         //APPLE Models
         $Models = new Models();
-        $Models->header_name = "Model";
         $Models->brand_id = 1;
         $Models->name = "iPhone";
         $Models->save();
 
         $Models = new Models();
-        $Models->header_name = "Model";
         $Models->brand_id = 1;
         $Models->name = "iPad";
         $Models->save();
 
         $Models = new Models();
-        $Models->header_name = "Model";
         $Models->brand_id = 1;
         $Models->name = "Apple Watch";
         $Models->save();
 
         $Models = new Models();
-        $Models->header_name = "Model";
         $Models->brand_id = 1;
         $Models->name = "MacBook";
         $Models->save();
 
         //SAMSUNG Models
-        $Models = new Models();
-        $Models->header_name = "Model";
+        $Models = new Models();         
         $Models->brand_id = 2;
         $Models->name = "Galaxy";
         $Models->save();

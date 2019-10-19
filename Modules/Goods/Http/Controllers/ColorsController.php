@@ -5,6 +5,7 @@ namespace Modules\Goods\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Goods\Entities\Color;
 
 class ColorsController extends Controller
 {
@@ -33,7 +34,10 @@ class ColorsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $color = new Color();
+        $color = $color->store($request);
+
+        return response()->json();
     }
 
     /**

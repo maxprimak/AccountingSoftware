@@ -5,6 +5,7 @@ namespace Modules\Goods\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Goods\Entities\Models;
 
 class ModelsController extends Controller
 {
@@ -33,7 +34,9 @@ class ModelsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $model = new Models();
+        $model->store($request);
+        return response()->json();
     }
 
     /**

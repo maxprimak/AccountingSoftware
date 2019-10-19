@@ -19,6 +19,12 @@ use Modules\Customers\Entities\CustomerType;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Passport;
+use Modules\Goods\Entities\Brand;
+use Modules\Goods\Entities\Models;
+use Modules\Goods\Entities\Submodel;
+use Modules\Goods\Entities\Part;
+use Modules\Goods\Entities\Color;
+
 
 abstract class TestCase extends BaseTestCase
 {
@@ -206,39 +212,44 @@ abstract class TestCase extends BaseTestCase
         //Goods GET
         public function getBrands($login){
           $brands = Brand::all();
-          if(!$brands){
+          if(!empty($brands)){
             $this->storeBrands($login,5);
             $brands = Brand::all();
+
           }
           return $brands;
         }
-        public function getModels($login){
-          $models = Models::all();
-          if(!$models){
+
+        public function getModels($login,$brand_id){
+          $models = Models::where('brand_id',$brand_id)->get();
+          if(!empty($models)){
             $this->storeModels($login,4);
             $models = Models::all();
           }
           return $models;
         }
-        public function getSubmodels($login){
-          $sub_models = Submodel::all();
-          if(!$sub_models){
-            $this->storeSubmodels($login,3);
+
+        public function getSubmodels($login,$model_id){
+          $sub_models = Submodel::where('model_id',$model_id)->get();
+          if(!empty($sub_models)){
+            $this->storeSubmodels($login,$model_id,3);
             $sub_models = Submodel::all();
           }
           return $sub_models;
         }
+
         public function getParts($login){
           $parts = Part::all();
-          if(!$parts){
+          if(!empty($parts)){
             $this->storeParts($login,5);
             $parts = Part::all();
           }
           return $parts;
         }
+
         public function getColors($login){
           $colors = Color::all();
-          if(!$colors){
+          if(!empty($colors)){
             $this->storeColors($login, 4);
             $colors = Color::all();
           }
@@ -252,16 +263,13 @@ abstract class TestCase extends BaseTestCase
 
           for($i = 0; $i < $amount; $i++){
 
-            $header_name = $this->faker->name;
-            $name = $this->faker->name->unique();
+            $name = $this->faker->unique()->name;
 
             $response = $this->json('POST', route('brands.store'), [
-              'header_name' => $header_name,
               'name' => $name
             ])->assertStatus(200);
 
             $response = $this->assertDatabaseHas('brands', [
-              'header_name' => $header_name,
               'name' => $name
             ]);
           }
@@ -272,30 +280,26 @@ abstract class TestCase extends BaseTestCase
 
           for($i = 0; $i < $amount; $i++){
 
-            $header_name = $this->faker->name;
-            $brand_id = $this->getBrands()->random()->first();
-            $name = $this->faker->name->unique();
+            $brand_id = $this->getBrands($login)->random(1)->first()->id;
+            $name = $this->faker->unique()->name;
 
             $response = $this->json('POST', route('models.store'), [
-              'header_name' => $header_name,
               'brand_id' => $brand_id,
               'name' => $name
             ])->assertStatus(200);
 
             $response = $this->assertDatabaseHas('models', [
-              'header_name' => $header_name,
               'brand_id' => $brand_id,
               'name' => $name
             ]);
           }
         }
 
-        public function storeSubmodels($login,$amount){
+        public function storeSubmodels($login,$model_id,$amount){
           Passport::actingAs($login);
 
           for($i = 0; $i < $amount; $i++){
-            $model_id = $this->getModels()->random()->first();
-            $name = $this->faker->name->unique();
+            $name = $this->faker->unique()->name;
             $response = $this->json('POST', route('submodels.store'), [
               'model_id' => $model_id,
               'name' => $name
@@ -312,7 +316,7 @@ abstract class TestCase extends BaseTestCase
           Passport::actingAs($login);
 
           for($i = 0; $i < $amount; $i++){
-            $name = $this->faker->name->unique();
+            $name = $this->faker->unique()->name;
             $response = $this->json('POST', route('parts.store'), [
               'name' => $name
             ])->assertStatus(200);
@@ -327,7 +331,7 @@ abstract class TestCase extends BaseTestCase
           Passport::actingAs($login);
 
           for($i = 0; $i < $amount; $i++){
-            $name = $this->faker->color->unique();
+            $name = $this->faker->unique()->name;
             $response = $this->json('POST', route('colors.store'), [
               'name' => $name
             ])->assertStatus(200);

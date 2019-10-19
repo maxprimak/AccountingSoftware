@@ -15,7 +15,6 @@ class CreateModelsTable extends Migration
     {
         Schema::create('models', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('header_name');
             $table->unsignedInteger('brand_id');
             $table->string('name');
             $table->timestamps();

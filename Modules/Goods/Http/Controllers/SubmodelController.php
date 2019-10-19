@@ -5,6 +5,8 @@ namespace Modules\Goods\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Goods\Entities\Submodel;
+
 
 class SubmodelController extends Controller
 {
@@ -33,7 +35,10 @@ class SubmodelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $submodel = new Submodel();
+        $submodel->store($request);
+
+        return response()->json();
     }
 
     /**

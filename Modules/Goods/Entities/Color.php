@@ -6,5 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Color extends Model
 {
-    protected $fillable = [];
+    protected $fillable = ['name'];
+
+    public function store($request){
+      $this->name = $request->name;
+      $this->save();
+      return $this;
+    }
 }

@@ -19,47 +19,38 @@ class BrandsSeederTableSeeder extends Seeder
 
         //CATEGORIES BRAND
         $brand = new Brand();
-        $brand->header_name = "Brand";
         $brand->name = "Apple";
         $brand->save();
 
         $brand = new Brand();
-        $brand->header_name = "Brand";
         $brand->name = "Samsung";
         $brand->save();
 
         $brand = new Brand();
-        $brand->header_name = "Brand";
         $brand->name = "Huawei";
         $brand->save();
 
         $brand = new Brand();
-        $brand->header_name = "Brand";
         $brand->name = "LG";
         $brand->save();
 
         $brand = new Brand();
-        $brand->header_name = "Brand";
         $brand->name = "Sony";
         $brand->save();
 
         $brand = new Brand();
-        $brand->header_name = "Brand";
         $brand->name = "Google";
         $brand->save();
 
         $brand = new Brand();
-        $brand->header_name = "Brand";
         $brand->name = "Oppo";
         $brand->save();
 
         $brand = new Brand();
-        $brand->header_name = "Brand";
         $brand->name = "Vivo";
         $brand->save();
 
         $brand = new Brand();
-        $brand->header_name = "Brand";
         $brand->name = "Xiaomi";
         $brand->save();
 

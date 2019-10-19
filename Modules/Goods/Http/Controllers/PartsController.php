@@ -5,6 +5,7 @@ namespace Modules\Goods\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Goods\Entities\Part;
 
 class PartsController extends Controller
 {
@@ -33,7 +34,10 @@ class PartsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $part = new Part();
+        $part = $part->store($request);
+
+        return response()->json();
     }
 
     /**

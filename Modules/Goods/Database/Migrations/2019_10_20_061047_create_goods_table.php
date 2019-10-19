@@ -15,9 +15,7 @@ class CreateGoodsTable extends Migration
     {
         Schema::create('goods', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
             $table->unsignedInteger('branch_id');
-            $table->unsignedInteger('category_id');
             $table->unsignedInteger('brand_id');
             $table->unsignedInteger('model_id');
             $table->unsignedInteger('submodel_id');
@@ -35,7 +33,6 @@ class CreateGoodsTable extends Migration
 
         Schema::table('goods', function($table) {
           $table->foreign('branch_id')->references('id')->on('branches');
-          $table->foreign('category_id')->references('id')->on('goods_categories');
           $table->foreign('brand_id')->references('id')->on('brands');
           $table->foreign('model_id')->references('id')->on('models');
           $table->foreign('submodel_id')->references('id')->on('submodels');
