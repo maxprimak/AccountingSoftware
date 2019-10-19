@@ -19,6 +19,12 @@ use Modules\Customers\Entities\CustomerType;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Passport;
+use Modules\Goods\Entities\Brand;
+use Modules\Goods\Entities\Models;
+use Modules\Goods\Entities\Submodel;
+use Modules\Goods\Entities\Part;
+use Modules\Goods\Entities\Color;
+
 
 abstract class TestCase extends BaseTestCase
 {
@@ -40,7 +46,7 @@ abstract class TestCase extends BaseTestCase
           $login = factory('Modules\Login\Entities\Login')->create([
             'username' => $this->faker->firstName()
           ]);
-        
+
           Passport::actingAs($login);
 
           $this->json('POST', route('registration.store'),[
@@ -99,7 +105,7 @@ abstract class TestCase extends BaseTestCase
           if(Currency::all()->count() == 0){
             factory(Currency::class)->create(['name' => 'Ukrainian HRYVNA', 'symbol' => 'UAH', 'id' => 1]);
           }
-  
+
           if(Role::all()->count() == 0){
             factory(Role::class)->create(['name' => 'Head', 'id' => 1]);
             factory(Role::class)->create(['name' => 'Top Manager', 'id' => 2]);
@@ -134,7 +140,7 @@ abstract class TestCase extends BaseTestCase
         public function checkValidationRequired($data, $route, $response){
 
           foreach($data as $key => $value){
-    
+
               $data[$key] = null;
 
               $response->json('POST', $route, $data)->assertStatus(422);
@@ -142,13 +148,13 @@ abstract class TestCase extends BaseTestCase
               $data[$key] = $value;
 
           }
-    
+
         }
 
         public function checkValidationUnique($not_unique_data, $required_data, $route, $response){
 
           foreach($required_data as $key => $value){
-    
+
             if(array_key_exists($key, $not_unique_data)){
 
               $required_data[$key] = $not_unique_data[$key];
@@ -176,7 +182,7 @@ abstract class TestCase extends BaseTestCase
               're_password' => '123456789',
               'email' => $this->faker->safeEmail,
               'phone' => $this->faker->phoneNumber,
-              'role_id' => $role_id, 
+              'role_id' => $role_id,
               'branch_id' => array($branch->id)
             ])->assertStatus(200);
 
@@ -203,4 +209,136 @@ abstract class TestCase extends BaseTestCase
 
         }
 
+        //Goods GET
+        public function getBrands($login){
+          $brands = Brand::all();
+          if(!empty($brands)){
+            $this->storeBrands($login,5);
+            $brands = Brand::all();
+
+          }
+          return $brands;
+        }
+
+        public function getModels($login,$brand_id){
+          $models = Models::where('brand_id',$brand_id)->get();
+          if(!empty($models)){
+            $this->storeModels($login,4);
+            $models = Models::all();
+          }
+          return $models;
+        }
+
+        public function getSubmodels($login,$model_id){
+          $sub_models = Submodel::where('model_id',$model_id)->get();
+          if(!empty($sub_models)){
+            $this->storeSubmodels($login,$model_id,3);
+            $sub_models = Submodel::all();
+          }
+          return $sub_models;
+        }
+
+        public function getParts($login){
+          $parts = Part::all();
+          if(!empty($parts)){
+            $this->storeParts($login,5);
+            $parts = Part::all();
+          }
+          return $parts;
+        }
+
+        public function getColors($login){
+          $colors = Color::all();
+          if(!empty($colors)){
+            $this->storeColors($login, 4);
+            $colors = Color::all();
+          }
+          return $colors;
+        }
+
+
+        //Goods STORE
+        public function storeBrands($login,$amount){
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $amount; $i++){
+
+            $name = $this->faker->unique()->name;
+
+            $response = $this->json('POST', route('brands.store'), [
+              'name' => $name
+            ])->assertStatus(200);
+
+            $response = $this->assertDatabaseHas('brands', [
+              'name' => $name
+            ]);
+          }
+        }
+
+        public function storeModels($login,$amount){
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $amount; $i++){
+
+            $brand_id = $this->getBrands($login)->random(1)->first()->id;
+            $name = $this->faker->unique()->name;
+
+            $response = $this->json('POST', route('models.store'), [
+              'brand_id' => $brand_id,
+              'name' => $name
+            ])->assertStatus(200);
+
+            $response = $this->assertDatabaseHas('models', [
+              'brand_id' => $brand_id,
+              'name' => $name
+            ]);
+          }
+        }
+
+        public function storeSubmodels($login,$model_id,$amount){
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $amount; $i++){
+            $name = $this->faker->unique()->name;
+            $response = $this->json('POST', route('submodels.store'), [
+              'model_id' => $model_id,
+              'name' => $name
+            ])->assertStatus(200);
+
+            $response = $this->assertDatabaseHas('submodels', [
+              'model_id' => $model_id,
+              'name' => $name
+            ]);
+          }
+        }
+
+        public function storeParts($login,$amount){
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $amount; $i++){
+            $name = $this->faker->unique()->name;
+            $response = $this->json('POST', route('parts.store'), [
+              'name' => $name
+            ])->assertStatus(200);
+
+            $response = $this->assertDatabaseHas('parts', [
+              'name' => $name
+            ]);
+          }
+        }
+
+        public function storeColors($login,$amount){
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $amount; $i++){
+            $name = $this->faker->unique()->name;
+            $response = $this->json('POST', route('colors.store'), [
+              'name' => $name
+            ])->assertStatus(200);
+
+            $response = $this->assertDatabaseHas('colors', [
+              'name' => $name
+            ]);
+          }
+        }
 }

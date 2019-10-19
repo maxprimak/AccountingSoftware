@@ -4,7 +4,7 @@ namespace Modules\Goods\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Model extends Model
+class CategoryHeader extends Model
 {
-    protected $fillable = [];
+    protected $fillable = ['name','description'];
 }

@@ -4,13 +4,14 @@ namespace Modules\Goods\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Brand extends Model
+class Part extends Model
 {
     protected $fillable = ['name'];
 
     public function store($request){
-        $this->name = $request->name;
-        $this->save();
+      $this->name = $request->name;
+      $this->save();
+      
+      return $this;
     }
-
 }

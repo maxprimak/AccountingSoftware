@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBrandsTable extends Migration
+class CreateSubmodelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreateBrandsTable extends Migration
      */
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('submodels', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('model_id');
             $table->string('name');
             $table->timestamps();
+        });
+
+        Schema::table('submodels', function($table) {
+          $table->foreign('model_id')->references('id')->on('models');
         });
     }
 
@@ -27,6 +32,6 @@ class CreateBrandsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('submodels');
     }
 }

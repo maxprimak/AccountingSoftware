@@ -5,10 +5,10 @@ namespace Modules\Goods\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Goods\Entities\Good;
-use Modules\Goods\Http\Requests\StoreGoodRequest;
+use Modules\Goods\Entities\Submodel;
 
-class GoodsController extends Controller
+
+class SubmodelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -33,10 +33,10 @@ class GoodsController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(StoreGoodRequest $request)
+    public function store(Request $request)
     {
-        $good = new Good();
-        $good = $good->store($request);
+        $submodel = new Submodel();
+        $submodel->store($request);
 
         return response()->json();
     }

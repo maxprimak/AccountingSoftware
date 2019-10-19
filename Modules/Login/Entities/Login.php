@@ -13,7 +13,7 @@ use Modules\Users\Entities\User;
 use Modules\Employees\Entities\Employee;
 
 class Login extends Authenticatable implements MustVerifyEmail
-{   
+{
     use Notifiable, HasApiTokens;
 
     protected $fillable = ['id', 'username', 'password', 'remember_token', 'email', 'email_verified_at'];
@@ -31,7 +31,7 @@ class Login extends Authenticatable implements MustVerifyEmail
 
     public function checkRole(){
         $role_id = $this->getRoleId();
-        
+
         return $role_id;
     }
 

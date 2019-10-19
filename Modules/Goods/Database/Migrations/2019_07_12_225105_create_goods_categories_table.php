@@ -14,11 +14,13 @@ class CreateGoodsCategoriesTable extends Migration
     public function up()
     {
         Schema::create('goods_categories', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+            $table->string('header_name');
             $table->string('name');
             $table->timestamps();
             //TODO: foreign keys
         });
+
     }
 
     /**

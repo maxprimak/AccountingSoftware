@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Customers\Http\Requests;
+namespace Modules\Goods\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class StoreCustomerRequest extends FormRequest
+class StoreGoodRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,13 +16,14 @@ class StoreCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:customers,email',
-            'phone' => 'required|unique:people,phone',
-            'stars_number' => 'numeric',
-            'customer_type_id' => 'required | numeric',
-            'branch_id' => 'required',
-            'user_id' => 'required | numeric',
+          'branch_id' => 'required | numeric',
+          'brand_id' => 'required | numeric',
+          'model_id' => 'required | numeric',
+          'submodel_id' => 'required | numeric',
+          'part_id' => 'required | numeric',
+          'amount' => 'required | numeric',
+          'color_id' => 'required | numeric',
+          'price' => 'required | numeric',
         ];
     }
 

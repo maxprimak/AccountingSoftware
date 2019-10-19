@@ -131,7 +131,7 @@ class CustomersTest extends TestCase
 
      //TEST VALIDATION OF CUSTOMER
      public function test_customers_validation_if_unique()
-     {  
+     {
         Passport::actingAs($this->login);
 
         $not_unique_data = [
@@ -140,11 +140,11 @@ class CustomersTest extends TestCase
         ];
 
         $required_data = [
-            'name' => $this->faker->name, 
-            'email' => $this->faker->email, 
-            'phone' => $this->faker->phoneNumber, 
-            'customer_type_id' => 1, 
-            'branch_id' => $this->branch->id, 
+            'name' => $this->faker->name,
+            'email' => $this->faker->email,
+            'phone' => $this->faker->phoneNumber,
+            'customer_type_id' => 1,
+            'branch_id' => $this->branch->id,
             'user_id' => $this->getUserOfLogin($this->login)->id
         ];
 
@@ -156,7 +156,7 @@ class CustomersTest extends TestCase
      }
 
      public function test_customers_validation_if_required()
-     {  
+     {
 
         // TEST required user_id
         $test_customer = [

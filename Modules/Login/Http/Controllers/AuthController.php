@@ -18,7 +18,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request){
 
         if(!Auth::guard('web')->attempt(['username' => $request->username, 'password' => $request->password, 'is_active' => 1]))
-            
+
         return response()->json([
                 'error' => 'invalid_credentials'
             ], 401);
@@ -38,7 +38,7 @@ class AuthController extends Controller
     }
 
     public function getToken($user, $request){
-        
+
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
 
@@ -92,13 +92,13 @@ class AuthController extends Controller
             auth('api')->user()->tokens->each(function($token, $key){
                 $token->delete();
             });
-            
+
             return response()->json(['status' => 'logged_out'], 200);
 
         }
         else{
 
-            return response()->json(['status' => 'not_logged_in'], 401); 
+            return response()->json(['status' => 'not_logged_in'], 401);
 
         }
 
