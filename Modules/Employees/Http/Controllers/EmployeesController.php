@@ -42,20 +42,6 @@ class EmployeesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-
-        $user = User::where('login_id', auth()->id())->firstOrFail();
-        $branches = BranchesService::getUserBranches($user->id);
-        $roles = Role::all();
-
-        return view('employees::create', compact('branches', 'roles'));
-    }
-
-    /**
      * Store a newly created resource in storage.
      * @param StoreEmployeeRequest $request
      * @return Response
