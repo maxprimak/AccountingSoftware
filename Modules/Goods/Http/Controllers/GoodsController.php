@@ -16,7 +16,8 @@ class GoodsController extends Controller
      */
     public function index()
     {
-        return view('goods::index');
+        // return view('goods::index');
+        return response()->json('HELLO');
     }
 
     /**

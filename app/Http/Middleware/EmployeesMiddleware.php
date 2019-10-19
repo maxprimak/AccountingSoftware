@@ -15,14 +15,14 @@ class EmployeesMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $role_id = auth()->user()->getRoleId();
-        
+        $role_id = auth('api')->user()->getRoleId();
+
         if($role_id == '5')
         {
             return response()->json(['message' => 'Courier does not have permission to access this route'], 403);
         }else {
             return $next($request);
         }
-        
+
     }
 }
