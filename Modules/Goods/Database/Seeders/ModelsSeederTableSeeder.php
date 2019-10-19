@@ -15,20 +15,20 @@ class ModelsSeederTableSeeder extends Seeder
      */
     public function run()
     {
-        Models::unguard();
+        Model::unguard();
 
         //CATEGORIES Models
         //APPLE Models
         $Models = new Models();
         $Models->header_name = "Model";
         $Models->brand_id = 1;
-        $Models->name = "iPad";
+        $Models->name = "iPhone";
         $Models->save();
 
         $Models = new Models();
         $Models->header_name = "Model";
         $Models->brand_id = 1;
-        $Models->name = "iPhone";
+        $Models->name = "iPad";
         $Models->save();
 
         $Models = new Models();

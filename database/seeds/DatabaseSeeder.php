@@ -11,6 +11,9 @@ use Modules\Customers\Database\Seeders\CustomerTypesTableSeeder;
 use Modules\Goods\Database\Seeders\CategoriesSeederTableSeeder;
 use Modules\Goods\Database\Seeders\BrandsSeederTableSeeder;
 use Modules\Goods\Database\Seeders\ModelsSeederTableSeeder;
+use Modules\Goods\Database\Seeders\SubmodelSeederTableSeeder;
+use Modules\Goods\Database\Seeders\PartSeederTableSeeder;
+use Modules\Goods\Database\Seeders\ColorSeederTableSeeder;
 
 
 class DatabaseSeeder extends Seeder
@@ -32,7 +35,9 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoriesSeederTableSeeder::class);
         $this->call(BrandsSeederTableSeeder::class);
         $this->call(ModelsSeederTableSeeder::class);
-
+        $this->call(SubmodelSeederTableSeeder::class);
+        $this->call(PartSeederTableSeeder::class);
+        $this->call(ColorSeederTableSeeder::class);
 
     }
 }

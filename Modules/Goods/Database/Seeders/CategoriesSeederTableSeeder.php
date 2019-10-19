@@ -18,21 +18,21 @@ class CategoriesSeederTableSeeder extends Seeder
     {
         Model::unguard();
         // HEADERS
-        $category_header = new CategoryHeader();
-        $category_header->name = "Brand";
-        $category_header->save();
-
-        $category_header = new CategoryHeader();
-        $category_header->name = "Model";
-        $category_header->save();
-
-        $category_header = new CategoryHeader();
-        $category_header->name = "Submodel";
-        $category_header->save();
-
-        $category_header = new CategoryHeader();
-        $category_header->name = "Parts";
-        $category_header->save();
+        // $category_header = new CategoryHeader();
+        // $category_header->name = "Brand";
+        // $category_header->save();
+        //
+        // $category_header = new CategoryHeader();
+        // $category_header->name = "Model";
+        // $category_header->save();
+        //
+        // $category_header = new CategoryHeader();
+        // $category_header->name = "Submodel";
+        // $category_header->save();
+        //
+        // $category_header = new CategoryHeader();
+        // $category_header->name = "Parts";
+        // $category_header->save();
 
     }
 }

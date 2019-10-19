@@ -40,7 +40,7 @@ abstract class TestCase extends BaseTestCase
           $login = factory('Modules\Login\Entities\Login')->create([
             'username' => $this->faker->firstName()
           ]);
-        
+
           Passport::actingAs($login);
 
           $this->json('POST', route('registration.store'),[
@@ -99,7 +99,7 @@ abstract class TestCase extends BaseTestCase
           if(Currency::all()->count() == 0){
             factory(Currency::class)->create(['name' => 'Ukrainian HRYVNA', 'symbol' => 'UAH', 'id' => 1]);
           }
-  
+
           if(Role::all()->count() == 0){
             factory(Role::class)->create(['name' => 'Head', 'id' => 1]);
             factory(Role::class)->create(['name' => 'Top Manager', 'id' => 2]);
@@ -134,7 +134,7 @@ abstract class TestCase extends BaseTestCase
         public function checkValidationRequired($data, $route, $response){
 
           foreach($data as $key => $value){
-    
+
               $data[$key] = null;
 
               $response->json('POST', $route, $data)->assertStatus(422);
@@ -142,13 +142,13 @@ abstract class TestCase extends BaseTestCase
               $data[$key] = $value;
 
           }
-    
+
         }
 
         public function checkValidationUnique($not_unique_data, $required_data, $route, $response){
 
           foreach($required_data as $key => $value){
-    
+
             if(array_key_exists($key, $not_unique_data)){
 
               $required_data[$key] = $not_unique_data[$key];
@@ -176,7 +176,7 @@ abstract class TestCase extends BaseTestCase
               're_password' => '123456789',
               'email' => $this->faker->safeEmail,
               'phone' => $this->faker->phoneNumber,
-              'role_id' => $role_id, 
+              'role_id' => $role_id,
               'branch_id' => array($branch->id)
             ])->assertStatus(200);
 
@@ -203,4 +203,138 @@ abstract class TestCase extends BaseTestCase
 
         }
 
+        //Goods GET
+        public function getBrands($login){
+          $brands = Brand::all();
+          if(!$brands){
+            $this->storeBrands($login,5);
+            $brands = Brand::all();
+          }
+          return $brands;
+        }
+        public function getModels($login){
+          $models = Models::all();
+          if(!$models){
+            $this->storeModels($login,4);
+            $models = Models::all();
+          }
+          return $models;
+        }
+        public function getSubmodels($login){
+          $sub_models = Submodel::all();
+          if(!$sub_models){
+            $this->storeSubmodels($login,3);
+            $sub_models = Submodel::all();
+          }
+          return $sub_models;
+        }
+        public function getParts($login){
+          $parts = Part::all();
+          if(!$parts){
+            $this->storeParts($login,5);
+            $parts = Part::all();
+          }
+          return $parts;
+        }
+        public function getColors($login){
+          $colors = Color::all();
+          if(!$colors){
+            $this->storeColors($login, 4);
+            $colors = Color::all();
+          }
+          return $colors;
+        }
+
+
+        //Goods STORE
+        public function storeBrands($login,$amount){
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $amount; $i++){
+
+            $header_name = $this->faker->name;
+            $name = $this->faker->name->unique();
+
+            $response = $this->json('POST', route('brands.store'), [
+              'header_name' => $header_name,
+              'name' => $name
+            ])->assertStatus(200);
+
+            $response = $this->assertDatabaseHas('brands', [
+              'header_name' => $header_name,
+              'name' => $name
+            ]);
+          }
+        }
+
+        public function storeModels($login,$amount){
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $amount; $i++){
+
+            $header_name = $this->faker->name;
+            $brand_id = $this->getBrands()->random()->first();
+            $name = $this->faker->name->unique();
+
+            $response = $this->json('POST', route('models.store'), [
+              'header_name' => $header_name,
+              'brand_id' => $brand_id,
+              'name' => $name
+            ])->assertStatus(200);
+
+            $response = $this->assertDatabaseHas('models', [
+              'header_name' => $header_name,
+              'brand_id' => $brand_id,
+              'name' => $name
+            ]);
+          }
+        }
+
+        public function storeSubmodels($login,$amount){
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $amount; $i++){
+            $model_id = $this->getModels()->random()->first();
+            $name = $this->faker->name->unique();
+            $response = $this->json('POST', route('submodels.store'), [
+              'model_id' => $model_id,
+              'name' => $name
+            ])->assertStatus(200);
+
+            $response = $this->assertDatabaseHas('submodels', [
+              'model_id' => $model_id,
+              'name' => $name
+            ]);
+          }
+        }
+
+        public function storeParts($login,$amount){
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $amount; $i++){
+            $name = $this->faker->name->unique();
+            $response = $this->json('POST', route('parts.store'), [
+              'name' => $name
+            ])->assertStatus(200);
+
+            $response = $this->assertDatabaseHas('parts', [
+              'name' => $name
+            ]);
+          }
+        }
+
+        public function storeColors($login,$amount){
+          Passport::actingAs($login);
+
+          for($i = 0; $i < $amount; $i++){
+            $name = $this->faker->color->unique();
+            $response = $this->json('POST', route('colors.store'), [
+              'name' => $name
+            ])->assertStatus(200);
+
+            $response = $this->assertDatabaseHas('colors', [
+              'name' => $name
+            ]);
+          }
+        }
 }
