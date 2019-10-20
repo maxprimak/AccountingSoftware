@@ -15,7 +15,8 @@ class ColorsController extends Controller
      */
     public function index()
     {
-        return view('goods::index');
+      $colors = Color::all();
+      return response()->json($colors);
     }
 
     /**

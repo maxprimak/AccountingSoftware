@@ -15,7 +15,8 @@ class PartsController extends Controller
      */
     public function index()
     {
-        return view('goods::index');
+        $parts = Part::all();
+        return response()->json($parts);
     }
 
     /**

@@ -87,6 +87,253 @@ class SubmodelSeederTableSeeder extends Seeder
         $submodel->name = "11 Pro";
         $submodel->save();
 
+        //MAKE IPHONE FROM iPhone 5 TILL iPhone 8
+        for($i = 5; $i <= 8;$i++){
+          //normal
+          $submodel = new Submodel();
+          $submodel->model_id = 1;
+          $submodel->name = $i;
+          $submodel->save();
+          if($i >= 6){
+            //Plus
+            $submodel = new Submodel();
+            $submodel->model_id = 1;
+            $submodel->name = $i." Plus";
+            $submodel->save();
+          }
+          if($i < 7){
+            $submodel = new Submodel();
+            $submodel->model_id = 1;
+            $submodel->name = $i."s";
+            $submodel->save();
+            if($i >= 6){
+              //Plus
+              $submodel = new Submodel();
+              $submodel->model_id = 1;
+              $submodel->name = $i."s Plus";
+              $submodel->save();
+            }
+          }
+        }
+
+        //MAKE IPADS
+          $submodel = new Submodel();
+          $submodel->model_id = 2;
+          $submodel->name = "iPad";
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 2;
+          $submodel->name = "iPad 2";
+          $submodel->save();
+          //IPAD
+          for($i = 3; $i <= 7;$i++){
+            $submodel = new Submodel();
+            $submodel->model_id = 2;
+            $submodel->name = "iPad ".$i."rd Generation";
+            $submodel->save();
+          }
+          //IPAD MINI
+          $submodel = new Submodel();
+          $submodel->model_id = 2;
+          $submodel->name = "iPad mini";
+          $submodel->save();
+
+          for($i = 2; $i <= 5;$i++){
+            $submodel = new Submodel();
+            $submodel->model_id = 2;
+            $submodel->name = "iPad mini ".$i;
+            $submodel->save();
+          }
+
+          //IPAD AIR
+          $submodel = new Submodel();
+          $submodel->model_id = 2;
+          $submodel->name = "iPad Air";
+          $submodel->save();
+
+          for($i = 2; $i <= 3;$i++){
+            $submodel = new Submodel();
+            $submodel->model_id = 2;
+            $submodel->name = "iPad Air ".$i;
+            $submodel->save();
+          }
+
+          //IPAD PRO
+          $submodel = new Submodel();
+          $submodel->model_id = 2;
+          $submodel->name = "iPad Pro 12.9 inch";
+          $submodel->save();
+
+          for($i = 2; $i <= 3;$i++){
+            $submodel = new Submodel();
+            $submodel->model_id = 2;
+            if($i == 2){
+              $submodel->name = "iPad Pro 12.9 inch ".$i."nd Generation";
+            }else{
+              $submodel->name = "iPad Pro 12.9 inch ".$i."rd Generation";
+            }
+            $submodel->save();
+          }
+
+      //MAKE APPLE WATCH
+          for($i = 1; $i <= 5;$i++){
+            $submodel = new Submodel();
+            $submodel->model_id = 3;
+            $submodel->name = "Apple Watch Series ".$i;
+            $submodel->save();
+          }
+
+      //MAKE MACBOOK
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1181';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1278';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1342';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1534';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1237';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1304';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1370';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1369';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1465';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1466';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1932';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1150';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1151';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1211';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1212';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1226';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1229';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1260';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1261';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1286';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1297';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1398';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1425';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1502';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1708';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1706';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1707';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1989';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1990';
+          $submodel->save();
+
+          $submodel = new Submodel();
+          $submodel->model_id = 4;
+          $submodel->name = 'A1212';
+          $submodel->save();
     }
 
     public function samsung(){
