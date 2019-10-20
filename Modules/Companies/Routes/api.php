@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 Route::middleware(['is_authorized', 'is_registered', 'employee', 'admin'])->group(function () {
 
+
 Route::get('companies', 'CompaniesController@index')->name('companies.index');
 Route::post('companies/{company_id}', 'CompaniesController@update')->name('companies.update');
 
