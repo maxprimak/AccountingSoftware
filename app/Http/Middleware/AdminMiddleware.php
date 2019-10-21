@@ -15,8 +15,8 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $role_id = auth()->user()->getRoleId();
-        
+        $role_id = auth('api')->user()->getRoleId();
+
         if($role_id != '1' && $role_id != '2')
         {
             return response()->json(["message" => "Only top manager and head can access this route"], 403);

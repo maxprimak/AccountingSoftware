@@ -14,9 +14,10 @@ class SubmodelController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index($model_id)
     {
-        return view('goods::index');
+        $submodels = Submodel::where('model_id',$model_id)->get();
+        return response()->json($submodels);
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Goods\Entities\Good;
 use Modules\Goods\Http\Requests\StoreGoodRequest;
+use Illuminate\Support\Facades\DB;
 
 class GoodsController extends Controller
 {
@@ -14,9 +15,20 @@ class GoodsController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index($branch_id)
     {
-        return view('goods::index');
+        $goods_id = Good::where('branch_id',$branch_id)->pluck('id')->toArray();
+        $goods = DB::table('goods')
+                    ->join('brands', 'brands.id', '=', 'goods.brand_id')
+                    ->join('models', 'models.id', '=', 'goods.model_id')
+                    ->join('submodels', 'submodels.id', '=', 'goods.submodel_id')
+                    ->join('parts','parts.id', '=', 'goods.part_id')
+                    ->join('colors','colors.id', '=', 'goods.color_id')
+                    ->select('goods.id as id', 'brands.name as brand_name' ,'models.name as model_name',
+                    'submodels.name as submodel_name', 'parts.name as part_name','colors.name as color_name','goods.amount')
+                    ->whereIn('goods.id',$goods_id)
+                    ->get();
+        return response()->json($goods);
     }
 
     /**
@@ -38,7 +50,8 @@ class GoodsController extends Controller
         $good = new Good();
         $good = $good->store($request);
 
-        return response()->json();
+        // return response()->json($good);
+        return response()->json(['message' => 'Successfully created!', 'good' => $good], 200);
     }
 
     /**
@@ -69,7 +82,14 @@ class GoodsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      // return response()->json($request,$id);
+      try {
+        $good = Good::findOrFail($id);
+        $good->edit($request);
+      } catch (\Exception $e) {
+        return response()->json(['message' => $e->getMessage()], 500);
+      }
+      return response()->json(['message' => 'Successfully updated!', 'good' => $good]);
     }
 
     /**
@@ -79,6 +99,7 @@ class GoodsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Good::findOrFail($id)->delete();
+        return response()->json(['message' => 'Successfully deleted!']);
     }
 }
