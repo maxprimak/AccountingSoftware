@@ -82,8 +82,7 @@ class GoodsController extends Controller
      */
     public function update(Request $request, $id)
     {
-      // dd($request,$id);
-      return response()->json($request,$id);
+      // return response()->json($request,$id);
       try {
         $good = Good::findOrFail($id);
         $good->edit($request);
