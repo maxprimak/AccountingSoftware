@@ -25,9 +25,9 @@ class CustomerServices{
         $customer->email = $request->email;
         $customer->type_id = $request->customer_type_id;
         $customer->company_id = $company_id;
-        $customer->created_by = $request->user_id;
+        $customer->created_by = auth('api')->id();
         $customer->save();
-        
+
         BranchesService::addCustomerToBranches($customer->id,$request->branch_id);
         return $customer;
     }
