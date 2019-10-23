@@ -63,7 +63,7 @@ class CustomersController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         try {
-            $user = User::findOrFail($request->user_id);
+            $user = User::where('login_id',auth('api')->id())->firstOrFail();
             $company_id = Company::findOrFail($user->company_id)->id;
             $customer = CustomerServiceFacad::createCustomer($request,$company_id);
         } catch (\Exception $e) {
