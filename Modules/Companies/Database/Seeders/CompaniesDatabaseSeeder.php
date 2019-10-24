@@ -18,13 +18,44 @@ class CompaniesDatabaseSeeder extends Seeder
         Model::unguard();
 
         //Add currency (Kazakstan Tenge)
-        factory('Modules\Companies\Entities\Currency')->create();
+        factory('Modules\Companies\Entities\Currency')->create([
+            'name' => 'Euro',
+            'symbol' => 'EUR'
+        ]);
 
         //Create Company of oliinykm95
-        factory('Modules\Companies\Entities\Company')->create();
+        factory('Modules\Companies\Entities\Company')->create([
+            'name' => 'PhoneFactory',
+            'currency_id' => 1,
+            'address' => 'Wagramerstraße 94, Top 1A',
+            'phone' => '+43 1 3694001'
+        ]);
 
-        //Create 5 Branches of this company
-        factory('Modules\Companies\Entities\Branch', 5)->create();
+        factory('Modules\Companies\Entities\Branch')->create([
+            'name' => 'DZ',
+            'company_id' => 1,
+            'color' => '#F64272',
+            'address' => 'Wagramerstraße 94, Top 1A',
+            'phone' => '+43 1 3694001'
+        ]);
+
+        
+        factory('Modules\Companies\Entities\Branch')->create([
+            'name' => 'KG',
+            'company_id' => 1,
+            'color' => '#0970c7',
+            'address' => 'Kirchengasse 1, Mariahilferstraße 50',
+            'phone' => '+43 1 3694001'
+        ]);
+
+        
+        factory('Modules\Companies\Entities\Branch')->create([
+            'name' => 'Humma',
+            'company_id' => 1,
+            'color' => '#ec9a5d',
+            'address' => 'Landwehrstraße 6, Top 126A',
+            'phone' => '+43 1 7670666'
+        ]);
         
     }
 }

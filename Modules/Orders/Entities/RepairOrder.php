@@ -7,6 +7,7 @@ use Modules\Customers\Entities\Customer;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
+use Modules\Orders\Entities\OrderStatus;
 
 
 class RepairOrder extends Model
@@ -47,7 +48,10 @@ class RepairOrder extends Model
 
         $repair_order->defect_description = $request->defect_description;
         $repair_order->comment = $request->comment;
-        $repair_order->status_id = $request->status_id;
+
+        $status = OrderStatus::where('name', $request->status)->firstOrFail();
+
+        $repair_order->status_id = $status->id;
         $repair_order->prepay_sum = $request->prepay_sum;
 
         $repair_order->update();

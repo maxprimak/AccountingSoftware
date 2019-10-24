@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Entities\SalesOrder;
 use Modules\Orders\Entities\Order;
+use Modules\Orders\Entities\OrderStatus;
 use Modules\Customers\Entities\Customer;
 use Modules\Orders\Http\Requests\StoreRepairOrderRequest;
 use Modules\Orders\Http\Requests\UpdateRepairOrderRequest;
@@ -80,6 +81,7 @@ class RepairOrdersController extends Controller
 
         $order = $order->storeUpdated($request, $order->id);
         $repair_order = $repair_order->storeUpdated($request, $repair_order->id);
+        $status_name = OrderStatus::find($repair_order->status_id)->name;
 
         return response()->json([
             'status' => 'Successfully updated',
@@ -94,7 +96,7 @@ class RepairOrdersController extends Controller
                 'defect_description' => $repair_order->defect_description,
                 'comment' => $repair_order->comment,
                 'prepay_sum' => $repair_order->prepay_sum,
-                'status_id' => $repair_order->status_id,
+                'status' => $status_name,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
                 'created_by' => $order->created_by,
