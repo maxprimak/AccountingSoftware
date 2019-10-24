@@ -16,6 +16,6 @@ class GoodsDatabaseSeeder extends Seeder
     public function run()
     {
         Model::unguard();
-        $goods = factory(Good::class, 100)->create();
+        // $goods = factory(Good::class, 100000)->create();
     }
 }

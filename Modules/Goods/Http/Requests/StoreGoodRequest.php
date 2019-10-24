@@ -21,9 +21,8 @@ class StoreGoodRequest extends FormRequest
           'model_id' => 'required | numeric',
           'submodel_id' => 'required | numeric',
           'part_id' => 'required | numeric',
-          'amount' => 'required | numeric',
+          'amount' => 'required',
           'color_id' => 'required | numeric',
-          'price' => 'required | numeric',
         ];
     }
 
