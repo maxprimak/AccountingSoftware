@@ -15,14 +15,17 @@ class CreateRepairOrdersTable extends Migration
     {
         Schema::create('repair_orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('order_id');
-            $table->bigInteger('manager_id');
-            $table->bigInteger('device_id');
-            $table->date('deadline');
-            $table->bigInteger('type_id');
-            $table->double('prepay_sum', 8, 2);
+            $table->unsignedInteger('order_id');
+            $table->string("order_nr");
+            $table->unsignedInteger("customer_id");
+            $table->string("defect_description");
+            $table->string("comment");
+            $table->unsignedInteger("status_id");
+            $table->double("prepay_sum");
             $table->timestamps();
-            //TODO: foreign keys
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('status_id')->references('id')->on('order_statuses');
         });
     }
 

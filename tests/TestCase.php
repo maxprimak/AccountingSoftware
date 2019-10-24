@@ -24,7 +24,11 @@ use Modules\Goods\Entities\Models;
 use Modules\Goods\Entities\Submodel;
 use Modules\Goods\Entities\Part;
 use Modules\Goods\Entities\Color;
-
+use Modules\Orders\Entities\OrderStatus;
+use Modules\Orders\Entities\Order;
+use Modules\Orders\Entities\SalesOrder;
+use Modules\Orders\Entities\RepairOrder;
+use Modules\Orders\Entities\PaymentType;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -38,6 +42,80 @@ abstract class TestCase extends BaseTestCase
           ]);
 
           return $login;
+
+        }
+
+        public function makeNewSalesOrder($login){
+
+          $login = $this->makeNewLoginWithCompanyAndBranch();
+
+          Passport::actingAs($login);
+  
+          $response = $this->json('POST', route('orders.sales.store'),[
+              'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
+              'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
+              'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
+              'article_description' => $this->faker->text(),
+              'payment_type_id' => $this->faker->numberBetween(1,2)
+          ])->assertJsonStructure([
+              'status',
+              'order' => [
+                  'id',
+                  'accept_date',
+                  'price',
+                  'branch_id',
+                  'article_description',
+                  'payment_type_id',
+                  'created_at',
+                  'updated_at',
+                  'created_by',
+              ]
+          ])->assertStatus(200);
+
+          $order = SalesOrder::find($response->decodeResponseJson()['order']['id']);
+
+          return $order;
+        
+        }
+
+        public function makeNewRepairOrder($login){
+
+          Passport::actingAs($login);
+
+          $response = $this->json('POST', route('orders.repair.create'), [
+              'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
+              'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
+              'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
+              'order_nr' => $this->faker->swiftBicNumber(),
+              'customer_name' => $this->faker->name(),
+              'customer_phone' => $this->faker->phoneNumber(),
+              'defect_description' => $this->faker->text(),
+              'comment' => $this->faker->text(),
+              'status_id' => $this->faker->numberBetween(1,3),
+              'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
+          ])->dump()->assertJsonStructure([
+              'status',
+              'order' => [
+                  'id',
+                  'accept_date',
+                  'price',
+                  'branch_id',
+                  'order_nr',
+                  'customer_name',
+                  'customer_phone',
+                  'defect_description',
+                  'comment',
+                  'prepay_sum',
+                  'status_id',
+                  'created_at',
+                  'updated_at',
+                  'created_by',
+              ]
+          ])->assertStatus(200);
+  
+          $order = RepairOrder::find($response->decodeResponseJson()['order']['id']);
+
+          return $order;
 
         }
 
@@ -117,6 +195,17 @@ abstract class TestCase extends BaseTestCase
           if(CustomerType::all()->count() == 0){
             factory(CustomerType::class)->create(['name' => 'Person', 'id' => 1]);
             factory(CustomerType::class)->create(['name' => 'Company', 'id' => 2]);
+          }
+
+          if(OrderStatus::all()->count() == 0){
+            factory(OrderStatus::class)->create(['name' => 'Not repaired', 'id' => 1]);
+            factory(OrderStatus::class)->create(['name' => 'Called', 'id' => 2]);
+            factory(OrderStatus::class)->create(['name' => 'Ready', 'id' => 3]);
+          }
+
+          if(PaymentType::all()->count() == 0){
+            factory(PaymentType::class)->create(['name' => 'Cash', 'id' => 1]);
+            factory(PaymentType::class)->create(['name' => 'Card', 'id' => 2]);
           }
 
         }

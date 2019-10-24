@@ -15,11 +15,12 @@ class CreateSalesOrdersTable extends Migration
     {
         Schema::create('sales_orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('order_id');
-            $table->string('description');
-            $table->integer('amount');
-            $table->string('note');
+            $table->unsignedInteger('order_id');
+            $table->string("article_description");
+            $table->unsignedInteger('payment_type_id');
             $table->timestamps();
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('payment_type_id')->references('id')->on('payment_types');
         });
     }
 
