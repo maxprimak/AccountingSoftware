@@ -5,7 +5,7 @@ namespace Modules\Orders\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class OrdersDatabaseSeeder extends Seeder
+class SalesOrdersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,5 +16,6 @@ class OrdersDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
+        factory('Modules\Orders\Entities\SalesOrder',10)->create();
     }
 }

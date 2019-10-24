@@ -16,8 +16,8 @@ $factory->define(RepairOrder::class, function (Faker $faker) {
         'order_id' => $order->id,
         'customer_id' => 1,
         'defect_description' => $faker->text(50),
-        'comment' => $faker->text(),
+        'comment' => $faker->text(100),
         'prepay_sum' => $faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
-        'status_id' => 1
+        'status_id' => $faker->numberBetween(1,3)
     ];
 });

@@ -27,7 +27,7 @@ class RepairOrdersTest extends TestCase
     //validator works for update
     //prepaysum > price
     
-    /*
+
     public function test_user_can_create_repair_order(){
 
         $login = $this->makeNewLoginWithCompanyAndBranch();
@@ -65,7 +65,6 @@ class RepairOrdersTest extends TestCase
         ])->assertStatus(200);
 
     }
-    */
 
     public function test_user_can_update_repair_order(){
 
@@ -121,7 +120,7 @@ class RepairOrdersTest extends TestCase
         $order = $this->makeNewRepairOrder($login);
 
         $this->json('GET', route('orders.repair.branch.index', ['branch_id' => $this->getBranchesOfLogin($login)->first()->id]), [])
-            ->assertJson(['prepay_sum'])->assertStatus(200);
+            ->assertStatus(200);
 
     }
     */
