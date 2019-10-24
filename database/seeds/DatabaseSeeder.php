@@ -15,6 +15,7 @@ use Modules\Goods\Database\Seeders\SubmodelSeederTableSeeder;
 use Modules\Goods\Database\Seeders\PartSeederTableSeeder;
 use Modules\Goods\Database\Seeders\ColorSeederTableSeeder;
 use Modules\Goods\Database\Seeders\GoodsDatabaseSeeder;
+use Modules\Orders\Database\Seeders\RepairOrdersTableSeeder;
 
 
 
@@ -41,6 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PartSeederTableSeeder::class);
         $this->call(ColorSeederTableSeeder::class);
         $this->call(GoodsDatabaseSeeder::class);
+        $this->call(RepairOrdersTableSeeder::class);
 
     }
 }

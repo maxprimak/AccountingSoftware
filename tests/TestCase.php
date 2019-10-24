@@ -82,7 +82,7 @@ abstract class TestCase extends BaseTestCase
 
           Passport::actingAs($login);
 
-          $response = $this->json('POST', route('orders.repair.create'), [
+          $response = $this->json('POST', route('orders.repair.store'), [
               'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
               'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
               'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
@@ -93,7 +93,7 @@ abstract class TestCase extends BaseTestCase
               'comment' => $this->faker->text(),
               'status_id' => $this->faker->numberBetween(1,3),
               'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
-          ])->dump()->assertJsonStructure([
+          ])->assertJsonStructure([
               'status',
               'order' => [
                   'id',

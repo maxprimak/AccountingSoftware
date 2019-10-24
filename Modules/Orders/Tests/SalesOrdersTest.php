@@ -71,7 +71,7 @@ class SalesOrdersTest extends TestCase
             'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
             'article_description' => $this->faker->text(),
             'payment_type_id' => $this->faker->numberBetween(1,2)
-        ])->assertJsonStructure([ //GIVES ERROR SOMETIMES
+        ])->assertJsonStructure([
             'status',
             'order' => [
                 'id',

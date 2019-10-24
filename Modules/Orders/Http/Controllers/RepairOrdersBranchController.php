@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Orders\Entities\RepairOrder;
+use Modules\Orders\Entities\OrderStatus;
 use Modules\Orders\Entities\Order;
 use Modules\Customers\Entities\Customer;
 use Modules\Users\Entities\People;
@@ -29,8 +30,9 @@ class RepairOrdersBranchController extends Controller
             $order = Order::find($repair_order->order_id);
             $customer = Customer::find($repair_order->customer_id);
             $person = People::find($customer->person_id);
+            $status_name = OrderStatus::find($repair_order->status_id)->name;
 
-            $item = array([
+            $item = array(
                 'id' => $repair_order->id,
                 'accept_date' => $order->accept_date,
                 'price' => $order->price,
@@ -41,15 +43,17 @@ class RepairOrdersBranchController extends Controller
                 'defect_description' => $repair_order->defect_description,
                 'comment' => $repair_order->comment,
                 'prepay_sum' => $repair_order->prepay_sum,
-                'status_id' => $repair_order->status_id,
+                'status' => $status_name,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
                 'created_by' => $order->created_by,
-            ]);
+            );
 
             array_push($result, $item);
 
         }
+
+        $result = json_encode($result);
 
         return response()->json($result);
 
