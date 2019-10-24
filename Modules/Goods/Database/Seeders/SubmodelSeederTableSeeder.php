@@ -87,35 +87,6 @@ class SubmodelSeederTableSeeder extends Seeder
         $submodel->name = "11 Pro";
         $submodel->save();
 
-        //MAKE IPHONE FROM iPhone 5 TILL iPhone 8
-        for($i = 5; $i <= 8;$i++){
-          //normal
-          $submodel = new Submodel();
-          $submodel->model_id = 1;
-          $submodel->name = $i;
-          $submodel->save();
-          if($i >= 6){
-            //Plus
-            $submodel = new Submodel();
-            $submodel->model_id = 1;
-            $submodel->name = $i." Plus";
-            $submodel->save();
-          }
-          if($i < 7){
-            $submodel = new Submodel();
-            $submodel->model_id = 1;
-            $submodel->name = $i."s";
-            $submodel->save();
-            if($i >= 6){
-              //Plus
-              $submodel = new Submodel();
-              $submodel->model_id = 1;
-              $submodel->name = $i."s Plus";
-              $submodel->save();
-            }
-          }
-        }
-
         //MAKE IPADS
           $submodel = new Submodel();
           $submodel->model_id = 2;
