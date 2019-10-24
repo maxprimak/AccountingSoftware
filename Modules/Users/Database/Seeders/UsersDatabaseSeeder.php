@@ -60,5 +60,17 @@ class UsersDatabaseSeeder extends Seeder
         */
 
         factory('Modules\Users\Entities\UserHasBranch')->create();
+
+        factory('Modules\Users\Entities\UserHasBranch')->create([
+            'user_id' => 1,
+            'branch_id' => 2
+        ]);
+
+    
+        factory('Modules\Users\Entities\UserHasBranch')->create([
+            'user_id' => 1,
+            'branch_id' => 3
+        ]);
+        
     }
 }

@@ -56,6 +56,5 @@ class CompaniesDatabaseSeeder extends Seeder
             'address' => 'Landwehrstraße 6, Top 126A',
             'phone' => '+43 1 7670666'
         ]);
-        
     }
 }
