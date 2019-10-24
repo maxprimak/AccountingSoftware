@@ -20,12 +20,12 @@ class EmployeesDatabaseSeeder extends Seeder
             'user_id' => 1,
             'role_id' => 1,
         ]);
-        /*
+
         factory('Modules\Employees\Entities\Employee')->create([
             'user_id' => 2,
             'role_id' => 2,
         ]);
-        
+        /*
         factory('Modules\Employees\Entities\Employee')->create([
             'user_id' => 3,
             'role_id' => 2,
