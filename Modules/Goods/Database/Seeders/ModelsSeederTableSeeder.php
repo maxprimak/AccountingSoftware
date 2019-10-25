@@ -98,7 +98,7 @@ class ModelsSeederTableSeeder extends Seeder
             $Models->save();
 
             $Models = new Models();
-            $Models->brand_id = 4;
+            $Models->brand_id = 3;
             $Models->name = "Honor";
             $Models->save();
 
