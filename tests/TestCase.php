@@ -47,15 +47,13 @@ abstract class TestCase extends BaseTestCase
 
         public function makeNewSalesOrder($login){
 
-          $login = $this->makeNewLoginWithCompanyAndBranch();
-
           Passport::actingAs($login);
   
           $response = $this->json('POST', route('orders.sales.store'),[
               'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
               'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
               'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
-              'article_description' => $this->faker->text(),
+              'article_description' => $this->faker->text(70),
               'payment_type_id' => $this->faker->numberBetween(1,2)
           ])->assertJsonStructure([
               'status',
@@ -89,8 +87,8 @@ abstract class TestCase extends BaseTestCase
               'order_nr' => $this->faker->swiftBicNumber(),
               'customer_name' => $this->faker->name(),
               'customer_phone' => $this->faker->phoneNumber(),
-              'defect_description' => $this->faker->text(),
-              'comment' => $this->faker->text(),
+              'defect_description' => $this->faker->text(50),
+              'comment' => $this->faker->text(100),
               'status_id' => $this->faker->numberBetween(1,3),
               'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
           ])->assertJsonStructure([

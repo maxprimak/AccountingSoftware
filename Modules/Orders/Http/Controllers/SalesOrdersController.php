@@ -95,7 +95,7 @@ class SalesOrdersController extends Controller
         $sales_order = $sales_order->storeUpdated($request);
 
         return response()->json([
-            'status' => 'Successfully created',
+            'status' => 'Successfully updated',
             'order' => [
                 'id' => $sales_order->id,
                 'accept_date' => $order->accept_date,

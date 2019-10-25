@@ -14,7 +14,7 @@ class Order extends Model
             $this->accept_date = $request->accept_date;
             $this->price = $request->price;
             $this->branch_id = $request->branch_id;
-            $this->created_by = auth('api')->id();
+            $this->created_by = auth('api')->user()->id;
 
             $this->save();
 
