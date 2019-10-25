@@ -9,8 +9,6 @@ use Modules\Goods\Entities\Good;
 use Modules\Goods\Http\Requests\StoreGoodRequest;
 use Modules\Goods\Http\Requests\UpdateGoodRequest;
 use Illuminate\Support\Facades\DB;
-use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
-use RuntimeException;
 
 class GoodsController extends Controller
 {
@@ -20,7 +18,6 @@ class GoodsController extends Controller
      */
     public function index($branch_id)
     {
-        Bugsnag::notifyException(new RuntimeException("Test error"));
         $goods_id = Good::where('branch_id',$branch_id)->pluck('id')->toArray();
         $goods = DB::table('goods')
                     ->join('brands', 'brands.id', '=', 'goods.brand_id')
