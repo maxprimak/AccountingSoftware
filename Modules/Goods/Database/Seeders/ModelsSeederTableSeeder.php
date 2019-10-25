@@ -79,17 +79,12 @@ class ModelsSeederTableSeeder extends Seeder
           //HUAWEI Models
             $Models = new Models();
             $Models->brand_id = 3;
-            $Models->name = "Q";
+            $Models->name = "Mate";
             $Models->save();
 
             $Models = new Models();
             $Models->brand_id = 3;
-            $Models->name = "G";
-            $Models->save();
-
-            $Models = new Models();
-            $Models->brand_id = 3;
-            $Models->name = "K";
+            $Models->name = "P";
             $Models->save();
 
             $Models = new Models();
@@ -99,64 +94,95 @@ class ModelsSeederTableSeeder extends Seeder
 
             $Models = new Models();
             $Models->brand_id = 3;
-            $Models->name = "G Tab";
+            $Models->name = "Nova";
             $Models->save();
+
+            $Models = new Models();
+            $Models->brand_id = 4;
+            $Models->name = "Honor";
+            $Models->save();
+
+            //LG Models
+              $Models = new Models();
+              $Models->brand_id = 4;
+              $Models->name = "Q";
+              $Models->save();
+
+              $Models = new Models();
+              $Models->brand_id = 4;
+              $Models->name = "G";
+              $Models->save();
+
+              $Models = new Models();
+              $Models->brand_id = 4;
+              $Models->name = "K";
+              $Models->save();
+
+              $Models = new Models();
+              $Models->brand_id = 4;
+              $Models->name = "Y";
+              $Models->save();
+
+              $Models = new Models();
+              $Models->brand_id = 4;
+              $Models->name = "G Tab";
+              $Models->save();
 
         //SONY Models
           $Models = new Models();
-          $Models->brand_id = 4;
+          $Models->brand_id = 5;
           $Models->name = "Xperia";
           $Models->save();
 
           $Models = new Models();
-          $Models->brand_id = 4;
+          $Models->brand_id = 5;
           $Models->name = "Xperia X";
           $Models->save();
 
           $Models = new Models();
-          $Models->brand_id = 4;
+          $Models->brand_id = 5;
           $Models->name = "Xperia Z";
           $Models->save();
 
           $Models = new Models();
-          $Models->brand_id = 4;
+          $Models->brand_id = 5;
           $Models->name = "Xperia L";
           $Models->save();
 
           //OnePlus Models
             $Models = new Models();
-            $Models->brand_id = 5;
+            $Models->brand_id = 6;
             $Models->name = "OnePlus";
             $Models->save();
 
             $Models = new Models();
-            $Models->brand_id = 5;
+            $Models->brand_id = 6;
             $Models->name = "OnePlus T";
             $Models->save();
 
             $Models = new Models();
-            $Models->brand_id = 5;
+            $Models->brand_id = 6;
             $Models->name = "OnePlus Pro";
             $Models->save();
 
         //OnePlus Models
           $Models = new Models();
-          $Models->brand_id = 6;
+          $Models->brand_id = 7;
           $Models->name = "Oppo A";
           $Models->save();
 
           $Models = new Models();
-          $Models->brand_id = 6;
+          $Models->brand_id = 7;
           $Models->name = "Oppo K";
           $Models->save();
 
           $Models = new Models();
-          $Models->brand_id = 6;
+          $Models->brand_id = 7;
           $Models->name = "Oppo R";
           $Models->save();
 
           $Models = new Models();
-          $Models->brand_id = 6;
+          $Models->brand_id = 7;
           $Models->name = "Oppo Reno";
           $Models->save();
 
