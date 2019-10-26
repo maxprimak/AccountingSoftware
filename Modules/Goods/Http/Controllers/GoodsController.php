@@ -17,7 +17,7 @@ class GoodsController extends Controller
      * @return Response
      */
     public function index($branch_id)
-    {
+    {        
         $goods_id = Good::where('branch_id',$branch_id)->pluck('id')->toArray();
         $goods = DB::table('goods')
                     ->join('brands', 'brands.id', '=', 'goods.brand_id')

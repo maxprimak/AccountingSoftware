@@ -45,14 +45,7 @@ class CustomersController extends Controller
      */
     public function create()
     {
-      try{
-          $user = User::where('login_id', auth()->id())->firstOrFail();
-          $branches = BranchesService::getUserBranches($user->id);
-          $customer_types = CustomerType::all();
-      }catch(\Exception $e){
-          return abort(500);
-      }
-        return view('customers::create', compact('user','branches','customer_types'));
+      
     }
 
     /**

@@ -46,13 +46,13 @@ class BrandsSeederTableSeeder extends Seeder
         $brand->name = "Oppo";
         $brand->save();
 
-        // $brand = new Brand();
-        // $brand->name = "Vivo";
-        // $brand->save();
-        //
-        // $brand = new Brand();
-        // $brand->name = "Xiaomi";
-        // $brand->save();
+        $brand = new Brand();
+        $brand->name = "Vivo";
+        $brand->save();
+
+        $brand = new Brand();
+        $brand->name = "Xiaomi";
+        $brand->save();
 
     }
 }
