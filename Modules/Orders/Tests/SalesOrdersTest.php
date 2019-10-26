@@ -34,7 +34,7 @@ class SalesOrdersTest extends TestCase
             'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
             'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
             'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
-            'article_description' => $this->faker->text(),
+            'article_description' => $this->faker->text(50),
             'payment_type_id' => $this->faker->numberBetween(1,2)
         ])->assertJsonStructure([
             'status',
@@ -64,7 +64,7 @@ class SalesOrdersTest extends TestCase
         $response = $this->json('POST', route('orders.sales.update', ['order_id' => $order->id]),[
             'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
             'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
-            'article_description' => $this->faker->text(),
+            'article_description' => $this->faker->text(50),
             'payment_type_id' => $this->faker->numberBetween(1,2)
         ])->assertJsonStructure([
             'status',

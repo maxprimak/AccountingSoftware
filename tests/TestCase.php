@@ -53,7 +53,7 @@ abstract class TestCase extends BaseTestCase
               'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
               'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
               'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
-              'article_description' => $this->faker->text(70),
+              'article_description' => $this->faker->text(50),
               'payment_type_id' => $this->faker->numberBetween(1,2)
           ])->assertJsonStructure([
               'status',
@@ -85,8 +85,8 @@ abstract class TestCase extends BaseTestCase
               'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
               'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
               'order_nr' => $this->faker->swiftBicNumber(),
-              'customer_name' => $this->faker->name(),
-              'customer_phone' => $this->faker->phoneNumber(),
+              'customer_name' => $this->faker->name(50),
+              'customer_phone' => $this->faker->phoneNumber(50),
               'defect_description' => $this->faker->text(50),
               'comment' => $this->faker->text(100),
               'status_id' => $this->faker->numberBetween(1,3),
