@@ -35,10 +35,16 @@ class PartsController extends Controller
      */
     public function store(Request $request)
     {
+        $existing_part = Part::where('name','=', $request->name)->first();
+
+        if($existing_part){
+          return response()->json(['message' => 'This part already exists'], 200);
+        }
+
         $part = new Part();
         $part = $part->store($request);
 
-        return response()->json();
+        return response()->json(['message' => 'Successfully added!', 'part' => $part], 200);
     }
 
     /**
