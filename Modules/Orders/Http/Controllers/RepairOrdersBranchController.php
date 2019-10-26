@@ -21,7 +21,7 @@ class RepairOrdersBranchController extends Controller
     {
         $repair_order_ids = RepairOrder::all()->pluck('order_id');
         $order_ids = Order::whereIn('id', $repair_order_ids)->where('branch_id', $id)->pluck('id');
-        $repair_orders = RepairOrder::whereIn('order_id', $order_ids)->get();
+        $repair_orders = RepairOrder::whereIn('order_id', $order_ids)->orderBy('id', 'DESC')->get();
 
         $result = array();
 
