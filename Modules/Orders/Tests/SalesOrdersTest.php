@@ -23,10 +23,7 @@ class SalesOrdersTest extends TestCase
     }
 
     //guest_can_not_access_routes(){}
-    //validator works for create
-    //validator works for update
 
-    /*
     public function test_user_can_create_sales_orders(){
 
         $login = $this->makeNewLoginWithCompanyAndBranch();
@@ -55,9 +52,7 @@ class SalesOrdersTest extends TestCase
         ])->assertStatus(200);
 
     }
-    */
 
-    /*
     public function test_user_can_update_sales_orders(){
 
         $login = $this->makeNewLoginWithCompanyAndBranch();
@@ -86,9 +81,7 @@ class SalesOrdersTest extends TestCase
             ]
         ])->assertStatus(200);
 
-    }*/
-
-
+    }
 
     public function test_user_can_see_orders_of_branch(){
 
@@ -100,6 +93,61 @@ class SalesOrdersTest extends TestCase
 
         $this->json('GET', route('orders.sales.branch.index', ['branch_id' => $this->getBranchesOfLogin($login)->first()->id]), [])
             ->assertStatus(200);
+
+    }
+
+    public function test_user_can_delete_sales_order(){
+
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+
+        Passport::actingAs($login);
+
+        $order = $this->makeNewSalesOrder($login);
+
+        $this->json('DELETE', route('orders.sales.destroy', ['branch_id' => $order->id]), [])
+        ->assertJson(["status" => "Successfully deleted"])->assertStatus(200);
+    }
+
+    public function test_validation_create(){
+
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+
+        Passport::actingAs($login);
+
+        $data = [
+            'accept_date',
+            'price',
+            'branch_id',
+            'article_description',
+            'payment_type_id'
+        ];
+
+        $route = route('orders.sales.store');
+        $response = $this;
+
+        $this->checkValidationRequired($data, $route, $response);
+
+    }
+
+    public function test_validation_update(){
+
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+
+        Passport::actingAs($login);
+
+        $order = $this->makeNewSalesOrder($login);
+
+        $data = [
+            'accept_date',
+            'price',
+            'article_description',
+            'payment_type_id'
+        ];
+
+        $route = route('orders.sales.update', ['order_id' => $order->id]);
+        $response = $this;
+
+        $this->checkValidationRequired($data, $route, $response);
 
     }
 

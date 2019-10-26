@@ -14,7 +14,11 @@ class StoreSalesOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'accept_date' => 'required|date|before:tomorrow',
+            'price' => 'required|numeric',
+            'branch_id' => 'required|exists:branches,id',
+            'article_description' => 'required|max:190',
+            'payment_type_id' => 'required|exists:payment_types,id',
         ];
     }
 

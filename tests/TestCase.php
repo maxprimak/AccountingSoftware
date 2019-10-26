@@ -90,7 +90,7 @@ abstract class TestCase extends BaseTestCase
               'defect_description' => $this->faker->text(50),
               'comment' => $this->faker->text(100),
               'status_id' => $this->faker->numberBetween(1,3),
-              'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
+              'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 19),
           ])->assertJsonStructure([
               'status',
               'order' => [

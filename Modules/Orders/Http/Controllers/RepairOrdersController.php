@@ -131,7 +131,14 @@ class RepairOrdersController extends Controller
      * @return Response
      */
     public function destroy($id)
-    {
-        //
+    {   
+
+        $repair_order = RepairOrder::findOrFail($id);
+        $order = Order::findOrFail($repair_order->order_id);
+        $repair_order->delete();
+        $order->delete();
+
+        return response()->json(["status" => "Successfully deleted"]);
+
     }
 }

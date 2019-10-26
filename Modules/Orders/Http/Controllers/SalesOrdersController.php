@@ -118,6 +118,13 @@ class SalesOrdersController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $sales_order = SalesOrder::findOrFail($id);
+        $order = Order::findOrFail($sales_order->order_id);
+        $sales_order->delete();
+        $order->delete();
+
+        return response()->json(["status" => "Successfully deleted"]);
+
     }
 }

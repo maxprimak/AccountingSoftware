@@ -27,7 +27,6 @@ class RepairOrdersTest extends TestCase
     //validator works for update
     //prepaysum > price
     
-
     public function test_user_can_create_repair_order(){
 
         $login = $this->makeNewLoginWithCompanyAndBranch();
@@ -84,9 +83,7 @@ class RepairOrdersTest extends TestCase
             'comment' => $this->faker->text(),
             'status' => 'Called',
             'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000)
-        ])->dump();
-        
-        /*->assertJsonStructure([
+        ])->assertJsonStructure([
             'status',
             'order' => [
                 'id',
@@ -106,11 +103,10 @@ class RepairOrdersTest extends TestCase
             ]
         ])->assertStatus(200);
 
-        $this->assertEquals(1, Order::all()->count());*/
+        $this->assertEquals(1, Order::all()->count());
 
     }
 
-    /*
     public function test_user_can_see_orders_of_branch(){
 
         $login = $this->makeNewLoginWithCompanyAndBranch();
@@ -123,6 +119,67 @@ class RepairOrdersTest extends TestCase
             ->assertStatus(200);
 
     }
-    */
+
+    public function test_user_can_delete_repair_order(){
+
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+
+        Passport::actingAs($login);
+
+        $order = $this->makeNewRepairOrder($login);
+
+        $this->json('DELETE', route('orders.repair.destroy', ['branch_id' => $order->id]), [])
+        ->assertJson(["status" => "Successfully deleted"])->assertStatus(200);
+    }
+
+    public function test_validator_create(){
+
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+
+        Passport::actingAs($login);
+
+        $response = $this;
+
+        $data = [
+            'accept_date',
+            'price',
+            'branch_id',
+            'order_nr',
+            'customer_name',
+            'customer_phone',
+            'defect_description',
+            'prepay_sum'
+        ];
+
+        $this->checkValidationRequired($data, route('orders.repair.store'),$response);
+
+    }
+
+    public function test_validator_update(){
+
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+
+        Passport::actingAs($login);
+
+        $order = $this->makeNewRepairOrder($login);
+
+        $response = $this;
+
+        $data = [
+            'accept_date',
+            'price',
+            'order_nr',
+            'customer_name',
+            'customer_phone',
+            'defect_description',
+            'status',
+            'prepay_sum'
+        ];
+
+        $this->checkValidationRequired($data, route('orders.repair.update', ['order_id' => $order->id]),$response);
+
+        $order = $this->makeNewRepairOrder($login);
+        
+    }
 
 }
