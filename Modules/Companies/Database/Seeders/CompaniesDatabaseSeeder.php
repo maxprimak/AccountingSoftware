@@ -36,6 +36,15 @@ class CompaniesDatabaseSeeder extends Seeder
             'address' => 'Wagramerstraße 94, Top 1A',
             'phone' => '+43 1 3694001'
         ]);
+
+        
+        factory('Modules\Companies\Entities\Branch')->create([
+            'name' => 'DZ Neu',
+            'company_id' => 1,
+            'color' => '#F64272',
+            'address' => 'Wagramerstraße 94, Top 1A',
+            'phone' => '+43 1 3694001'
+        ]);
         
         factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'KG',
@@ -52,14 +61,6 @@ class CompaniesDatabaseSeeder extends Seeder
             'color' => '#ec9a5d',
             'address' => 'Landwehrstraße 6, Top 126A',
             'phone' => '+43 1 7670666'
-        ]);
-
-        factory('Modules\Companies\Entities\Branch')->create([
-            'name' => 'DZ Neu',
-            'company_id' => 1,
-            'color' => '#F64272',
-            'address' => 'Wagramerstraße 94, Top 1A',
-            'phone' => '+43 1 3694001'
         ]);
     }
 }
