@@ -20,9 +20,14 @@ class SubmodelSeederTableSeeder extends Seeder
     {
         Model::unguard();
         $this->apple();
-        // $this->samsung();
-        // $this->huawei();
-        // $this->sonny();
+        $this->samsung();
+        $this->huawei();
+        $this->sonny();
+        $this->onePlus();
+        $this->oppo();
+        $this->vivo();
+        $this->xiaomi();
+
     }
 
     public function apple(){
@@ -327,13 +332,13 @@ class SubmodelSeederTableSeeder extends Seeder
             //SAMSUNG Submodel
             $Submodel = new Submodel();
             $Submodel->model_id = 5;
-            $Submodel->name = "Galaxy S".$i."Edge";
+            $Submodel->name = "Galaxy S".$i." Edge";
             $Submodel->save();
 
             //SAMSUNG Submodel
             $Submodel = new Submodel();
             $Submodel->model_id = 5;
-            $Submodel->name = "Galaxy S".$i."Edge+";
+            $Submodel->name = "Galaxy S".$i." Edge+";
             $Submodel->save();
 
           }
@@ -387,67 +392,208 @@ class SubmodelSeederTableSeeder extends Seeder
             $Submodel->save();
 
 
-            if($i == 3 || $i == 5){
+            if($i > 4 && $i <= 9){
               //SAMSUNG Submodel
               $Submodel = new Submodel();
               $Submodel->model_id = 5;
-              $Submodel->name = "Galaxy  ".$i. "+";
+              $Submodel->name = "Galaxy  A".$i. " (2016)";
+              $Submodel->save();
+
+              //SAMSUNG Submodel
+              $Submodel = new Submodel();
+              $Submodel->model_id = 5;
+              $Submodel->name = "Galaxy  A".$i. " (2017)";
+              $Submodel->save();
+
+
+            }
+            if($i <= 7 && $i <= 9){
+              //SAMSUNG Submodel
+              $Submodel = new Submodel();
+              $Submodel->model_id = 5;
+              $Submodel->name = "Galaxy  A".$i. " (2018)";
               $Submodel->save();
             }
+
           }
         }
+
+        // A 10 - A 70
+        for($i = 10; $i < 90; $i += 10){
+            //SAMSUNG Submodel
+            $Submodel = new Submodel();
+            $Submodel->model_id = 5;
+            $Submodel->name = "Galaxy  A".$i;
+            $Submodel->save();
+
+          if($i == 10 || $i == 20){
+            //SAMSUNG Submodel
+            $Submodel = new Submodel();
+            $Submodel->model_id = 5;
+            $Submodel->name = "Galaxy  A".$i. "e";
+            $Submodel->save();
+          }
+
+          if($i >= 10 && $i <= 70){
+            //SAMSUNG Submodel
+            $Submodel = new Submodel();
+            $Submodel->model_id = 5;
+            $Submodel->name = "Galaxy  A".$i. "s";
+            $Submodel->save();
+          }
+        }
+
+
         //SAMSUNG Submodel
         $Submodel = new Submodel();
         $Submodel->model_id = 5;
-        $Submodel->name = "Galaxy J";
+        $Submodel->name = "Galaxy J 330";
         $Submodel->save();
 
         //SAMSUNG Submodel
         $Submodel = new Submodel();
         $Submodel->model_id = 5;
-        $Submodel->name = "Galaxy A";
+        $Submodel->name = "Galaxy J 530";
         $Submodel->save();
 
-        //SAMSUNG Submodel
-        $Submodel = new Submodel();
-        $Submodel->model_id = 5;
-        $Submodel->name = "Galaxy M";
-        $Submodel->save();
+        for($i = 10; $i <= 40; $i += 10){
+          //SAMSUNG Submodel
+          $Submodel = new Submodel();
+          $Submodel->model_id = 5;
+          $Submodel->name = "Galaxy M".$i;
+          $Submodel->save();
 
-        //SAMSUNG Submodel
-        $Submodel = new Submodel();
-        $Submodel->model_id = 6;
-        $Submodel->name = "Galaxy Tab";
-        $Submodel->save();
+          if($i == 10 || $i == 30){
+            //SAMSUNG Submodel
+            $Submodel = new Submodel();
+            $Submodel->model_id = 5;
+            $Submodel->name = "Galaxy M".$i."s";
+            $Submodel->save();
+          }
+        }
     }
 
     public function huawei(){
       //HUAWEI Submodel
+      for($i = 8; $i <= 9; $i++){
         $Submodel = new Submodel();
         $Submodel->model_id = 9;
-        $Submodel->name = "Mate";
+        $Submodel->name = "Mate ".$i;
+        $Submodel->save();
+
+        if($i == 9){
+          $Submodel = new Submodel();
+          $Submodel->model_id = 9;
+          $Submodel->name = "Mate ".$i." Lite";
+          $Submodel->save();
+
+          $Submodel = new Submodel();
+          $Submodel->model_id = 9;
+          $Submodel->name = "Mate ".$i." Pro";
+          $Submodel->save();
+
+          $Submodel = new Submodel();
+          $Submodel->model_id = 9;
+          $Submodel->name = "Mate ".$i." Porsche";
+          $Submodel->save();
+        }
+      }
+      for($i = 10; $i <= 30; $i += 10){
+        $Submodel = new Submodel();
+        $Submodel->model_id = 9;
+        $Submodel->name = "Mate ".$i;
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 9;
-        $Submodel->name = "P";
+        $Submodel->name = "Mate ".$i." Pro";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 9;
-        $Submodel->name = "Y";
+        $Submodel->name = "Mate ".$i." Porsche";
+        $Submodel->save();
+      }
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 9;
+        $Submodel->name = "P Smart";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 9;
-        $Submodel->name = "Nova";
+        $Submodel->name = "P Smart +";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 9;
-        $Submodel->name = "Honor";
+        $Submodel->name = "P Smart Z";
         $Submodel->save();
 
+      for($i = 8; $i <= 9; $i++){
+        $Submodel = new Submodel();
+        $Submodel->model_id = 9;
+        $Submodel->name = "P".$i;
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 9;
+        $Submodel->name = "P".$i." Lite";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 9;
+        $Submodel->name = "P".$i." Max";
+        $Submodel->save();
+
+        if($i == 9){
+          $Submodel = new Submodel();
+          $Submodel->model_id = 9;
+          $Submodel->name = "P".$i." Plus";
+          $Submodel->save();
+
+          $Submodel = new Submodel();
+          $Submodel->model_id = 9;
+          $Submodel->name = "P".$i." Lite Mini";
+          $Submodel->save();
+        }
+      }
+
+      for($i = 10; $i <= 30;$i += 10){
+        $Submodel = new Submodel();
+        $Submodel->model_id = 9;
+        $Submodel->name = "P".$i;
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 9;
+        $Submodel->name = "P".$i." Lite";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 9;
+        $Submodel->name = "P".$i." Pro";
+        $Submodel->save();
+      }
+
+        for($i = 2; $i <= 5; $i++){
+          $Submodel = new Submodel();
+          $Submodel->model_id = 9;
+          $Submodel->name = "Nova ".$i;
+          $Submodel->save();
+
+          if($i == 2){
+            $Submodel = new Submodel();
+            $Submodel->model_id = 9;
+            $Submodel->name = "Nova ".$i." Plus";
+            $Submodel->save();
+
+            $Submodel = new Submodel();
+            $Submodel->model_id = 9;
+            $Submodel->name = "Nova ".$i."s";
+            $Submodel->save();
+          }
+        }
     }
 
     public function LG(){
@@ -482,22 +628,113 @@ class SubmodelSeederTableSeeder extends Seeder
       //SONY Submodel
         $Submodel = new Submodel();
         $Submodel->model_id = 15;
-        $Submodel->name = "Xperia";
+        $Submodel->name = "Xperia 5";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 15;
-        $Submodel->name = "Xperia X";
+        $Submodel->name = "Xperia 1";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 15;
-        $Submodel->name = "Xperia Z";
+        $Submodel->name = "Xperia 10";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 15;
-        $Submodel->name = "Xperia L";
+        $Submodel->name = "Xperia 10 Plus";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia L3";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia XZ3";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia XZ2";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia XZ2 Compact";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia XZ1";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia XZ1 Compact";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia XZ Premium";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia Z1";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia Z1 Compact";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia Z Ultra";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia Z2";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia Z3";
+        $Submodel->save();
+
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia Z5";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia Z5 Compact";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia Z5 Premium";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia M4 Aqua";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia M5 Aqua";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 15;
+        $Submodel->name = "Xperia L1";
         $Submodel->save();
 
     }
@@ -506,17 +743,62 @@ class SubmodelSeederTableSeeder extends Seeder
       //OnePlus Submodel
         $Submodel = new Submodel();
         $Submodel->model_id = 16;
-        $Submodel->name = "OnePlus";
+        $Submodel->name = "3";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 16;
-        $Submodel->name = "OnePlus T";
+        $Submodel->name = "5";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 16;
-        $Submodel->name = "OnePlus Pro";
+        $Submodel->name = "6";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 16;
+        $Submodel->name = "7";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 16;
+        $Submodel->name = "7 Pro";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 16;
+        $Submodel->name = "3T";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 16;
+        $Submodel->name = "5T";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 16;
+        $Submodel->name = "6T";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 16;
+        $Submodel->name = "6T McLaren";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 16;
+        $Submodel->name = "7T";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 16;
+        $Submodel->name = "7T Pro";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 16;
+        $Submodel->name = "7T McLaren";
         $Submodel->save();
     }
 
@@ -524,22 +806,57 @@ class SubmodelSeederTableSeeder extends Seeder
       //OnePlus oppo
         $Submodel = new Submodel();
         $Submodel->model_id = 17;
-        $Submodel->name = "Oppo A";
+        $Submodel->name = "A9";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 17;
-        $Submodel->name = "Oppo K";
+        $Submodel->name = "A9 2020";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 17;
-        $Submodel->name = "Oppo R";
+        $Submodel->name = "A5 2020";
         $Submodel->save();
 
         $Submodel = new Submodel();
         $Submodel->model_id = 17;
-        $Submodel->name = "Oppo Reno";
+        $Submodel->name = "K3";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 17;
+        $Submodel->name = "Reno2";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 17;
+        $Submodel->name = "Reno2 F";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 17;
+        $Submodel->name = "Reno2 Z";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 17;
+        $Submodel->name = "Reno Z";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 17;
+        $Submodel->name = "Reno 10x Zoom";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 17;
+        $Submodel->name = "F11";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 17;
+        $Submodel->name = "F11 Pro";
         $Submodel->save();
     }
 
@@ -547,22 +864,107 @@ class SubmodelSeederTableSeeder extends Seeder
       //Vivo oppo
         $Submodel = new Submodel();
         $Submodel->model_id = 18;
-        $Submodel->name = "Oppo A";
+        $Submodel->name = "V17 Pro";
         $Submodel->save();
 
         $Submodel = new Submodel();
-        $Submodel->model_id = 17;
-        $Submodel->name = "Oppo K";
+        $Submodel->model_id = 18;
+        $Submodel->name = "V15 Pro";
         $Submodel->save();
 
         $Submodel = new Submodel();
-        $Submodel->model_id = 7;
-        $Submodel->name = "Oppo R";
+        $Submodel->model_id = 18;
+        $Submodel->name = "V15";
         $Submodel->save();
 
         $Submodel = new Submodel();
-        $Submodel->model_id = 7;
-        $Submodel->name = "Oppo Reno";
+        $Submodel->model_id = 18;
+        $Submodel->name = "V11";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "V11i";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "V9 Youth";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "V9";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "V7";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "V7+";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "Y95";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "Y91C";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "Y93";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "Y17";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "Y85";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "Y81i";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "Y83";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "Y71";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "X21";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "NEX";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "NEX Dual Display";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 18;
+        $Submodel->name = "S1";
         $Submodel->save();
     }
 
@@ -571,23 +973,139 @@ class SubmodelSeederTableSeeder extends Seeder
       //OnePlus oppo
         $Submodel = new Submodel();
         $Submodel->model_id = 19;
-        $Submodel->name = "Oppo A";
+        $Submodel->name = "Redmi 8";
         $Submodel->save();
 
         $Submodel = new Submodel();
-        $Submodel->model_id = 17;
-        $Submodel->name = "Oppo K";
+        $Submodel->model_id = 19;
+        $Submodel->name = "Redmi 8A";
         $Submodel->save();
 
         $Submodel = new Submodel();
-        $Submodel->model_id = 7;
-        $Submodel->name = "Oppo R";
+        $Submodel->model_id = 19;
+        $Submodel->name = "Redmi Note 8";
         $Submodel->save();
 
         $Submodel = new Submodel();
-        $Submodel->model_id = 7;
-        $Submodel->name = "Oppo Reno";
+        $Submodel->model_id = 19;
+        $Submodel->name = "Redmi Note 8 Pro";
         $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Redmi 7A";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Redmi 7";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Redmi Note 7";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Redmi 6";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Redmi 6A";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Redmi Note 6 Pro";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Redmi S2";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "POCOPHONE F1";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi Mix Alpha";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi Mix 3";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi Mix 2S";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi 9 Lite";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi 9T";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi 9T Pro";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi 9 SE";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi 9";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi 8";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi 8 Pro";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi 8 Lite";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi Max 3";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi A3";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi A2";
+        $Submodel->save();
+
+        $Submodel = new Submodel();
+        $Submodel->model_id = 19;
+        $Submodel->name = "Mi A2 Lite";
+        $Submodel->save();
+
     }
 
 
