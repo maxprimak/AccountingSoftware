@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\Goods\Entities\Models;
 use Modules\Goods\Entities\Brand;
 use Modules\Goods\Entities\Submodel;
+use Modules\Goods\Http\Requests\StoreSubmodelRequest;
 // use Modules\Goods\GoodsData\gsm;
 
 
@@ -69,7 +70,7 @@ class SubmodelController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreSubmodelRequest $request)
     {
 
         $existing_submodel = Submodel::where([['name','=', $request->name],['model_id','=', $request->model_id]])->first();

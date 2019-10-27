@@ -48,7 +48,7 @@ abstract class TestCase extends BaseTestCase
         public function makeNewSalesOrder($login){
 
           Passport::actingAs($login);
-  
+
           $response = $this->json('POST', route('orders.sales.store'),[
               'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
               'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
@@ -73,7 +73,7 @@ abstract class TestCase extends BaseTestCase
           $order = SalesOrder::find($response->decodeResponseJson()['order']['id']);
 
           return $order;
-        
+
         }
 
         public function makeNewRepairOrder($login){
@@ -109,7 +109,7 @@ abstract class TestCase extends BaseTestCase
                   'created_by',
               ]
           ])->assertStatus(200);
-  
+
           $order = RepairOrder::find($response->decodeResponseJson()['order']['id']);
 
           return $order;
@@ -322,7 +322,6 @@ abstract class TestCase extends BaseTestCase
           if(!empty($brands)){
             $this->storeBrands($login,5);
             $brands = Brand::all();
-
           }
           return $brands;
         }
@@ -367,17 +366,17 @@ abstract class TestCase extends BaseTestCase
         //Goods STORE
         public function storeBrands($login,$amount){
           Passport::actingAs($login);
-
           for($i = 0; $i < $amount; $i++){
 
             $name = $this->faker->unique()->name;
-
+            $logo = $this->faker->unique()->name;
             $response = $this->json('POST', route('brands.store'), [
-              'name' => $name
+              'name' => $name,
+              'logo' => $logo
             ])->assertStatus(200);
-
             $response = $this->assertDatabaseHas('brands', [
-              'name' => $name
+              'name' => $name,
+              'logo' => $logo
             ]);
           }
         }
@@ -389,15 +388,17 @@ abstract class TestCase extends BaseTestCase
 
             $brand_id = $this->getBrands($login)->random(1)->first()->id;
             $name = $this->faker->unique()->name;
-
+            $logo = $this->faker->unique()->name;
             $response = $this->json('POST', route('models.store'), [
               'brand_id' => $brand_id,
-              'name' => $name
+              'name' => $name,
+              'logo' => $logo
             ])->assertStatus(200);
 
             $response = $this->assertDatabaseHas('models', [
               'brand_id' => $brand_id,
-              'name' => $name
+              'name' => $name,
+              'logo' => $logo
             ]);
           }
         }

@@ -17,6 +17,7 @@ class CreateModelsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('brand_id');
             $table->string('name');
+            $table->string('logo');
             $table->timestamps();
         });
 
