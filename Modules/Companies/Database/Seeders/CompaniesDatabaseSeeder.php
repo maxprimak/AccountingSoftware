@@ -41,7 +41,7 @@ class CompaniesDatabaseSeeder extends Seeder
         factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'DZ Neu',
             'company_id' => 1,
-            'color' => '#F64272',
+            'color' => '#0a9901',
             'address' => 'Wagramerstraße 94, Top 1A',
             'phone' => '+43 1 3694001'
         ]);
