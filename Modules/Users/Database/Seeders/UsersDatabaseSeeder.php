@@ -25,7 +25,14 @@ class UsersDatabaseSeeder extends Seeder
             'person_id' => 1,
             'company_id' =>  1,
         ]);
-        
+
+        //Create user instance of maxprimak
+        factory('Modules\Users\Entities\User')->create([
+            'login_id' => 2,
+            'person_id' => 2,
+            'company_id' =>  1,
+        ]);
+
         /*
         factory('Modules\Users\Entities\User')->create([
             'login_id' => 2,
@@ -53,5 +60,17 @@ class UsersDatabaseSeeder extends Seeder
         */
 
         factory('Modules\Users\Entities\UserHasBranch')->create();
+
+        factory('Modules\Users\Entities\UserHasBranch')->create([
+            'user_id' => 1,
+            'branch_id' => 2
+        ]);
+
+    
+        factory('Modules\Users\Entities\UserHasBranch')->create([
+            'user_id' => 1,
+            'branch_id' => 3
+        ]);
+        
     }
 }

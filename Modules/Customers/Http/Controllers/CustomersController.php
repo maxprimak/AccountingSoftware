@@ -45,14 +45,7 @@ class CustomersController extends Controller
      */
     public function create()
     {
-      try{
-          $user = User::where('login_id', auth()->id())->firstOrFail();
-          $branches = BranchesService::getUserBranches($user->id);
-          $customer_types = CustomerType::all();
-      }catch(\Exception $e){
-          return abort(500);
-      }
-        return view('customers::create', compact('user','branches','customer_types'));
+
     }
 
     /**
@@ -63,7 +56,7 @@ class CustomersController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         try {
-            $user = User::findOrFail($request->user_id);
+            $user = User::where('login_id',auth('api')->id())->firstOrFail();
             $company_id = Company::findOrFail($user->company_id)->id;
             $customer = CustomerServiceFacad::createCustomer($request,$company_id);
         } catch (\Exception $e) {
