@@ -33,10 +33,10 @@ class DatabaseSeeder extends Seeder
         $this->call(LoginDatabaseSeeder::class);
         $this->call(UsersDatabaseSeeder::class);
         $this->call(RolesDatabaseSeeder::class);
-        $this->call(EmployeesDatabaseSeeder::class);
+        //$this->call(EmployeesDatabaseSeeder::class);
         $this->call(CustomerTypesTableSeeder::class);
-        $this->call(CustomersDatabaseSeeder::class);
-        $this->call(CategoriesSeederTableSeeder::class);
+        //$this->call(CustomersDatabaseSeeder::class);
+        //$this->call(CategoriesSeederTableSeeder::class);
         $this->call(BrandsSeederTableSeeder::class);
         $this->call(ModelsSeederTableSeeder::class);
         $this->call(SubmodelSeederTableSeeder::class);
@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ColorSeederTableSeeder::class);
         $this->call(GoodsDatabaseSeeder::class);
         $this->call(RepairOrdersTableSeeder::class);
-        $this->call(SalesOrdersTableSeeder::class);
+        //$this->call(SalesOrdersTableSeeder::class);
 
     }
 }

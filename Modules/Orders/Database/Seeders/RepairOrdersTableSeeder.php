@@ -34,33 +34,6 @@ class RepairOrdersTableSeeder extends Seeder
                 'name' => $status
             ]);
         }
-        
-        for($i = 0; $i < 10; $i++){
-            $order = factory('Modules\Orders\Entities\Order')->create([
-                'branch_id' => 1
-            ]);
-            factory('Modules\Orders\Entities\RepairOrder')->create([
-                'order_id' => $order->id
-            ]);
-        }
-
-        for($i = 0; $i < 10; $i++){
-            $order = factory('Modules\Orders\Entities\Order')->create([
-                'branch_id' => 2
-            ]);
-            factory('Modules\Orders\Entities\RepairOrder')->create([
-                'order_id' => $order->id
-            ]);
-        }
-
-        for($i = 0; $i < 10; $i++){
-            $order = factory('Modules\Orders\Entities\Order')->create([
-                'branch_id' => 3
-            ]);
-            factory('Modules\Orders\Entities\RepairOrder')->create([
-                'order_id' => $order->id
-            ]);
-        }
 
         factory('Modules\Orders\Entities\PaymentType')->create([
             'name' => 'Cash'

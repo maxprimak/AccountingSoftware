@@ -17,13 +17,11 @@ class CompaniesDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        //Add currency (Kazakstan Tenge)
         factory('Modules\Companies\Entities\Currency')->create([
             'name' => 'Euro',
             'symbol' => 'EUR'
         ]);
 
-        //Create Company of oliinykm95
         factory('Modules\Companies\Entities\Company')->create([
             'name' => 'PhoneFactory',
             'currency_id' => 1,
@@ -38,7 +36,6 @@ class CompaniesDatabaseSeeder extends Seeder
             'address' => 'Wagramerstraße 94, Top 1A',
             'phone' => '+43 1 3694001'
         ]);
-
         
         factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'KG',
@@ -50,11 +47,19 @@ class CompaniesDatabaseSeeder extends Seeder
 
         
         factory('Modules\Companies\Entities\Branch')->create([
-            'name' => 'Humma',
+            'name' => 'Huma',
             'company_id' => 1,
             'color' => '#ec9a5d',
             'address' => 'Landwehrstraße 6, Top 126A',
             'phone' => '+43 1 7670666'
+        ]);
+
+        factory('Modules\Companies\Entities\Branch')->create([
+            'name' => 'DZ Neu',
+            'company_id' => 1,
+            'color' => '#F64272',
+            'address' => 'Wagramerstraße 94, Top 1A',
+            'phone' => '+43 1 3694001'
         ]);
     }
 }
