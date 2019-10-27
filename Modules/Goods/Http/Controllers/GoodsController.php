@@ -17,7 +17,7 @@ class GoodsController extends Controller
      * @return Response
      */
     public function index($branch_id)
-    {        
+    {
         $goods_id = Good::where('branch_id',$branch_id)->pluck('id')->toArray();
         $goods = DB::table('goods')
                     ->join('brands', 'brands.id', '=', 'goods.brand_id')
@@ -99,7 +99,7 @@ class GoodsController extends Controller
     {
       try {
         $good = Good::findOrFail($id);
-        $good->edit($request);
+        $good = $good->edit($request);
       } catch (\Exception $e) {
         return response()->json(['message' => $e->getMessage()], 500);
       }

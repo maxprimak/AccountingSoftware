@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Goods\Entities\Part;
+use Modules\Goods\Http\Requests\StorePartRequest;
 
 class PartsController extends Controller
 {
@@ -33,7 +34,7 @@ class PartsController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StorePartRequest $request)
     {
         $existing_part = Part::where('name','=', $request->name)->first();
 

@@ -21,6 +21,7 @@ class StoreGoodRequest extends FormRequest
           'model_id' => 'required | numeric |exists:models,id',
           'submodel_id' => 'required | numeric |exists:submodels,id',
           'part_id' => 'required | numeric |exists:parts,id',
+          'price' => 'required | numeric',
           'amount' => 'required',
           'color_id' => 'required | numeric |exists:colors,id',
         ];

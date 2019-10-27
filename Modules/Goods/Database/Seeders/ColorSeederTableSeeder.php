@@ -18,6 +18,10 @@ class ColorSeederTableSeeder extends Seeder
         Model::unguard();
 
         $color = new Color();
+        $color->name = "none";
+        $color->save();
+
+        $color = new Color();
         $color->name = "Black";
         $color->save();
 
