@@ -10,6 +10,7 @@ use Modules\Orders\Entities\OrderStatus;
 use Modules\Orders\Entities\Order;
 use Modules\Customers\Entities\Customer;
 use Modules\Users\Entities\People;
+use Modules\Companies\Entities\Branch;
 
 class RepairOrdersBranchController extends Controller
 {
@@ -31,6 +32,7 @@ class RepairOrdersBranchController extends Controller
             $customer = Customer::find($repair_order->customer_id);
             $person = People::find($customer->person_id);
             $status_name = OrderStatus::find($repair_order->status_id)->name;
+            $location_name = Branch::find($repair_order->located_in)->name;
 
             $item = array(
                 'id' => $repair_order->id,
@@ -44,6 +46,7 @@ class RepairOrdersBranchController extends Controller
                 'comment' => $repair_order->comment,
                 'prepay_sum' => $repair_order->prepay_sum,
                 'status' => $status_name,
+                'located_in' => $location_name,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
                 'created_by' => $order->created_by,

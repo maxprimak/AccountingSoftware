@@ -21,11 +21,13 @@ class CreateRepairOrdersTable extends Migration
             $table->string("defect_description");
             $table->string("comment")->nullable();
             $table->unsignedInteger("status_id");
-            $table->double("prepay_sum");
+            $table->double("prepay_sum")->nullable();
+            $table->unsignedInteger("located_in");
             $table->timestamps();
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->foreign('status_id')->references('id')->on('order_statuses');
+            $table->foreign('located_in')->references('id')->on('branches');
         });
     }
 

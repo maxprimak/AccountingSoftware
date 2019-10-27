@@ -22,7 +22,7 @@ class StoreRepairOrderRequest extends FormRequest
             'customer_phone' => 'required|max:50',
             'defect_description' => 'required|max:190',
             'comment' => 'max:190',
-            'prepay_sum' => 'required|numeric|max:'. $this->price,
+            'prepay_sum' => 'nullable|numeric|max:'. $this->price
         ];
     }
 

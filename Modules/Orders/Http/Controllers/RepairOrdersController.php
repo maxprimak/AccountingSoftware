@@ -12,6 +12,7 @@ use Modules\Orders\Entities\OrderStatus;
 use Modules\Customers\Entities\Customer;
 use Modules\Orders\Http\Requests\StoreRepairOrderRequest;
 use Modules\Orders\Http\Requests\UpdateRepairOrderRequest;
+use Modules\Customers\Entities\CustomerHasBranch;
 
 class RepairOrdersController extends Controller
 {
@@ -46,6 +47,11 @@ class RepairOrdersController extends Controller
         $repair_order = new RepairOrder();
         $repair_order = $repair_order->store($request, $order->id);
 
+        $permission = new CustomerHasBranch();
+        $permission->customer_id = $repair_order->customer_id;
+        $permission->branch_id = $order->branch_id;
+        $permission->save();
+
         return response()->json([
             'status' => 'Successfully created',
             'order' => [
@@ -60,6 +66,7 @@ class RepairOrdersController extends Controller
                 'comment' => $repair_order->comment,
                 'prepay_sum' => $repair_order->prepay_sum,
                 'status_id' => $repair_order->status_id,
+                'located_in' => $repair_order->located_in,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
                 'created_by' => $order->created_by,
@@ -97,6 +104,7 @@ class RepairOrdersController extends Controller
                 'comment' => $repair_order->comment,
                 'prepay_sum' => $repair_order->prepay_sum,
                 'status' => $status_name,
+                'located_in' => $repair_order->located_in,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
                 'created_by' => $order->created_by,

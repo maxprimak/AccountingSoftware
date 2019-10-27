@@ -4606,16 +4606,16 @@
     "packages-dev": [
         {
             "name": "amphp/amp",
-            "version": "v2.3.1",
+            "version": "v2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/amp.git",
-                "reference": "5a294f13810844e3bdda28c0f352821d735ca9b3"
+                "reference": "9fa04aa6f87a8200fc0961de6bcc5465785c0c6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/5a294f13810844e3bdda28c0f352821d735ca9b3",
-                "reference": "5a294f13810844e3bdda28c0f352821d735ca9b3",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/9fa04aa6f87a8200fc0961de6bcc5465785c0c6f",
+                "reference": "9fa04aa6f87a8200fc0961de6bcc5465785c0c6f",
                 "shasum": ""
             },
             "require": {
@@ -4679,7 +4679,7 @@
                 "non-blocking",
                 "promise"
             ],
-            "time": "2019-10-01T19:39:23+00:00"
+            "time": "2019-10-26T14:31:57+00:00"
         },
         {
             "name": "amphp/byte-stream",
@@ -6153,16 +6153,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "2.3.1",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "96a7b3c055653f6e4e7b9702148cc95688dc4245"
+                "reference": "9670327691736be2581394fd34a89df0ff008d17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/96a7b3c055653f6e4e7b9702148cc95688dc4245",
-                "reference": "96a7b3c055653f6e4e7b9702148cc95688dc4245",
+                "url": "https://api.github.com/repos/phan/phan/zipball/9670327691736be2581394fd34a89df0ff008d17",
+                "reference": "9670327691736be2581394fd34a89df0ff008d17",
                 "shasum": ""
             },
             "require": {
@@ -6221,7 +6221,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-10-20T14:39:49+00:00"
+            "time": "2019-10-26T17:47:01+00:00"
         },
         {
             "name": "phar-io/manifest",

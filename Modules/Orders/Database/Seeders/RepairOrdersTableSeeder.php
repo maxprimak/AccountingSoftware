@@ -17,17 +17,23 @@ class RepairOrdersTableSeeder extends Seeder
     {
         Model::unguard();
 
-        factory('Modules\Orders\Entities\OrderStatus')->create([
-            'name' => 'Not repaired'
-        ]);
+        $statuses = [
+            'Accepted for repair',
+            'In progress',
+            'Order parts',
+            'Waiting for parts',
+            'Repaired',
+            'Not repairable',
+            'Called to client',
+            'Returned to client',
+            'Warranty',
+        ];
 
-        factory('Modules\Orders\Entities\OrderStatus')->create([
-            'name' => 'Called'
-        ]);
-
-        factory('Modules\Orders\Entities\OrderStatus')->create([
-            'name' => 'Ready'
-        ]);
+        foreach($statuses as $status){
+            factory('Modules\Orders\Entities\OrderStatus')->create([
+                'name' => $status
+            ]);
+        }
         
         for($i = 0; $i < 10; $i++){
             $order = factory('Modules\Orders\Entities\Order')->create([

@@ -57,6 +57,7 @@ class RepairOrdersTest extends TestCase
                 'comment',
                 'prepay_sum',
                 'status_id',
+                'located_in',
                 'created_at',
                 'updated_at',
                 'created_by',
@@ -78,10 +79,11 @@ class RepairOrdersTest extends TestCase
             'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
             'order_nr' => $this->faker->swiftBicNumber(),
             'customer_name' => $this->faker->name(),
+            'status' => "Accepted for repair",
             'customer_phone' => $this->faker->phoneNumber(),
             'defect_description' => $this->faker->text(50),
+            'located_in' => $this->getBranchesOfLogin($login)->first()->id,
             'comment' => $this->faker->text(50),
-            'status' => 'Called',
             'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 19)
         ])->assertJsonStructure([
             'status',
@@ -97,6 +99,7 @@ class RepairOrdersTest extends TestCase
                 'comment',
                 'prepay_sum',
                 'status',
+                'located_in',
                 'created_at',
                 'updated_at',
                 'created_by',
@@ -148,7 +151,6 @@ class RepairOrdersTest extends TestCase
             'customer_name',
             'customer_phone',
             'defect_description',
-            'prepay_sum'
         ];
 
         $this->checkValidationRequired($data, route('orders.repair.store'),$response);
@@ -173,7 +175,6 @@ class RepairOrdersTest extends TestCase
             'customer_phone',
             'defect_description',
             'status',
-            'prepay_sum'
         ];
 
         $this->checkValidationRequired($data, route('orders.repair.update', ['order_id' => $order->id]),$response);

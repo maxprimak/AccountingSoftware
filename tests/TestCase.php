@@ -81,16 +81,15 @@ abstract class TestCase extends BaseTestCase
           Passport::actingAs($login);
 
           $response = $this->json('POST', route('orders.repair.store'), [
-              'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
-              'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
-              'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
-              'order_nr' => $this->faker->swiftBicNumber(),
-              'customer_name' => $this->faker->name(50),
-              'customer_phone' => $this->faker->phoneNumber(50),
-              'defect_description' => $this->faker->text(50),
-              'comment' => $this->faker->text(100),
-              'status_id' => $this->faker->numberBetween(1,3),
-              'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 19),
+            'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
+            'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
+            'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
+            'order_nr' => $this->faker->swiftBicNumber(),
+            'customer_name' => $this->faker->name(),
+            'customer_phone' => $this->faker->phoneNumber(),
+            'defect_description' => $this->faker->text(50),
+            'comment' => $this->faker->text(50),
+            'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 19)
           ])->assertJsonStructure([
               'status',
               'order' => [
@@ -196,9 +195,30 @@ abstract class TestCase extends BaseTestCase
           }
 
           if(OrderStatus::all()->count() == 0){
-            factory(OrderStatus::class)->create(['name' => 'Not repaired', 'id' => 1]);
-            factory(OrderStatus::class)->create(['name' => 'Called', 'id' => 2]);
-            factory(OrderStatus::class)->create(['name' => 'Ready', 'id' => 3]);
+
+
+            $statuses = [
+              ['Accepted for repair',1],
+              ['In progress',2],
+              ['Order parts',3],
+              ['Waiting for parts',4],
+              ['Repaired',5],
+              ['Not repairable',6],
+              ['Called to client',7],
+              ['Returned to client',8],
+              ['Warranty',9],
+          ];
+
+          foreach($statuses as $status){
+
+            $ord_status = new OrderStatus();
+            $ord_status->name = $status[0];
+            $ord_status->id = $status[1];
+            $ord_status->save();
+            
+          }
+
+
           }
 
           if(PaymentType::all()->count() == 0){

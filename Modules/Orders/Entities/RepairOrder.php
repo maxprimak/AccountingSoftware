@@ -8,6 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
 use Modules\Orders\Entities\OrderStatus;
+use Modules\Orders\Entities\Order;
 
 
 class RepairOrder extends Model
@@ -15,6 +16,8 @@ class RepairOrder extends Model
     protected $fillable = [];
 
     public function store(FormRequest $request, $order_id){
+
+        $order = Order::findOrFail($order_id);
 
         $this->order_id = $order_id;
         $this->order_nr = $request->order_nr;
@@ -30,6 +33,7 @@ class RepairOrder extends Model
         $this->comment = $request->comment;
         $this->status_id = 1;
         $this->prepay_sum = $request->prepay_sum;
+        $this->located_in = $order->branch_id;
 
         $this->save();
 
@@ -53,6 +57,7 @@ class RepairOrder extends Model
 
         $repair_order->status_id = $status->id;
         $repair_order->prepay_sum = $request->prepay_sum;
+        $repair_order->located_in = $request->located_in;
 
         $repair_order->update();
 
