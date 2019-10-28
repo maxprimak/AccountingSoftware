@@ -14,18 +14,14 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('created_by');
-            $table->bigInteger('status_id');
-            $table->double('total_sum', 8, 2);
-            $table->boolean('paid');
-            $table->bigInteger('customer_id');
-            $table->bigInteger('branch_id');
-            $table->bigInteger('payment_method_id');
-            $table->bigInteger('discount_code_id');
-            $table->string('comment');
+            $table->increments('id');
+            $table->date("accept_date");
+            $table->double("price");
+            $table->unsignedInteger("branch_id");
             $table->timestamps();
-            //TODO: foreign_keys
+            $table->unsignedInteger("created_by");
+            $table->foreign('branch_id')->references('id')->on('branches');
+            $table->foreign('created_by')->references('id')->on('logins');
         });
     }
 

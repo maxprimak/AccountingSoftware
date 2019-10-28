@@ -13,9 +13,10 @@ class ModelsController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index($brand_id)
     {
-        return view('goods::index');
+        $models = Models::where('brand_id',$brand_id)->get();
+        return response()->json($models);
     }
 
     /**

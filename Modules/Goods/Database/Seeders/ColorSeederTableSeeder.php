@@ -18,6 +18,10 @@ class ColorSeederTableSeeder extends Seeder
         Model::unguard();
 
         $color = new Color();
+        $color->name = "none";
+        $color->save();
+
+        $color = new Color();
         $color->name = "Black";
         $color->save();
 
@@ -28,5 +32,39 @@ class ColorSeederTableSeeder extends Seeder
         $color = new Color();
         $color->name = "Silver";
         $color->save();
+
+        $color = new Color();
+        $color->name = "Product Red";
+        $color->save();
+
+        $color = new Color();
+        $color->name = "Space Gray";
+        $color->save();
+
+        $color = new Color();
+        $color->name = "Midnight Green";
+        $color->save();
+
+        $color = new Color();
+        $color->name = "Gold";
+        $color->save();
+
+        $color = new Color();
+        $color->name = "Blue";
+        $color->save();
+
+        $color = new Color();
+        $color->name = "Pink";
+        $color->save();
+
+        $color = new Color();
+        $color->name = "Yellow";
+        $color->save();
+
+        $color = new Color();
+        $color->name = "Green";
+        $color->save();
+
+
     }
 }

@@ -16,7 +16,8 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        return view('goods::index');
+        $brands = Brand::all();
+        return response()->json($brands);
     }
 
     /**
@@ -37,7 +38,7 @@ class BrandsController extends Controller
     {
         $brand = new Brand();
         $brand->store($request);
-        
+
         return response()->json();
     }
 
