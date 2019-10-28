@@ -22,7 +22,6 @@ class StoreCustomerRequest extends FormRequest
             'stars_number' => 'numeric',
             'customer_type_id' => 'required | numeric',
             'branch_id' => 'required',
-            'user_id' => 'required | numeric',
         ];
     }
 

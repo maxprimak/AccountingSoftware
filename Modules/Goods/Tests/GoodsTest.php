@@ -100,25 +100,23 @@ class GoodsTest extends TestCase
         ]);
     }
 
-    // public function test_user_can_edit_good(){
-    //
-    //     Passport::actingAs($this->login);
-    //
-    //     $request = $this->test_user_can_add_goods();
-    //     $good = Good::where([
-    //     ['part_id',$this->part->id],['branch_id',$this->branch->id],
-    //     ['brand_id',$this->brand->id],['model_id',$this->model->id],
-    //     ['submodel_id',$this->submodel->id],['color_id',$this->color->id],['amount', 30],['price',233.78]
-    //     ])->first();
-    //
-    //     $request['amount'] = 555;
-    //     $response = $this->json('POST', route('goods.update', $request,['good_id' => $good->id]));
-    //     $update_good = Good::find($good->id);
-    //     dd($update_good);
-    //     $response = $this->assertDatabaseHas('goods', [
-    //       'id' => $good->id,
-    //       'amount' => $request['amount']
-    //     ]);
-    // }
+    public function test_user_can_edit_good(){
+
+        Passport::actingAs($this->login);
+
+        $request = $this->test_user_can_add_goods();
+        $good = Good::where([
+        ['part_id',$this->part->id],['branch_id',$this->branch->id],
+        ['brand_id',$this->brand->id],['model_id',$this->model->id],
+        ['submodel_id',$this->submodel->id],['color_id',$this->color->id],['amount', 30],['price',233.78]
+        ])->first();
+        $request['amount'] = 555;
+        $response = $this->json('POST', route('goods.update',['good_id' => $good->id]), $request);
+        $update_good = Good::find($good->id);
+        $response = $this->assertDatabaseHas('goods', [
+          'id' => $good->id,
+          'amount' => $request['amount']
+        ]);
+    }
 
 }

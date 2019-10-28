@@ -10,6 +10,7 @@ class Brand extends Model
 
     public function store($request){
         $this->name = $request->name;
+        $this->logo = $request->logo;
         $this->save();
     }
 

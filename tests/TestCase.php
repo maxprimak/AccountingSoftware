@@ -24,7 +24,11 @@ use Modules\Goods\Entities\Models;
 use Modules\Goods\Entities\Submodel;
 use Modules\Goods\Entities\Part;
 use Modules\Goods\Entities\Color;
-
+use Modules\Orders\Entities\OrderStatus;
+use Modules\Orders\Entities\Order;
+use Modules\Orders\Entities\SalesOrder;
+use Modules\Orders\Entities\RepairOrder;
+use Modules\Orders\Entities\PaymentType;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -38,6 +42,77 @@ abstract class TestCase extends BaseTestCase
           ]);
 
           return $login;
+
+        }
+
+        public function makeNewSalesOrder($login){
+
+          Passport::actingAs($login);
+
+          $response = $this->json('POST', route('orders.sales.store'),[
+              'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
+              'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
+              'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
+              'article_description' => $this->faker->text(50),
+              'payment_type_id' => $this->faker->numberBetween(1,2)
+          ])->assertJsonStructure([
+              'status',
+              'order' => [
+                  'id',
+                  'accept_date',
+                  'price',
+                  'branch_id',
+                  'article_description',
+                  'payment_type_id',
+                  'created_at',
+                  'updated_at',
+                  'created_by',
+              ]
+          ])->assertStatus(200);
+
+          $order = SalesOrder::find($response->decodeResponseJson()['order']['id']);
+
+          return $order;
+
+        }
+
+        public function makeNewRepairOrder($login){
+
+          Passport::actingAs($login);
+
+          $response = $this->json('POST', route('orders.repair.store'), [
+            'accept_date' => $this->faker->date('Y-m-d', '1461067200'),
+            'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
+            'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
+            'order_nr' => $this->faker->swiftBicNumber(),
+            'customer_name' => $this->faker->name(),
+            'customer_phone' => $this->faker->phoneNumber(),
+            'defect_description' => $this->faker->text(50),
+            'comment' => $this->faker->text(50),
+            'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 19)
+          ])->assertJsonStructure([
+              'status',
+              'order' => [
+                  'id',
+                  'accept_date',
+                  'price',
+                  'branch_id',
+                  'order_nr',
+                  'customer_name',
+                  'customer_phone',
+                  'defect_description',
+                  'comment',
+                  'prepay_sum',
+                  'status_id',
+                  'created_at',
+                  'updated_at',
+                  'created_by',
+              ]
+          ])->assertStatus(200);
+
+          $order = RepairOrder::find($response->decodeResponseJson()['order']['id']);
+
+          return $order;
 
         }
 
@@ -117,6 +192,38 @@ abstract class TestCase extends BaseTestCase
           if(CustomerType::all()->count() == 0){
             factory(CustomerType::class)->create(['name' => 'Person', 'id' => 1]);
             factory(CustomerType::class)->create(['name' => 'Company', 'id' => 2]);
+          }
+
+          if(OrderStatus::all()->count() == 0){
+
+
+            $statuses = [
+              ['Accepted for repair',1],
+              ['In progress',2],
+              ['Order parts',3],
+              ['Waiting for parts',4],
+              ['Repaired',5],
+              ['Not repairable',6],
+              ['Called to client',7],
+              ['Returned to client',8],
+              ['Warranty',9],
+          ];
+
+          foreach($statuses as $status){
+
+            $ord_status = new OrderStatus();
+            $ord_status->name = $status[0];
+            $ord_status->id = $status[1];
+            $ord_status->save();
+            
+          }
+
+
+          }
+
+          if(PaymentType::all()->count() == 0){
+            factory(PaymentType::class)->create(['name' => 'Cash', 'id' => 1]);
+            factory(PaymentType::class)->create(['name' => 'Card', 'id' => 2]);
           }
 
         }
@@ -215,7 +322,6 @@ abstract class TestCase extends BaseTestCase
           if(!empty($brands)){
             $this->storeBrands($login,5);
             $brands = Brand::all();
-
           }
           return $brands;
         }
@@ -260,17 +366,17 @@ abstract class TestCase extends BaseTestCase
         //Goods STORE
         public function storeBrands($login,$amount){
           Passport::actingAs($login);
-
           for($i = 0; $i < $amount; $i++){
 
             $name = $this->faker->unique()->name;
-
+            $logo = $this->faker->unique()->name;
             $response = $this->json('POST', route('brands.store'), [
-              'name' => $name
+              'name' => $name,
+              'logo' => $logo
             ])->assertStatus(200);
-
             $response = $this->assertDatabaseHas('brands', [
-              'name' => $name
+              'name' => $name,
+              'logo' => $logo
             ]);
           }
         }
@@ -282,15 +388,17 @@ abstract class TestCase extends BaseTestCase
 
             $brand_id = $this->getBrands($login)->random(1)->first()->id;
             $name = $this->faker->unique()->name;
-
+            $logo = $this->faker->unique()->name;
             $response = $this->json('POST', route('models.store'), [
               'brand_id' => $brand_id,
-              'name' => $name
+              'name' => $name,
+              'logo' => $logo
             ])->assertStatus(200);
 
             $response = $this->assertDatabaseHas('models', [
               'brand_id' => $brand_id,
-              'name' => $name
+              'name' => $name,
+              'logo' => $logo
             ]);
           }
         }

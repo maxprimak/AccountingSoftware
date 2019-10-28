@@ -18,23 +18,9 @@ class LoginDatabaseSeeder extends Seeder
 
         //Create login data of user oliinykm95
         factory('Modules\Login\Entities\Login')->create([
-            'username' => 'oliinykm95',
-        ]);
-
-        factory('Modules\Login\Entities\Login')->create([
-            'username' => 'maxim_primak',
-        ]);
-
-        factory('Modules\Login\Entities\Login')->create([
-            'username' => 'Lee_duy_vn',
-        ]);
-
-        factory('Modules\Login\Entities\Login')->create([
-            'username' => 'bomman_getwife',
-        ]);
-
-        factory('Modules\Login\Entities\Login')->create([
-            'username' => 'vanduycr7',
+            'username' => 'me@phonefactory.at',
+            'password' => bcrypt('123456789'),
+            'email' => 'me@phonefactory.at',
         ]);
     }
 }

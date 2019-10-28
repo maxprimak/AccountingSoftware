@@ -16,14 +16,14 @@ class StoreGoodRequest extends FormRequest
     public function rules()
     {
         return [
-          'branch_id' => 'required | numeric',
-          'brand_id' => 'required | numeric',
-          'model_id' => 'required | numeric',
-          'submodel_id' => 'required | numeric',
-          'part_id' => 'required | numeric',
-          'amount' => 'required | numeric',
-          'color_id' => 'required | numeric',
+          'branch_id' => 'required|numeric|exists:branches,id',
+          'brand_id' => 'required | numeric |exists:brands,id',
+          'model_id' => 'required | numeric |exists:models,id',
+          'submodel_id' => 'required | numeric |exists:submodels,id',
+          'part_id' => 'required | numeric |exists:parts,id',
           'price' => 'required | numeric',
+          'amount' => 'required',
+          'color_id' => 'required | numeric |exists:colors,id',
         ];
     }
 
