@@ -170,6 +170,7 @@ return [
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
+        Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
@@ -232,6 +233,7 @@ return [
         'BranchesService' => Modules\Companies\Facades\BranchesService::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'CustomerServiceFacad' => Modules\Customers\Facades\CustomerServiceFacad::class,
+        'Bugsnag' => Bugsnag\BugsnagLaravel\Facades\Bugsnag::class,
     ],
 
 ];
