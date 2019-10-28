@@ -58,7 +58,7 @@ class AuthController extends Controller
             'repassword' => 'required|same:password'
         ]);
     }
-
+    /*
     public function register(Request $request){
 
         $validator = $this->regValidator($request->all());
@@ -84,6 +84,7 @@ class AuthController extends Controller
         ]);
 
     }
+    */
 
     public function logout(){
 
