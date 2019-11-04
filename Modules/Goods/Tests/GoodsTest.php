@@ -119,4 +119,19 @@ class GoodsTest extends TestCase
         ]);
     }
 
+    public function test_user_can_see_only_goods_of_his_company(){
+
+      $login = $this->makeNewLoginWithCompanyAndBranch();
+      $login2 = $this->makeNewLoginWithCompanyAndBranch();
+
+      Passport::actingAs($login);
+
+      $this->json('GET', route('goods.index', ['branch_id' => $this->getBranchesOfLogin($login)->first()->id]), [])
+          ->assertStatus(200);
+      
+      $this->json('GET', route('goods.index', ['branch_id' => $this->getBranchesOfLogin($login2)->first()->id]), [])
+          ->assertStatus(403);
+
+  }
+
 }

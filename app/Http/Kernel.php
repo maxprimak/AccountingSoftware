@@ -72,7 +72,8 @@ class Kernel extends HttpKernel
         'is_not_registered' => \Modules\Registration\Http\Middleware\IsNotRegistered::class,
         'is_registered' => \Modules\Registration\Http\Middleware\IsRegistered::class,
 
-        'is_authorized' => \Modules\Login\Http\Middleware\IsAuthorized::class
+        'is_authorized' => \Modules\Login\Http\Middleware\IsAuthorized::class,
+        'my_branch' => \Modules\Companies\Http\Middleware\MyBranch::class
     ];
 
     /**

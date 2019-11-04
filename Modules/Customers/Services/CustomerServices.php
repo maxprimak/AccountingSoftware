@@ -28,7 +28,10 @@ class CustomerServices{
         $customer->created_by = auth('api')->id();
         $customer->save();
 
-        BranchesService::addCustomerToBranches($customer->id,$request->branch_id);
+        //$branch_id = $request->branch_id;
+        $branch_id = Branch::where('company_id',$company_id)->pluck('id')->toArray();
+
+        BranchesService::addCustomerToBranches($customer->id,$branch_id);
         return $customer;
     }
 

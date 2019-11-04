@@ -22,8 +22,6 @@ class SalesOrdersTest extends TestCase
 
     }
 
-    //guest_can_not_access_routes(){}
-
     public function test_user_can_create_sales_orders(){
 
         $login = $this->makeNewLoginWithCompanyAndBranch();
@@ -93,6 +91,21 @@ class SalesOrdersTest extends TestCase
 
         $this->json('GET', route('orders.sales.branch.index', ['branch_id' => $this->getBranchesOfLogin($login)->first()->id]), [])
             ->assertStatus(200);
+
+    }
+
+    public function test_user_can_see_only_orders_of_his_company(){
+
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $login2 = $this->makeNewLoginWithCompanyAndBranch();
+
+        Passport::actingAs($login);
+
+        $this->json('GET', route('orders.sales.branch.index', ['branch_id' => $this->getBranchesOfLogin($login)->first()->id]), [])
+            ->assertStatus(200);
+        
+        $this->json('GET', route('orders.sales.branch.index', ['branch_id' => $this->getBranchesOfLogin($login2)->first()->id]), [])
+            ->assertStatus(403);
 
     }
 

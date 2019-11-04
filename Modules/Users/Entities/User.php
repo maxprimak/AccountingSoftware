@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 
 use BranchesService;
+use Modules\Companies\Entities\Branch;
 
 class User extends Model
 {
@@ -17,7 +18,10 @@ class User extends Model
             $this->company_id = User::where('login_id', auth('api')->id())->first()->company_id;
             $this->save();
 
-            BranchesService::addUserToBranches($this->id, $request->branch_id);
+            //$branch_id = $request->branch_id;
+            $branch_id = Branch::where('company_id',$this->company_id)->pluck('id')->toArray();
+
+            BranchesService::addUserToBranches($this->id, $branch_id);
 
             return $this;
     }
