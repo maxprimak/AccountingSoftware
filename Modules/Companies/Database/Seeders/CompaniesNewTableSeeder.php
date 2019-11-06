@@ -16,61 +16,60 @@ class CompaniesNewTableSeeder extends Seeder
     {
         Model::unguard();
 
-        factory('Modules\Companies\Entities\Company')->create([
+        $company = factory('Modules\Companies\Entities\Company')->create([
             'name' => 'NewCompany',
             'currency_id' => 1,
             'address' => 'Brigittenau',
             'phone' => '+43 1 23456789'
         ]);
         
-        factory('Modules\Companies\Entities\Branch')->create([
+        $firstBranch = factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'NewBranch 11',
-            'company_id' => 2,
+            'company_id' => $company->id,
             'color' => '#F64272',
             'address' => 'Brigittenau 1',
             'phone' => '+43 1 123456789'
         ]);
 
-        factory('Modules\Companies\Entities\Branch')->create([
+        $secondBranch = factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'NewBranch 22',
-            'company_id' => 2,
+            'company_id' => $company->id,
             'color' => '#f7ff16',
             'address' => 'Brigittenau 2',
             'phone' => '+43 9 87654321'
         ]);
 
-        factory('Modules\Login\Entities\Login')->create([
+        $login = factory('Modules\Login\Entities\Login')->create([
             'username' => 'me@newcompany.at',
             'password' => bcrypt('123456789'),
             'email' => 'me@newcompany.at',
         ]);
 
-        factory('Modules\Users\Entities\People')->create([
+        $person = factory('Modules\Users\Entities\People')->create([
             'name' => 'Tom Thompson',
             'address' => 'Brigittenau 1',
             'phone' => '+43 1 23456789'
         ]);
 
-        //Create user instance
-        factory('Modules\Users\Entities\User')->create([
-            'login_id' => 2,
-            'person_id' => 2,
-            'company_id' => 2,
+        $user = factory('Modules\Users\Entities\User')->create([
+            'login_id' => $login->id,
+            'person_id' => $person->id,
+            'company_id' => $company->id,
         ]);
 
         factory('Modules\Users\Entities\UserHasBranch')->create([
-            'user_id' => 2,
-            'branch_id' => 5
+            'user_id' => $user->id,
+            'branch_id' => $firstBranch->id
         ]);
 
     
         factory('Modules\Users\Entities\UserHasBranch')->create([
             'user_id' => 2,
-            'branch_id' => 6
+            'branch_id' => $secondBranch->id
         ]);
 
         factory('Modules\Employees\Entities\Employee')->create([
-            'user_id' => 2,
+            'user_id' => $user->id,
             'role_id' => 1,
         ]);
 
