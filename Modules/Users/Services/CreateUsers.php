@@ -138,8 +138,11 @@ class CreateUsers{
 
         $user = $this->updateUser($request,$employee);
 
+        //$branch_id = $request->branch_id;
+        $branch_id = Branch::where('company_id',$employee->company_id)->pluck('id')->toArray();
+
         BranchesService::deleteUserFromAllBranches($user->id);
-        BranchesService::addUserToBranches($user->id, $request->branch_id);
+        BranchesService::addUserToBranches($user->id, $branch_id);
 
         //update Employee
         $employee = Employee::find($employee_id);

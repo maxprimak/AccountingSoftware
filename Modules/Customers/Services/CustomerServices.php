@@ -40,10 +40,13 @@ class CustomerServices{
         try {
           $customer = Customer::findOrFail($customer_id);
 
+          //$branch_id = $request->branch_id;
+          $branch_id = Branch::where('company_id',$customer->company_id)->pluck('id')->toArray();
+
           CreateUsersService::updatePerson($request,$customer);
 
           BranchesService::deleteCustomerFromAllBranches($customer_id);
-          BranchesService::addCustomerToBranches($customer_id, $request->branch_id);
+          BranchesService::addCustomerToBranches($customer_id, $branch_id);
 
           $customer = $customer->storeUpdated($request);
 
