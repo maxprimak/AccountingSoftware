@@ -64,7 +64,7 @@ class CompaniesNewTableSeeder extends Seeder
 
     
         factory('Modules\Users\Entities\UserHasBranch')->create([
-            'user_id' => 2,
+            'user_id' => $user->id,
             'branch_id' => $secondBranch->id
         ]);
 
