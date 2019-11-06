@@ -138,8 +138,10 @@ class CreateUsers{
 
         $user = $this->updateUser($request,$employee);
 
-        BranchesService::deleteUserFromAllBranches($user->id);
-        BranchesService::addUserToBranches($user->id, $request->branch_id);
+        //commented it because now we do not have a function to change branches of user
+
+        //BranchesService::deleteUserFromAllBranches($user->id);
+        //BranchesService::addUserToBranches($user->id, $branch_id);
 
         //update Employee
         $employee = Employee::find($employee_id);

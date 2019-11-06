@@ -21,11 +21,6 @@ class RepairOrdersTest extends TestCase
         TestCase::setUpEnvironment();
 
     }
-
-    //guest_can_not_access_routes(){}
-    //validator works for create
-    //validator works for update
-    //prepaysum > price
     
     public function test_user_can_create_repair_order(){
 
@@ -82,7 +77,7 @@ class RepairOrdersTest extends TestCase
             'status' => "Accepted for repair",
             'customer_phone' => $this->faker->phoneNumber(),
             'defect_description' => $this->faker->text(50),
-            'located_in' => $this->getBranchesOfLogin($login)->first()->id,
+            'located_in' => $this->getBranchesOfLogin($login)->first()->name,
             'comment' => $this->faker->text(50),
             'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 19)
         ])->assertJsonStructure([
@@ -120,6 +115,21 @@ class RepairOrdersTest extends TestCase
 
         $this->json('GET', route('orders.repair.branch.index', ['branch_id' => $this->getBranchesOfLogin($login)->first()->id]), [])
             ->assertStatus(200);
+
+    }
+
+    public function test_user_can_see_only_orders_of_his_company(){
+
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $login2 = $this->makeNewLoginWithCompanyAndBranch();
+
+        Passport::actingAs($login);
+
+        $this->json('GET', route('orders.repair.branch.index', ['branch_id' => $this->getBranchesOfLogin($login)->first()->id]), [])
+            ->assertStatus(200);
+        
+        $this->json('GET', route('orders.repair.branch.index', ['branch_id' => $this->getBranchesOfLogin($login2)->first()->id]), [])
+            ->assertStatus(403);
 
     }
 

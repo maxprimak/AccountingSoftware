@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Modules\Login\Database\Seeders\LoginDatabaseSeeder;
 use Modules\Users\Database\Seeders\UsersDatabaseSeeder;
 use Modules\Companies\Database\Seeders\CompaniesDatabaseSeeder;
+use Modules\Companies\Database\Seeders\CompaniesNewTableSeeder;
 use Modules\Employees\Database\Seeders\RolesDatabaseSeeder;
 use Modules\Employees\Database\Seeders\EmployeesDatabaseSeeder;
 use Modules\Customers\Database\Seeders\CustomersDatabaseSeeder;
@@ -45,6 +46,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GoodsDatabaseSeeder::class);
         $this->call(RepairOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
-
+        $this->call(CompaniesNewTableSeeder::class);
     }
 }

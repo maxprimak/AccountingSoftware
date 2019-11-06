@@ -35,7 +35,7 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
     Route::post('colors', 'ColorsController@store')->name('colors.store');
 
     //Goods
-    Route::get('goods/{branch_id}', 'GoodsController@index')->name('goods.index');
+    Route::get('goods/{branch_id}', 'GoodsController@index')->name('goods.index')->middleware('my_branch');
     Route::post('goods', 'GoodsController@store')->name('goods.store');
     Route::post('goods/{good_id}', 'GoodsController@update')->name('goods.update');
     Route::delete('goods/{good_id}', 'GoodsController@destroy')->name('goods.delete');
