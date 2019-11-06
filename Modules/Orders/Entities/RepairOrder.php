@@ -57,7 +57,7 @@ class RepairOrder extends Model
 
         $repair_order->status_id = $status->id;
         $repair_order->prepay_sum = $request->prepay_sum;
-        $repair_order->located_in = $request->located_in;
+        $repair_order->located_in = Branch::where('name',$request->located_in)->firstOrFail()->id;
 
         $repair_order->update();
 

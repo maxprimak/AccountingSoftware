@@ -22,7 +22,7 @@ class UpdateRepairOrderRequest extends FormRequest
             'defect_description' => 'required|max:190',
             'comment' => 'max:190',
             'status' => 'required|exists:order_statuses,name',
-            'located_in' => 'required|exists:branches,id',
+            'located_in' => 'required|exists:branches,name',
             'prepay_sum' => 'nullable|numeric|max:'. $this->price
         ];
     }

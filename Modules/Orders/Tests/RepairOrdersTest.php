@@ -77,7 +77,7 @@ class RepairOrdersTest extends TestCase
             'status' => "Accepted for repair",
             'customer_phone' => $this->faker->phoneNumber(),
             'defect_description' => $this->faker->text(50),
-            'located_in' => $this->getBranchesOfLogin($login)->first()->id,
+            'located_in' => $this->getBranchesOfLogin($login)->first()->name,
             'comment' => $this->faker->text(50),
             'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 19)
         ])->assertJsonStructure([
