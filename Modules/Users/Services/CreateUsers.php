@@ -138,11 +138,10 @@ class CreateUsers{
 
         $user = $this->updateUser($request,$employee);
 
-        //$branch_id = $request->branch_id;
-        $branch_id = Branch::where('company_id',$employee->company_id)->pluck('id')->toArray();
+        //commented it because now we do not have a function to change branches of user
 
-        BranchesService::deleteUserFromAllBranches($user->id);
-        BranchesService::addUserToBranches($user->id, $branch_id);
+        //BranchesService::deleteUserFromAllBranches($user->id);
+        //BranchesService::addUserToBranches($user->id, $branch_id);
 
         //update Employee
         $employee = Employee::find($employee_id);
