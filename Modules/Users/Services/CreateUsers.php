@@ -109,12 +109,11 @@ class CreateUsers{
         $user->save();
 
         $branch = new Branch();
-        $branch->company_id = $company->id;
-        $branch->name = $company->name . ' Main Branch';
-        $branch->address = $company->address;
-        $branch->phone = $company->phone;
-        $branch->color = "#F64272";
-        $branch->save();
+        $request->name = $company->name . ' Main Branch';
+        $request->address = $request->company_address;
+        $request->phone = $request->company_phone;
+        $request->color = "#F64272";
+        $branch = $branch->store($request);
 
         BranchesService::addUserToBranches($user->id, array($branch->id));
 

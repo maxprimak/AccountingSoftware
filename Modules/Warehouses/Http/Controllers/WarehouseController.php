@@ -5,8 +5,9 @@ namespace Modules\Warehouses\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Warehouses\Entities\Warehouse;
 
-class WarehousesController extends Controller
+class WarehouseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class WarehousesController extends Controller
      */
     public function index()
     {
-        return view('warehouses::index');
+        $warehouses = Warehouse::all();
+        return response()->json($warehouses);
     }
 
     /**
@@ -33,7 +35,8 @@ class WarehousesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $warehouse = new Warehouse();
+      $warehouse->store($request);
     }
 
     /**
@@ -64,7 +67,8 @@ class WarehousesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $warehouse = Warehouse::find($id);
+      $warehouse->storeUpdate($request);
     }
 
     /**
