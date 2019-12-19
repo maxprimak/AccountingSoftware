@@ -12,6 +12,8 @@ use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Companies\Http\Requests\StoreBranchRequest;
 use Modules\Companies\Http\Requests\UpdateBranchRequest;
+use Modules\Warehouses\Entities\Warehouse;
+
 
 use BranchesService;
 
@@ -82,6 +84,8 @@ class BranchesController extends Controller
         $branch = Branch::find($id);
 
         if(!BranchesService::checkThisBranchHasEmployees($branch) && !BranchesService::checkThisBranchHasCustomers($branch)){
+          $warehouse = Warehouse::where('branch_id',$branch->id)->first();
+          $warehouse->delete();
           $branch->delete();
         }else{
           return response()->json([
