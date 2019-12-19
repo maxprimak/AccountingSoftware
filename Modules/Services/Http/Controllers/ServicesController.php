@@ -5,6 +5,12 @@ namespace Modules\Services\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Services\Http\Requests\StoreServiceRequest;
+use Modules\Services\Http\Requests\UpdateServiceRequest;
+use Modules\Services\Entities\Service;
+use Modules\Services\Entities\ServicesTranslation;
+use Modules\Services\Entities\ServiceHasPart;
+
 
 class ServicesController extends Controller
 {
@@ -14,7 +20,24 @@ class ServicesController extends Controller
      */
     public function index()
     {
-        return view('services::index');
+        $services = Service::all();
+
+        $response = array();
+
+        foreach($services as $service){
+
+            $language_id = auth('api')->user()->getCompany()->language_id;
+
+            $service_json = [
+                'id' => $service->id,
+                'name' => $service->getTranslatedName($language_id),
+            ];
+
+            array_push($response, $service_json);
+
+        }
+
+        return response()->json($response);
     }
 
     /**
@@ -31,9 +54,15 @@ class ServicesController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreServiceRequest $request)
     {
-        //
+
+        $service = new Service();
+        $service = $service->store($request);
+
+        return response()->json([
+            "message" => "service created"
+        ]);
     }
 
     /**
@@ -62,9 +91,15 @@ class ServicesController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateServiceRequest $request, $id)
     {
-        //
+        
+        $service = Service::find($id);
+        $service->storeUpdated($request);
+
+        return response()->json([
+            "message" => "service updated"
+        ]);
     }
 
     /**

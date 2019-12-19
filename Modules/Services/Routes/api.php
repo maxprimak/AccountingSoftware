@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/services', function (Request $request) {
-    return $request->user();
-});
+Route::post('/services', 'ServicesController@store')->name('services.store');
+Route::post('/services/{service_id}', 'ServicesController@update')->name('services.update');
+Route::get('/services', 'ServicesController@index')->name('services.index');

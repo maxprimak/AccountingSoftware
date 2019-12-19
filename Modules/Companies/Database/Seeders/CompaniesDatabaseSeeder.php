@@ -26,7 +26,7 @@ class CompaniesDatabaseSeeder extends Seeder
             'name' => 'PhoneFactory',
             'currency_id' => 1,
             'address' => 'Wagramerstraße 94, Top 1A',
-            'phone' => '+43 1 3694001'
+            'phone' => '+43 1 3694001',
         ]);
 
         factory('Modules\Companies\Entities\Branch')->create([

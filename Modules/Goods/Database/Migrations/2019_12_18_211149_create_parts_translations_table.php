@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompaniesTable extends Migration
+class CreatePartsTranslationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,13 @@ class CreateCompaniesTable extends Migration
      */
     public function up()
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('parts_translations', function (Blueprint $table) {
             $table->increments('id');
-            //account_id int
-            //package_id int
-            $table->string('name')->unique();
-            $table->unsignedInteger('currency_id');
+            $table->string('name');
+            $table->unsignedInteger('part_id');
             $table->unsignedInteger('language_id');
-            $table->string('address');
-            $table->string('phone');
             $table->timestamps();
-            $table->foreign('currency_id')->references('id')->on('currencies');
+            $table->foreign('part_id')->references('id')->on('parts');
             $table->foreign('language_id')->references('id')->on('languages');
         });
     }
@@ -35,6 +31,6 @@ class CreateCompaniesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('parts_translations');
     }
 }
