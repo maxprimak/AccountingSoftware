@@ -10,6 +10,7 @@ use Modules\Services\Http\Requests\UpdateServiceRequest;
 use Modules\Services\Entities\Service;
 use Modules\Services\Entities\ServicesTranslation;
 use Modules\Services\Entities\ServiceHasPart;
+use Modules\Services\Entities\CompanyHasService;
 
 
 class ServicesController extends Controller
@@ -19,8 +20,13 @@ class ServicesController extends Controller
      * @return Response
      */
     public function index()
-    {
-        $services = Service::all();
+    {   
+        $company = auth('api')->user()->getCompany();
+        $services_of_company_ids = CompanyHasService::where('company_id', $company->id)
+                                                    ->pluck('service_id')->toArray();
+        
+        $services = Service::whereIn('id', $services_of_company_ids)->OrWhere('is_custom', 0)->get();
+
 
         $response = array();
 
@@ -56,6 +62,12 @@ class ServicesController extends Controller
      */
     public function store(StoreServiceRequest $request)
     {
+
+        if(!$request->nameUnique()){
+            return response()->json([
+                "message" => "Name of service is not unique"
+            ], 422);
+        }
 
         $service = new Service();
         $service = $service->store($request);
@@ -94,6 +106,12 @@ class ServicesController extends Controller
     public function update(UpdateServiceRequest $request, $id)
     {
         
+        if(!$request->nameUnique()){
+            return response()->json([
+                "message" => "Name of service is not unique"
+            ], 422);
+        }
+
         $service = Service::find($id);
         $service->storeUpdated($request);
 

@@ -8,6 +8,7 @@ use Modules\Services\Entities\ServicesTranslation;
 use Modules\Login\Entities\Login;
 use Modules\Goods\Entities\Part;
 use Modules\Services\Entities\ServiceHasPart;
+use Modules\Services\Entities\CompanyHasService;
 
 class Service extends Model
 {
@@ -38,17 +39,26 @@ class Service extends Model
 
         $company = auth('api')->user()->getCompany();
 
+        $company_has_service = new CompanyHasService();
+        $company_has_service->company_id = $company->id;
+        $company_has_service->service_id = $this->id;
+        $company_has_service->save();
+
         $translation = new ServicesTranslation();
         $translation->name = $request->name;
         $translation->service_id = $this->id;
         $translation->language_id = $company->language_id;
         $translation->save();
 
-        $part = Part::find($request->part_id);
-        
-        $has_part = new ServiceHasPart();
-        $has_part->store($part, $this->id);
-        $has_part->save();
+        if($request->has('part_id') && $request->part_id != null){
+
+            $part = Part::find($request->part_id);
+
+            $has_part = new ServiceHasPart();
+            $has_part->store($part, $this->id);
+            $has_part->save();
+
+        }
 
     }
 
@@ -60,8 +70,12 @@ class Service extends Model
         $translation->save();
 
         $has_part = ServiceHasPart::where('service_id', $this->id)->first();
-        $has_part->part_id = $request->part_id;
-        $has_part->save();
+        if($has_part != null) {
+
+            $has_part->part_id = $request->part_id;
+            $has_part->save();
+
+        }
 
     }
 
