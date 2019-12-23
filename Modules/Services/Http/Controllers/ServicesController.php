@@ -25,7 +25,8 @@ class ServicesController extends Controller
         $services_of_company_ids = CompanyHasService::where('company_id', $company->id)
                                                     ->pluck('service_id')->toArray();
         
-        $services = Service::whereIn('id', $services_of_company_ids)->OrWhere('is_custom', 0)->get();
+        $services = Service::whereIn('id', $services_of_company_ids)
+                    ->OrWhere('is_custom', 0)->orderBy('id', 'DESC')->get();
 
 
         $response = array();
@@ -37,6 +38,7 @@ class ServicesController extends Controller
             $service_json = [
                 'id' => $service->id,
                 'name' => $service->getTranslatedName($language_id),
+                'part_id' => $service->getParts()->first()->id
             ];
 
             array_push($response, $service_json);
@@ -73,7 +75,12 @@ class ServicesController extends Controller
         $service = $service->store($request);
 
         return response()->json([
-            "message" => "service created"
+            "message" => "service created",
+            "service" => [
+                'id' => $service->id,
+                'name' => $service->getTranslatedName(auth('api')->user()->getCompany()->language_id),
+                'part_id' => $service->getParts()->first()->id
+            ]
         ]);
     }
 

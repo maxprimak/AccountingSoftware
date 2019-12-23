@@ -29,6 +29,7 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
     //Parts
     Route::get('parts', 'PartsController@index')->name('parts.index');
     Route::post('parts', 'PartsController@store')->name('parts.store');
+    Route::get('parts/{part_id}', 'PartsController@show')->name('parts.show');
 
     //Colors
     Route::get('colors', 'ColorsController@index')->name('colors.index');
