@@ -8,6 +8,10 @@ use Illuminate\Routing\Controller;
 use Modules\Goods\Entities\Good;
 use Modules\Goods\Http\Requests\StoreGoodRequest;
 use Modules\Goods\Http\Requests\UpdateGoodRequest;
+use Modules\Warehouses\Entities\WarehouseHasGood;
+use Modules\Warehouses\Entities\GoodHasPrices;
+use Modules\Warehouses\Entities\Warehouse;
+use Modules\Goods\Entities\BranchHasGood;
 use Illuminate\Support\Facades\DB;
 
 class GoodsController extends Controller
@@ -16,9 +20,10 @@ class GoodsController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index($branch_id)
+    public function index($warehouse_id)
     {
-        $goods_id = Good::where('branch_id',$branch_id)->pluck('id')->toArray();
+
+        $goods_id = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('good_id')->toArray();
         $goods = DB::table('goods')
                     ->join('brands', 'brands.id', '=', 'goods.brand_id')
                     ->join('models', 'models.id', '=', 'goods.model_id')
@@ -26,7 +31,7 @@ class GoodsController extends Controller
                     ->join('parts','parts.id', '=', 'goods.part_id')
                     ->join('colors','colors.id', '=', 'goods.color_id')
                     ->select('goods.id as id', 'brands.name as brand_name' ,'models.name as model_name',
-                    'submodels.name as submodel_name', 'parts.name as part_name','colors.name as color_name','goods.amount')
+                    'submodels.name as submodel_name', 'parts.name as part_name','colors.name as color_name')
                     ->whereIn('goods.id',$goods_id)
                     ->get();
         return response()->json($goods);
@@ -50,17 +55,11 @@ class GoodsController extends Controller
     {
       //IF THIS GOOD ALREADY EXIST THEN WE NEED TO ADD ONLY AMOUNT AND PRICE FROM REQUEST
       //IF GOOD DOES NOT EXIST CREATE A NEW ONE
-        $existing_good = Good::where([['branch_id','=', $request->branch_id],['brand_id','=', $request->brand_id],
-                                      ['color_id','=', $request->color_id],['model_id','=', $request->model_id],
-                                      ['submodel_id','=', $request->submodel_id],['part_id','=', $request->part_id]
-                                      ])->first();
+        $existing_good = new Good();
+        $existing_good = $existing_good->check_if_exists($request);
 
         if($existing_good){
-          $existing_good->amount += $request->amount;
-          $existing_good->price = $request->price;
-          $existing_good->save();
-
-          return response()->json(['message' => 'Amount was added to good id:' .$existing_good->id, 'good' => $existing_good], 200);
+          return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
         }
 
         $good = new Good();
@@ -98,8 +97,33 @@ class GoodsController extends Controller
     public function update(UpdateGoodRequest $request, $id)
     {
       try {
-        $good = Good::findOrFail($id);
-        $good = $good->edit($request);
+        $existing_good = new Good();
+        $existing_good = $existing_good->check_if_exists($request);
+        if(!$existing_good){
+          $good = new Good();
+          $good = $good->store($request);
+
+          //remove from warehouse has good
+          $warehouse_has_good = WarehouseHasGood::find($request->warehouse_has_good_id);
+          $warehouse_has_good->delete();
+
+          //remove from branch has good
+          $branch_id = Warehouse::find($warehouse_has_good->warehouse_id)->getBranchId();
+          $branch_has_good = BranchHasGood::where('branch_id',$branch_id)->where('good_id',$id)->first();
+          //remove from good has prices
+          $good_has_prices = GoodHasPrices::where('branch_has_good_id',$branch_has_good->id)->first();
+          $good_has_prices->delete();
+          $branch_has_good->delete();
+
+          return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
+        }else{
+          if($existing_good->id != $id){
+            $good = $existing_good->edit($request);
+          }else{
+            throw new \Exception("You did not make any changes", 1);
+          }
+          return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
+        }
       } catch (\Exception $e) {
         return response()->json(['message' => $e->getMessage()], 500);
       }
@@ -111,9 +135,9 @@ class GoodsController extends Controller
      * @param int $id
      * @return Response
      */
-    public function destroy($id)
-    {
-        Good::findOrFail($id)->delete();
-        return response()->json(['message' => 'Successfully deleted!']);
-    }
+    // public function destroy($id)
+    // {
+    //
+    //     return response()->json(['message' => 'Successfully deleted!']);
+    // }
 }

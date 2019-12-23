@@ -29,6 +29,8 @@ use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\SalesOrder;
 use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Entities\PaymentType;
+use Modules\Warehouses\Entities\Warehouse;
+
 use Modules\Services\Entities\Language;
 use Modules\Services\Entities\Service;
 use Modules\Services\Entities\ServiceHasPart;
@@ -156,6 +158,11 @@ abstract class TestCase extends BaseTestCase
           return Branch::whereIn('id', UserHasBranch::where('user_id', $user->id)->pluck('branch_id')->toArray())->get();
         }
 
+        public function getWarehousesOfLogin($login){
+          $user = $this->getUserOfLogin($login);
+          return Warehouse::whereIn('branch_id', UserHasBranch::where('user_id', $user->id)->pluck('branch_id')->toArray())->get();
+        }
+
         public function getCustomersOfLogin($login){
 
           $user = $this->getUserOfLogin($login);
@@ -234,7 +241,7 @@ abstract class TestCase extends BaseTestCase
             $ord_status->name = $status[0];
             $ord_status->id = $status[1];
             $ord_status->save();
-            
+
           }
 
 
@@ -266,15 +273,15 @@ abstract class TestCase extends BaseTestCase
           $service = new Service();
           $service->is_custom = 0;
           $service->save();
-  
+
           $translation = new ServicesTranslation();
           $translation->name = $name;
           $translation->service_id = $service->id;
           $translation->language_id = 1;
           $translation->save();
-  
+
           $part = Part::find($part_id);
-          
+
           $has_part = new ServiceHasPart();
           $has_part->store($part, $service->id);
           $has_part->save();

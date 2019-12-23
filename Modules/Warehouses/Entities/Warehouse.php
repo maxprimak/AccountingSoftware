@@ -20,4 +20,8 @@ class Warehouse extends Model
       $this->save();
       return $this;
     }
+
+    public function getBranchId(): int{
+      return $this->branch_id;
+    }
 }
