@@ -31,6 +31,11 @@ use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Entities\PaymentType;
 use Modules\Warehouses\Entities\Warehouse;
 
+use Modules\Services\Entities\Language;
+use Modules\Services\Entities\Service;
+use Modules\Services\Entities\ServiceHasPart;
+use Modules\Services\Entities\ServicesTranslation;
+use Modules\Goods\Entities\PartsTranslation;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -216,6 +221,20 @@ abstract class TestCase extends BaseTestCase
               ['Warranty',9],
           ];
 
+          if(Language::all()->count() == 0){
+            $language = new Language;
+            $language->name = "English";
+            $language->id = 1;
+            $language->code = "EN";
+            $language->save();
+          }
+
+          //creating of custom services
+          $part = TestCase::createPart("DefaultPart");
+          TestCase::createDefaultService("DefaultService1", $part->id);
+          TestCase::createDefaultService("DefaultService2", $part->id);
+          TestCase::createDefaultService("DefaultService3", $part->id);
+
           foreach($statuses as $status){
 
             $ord_status = new OrderStatus();
@@ -232,6 +251,40 @@ abstract class TestCase extends BaseTestCase
             factory(PaymentType::class)->create(['name' => 'Cash', 'id' => 1]);
             factory(PaymentType::class)->create(['name' => 'Card', 'id' => 2]);
           }
+
+        }
+
+        public static function createPart($name){
+
+          $part = new Part();
+          $part->name = "name"; //TODO: delete it
+          $part->save();
+          $has_translation = new PartsTranslation();
+          $has_translation->language_id = 1;
+          $has_translation->part_id = $part->id;
+          $has_translation->name = $name;
+          $has_translation->save();
+
+          return $part;
+        }
+
+        public static function createDefaultService($name, $part_id = 1){
+
+          $service = new Service();
+          $service->is_custom = 0;
+          $service->save();
+
+          $translation = new ServicesTranslation();
+          $translation->name = $name;
+          $translation->service_id = $service->id;
+          $translation->language_id = 1;
+          $translation->save();
+
+          $part = Part::find($part_id);
+
+          $has_part = new ServiceHasPart();
+          $has_part->store($part, $service->id);
+          $has_part->save();
 
         }
 

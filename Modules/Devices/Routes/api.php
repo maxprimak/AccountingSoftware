@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('/services', 'ServicesController@store')->name('services.store');
-Route::post('/services/{service_id}', 'ServicesController@update')->name('services.update');
-Route::get('/services', 'ServicesController@index')->name('services.index');
+Route::post('/devices/{customer_id}', "DevicesController@store")->name('devices.store');
+Route::post('/devices/update/{device_id}', "DevicesController@update")->name('devices.update');
+Route::get('/customers/devices/{customer_id}', "CustomerDeviceController@index")->name('customers.devices.index');

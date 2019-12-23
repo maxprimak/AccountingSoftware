@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateServicesTable extends Migration
+class CreateServiceHasPartsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateServicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('service_has_parts', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('is_custom');
+            $table->unsignedInteger('service_id');
+            $table->unsignedInteger('part_id');
             $table->timestamps();
+            $table->foreign('service_id')->references('id')->on('services');
+            $table->foreign('part_id')->references('id')->on('parts');
         });
     }
 
@@ -27,6 +30,6 @@ class CreateServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('service_has_parts');
     }
 }

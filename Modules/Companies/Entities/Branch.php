@@ -1,6 +1,7 @@
 <?php
 
 namespace Modules\Companies\Entities;
+
 use Modules\Companies\Http\Requests\StoreBranchRequest;
 use Modules\Companies\Http\Requests\UpdateBranchRequest;
 use Illuminate\Database\Eloquent\Model;

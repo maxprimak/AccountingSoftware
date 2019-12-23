@@ -18,6 +18,7 @@ use Modules\Goods\Database\Seeders\ColorSeederTableSeeder;
 use Modules\Goods\Database\Seeders\GoodsDatabaseSeeder;
 use Modules\Orders\Database\Seeders\RepairOrdersTableSeeder;
 use Modules\Orders\Database\Seeders\SalesOrdersTableSeeder;
+use Modules\Services\Database\Seeders\LanguagesTableSeeder;
 
 
 
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(LanguagesTableSeeder::class);
         $this->call(CompaniesDatabaseSeeder::class);
         $this->call(LoginDatabaseSeeder::class);
         $this->call(UsersDatabaseSeeder::class);

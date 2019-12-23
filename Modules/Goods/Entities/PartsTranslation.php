@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Orders\Entities;
+namespace Modules\Goods\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Device extends Model
+class PartsTranslation extends Model
 {
     protected $fillable = [];
 }

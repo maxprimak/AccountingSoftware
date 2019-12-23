@@ -14,10 +14,14 @@ class CreateDevicesTable extends Migration
     public function up()
     {
         Schema::create('devices', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
+            $table->increments('id');
+            $table->unsignedInteger('submodel_id');
+            $table->unsignedInteger('color_id');
+            $table->string('serial_nr');
+            $table->string('condition')->nullable();
             $table->timestamps();
-            //TODO: foreign keys
+            $table->foreign('color_id')->references('id')->on('colors');
+            $table->foreign('submodel_id')->references('id')->on('submodels');
         });
     }
 
