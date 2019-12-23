@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Goods\Http\Requests;
+namespace Modules\Warehouses\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateGoodRequest extends FormRequest
+class UpdateWarehouseHasGoodRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,8 @@ class UpdateGoodRequest extends FormRequest
     public function rules()
     {
         return [
-
+          'amount' => 'required|numeric',
+          'vendor_code' => 'required'
         ];
     }
 

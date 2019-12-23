@@ -29,6 +29,8 @@ use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\SalesOrder;
 use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Entities\PaymentType;
+use Modules\Warehouses\Entities\Warehouse;
+
 
 abstract class TestCase extends BaseTestCase
 {
@@ -151,6 +153,11 @@ abstract class TestCase extends BaseTestCase
           return Branch::whereIn('id', UserHasBranch::where('user_id', $user->id)->pluck('branch_id')->toArray())->get();
         }
 
+        public function getWarehousesOfLogin($login){
+          $user = $this->getUserOfLogin($login);
+          return Warehouse::whereIn('branch_id', UserHasBranch::where('user_id', $user->id)->pluck('branch_id')->toArray())->get();
+        }
+
         public function getCustomersOfLogin($login){
 
           $user = $this->getUserOfLogin($login);
@@ -215,7 +222,7 @@ abstract class TestCase extends BaseTestCase
             $ord_status->name = $status[0];
             $ord_status->id = $status[1];
             $ord_status->save();
-            
+
           }
 
 

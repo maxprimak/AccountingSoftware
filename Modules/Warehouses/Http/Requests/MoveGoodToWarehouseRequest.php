@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Goods\Http\Requests;
+namespace Modules\Warehouses\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateGoodRequest extends FormRequest
+class moveGoodToWarehouseRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,8 +14,10 @@ class UpdateGoodRequest extends FormRequest
     public function rules()
     {
         return [
-
-        ];
+          'warehouse_id' => 'required | numeric |exists:warehouses,id',
+          'stock_amount' => 'required |numeric |',
+          'amount' => 'required|numeric|max:'. $this->stock_amount
+         ];
     }
 
     /**

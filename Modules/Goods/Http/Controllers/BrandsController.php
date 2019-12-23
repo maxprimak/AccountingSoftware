@@ -39,7 +39,7 @@ class BrandsController extends Controller
         $brand = new Brand();
         $brand->store($request);
 
-        return response()->json();
+        return response()->json("Successfully created!");
     }
 
     /**

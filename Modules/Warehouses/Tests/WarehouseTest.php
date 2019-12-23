@@ -61,4 +61,22 @@ class WarehouseTest extends TestCase
         'branch_id' => $request['branch_id']
       ]);
     }
+
+    // public function test_user_can_add_new_location()
+    // {
+    //   Passport::actingAs($this->login);
+    //   //CREATE NEW BRANCH
+    //   $request = $this->test_user_can_create_warehouse();
+    //   //UPDATE NEW BRANCH
+    //   $warehouse = Warehouse::where('name',$request['name'])->where('branch_id',$request['branch_id'])->first();
+    //   $new_name = $this->faker->unique()->name();
+    //   $response = $this->json('POST', route('warehouse.update', ['warehouse_id' => $warehouse->id]), [
+    //       'name' => $new_name,
+    //   ])->assertStatus(200);
+    //
+    //   $response = $this->assertDatabaseHas('location_in_warehouses', [
+    //     'name' => $new_name,
+    //     'branch_id' => $request['branch_id']
+    //   ]);
+    // }
 }

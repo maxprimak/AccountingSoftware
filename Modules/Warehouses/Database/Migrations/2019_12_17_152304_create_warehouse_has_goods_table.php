@@ -17,9 +17,9 @@ class CreateWarehouseHasGoodsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('good_id');
             $table->unsignedInteger('warehouse_id');
-            $table->unsignedInteger('location_in_warehouse_id');
-            $table->integer('amount');
-            $table->string('vendor_code');
+            $table->unsignedInteger('location_in_warehouse_id')->nullable();
+            $table->integer('amount')->default(0);
+            $table->string('vendor_code')->nullable();
             $table->timestamps();
         });
 

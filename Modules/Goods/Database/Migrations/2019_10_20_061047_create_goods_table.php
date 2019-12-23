@@ -15,14 +15,11 @@ class CreateGoodsTable extends Migration
     {
         Schema::create('goods', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('branch_id');
             $table->unsignedInteger('brand_id');
             $table->unsignedInteger('model_id');
             $table->unsignedInteger('submodel_id');
             $table->unsignedInteger('part_id');
             $table->unsignedInteger('color_id');
-            $table->integer('amount');
-            $table->double('price', 8, 2);
             $table->timestamps();
 
             // $table->string('supplier_stock');
@@ -32,7 +29,6 @@ class CreateGoodsTable extends Migration
         });
 
         Schema::table('goods', function($table) {
-          $table->foreign('branch_id')->references('id')->on('branches');
           $table->foreign('brand_id')->references('id')->on('brands');
           $table->foreign('model_id')->references('id')->on('models');
           $table->foreign('submodel_id')->references('id')->on('submodels');
