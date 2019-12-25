@@ -25,6 +25,7 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
     //SubModels
     Route::get('submodels/{model_id}', 'SubmodelController@index')->name('submodels.index');
     Route::post('submodels', 'SubmodelController@store')->name('submodels.store');
+    Route::get('submodels/show/{submodel_id}', 'SubmodelController@show')->name('submodels.show');
 
     //Parts
     Route::get('parts', 'PartsController@index')->name('parts.index');
@@ -34,6 +35,7 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
     //Colors
     Route::get('colors', 'ColorsController@index')->name('colors.index');
     Route::post('colors', 'ColorsController@store')->name('colors.store');
+    Route::get('colors/{color_id}', 'ColorsController@show')->name('colors.show');
 
     //Goods
     Route::get('goods/{warehouse_id}', 'GoodsController@index')->name('goods.index');

@@ -48,7 +48,9 @@ class ColorsController extends Controller
      */
     public function show($id)
     {
-        return view('goods::show');
+        $color = Color::find($id);
+        
+        return response()->json($color);
     }
 
     /**
