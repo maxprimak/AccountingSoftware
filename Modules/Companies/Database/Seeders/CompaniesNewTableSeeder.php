@@ -4,6 +4,7 @@ namespace Modules\Companies\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Warehouses\Entities\Warehouse;
 
 class CompaniesNewTableSeeder extends Seeder
 {
@@ -12,6 +13,12 @@ class CompaniesNewTableSeeder extends Seeder
      *
      * @return void
      */
+    public function store_warehouse($branch){
+       $warehouse = new Warehouse();
+       $branch->branch_id = $branch->id;
+       $warehouse->store($branch);
+    }
+
     public function run()
     {
         Model::unguard();
@@ -22,7 +29,7 @@ class CompaniesNewTableSeeder extends Seeder
             'address' => 'Brigittenau',
             'phone' => '+43 1 23456789'
         ]);
-        
+
         $firstBranch = factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'NewBranch 11',
             'company_id' => $company->id,
@@ -30,6 +37,7 @@ class CompaniesNewTableSeeder extends Seeder
             'address' => 'Brigittenau 1',
             'phone' => '+43 1 123456789'
         ]);
+        $this->store_warehouse($firstBranch);
 
         $secondBranch = factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'NewBranch 22',
@@ -38,6 +46,8 @@ class CompaniesNewTableSeeder extends Seeder
             'address' => 'Brigittenau 2',
             'phone' => '+43 9 87654321'
         ]);
+
+        $this->store_warehouse($secondBranch);
 
         $login = factory('Modules\Login\Entities\Login')->create([
             'username' => 'me@newcompany.at',
@@ -62,7 +72,7 @@ class CompaniesNewTableSeeder extends Seeder
             'branch_id' => $firstBranch->id
         ]);
 
-    
+
         factory('Modules\Users\Entities\UserHasBranch')->create([
             'user_id' => $user->id,
             'branch_id' => $secondBranch->id

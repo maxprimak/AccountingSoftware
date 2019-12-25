@@ -3,6 +3,7 @@
 namespace Modules\Goods\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Goods\Entities\BranchHasGood;
 
 class GoodHasPrices extends Model
 {
@@ -21,5 +22,11 @@ class GoodHasPrices extends Model
       $this->branch_has_good_id = $branch_has_good_id;
       $this->save();
       return $this;
+    }
+
+    public function getGoodId(){
+      $branch_has_good = BranchHasGood::find($this->branch_has_good_id);
+      $good_id = $branch_has_good->good_id;
+      return $good_id;
     }
 }

@@ -427,16 +427,24 @@ abstract class TestCase extends BaseTestCase
         public function storeBrands($login,$amount){
           Passport::actingAs($login);
           for($i = 0; $i < $amount; $i++){
-
             $name = $this->faker->unique()->name;
             $logo = $this->faker->unique()->name;
             $response = $this->json('POST', route('brands.store'), [
               'name' => $name,
               'logo' => $logo
             ])->assertStatus(200);
+
             $response = $this->assertDatabaseHas('brands', [
               'name' => $name,
               'logo' => $logo
+            ]);
+            $company = $login->getCompany();
+
+            $new_brand = Brand::where('name',$name)->where('logo',$logo)->firstOrFail();
+
+            $response = $this->assertDatabaseHas('company_has_brands', [
+              'brand_id' => $new_brand->id,
+              'company_id' => $company->id,
             ]);
           }
         }
@@ -459,6 +467,14 @@ abstract class TestCase extends BaseTestCase
               'brand_id' => $brand_id,
               'name' => $name,
               'logo' => $logo
+            ]);
+
+            $company = $login->getCompany();
+            $new_model = Models::where('name',$name)->where('brand_id',$brand_id)->where('logo',$logo)->firstOrFail();
+
+            $response = $this->assertDatabaseHas('company_has_models', [
+              'model_id' => $new_model->id,
+              'company_id' => $company->id,
             ]);
           }
         }
