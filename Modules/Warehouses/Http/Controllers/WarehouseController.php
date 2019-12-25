@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Warehouses\Entities\Warehouse;
+use Modules\Companies\Entities\Branch;
 
 class WarehouseController extends Controller
 {
@@ -15,7 +16,9 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        $warehouses = Warehouse::all();
+        $company = auth('api')->user()->getCompany();
+        $branches_of_company_ids = Branch::where('company_id',$company->id)->pluck('id')->toArray();
+        $warehouses = Warehouse::whereIn('branch_id',$branches_of_company_ids)->get();
         return response()->json($warehouses);
     }
 

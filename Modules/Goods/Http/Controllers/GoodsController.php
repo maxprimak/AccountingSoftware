@@ -9,7 +9,7 @@ use Modules\Goods\Entities\Good;
 use Modules\Goods\Http\Requests\StoreGoodRequest;
 use Modules\Goods\Http\Requests\UpdateGoodRequest;
 use Modules\Warehouses\Entities\WarehouseHasGood;
-use Modules\Warehouses\Entities\GoodHasPrices;
+use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Warehouses\Entities\Warehouse;
 use Modules\Goods\Entities\BranchHasGood;
 use Illuminate\Support\Facades\DB;
@@ -22,19 +22,39 @@ class GoodsController extends Controller
      */
     public function index($warehouse_id)
     {
-
+        $warehouse = Warehouse::find($warehouse_id);
+        $branch_id = $warehouse->getBranchId();
         $goods_id = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('good_id')->toArray();
-        $goods = DB::table('goods')
-                    ->join('brands', 'brands.id', '=', 'goods.brand_id')
-                    ->join('models', 'models.id', '=', 'goods.model_id')
-                    ->join('submodels', 'submodels.id', '=', 'goods.submodel_id')
-                    ->join('parts','parts.id', '=', 'goods.part_id')
-                    ->join('colors','colors.id', '=', 'goods.color_id')
-                    ->select('goods.id as id', 'brands.name as brand_name' ,'models.name as model_name',
-                    'submodels.name as submodel_name', 'parts.name as part_name','colors.name as color_name')
-                    ->whereIn('goods.id',$goods_id)
-                    ->get();
-        return response()->json($goods);
+        $branch_has_goods_ids = BranchHasGood::whereIn('good_id',$goods_id)->where('branch_id',$branch_id)->pluck('id')->toArray();
+        $goods_has_prices = GoodHasPrices::whereIn('branch_has_good_id',$branch_has_goods_ids)->get();
+
+        $goods = DB::table('warehouse_has_goods')
+                ->join('goods','goods.id', '=', 'warehouse_has_goods.good_id')
+                ->join('brands', 'brands.id', '=', 'goods.brand_id')
+                ->join('models', 'models.id', '=', 'goods.model_id')
+                ->join('submodels', 'submodels.id', '=', 'goods.submodel_id')
+                ->join('parts','parts.id', '=', 'goods.part_id')
+                ->join('colors','colors.id', '=', 'goods.color_id')
+                ->select('goods.id as id', 'brands.name as brand_name' ,'models.name as model_name',
+                        'submodels.name as submodel_name', 'parts.name as part_name','colors.name as color_name',
+                        'warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
+                        'warehouse_has_goods.amount as amount')
+                ->whereIn('goods.id',$goods_id)
+                ->get();
+        $result_of_goods = array();
+        foreach ($goods_has_prices as $good_has_prices) {
+          $good_id = $good_has_prices->getGoodId();
+          foreach ($goods as $good) {
+            if($good->id == $good_id){
+              $good = (array) $good;
+              $good['retail_price'] = $good_has_prices->retail_price;
+              $good['wholesale_price'] = $good_has_prices->wholesale_price;
+              array_push($result_of_goods,$good);
+            }
+          }
+        }
+
+        return response()->json($result_of_goods);
     }
 
     /**

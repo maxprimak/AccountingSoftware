@@ -11,6 +11,7 @@ use Modules\Goods\Entities\Good;
 use Modules\Goods\Entities\BranchHasGood;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 use Modules\Goods\Entities\Brand;
+use Modules\Goods\Entities\Models;
 use Illuminate\Http\Request;
 
 
@@ -219,9 +220,18 @@ class GoodsTest extends TestCase
 
       $response = $this->assertDatabaseHas('brands', [
         'name' => $new_name,
-        'logo' => "https://cdn1.iconfinder.com/data/icons/startup-2/64/BRAND-512.png"
+        'logo' => "https://cdn1.iconfinder.com/data/icons/startup-2/64/BRAND-512.png",
       ]);
+
       $new_brand = Brand::where('name',$new_name)->where('logo',"https://cdn1.iconfinder.com/data/icons/startup-2/64/BRAND-512.png")->firstOrFail();
+
+      $company = $this->login->getCompany();
+
+      $response = $this->assertDatabaseHas('company_has_brands', [
+        'brand_id' => $new_brand->id,
+        'company_id' => $company->id,
+      ]);
+
       return $new_brand;
   }
 
@@ -241,6 +251,14 @@ class GoodsTest extends TestCase
         'brand_id' => $brand_id,
         'name' => $name,
         'logo' => $logo
+      ]);
+
+      $company = $this->login->getCompany();
+      $new_model = Models::where('name',$name)->where('brand_id',$brand_id)->where('logo',$logo)->firstOrFail();
+
+      $response = $this->assertDatabaseHas('company_has_models', [
+        'model_id' => $new_model->id,
+        'company_id' => $company->id,
       ]);
     }
   }

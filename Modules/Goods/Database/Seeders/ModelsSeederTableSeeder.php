@@ -23,24 +23,28 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 1;
           $Models->name = "iPhone";
           $Models->logo = "https://image.flaticon.com/icons/svg/114/114702.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
           $Models = new Models();
           $Models->brand_id = 1;
           $Models->name = "iPad";
           $Models->logo = "https://image.flaticon.com/icons/svg/114/114703.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
           $Models = new Models();
           $Models->brand_id = 1;
           $Models->name = "Apple Watch";
           $Models->logo = "https://image.flaticon.com/icons/svg/916/916337.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
           $Models = new Models();
           $Models->brand_id = 1;
           $Models->name = "MacBook";
           $Models->logo = "https://image.flaticon.com/icons/svg/65/65732.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
         //SAMSUNG Models
@@ -48,6 +52,7 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 2;
           $Models->name = "Smartphones";
           $Models->logo = "https://image.flaticon.com/icons/svg/114/114702.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
           //SAMSUNG Models
@@ -55,6 +60,7 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 2;
           $Models->name = "Tablets";
           $Models->logo = "https://image.flaticon.com/icons/svg/114/114703.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
           //SAMSUNG Models
@@ -62,6 +68,7 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 2;
           $Models->name = "Watches";
           $Models->logo = "https://image.flaticon.com/icons/svg/916/916337.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
           //SAMSUNG Models
@@ -69,6 +76,7 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 2;
           $Models->name = "Laptops";
           $Models->logo = "https://image.flaticon.com/icons/svg/65/65732.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
           //HUAWEI Models
@@ -76,24 +84,28 @@ class ModelsSeederTableSeeder extends Seeder
             $Models->brand_id = 3;
             $Models->name = "Smartphones";
             $Models->logo = "https://image.flaticon.com/icons/svg/114/114702.svg";
+            $Models->is_custom = 0;
             $Models->save();
 
             $Models = new Models();
             $Models->brand_id = 3;
             $Models->name = "Tablets";
             $Models->logo = "https://image.flaticon.com/icons/svg/114/114703.svg";
+            $Models->is_custom = 0;
             $Models->save();
 
             $Models = new Models();
             $Models->brand_id = 3;
             $Models->name = "Watches";
             $Models->logo = "https://image.flaticon.com/icons/svg/916/916337.svg";
+            $Models->is_custom = 0;
             $Models->save();
 
             $Models = new Models();
             $Models->brand_id = 3;
             $Models->name = "Laptops";
             $Models->logo = "https://image.flaticon.com/icons/svg/114/114702.svg";
+            $Models->is_custom = 0;
             $Models->save();
 
             //LG Models
@@ -101,12 +113,14 @@ class ModelsSeederTableSeeder extends Seeder
               $Models->brand_id = 4;
               $Models->name = "Smartphones";
               $Models->logo = "https://image.flaticon.com/icons/svg/114/114702.svg";
+              $Models->is_custom = 0;
               $Models->save();
 
               $Models = new Models();
               $Models->brand_id = 4;
               $Models->name = "Tablets";
               $Models->logo = "https://image.flaticon.com/icons/svg/114/114703.svg";
+              $Models->is_custom = 0;
               $Models->save();
 
         //SONY Models
@@ -114,6 +128,7 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 5;
           $Models->name = "Smartphones";
           $Models->logo = "https://image.flaticon.com/icons/svg/114/114702.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
         //OnePlus Models
@@ -121,6 +136,7 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 6;
           $Models->name = "Smartphones";
           $Models->logo = "https://image.flaticon.com/icons/svg/114/114702.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
         //Oppo Models
@@ -128,6 +144,7 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 7;
           $Models->name = "Smartphones";
           $Models->logo = "https://image.flaticon.com/icons/svg/114/114702.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
         //Vivo Models
@@ -135,6 +152,7 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 8;
           $Models->name = "Smartphones";
           $Models->logo = "https://image.flaticon.com/icons/svg/114/114702.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
 
@@ -143,6 +161,7 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 9;
           $Models->name = "Smartphones";
           $Models->logo = "https://image.flaticon.com/icons/svg/114/114702.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
         //Xiaomi Models
@@ -150,6 +169,7 @@ class ModelsSeederTableSeeder extends Seeder
           $Models->brand_id = 9;
           $Models->name = "Laptops";
           $Models->logo = "https://image.flaticon.com/icons/svg/65/65732.svg";
+          $Models->is_custom = 0;
           $Models->save();
 
     }

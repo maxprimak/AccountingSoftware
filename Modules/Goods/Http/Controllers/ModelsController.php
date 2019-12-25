@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Goods\Entities\Models;
+use Modules\Goods\Entities\CompanyHasModels;
+use Modules\Goods\Http\Requests\StoreModelRequest;
+use DB;
 
 class ModelsController extends Controller
 {
@@ -15,7 +18,18 @@ class ModelsController extends Controller
      */
     public function index($brand_id)
     {
-        $models = Models::where('brand_id',$brand_id)->get();
+        $company = auth('api')->user()->getCompany();
+        $models = Models::where('brand_id',$brand_id)->where('is_custom',0)->get();
+        $models_of_company = DB::table('company_has_models')
+                    ->join('models', 'models.id', '=', 'company_has_models.model_id')
+                    ->select('models.id as id', 'models.name as name','models.logo as logo')
+                    ->where('company_has_models.company_id',$company->id)
+                    ->where('models.brand_id',$brand_id)
+                    ->get();
+
+        foreach ($models_of_company as $model_of_company) {
+          $models->push($model_of_company);
+        }
         return response()->json($models);
     }
 
@@ -33,11 +47,18 @@ class ModelsController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreModelRequest $request)
     {
+        if(is_null($request->logo)){
+          $request->logo = "https://cdn1.iconfinder.com/data/icons/browser-user-interface-1/240/responsive-devices-ipad-iphone-512.png";
+        }
+        $company = auth('api')->user()->getCompany();
+
         $model = new Models();
         $model->store($request);
-        return response()->json();
+        $company_has_models = new CompanyHasModels();
+        $company_has_models = $company_has_models->store($company->id,$model->id);
+        return response()->json(['message' => 'Successfully added!', 'model' => $model], 200);
     }
 
     /**
