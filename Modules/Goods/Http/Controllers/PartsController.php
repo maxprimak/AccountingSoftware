@@ -55,7 +55,7 @@ class PartsController extends Controller
      */
     public function show($id)
     {
-        return view('goods::show');
+        return Part::find($id);
     }
 
     /**

@@ -60,6 +60,8 @@ class Service extends Model
 
         }
 
+        return $this;
+
     }
 
     
@@ -78,5 +80,4 @@ class Service extends Model
         }
 
     }
-
 }
