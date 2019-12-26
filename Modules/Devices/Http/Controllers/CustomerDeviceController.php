@@ -18,7 +18,7 @@ class CustomerDeviceController extends Controller
     {
         
         $devices_ids = CustomerHasDevice::where('customer_id', $customer_id)->pluck('device_id')->toArray();
-        $devices = Device::whereIn('id', $devices_ids)->get();
+        $devices = Device::whereIn('id', $devices_ids)->orderBy('id', 'DESC')->get();
 
         foreach($devices as $device){
             $device->status_name = "In Progress";

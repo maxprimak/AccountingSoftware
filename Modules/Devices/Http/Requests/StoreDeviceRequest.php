@@ -15,6 +15,7 @@ class StoreDeviceRequest extends FormRequest
     {
         return [
             'submodel_id' => 'required|exists:submodels,id',
+            'color_id' => 'required|exists:colors,id',
             'serial_nr' => 'required|unique:devices,serial_nr'
         ];
     }
