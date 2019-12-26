@@ -8,7 +8,7 @@ use Modules\Goods\Entities\Submodel;
 use Modules\Goods\Entities\Models;
 use Modules\Goods\Entities\Brand;
 
-class ModuleFixTableSeeder extends Seeder
+class ModelFixTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
