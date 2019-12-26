@@ -26,17 +26,7 @@ class Good extends Model
       $this->save();
 
       // ADD THIS GOOD TO BRANCH
-      $request->good_id = $this->id;
-      $request->branch_id = Warehouse::find($request->warehouse_id)->getBranchId();
-      $branch_has_good = new BranchHasGood();
-      $branch_has_good = $branch_has_good->store($request);
-
-      $warehouse_has_good = new WarehouseHasGood();
-      $warehouse_has_good->store($request);
-
-      $request->branch_has_good_id = $branch_has_good->id;
-      $good_has_prices = new GoodHasPrices();
-      $good_has_prices = $good_has_prices->store($request);
+      $this->addToBranch($request);
       return $this;
     }
 
@@ -51,17 +41,51 @@ class Good extends Model
     public function edit($request): Good{
       // ADD THIS GOOD TO BRANCH
       $warehouse_has_good = WarehouseHasGood::find($request->warehouse_has_good_id);
-      $warehouse_has_good->storeUpdate($this->id);
+      $warehouse_has_good = $warehouse_has_good->storeUpdate($this->id);
 
       $branch_id = Warehouse::find($warehouse_has_good->warehouse_id)->getBranchId();
-
-      $branch_has_good = BranchHasGood::find($branch_id);
+      $branch_has_good = BranchHasGood::where('branch_id',$branch_id)->where('good_id',$request->good_id)->first();
       $good_has_prices = GoodHasPrices::where('branch_has_good_id',$branch_has_good->id)->first();
-
 
       $branch_has_good = $branch_has_good->storeUpdate($this->id);
       $good_has_prices = $good_has_prices->updateBranchHasGood($branch_has_good->id);
 
       return $this;
+    }
+
+    public function addToBranch($request){
+      $request->good_id = $this->id;
+      $request->branch_id = Warehouse::find($request->warehouse_id)->getBranchId();
+      $branch_has_good = new BranchHasGood();
+      $branch_has_good = $branch_has_good->store($request);
+
+      $warehouse_has_good = new WarehouseHasGood();
+      $warehouse_has_good->store($request);
+
+      $request->branch_has_good_id = $branch_has_good->id;
+      $good_has_prices = new GoodHasPrices();
+      $good_has_prices = $good_has_prices->store($request);
+      return $this;
+    }
+
+    public function checkIfExistsOnWarehouse($request){
+      $exists = WarehouseHasGood::where('good_id',$this->id)->where('warehouse_id',$request->warehouse_id)->exists();
+      return $exists;
+    }
+
+    public function combineGoodsWithPrices($goods_has_prices,$goods){
+      $result_of_goods = array();
+      foreach ($goods_has_prices as $good_has_prices) {
+        $good_id = $good_has_prices->getGoodId();
+        foreach ($goods as $good) {
+          if($good->id == $good_id){
+            $good = (array) $good;
+            $good['retail_price'] = $good_has_prices->retail_price;
+            $good['wholesale_price'] = $good_has_prices->wholesale_price;
+            array_push($result_of_goods,$good);
+          }
+        }
+      }
+      return $result_of_goods;
     }
 }

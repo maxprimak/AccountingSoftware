@@ -25,6 +25,7 @@ class GoodsController extends Controller
         $warehouse = Warehouse::find($warehouse_id);
         $branch_id = $warehouse->getBranchId();
         $goods_id = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('good_id')->toArray();
+        $warehouse_has_goods_ids = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('id')->toArray();
         $branch_has_goods_ids = BranchHasGood::whereIn('good_id',$goods_id)->where('branch_id',$branch_id)->pluck('id')->toArray();
         $goods_has_prices = GoodHasPrices::whereIn('branch_has_good_id',$branch_has_goods_ids)->get();
 
@@ -35,24 +36,14 @@ class GoodsController extends Controller
                 ->join('submodels', 'submodels.id', '=', 'goods.submodel_id')
                 ->join('parts','parts.id', '=', 'goods.part_id')
                 ->join('colors','colors.id', '=', 'goods.color_id')
-                ->select('goods.id as id', 'brands.name as brand_name' ,'models.name as model_name',
-                        'submodels.name as submodel_name', 'parts.name as part_name','colors.name as color_name',
-                        'warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
+                ->select('goods.id as id', 'brands.name as brand_name','brands.id as brand_id' ,'models.name as model_name','models.id as model_id',
+                        'submodels.name as submodel_name','submodels.id as submodel_id' ,'parts.name as part_name','parts.id as part_id','colors.name as color_name',
+                        'colors.id as color_id','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
                         'warehouse_has_goods.amount as amount')
-                ->whereIn('goods.id',$goods_id)
+                ->whereIn('warehouse_has_goods.id',$warehouse_has_goods_ids)
                 ->get();
-        $result_of_goods = array();
-        foreach ($goods_has_prices as $good_has_prices) {
-          $good_id = $good_has_prices->getGoodId();
-          foreach ($goods as $good) {
-            if($good->id == $good_id){
-              $good = (array) $good;
-              $good['retail_price'] = $good_has_prices->retail_price;
-              $good['wholesale_price'] = $good_has_prices->wholesale_price;
-              array_push($result_of_goods,$good);
-            }
-          }
-        }
+        $new_good = new Good();
+        $result_of_goods = $new_good->combineGoodsWithPrices($goods_has_prices,$goods);
 
         return response()->json($result_of_goods);
     }
@@ -79,7 +70,13 @@ class GoodsController extends Controller
         $existing_good = $existing_good->check_if_exists($request);
 
         if($existing_good){
-          return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
+          $exists = $existing_good->checkIfExistsOnWarehouse($request);
+          if(!$exists){
+            $existing_good->addToBranch($request);
+            return response()->json(['message' => 'Successfully added!', 'good' => $existing_good], 200);
+          }else{
+            return response()->json(['message' => 'This good already exists in chosen Warehouse'], 422);
+          }
         }
 
         $good = new Good();
@@ -117,14 +114,22 @@ class GoodsController extends Controller
     public function update(UpdateGoodRequest $request, $id)
     {
       try {
+        $good = Good::find($id);
+        $request->brand_id = $good->brand_id;
+        $request->model_id = $good->model_id;
+        $request->submodel_id = $good->submodel_id;
+
         $existing_good = new Good();
         $existing_good = $existing_good->check_if_exists($request);
         if(!$existing_good){
+          $warehouse_has_good = WarehouseHasGood::find($request->warehouse_has_good_id);
+          $request->warehouse_id = $warehouse_has_good->id;
+
           $good = new Good();
           $good = $good->store($request);
 
           //remove from warehouse has good
-          $warehouse_has_good = WarehouseHasGood::find($request->warehouse_has_good_id);
+
           $warehouse_has_good->delete();
 
           //remove from branch has good
@@ -138,11 +143,12 @@ class GoodsController extends Controller
           return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
         }else{
           if($existing_good->id != $id){
+            $request->good_id = $id;
             $good = $existing_good->edit($request);
           }else{
-            throw new \Exception("You did not make any changes", 1);
+            return response()->json(['message' => 'Successfully updated!', 'good' => $good]);
           }
-          return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
+          return response()->json(['message' => 'Successfully updated!', 'good' => $good]);
         }
       } catch (\Exception $e) {
         return response()->json(['message' => $e->getMessage()], 500);
