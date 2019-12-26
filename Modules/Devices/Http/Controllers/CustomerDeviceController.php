@@ -20,6 +20,12 @@ class CustomerDeviceController extends Controller
         $devices_ids = CustomerHasDevice::where('customer_id', $customer_id)->pluck('device_id')->toArray();
         $devices = Device::whereIn('id', $devices_ids)->get();
 
+        foreach($devices as $device){
+            $device->status_name = "In Progress";
+            $device->status_hexcode = "#ffff00";
+            $device->last_request = date("Y-m-d");
+        }
+
         return response()->json($devices);
 
     }

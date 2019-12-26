@@ -92,7 +92,15 @@ class SubmodelController extends Controller
      */
     public function show($id)
     {
-        return view('goods::show');
+        $submodel = Submodel::find($id);
+
+        return response()->json([
+            'submodel' => $submodel,
+            'good_name' => $submodel->getName(),
+            'brand_name' => $submodel->getBrandName(),
+            'model_name' => $submodel->getModelName(),
+            'submodel_name' => $submodel->getSubmodelName(),
+        ]);
     }
 
     /**
