@@ -19,6 +19,7 @@ use Modules\Goods\Database\Seeders\GoodsDatabaseSeeder;
 use Modules\Orders\Database\Seeders\RepairOrdersTableSeeder;
 use Modules\Orders\Database\Seeders\SalesOrdersTableSeeder;
 use Modules\Services\Database\Seeders\LanguagesTableSeeder;
+use Modules\Services\Database\Seeders\ModuleFixTableSeeder;
 
 
 
@@ -49,5 +50,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RepairOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
         $this->call(CompaniesNewTableSeeder::class);
+        //$this->call(ModuleFixTableSeeder::class);
     }
 }
