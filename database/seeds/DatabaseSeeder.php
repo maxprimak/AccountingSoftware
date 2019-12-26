@@ -50,6 +50,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RepairOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
         $this->call(CompaniesNewTableSeeder::class);
-        //$this->call(ModelFixTableSeeder::class);
+        $this->call(ModelFixTableSeeder::class);
     }
 }
