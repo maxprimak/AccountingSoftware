@@ -38,7 +38,7 @@ class ServicesController extends Controller
             $service_json = [
                 'id' => $service->id,
                 'name' => $service->getTranslatedName($language_id),
-                'part_id' => $service->getParts()->first()->id
+                'part_id' => $service->getPartId()
             ];
 
             array_push($response, $service_json);
@@ -67,7 +67,10 @@ class ServicesController extends Controller
 
         if(!$request->nameUnique()){
             return response()->json([
-                "message" => "Name of service is not unique"
+                "message" => "Name of service is not unique",
+                "errors" => [
+                    "name" => ["Name is not unique"]
+                ]
             ], 422);
         }
 
@@ -79,7 +82,7 @@ class ServicesController extends Controller
             "service" => [
                 'id' => $service->id,
                 'name' => $service->getTranslatedName(auth('api')->user()->getCompany()->language_id),
-                'part_id' => $service->getParts()->first()->id
+                'part_id' => $service->getPartId()
             ]
         ]);
     }
@@ -115,7 +118,10 @@ class ServicesController extends Controller
         
         if(!$request->nameUnique()){
             return response()->json([
-                "message" => "Name of service is not unique"
+                "message" => "The given data was invalid",
+                "errors" => [
+                    "name" => ["Name is not unique"]
+                ]
             ], 422);
         }
 

@@ -29,7 +29,7 @@ class ColorSeederTableSeeder extends Seeder
 
         $color = new Color();
         $color->name = "White";
-        $color->hex_code = "#fff";
+        $color->hex_code = "#F2F2F2";
         $color->save();
 
         $color = new Color();
@@ -54,12 +54,12 @@ class ColorSeederTableSeeder extends Seeder
 
         $color = new Color();
         $color->name = "Gold";
-        $color->hex_code = "#004953";
+        $color->hex_code = "#ffd700";
         $color->save();
 
         $color = new Color();
         $color->name = "Blue";
-        $color->hex_code = "#ffd700";
+        $color->hex_code = "#00007F";
         $color->save();
 
         $color = new Color();
@@ -74,7 +74,7 @@ class ColorSeederTableSeeder extends Seeder
 
         $color = new Color();
         $color->name = "Green";
-        $color->hex_code = "#00ff00";
+        $color->hex_code = "#00b300";
         $color->save();
 
 

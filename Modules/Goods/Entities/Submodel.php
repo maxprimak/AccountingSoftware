@@ -25,7 +25,7 @@ class Submodel extends Model
       $model_name = $model->name;
       $brand = Brand::find($model->brand_id);
 
-      return $brand->name . " " .$model_name . " " . $submodel_name;
+      return $brand->name . " " . $submodel_name;
 
     }
 

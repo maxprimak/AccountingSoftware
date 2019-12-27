@@ -71,7 +71,7 @@ class CustomerServices{
                     ->join('companies', 'companies.id', '=', 'customers.company_id')
                     ->select('customers.id as id','customers.*', 'companies.id as company_id' ,'people.name',
                     'people.phone', 'people.address')
-                    ->whereIn('customers.id',$customer_ids)
+                    ->whereIn('customers.id',$customer_ids)->orderBy('id')
                     ->get();
 
         foreach($customers as $customer){

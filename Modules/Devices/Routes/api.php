@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::middleware(['is_authorized', 'is_registered'])->group(function () {
+
 Route::post('/devices/{customer_id}', "DevicesController@store")->name('devices.store');
 Route::post('/devices/update/{device_id}', "DevicesController@update")->name('devices.update');
 Route::get('/customers/devices/{customer_id}', "CustomerDeviceController@index")->name('customers.devices.index');
+
+});

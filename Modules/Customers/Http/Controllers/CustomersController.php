@@ -12,6 +12,8 @@ use Modules\Companies\Entities\Branch;
 use Modules\Customers\Entities\Customer;
 use Modules\Customers\Entities\CustomerHasBranch;
 use Modules\Customers\Entities\CustomerType;
+use Modules\Devices\Entities\CustomerHasDevice;
+use Modules\Devices\Entities\Device;
 use Modules\Customers\Http\Requests\StoreCustomerRequest;
 use Modules\Customers\Http\Requests\UpdateCustomerRequest;
 use Illuminate\Routing\Controller;
@@ -32,7 +34,6 @@ class CustomersController extends Controller
 
           $user = User::where('login_id',auth('api')->id())->firstOrFail();
           $customers = CustomerServiceFacad::getCustomerUserCanSee($user->id);
-
         } catch (\Exception $e) {
             return response()->json($e->getMessage());
         }
@@ -113,8 +114,11 @@ class CustomersController extends Controller
 
       BranchesService::deleteCustomerFromAllBranches($id);
 
-      Customer::findOrFail($id)->delete();
+      $devices_ids = CustomerHasDevice::where('customer_id', $customer->id)->pluck('device_id')->toArray();
+      CustomerHasDevice::where('customer_id', $customer->id)->delete();
+      Device::whereIn('id', $devices_ids)->delete();
 
+      Customer::findOrFail($id)->delete();
       People::findOrFail($customer->person_id)->delete();
 
       return response()->json(['message' => 'Successfully deleted!']);

@@ -41,8 +41,13 @@ class DevicesController extends Controller
         $device = new Device();
         $device->store($request, $request->customer_id);
 
+        $device->status_name = "In Progress";
+        $device->status_hexcode = "#ffff00";
+        $device->last_request = date("Y-m-d");
+
         return response()->json([
-            "message" => "device created"
+            "message" => "device created",
+            "device" => $device
         ]);
 
     }

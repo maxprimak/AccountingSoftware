@@ -32,6 +32,11 @@ class Service extends Model
 
     }
 
+    public function getPartId(){
+        if($this->getParts()->first() != null) return $this->getParts()->first()->id;
+        else return null;
+    }
+
     public function store(FormRequest $request){
 
         $this->is_custom = 1;
@@ -73,10 +78,21 @@ class Service extends Model
 
         $has_part = ServiceHasPart::where('service_id', $this->id)->first();
         if($has_part != null) {
+            if($request->has('part_id') && $request->part_id != null){
+                $has_part->part_id = $request->part_id;
+                $has_part->save();
+            }else{
+                $has_part->delete();
+            }
 
-            $has_part->part_id = $request->part_id;
-            $has_part->save();
-
+        }
+        else{
+            if($request->has('part_id') && $request->part_id != null){
+                $has_part = new ServiceHasPart();
+                $has_part->service_id = $this->id;
+                $has_part->part_id = $request->part_id;
+                $has_part->save();
+            }
         }
 
     }
