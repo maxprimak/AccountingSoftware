@@ -38,4 +38,9 @@ class Part extends Model
       $company_has_part = $company_has_part->store($request);
       return $company_has_part;
     }
+
+    public function getTranslatedName(){
+      return PartsTranslation::where('part_id', $this->id)->first()->name;
+    }
+
 }

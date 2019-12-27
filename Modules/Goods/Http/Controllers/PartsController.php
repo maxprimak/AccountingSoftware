@@ -81,8 +81,10 @@ class PartsController extends Controller
      * @return Response
      */
     public function show($id)
-    {
-        return Part::find($id);
+    {   
+        $part = Part::find($id);
+        $part->name = $part->getTranslatedName();
+        return response()->json($part);
     }
 
     /**
