@@ -9,6 +9,7 @@ use Modules\Goods\Entities\Models;
 use Modules\Goods\Entities\Brand;
 use Modules\Goods\Entities\Submodel;
 use Modules\Goods\Http\Requests\StoreSubmodelRequest;
+use DB;
 // use Modules\Goods\GoodsData\gsm;
 
 
@@ -20,11 +21,20 @@ class SubmodelController extends Controller
      */
     public function index($model_id)
     {
-        $submodels = Submodel::where('model_id',$model_id)->get();
+
+        $company = auth('api')->user()->getCompany();
+        $submodels = Submodel::where('model_id',$model_id)->where('is_custom',0)->get();
+        $submodels_of_company = DB::table('company_has_submodels')
+                    ->join('submodels', 'submodels.id', '=', 'company_has_submodels.submodel_id')
+                    ->select('submodels.*')
+                    ->where('company_has_submodels.company_id',$company->id)
+                    ->where('submodels.model_id',$model_id)
+                    ->get();
+        foreach ($submodels_of_company as $submodel_of_company) {
+          $submodels->push($submodel_of_company);
+        }
+
         return response()->json($submodels);
-
-
-
 
         //FOR FUTURE USE UPDATE SUBMODELS WITH API
         // $brand_id = Models::find($model_id)->brand_id;
@@ -72,11 +82,15 @@ class SubmodelController extends Controller
      */
     public function store(StoreSubmodelRequest $request)
     {
-
         $existing_submodel = Submodel::where([['name','=', $request->name],['model_id','=', $request->model_id]])->first();
-
         if($existing_submodel){
-          return response()->json(['message' => 'This submodel already exists for this model'], 200);
+          $exists = $existing_submodel->checkIfExistsInCompany();
+          if(!$exists){
+            $existing_submodel->addToCompany($request);
+            return response()->json(['message' => 'Successfully added!', 'submodel' => $existing_submodel], 200);
+          }else{
+            return response()->json(['message' => 'This submodel already exists for this model'], 200);
+          }
         }
 
         $submodel = new Submodel();

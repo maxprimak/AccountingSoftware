@@ -10,6 +10,7 @@ class Color extends Model
 
     public function store($request){
       $this->name = $request->name;
+      $this->hex_code = $request->hex_code;
       $this->save();
       return $this;
     }

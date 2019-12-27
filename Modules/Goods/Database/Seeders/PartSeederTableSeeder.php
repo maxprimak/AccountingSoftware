@@ -5,6 +5,7 @@ namespace Modules\Goods\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Goods\Entities\Part;
+use Illuminate\Http\Request;
 
 class PartSeederTableSeeder extends Seeder
 {
@@ -17,32 +18,39 @@ class PartSeederTableSeeder extends Seeder
     {
         Model::unguard();
 
+        $request = new Request();
         $part = new Part();
-        $part->name = "Display";
+        $request->name = "Display";
+        $part->save();
+        $part->storePartTranslation($request);
+
+        $part = new Part();
+        $request->name = "Battery";
         $part->save();
 
         $part = new Part();
-        $part->name = "Battery";
+        $request->name = "Side Buttons";
         $part->save();
+        $part->storePartTranslation($request);
 
         $part = new Part();
-        $part->name = "Side Buttons";
+        $request->name = "Vibration motor";
         $part->save();
+        $part->storePartTranslation($request);
 
         $part = new Part();
-        $part->name = "Vibration motor";
+        $request->name = "Home-button";
         $part->save();
+        $part->storePartTranslation($request);
 
         $part = new Part();
-        $part->name = "Home-button";
+        $request->name = "Front-camera";
         $part->save();
+        $part->storePartTranslation($request);
 
         $part = new Part();
-        $part->name = "Front-camera";
+        $request->name = "Main-camera";
         $part->save();
-
-        $part = new Part();
-        $part->name = "Main-camera";
-        $part->save();
+        $part->storePartTranslation($request);
     }
 }

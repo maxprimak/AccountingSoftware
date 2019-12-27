@@ -18,8 +18,10 @@ class GoodHasPrices extends Model
       return $this;
     }
 
-    public function updateBranchHasGood($branch_has_good_id){
-      $this->branch_has_good_id = $branch_has_good_id;
+    public function updateBranchHasGood($request){
+      $this->branch_has_good_id = $request->branch_has_good_id;
+      $this->retail_price = $request->retail_price;
+      $this->wholesale_price = $request->wholesale_price;
       $this->save();
       return $this;
     }

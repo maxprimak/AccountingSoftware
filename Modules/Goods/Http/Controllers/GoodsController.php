@@ -22,6 +22,7 @@ class GoodsController extends Controller
      */
     public function index($warehouse_id)
     {
+        $company = auth('api')->user()->getCompany();
         $warehouse = Warehouse::find($warehouse_id);
         $branch_id = $warehouse->getBranchId();
         $goods_id = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('good_id')->toArray();
@@ -35,12 +36,14 @@ class GoodsController extends Controller
                 ->join('models', 'models.id', '=', 'goods.model_id')
                 ->join('submodels', 'submodels.id', '=', 'goods.submodel_id')
                 ->join('parts','parts.id', '=', 'goods.part_id')
+                ->join('parts_translations','parts_translations.part_id', '=', 'goods.part_id')
                 ->join('colors','colors.id', '=', 'goods.color_id')
                 ->select('goods.id as id', 'brands.name as brand_name','brands.id as brand_id' ,'models.name as model_name','models.id as model_id',
-                        'submodels.name as submodel_name','submodels.id as submodel_id' ,'parts.name as part_name','parts.id as part_id','colors.name as color_name',
+                        'submodels.name as submodel_name','submodels.id as submodel_id' ,'parts_translations.name as part_name','parts.id as part_id','colors.name as color_name',
                         'colors.id as color_id','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
                         'warehouse_has_goods.amount as amount')
                 ->whereIn('warehouse_has_goods.id',$warehouse_has_goods_ids)
+                ->where('parts_translations.language_id',$company->language_id)
                 ->get();
         $new_good = new Good();
         $result_of_goods = $new_good->combineGoodsWithPrices($goods_has_prices,$goods);
@@ -142,12 +145,8 @@ class GoodsController extends Controller
 
           return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
         }else{
-          if($existing_good->id != $id){
             $request->good_id = $id;
             $good = $existing_good->edit($request);
-          }else{
-            return response()->json(['message' => 'Successfully updated!', 'good' => $good]);
-          }
           return response()->json(['message' => 'Successfully updated!', 'good' => $good]);
         }
       } catch (\Exception $e) {

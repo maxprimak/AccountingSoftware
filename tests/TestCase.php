@@ -257,7 +257,6 @@ abstract class TestCase extends BaseTestCase
         public static function createPart($name){
 
           $part = new Part();
-          $part->name = "name"; //TODO: delete it
           $part->save();
           $has_translation = new PartsTranslation();
           $has_translation->language_id = 1;
@@ -486,27 +485,49 @@ abstract class TestCase extends BaseTestCase
             $name = $this->faker->unique()->name;
             $response = $this->json('POST', route('submodels.store'), [
               'model_id' => $model_id,
-              'name' => $name
+              'name' => $name,
             ])->assertStatus(200);
 
+            $company = $login->getCompany();
+            $submodel = Submodel::where('model_id',$model_id)->where('name',$name)->where('is_custom',1)->first();
             $response = $this->assertDatabaseHas('submodels', [
               'model_id' => $model_id,
-              'name' => $name
+              'name' => $name,
+              'is_custom' => 1
+            ]);
+
+            $response = $this->assertDatabaseHas('company_has_submodels', [
+              'company_id' => $company->id,
+              'submodel_id' => $submodel->id,
             ]);
           }
         }
 
         public function storeParts($login,$amount){
           Passport::actingAs($login);
+          $company = $login->getCompany();
 
           for($i = 0; $i < $amount; $i++){
             $name = $this->faker->unique()->name;
             $response = $this->json('POST', route('parts.store'), [
-              'name' => $name
+              'name' => $name,
             ])->assertStatus(200);
 
+            $response = $this->assertDatabaseHas('parts_translations', [
+              'name' => $name,
+              'language_id' => $company->language_id
+            ]);
+
+            $part_translation = PartsTranslation::where('language_id',$company->language_id)->where('name',$name)->first();
+            $part = Part::find($part_translation->part_id);
+
             $response = $this->assertDatabaseHas('parts', [
-              'name' => $name
+              'id' => $part->id,
+            ]);
+
+            $response = $this->assertDatabaseHas('company_has_parts', [
+              'company_id' => $company->id,
+              'part_id' => $part->id
             ]);
           }
         }
@@ -517,11 +538,13 @@ abstract class TestCase extends BaseTestCase
           for($i = 0; $i < $amount; $i++){
             $name = $this->faker->unique()->name;
             $response = $this->json('POST', route('colors.store'), [
-              'name' => $name
+              'name' => $name,
+              'hex_code' => "#0000ff"
             ])->assertStatus(200);
 
             $response = $this->assertDatabaseHas('colors', [
-              'name' => $name
+              'name' => $name,
+              'hex_code' => "#0000ff"
             ]);
           }
         }

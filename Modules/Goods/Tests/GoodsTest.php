@@ -10,6 +10,7 @@ use Laravel\Passport\Passport;
 use Modules\Goods\Entities\Good;
 use Modules\Goods\Entities\BranchHasGood;
 use Modules\Warehouses\Entities\WarehouseHasGood;
+use Modules\Warehouses\Entities\Warehouse;
 use Modules\Goods\Entities\Brand;
 use Modules\Goods\Entities\Models;
 use Illuminate\Http\Request;
@@ -133,65 +134,149 @@ class GoodsTest extends TestCase
         ]);
     }
 
-    public function test_user_can_edit_good(){
-
+    public function test_user_can_edit_good_that_does_not_exists(){
+        //After user edited good it will be created in DB
         Passport::actingAs($this->login);
 
+        //FIRST WE ADD NEW GOOD
         $request = $this->test_user_can_add_goods();
         $good = Good::where([
         ['part_id',$this->part->id],
         ['brand_id',$this->brand->id],['model_id',$this->model->id],
         ['submodel_id',$this->submodel->id],['color_id',$this->color->id]
         ])->first();
-        $new_color = $this->getColors($this->login)->random(1)->first();
         $warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$this->warehouse->id)->first();
-        $old_branch_has_good = BranchHasGood::where('good_id',$good->id)->where('branch_id',$this->warehouse->getBranchId())->first();
+        $company = auth('api')->user()->getCompany();
+        // $old_branch_has_good = BranchHasGood::where('good_id',$good->id)->where('branch_id',$this->warehouse->getBranchId())->first();
 
+        //Define new values
+        $new_color = $this->getColors($this->login)->random(1)->first();
+        $new_vendor_code = "NEW_VEN";
+        $new_retail_price = 878.99;
+        $new_wholesale_price = 999.99;
+        $new_amount = 55;
+
+        //Make request
+        //HERE WE CHANGE ONLY COLOR AS FOREIGN KEY
         $request['color_id'] = $new_color->id;
-        $request['warehouse_has_good_id'] = $warehouse_has_good->id;
 
-        $response = $this->json('POST', route('goods.update',['good_id' => $good->id]), $request);
-        $response = $this->assertDatabaseMissing('goods', [
-          'id' => $good->id,
+        $request['warehouse_has_good_id'] = $warehouse_has_good->id;
+        $request['warehouse_id'] = null;
+        $request['brand_id'] = null;
+        $request['model_id'] = null;
+        $request['submodel_id'] = null;
+        $request['vendor_code'] = $new_vendor_code;
+        $request['retail_price'] = $new_retail_price;
+        $request['wholesale_price'] = $new_wholesale_price;
+        $request['amount'] = $new_amount;
+
+        $response = $this->json('POST', route('goods.update',['good_id' => $good->id]), $request)->assertSuccessful();
+        $response = $response->decodeResponseJson();
+        $good = $response['good'];
+        //Check that DB has New Good
+        $this->assertDatabaseHas('goods', [
+          'id' => $good['id'],
+          'part_id' => $this->part->id,
+          'brand_id' => $this->brand->id,
+          'model_id' => $this->model->id,
+          'submodel_id' => $this->submodel->id,
           'color_id' => $new_color->id,
         ]);
 
-        $updated_good = Good::where('color_id',$new_color->id)->first();
-
-        $response = $this->assertDatabaseHas('goods', [
-          'id' => $updated_good->id,
-          'color_id' => $new_color->id
+        //Check that DB has Old Good
+        $this->assertDatabaseHas('goods', [
+          'part_id' => $this->part->id,
+          'brand_id' => $this->brand->id,
+          'model_id' => $this->model->id,
+          'submodel_id' => $this->submodel->id,
+          'color_id' => $this->color->id,
         ]);
 
-        $response = $this->assertDatabaseMissing('warehouse_has_goods', [
-          'id' => $warehouse_has_good->id,
-          'good_id' => $good->id,
+        //Check That warehouse has this good and all changes which we have made
+        $this->assertDatabaseHas('warehouse_has_goods', [
+          'warehouse_id' => $warehouse_has_good->warehouse_id,
+          'good_id' => $good['id'],
+          'vendor_code' => $new_vendor_code,
+          'amount' => $new_amount,
         ]);
 
-        $response = $this->assertDatabaseHas('warehouse_has_goods', [
-          'warehouse_id' => $this->warehouse->id,
-          'good_id' => $updated_good->id
-        ]);
-        // $response = $this->assertDatabaseMissing('branch_has_goods', [
-        //   'good_id' => $good->id,
-        //   'branch_id' => $this->warehouse->getBranchId()
-        // ]);
-        // dd($good->id,$updated_good->id);
+        //Check That warehouse does not have old good
+        $old_good = Good::where('part_id',$this->part->id)
+        ->where('brand_id',$this->brand->id)
+        ->where('model_id',$this->model->id)
+        ->where('submodel_id',$this->submodel->id)
+        ->where('color_id',$this->color->id)
+        ->first();
 
-        $updated_branch_has_good = BranchHasGood::where('good_id',$updated_good->id)->where('branch_id',$this->warehouse->getBranchId())->first();
-        $response = $this->assertDatabaseHas('branch_has_goods', [
-          'id' => $updated_branch_has_good->id,
-          'good_id' => $updated_good->id,
-          'branch_id' => $this->warehouse->getBranchId()
+        $this->assertDatabaseMissing('warehouse_has_goods', [
+          'warehouse_id' => $warehouse_has_good->warehouse_id,
+          'good_id' => $old_good->id,
         ]);
 
-        $response = $this->assertDatabaseHas('good_has_prices', [
-          'branch_has_good_id' => $updated_branch_has_good->id,
+        //Check that Branch has new good
+        $warehouse = Warehouse::find($warehouse_has_good->warehouse_id);
+
+        $this->assertDatabaseHas('branch_has_goods', [
+          'branch_id' => $warehouse->getBranchId(),
+          'good_id' => $good['id'],
         ]);
 
-        // $response = $this->assertDatabaseMissing('good_has_prices', [
-        //   'branch_has_good_id' => $old_branch_has_good->id,
-        // ]);
+        //Check that Branch does not have Old Good
+        $this->assertDatabaseMissing('branch_has_goods', [
+          'branch_id' => $warehouse->getBranchId(),
+          'good_id' => $old_good->id,
+        ]);
+
+        //Check that Good has new prices in the Branch
+        $branch_has_good = BranchHasGood::where('good_id',$good['id'])->where('branch_id',$warehouse->getBranchId())->first();
+        $this->assertDatabaseHas('good_has_prices', [
+          'branch_has_good_id' => $branch_has_good->id,
+          'retail_price' => $new_retail_price,
+          'wholesale_price' => $new_wholesale_price
+        ]);
+
+    }
+
+    public function test_user_can_edit_good_which_already_exists(){
+      //After user edited good it will take existing good and add it to WarehouseHasGood
+      Passport::actingAs($this->login);
+
+      //FIRST WE ADD 2 NEW GOODS
+      $this->test_user_can_edit_good_that_does_not_exists();
+      $goods = Good::all();
+      // $good = Good::where([
+      // ['part_id',$this->part->id],
+      // ['brand_id',$this->brand->id],['model_id',$this->model->id],
+      // ['submodel_id',$this->submodel->id],['color_id',$this->color->id]
+      // ])->first();
+      // $warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$this->warehouse->id)->first();
+      // $company = auth('api')->user()->getCompany();
+      // // $old_branch_has_good = BranchHasGood::where('good_id',$good->id)->where('branch_id',$this->warehouse->getBranchId())->first();
+      //
+      // //Define new values
+      // $new_color = $this->getColors($this->login)->random(1)->first();
+      // $new_vendor_code = "NEW_VEN";
+      // $new_retail_price = 878.99;
+      // $new_wholesale_price = 999.99;
+      // $new_amount = 55;
+      //
+      // //Make request
+      // //HERE WE CHANGE ONLY COLOR AS FOREIGN KEY
+      // $request['color_id'] = $new_color->id;
+      //
+      // $request['warehouse_has_good_id'] = $warehouse_has_good->id;
+      // $request['warehouse_id'] = null;
+      // $request['brand_id'] = null;
+      // $request['model_id'] = null;
+      // $request['submodel_id'] = null;
+      // $request['vendor_code'] = $new_vendor_code;
+      // $request['retail_price'] = $new_retail_price;
+      // $request['wholesale_price'] = $new_wholesale_price;
+      // $request['amount'] = $new_amount;
+      //
+      // $response = $this->json('POST', route('goods.update',['good_id' => $good->id]), $request)->assertSuccessful();
+      // $response = $response->decodeResponseJson();
+      // $good = $response['good'];
 
     }
 

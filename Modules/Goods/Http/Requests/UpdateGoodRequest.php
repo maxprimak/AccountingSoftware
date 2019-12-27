@@ -14,13 +14,13 @@ class UpdateGoodRequest extends FormRequest
     public function rules()
     {
         return [
-          'part_id ' => ' required |exists:parts,id',
-          'color_id '=>' required |exists:colors,id',
-          'warehouse_has_good_id '=>' required |exists:warehouse_has_goods,id',
-          'vendor_code '=>' nullable',
-          'amount '=>' required|numeric| max:490 |min:1',
-          'retail_price '=>' nullable',
-          'wholesale_price '=>' nullable'
+          // 'part_id ' => 'required |exists:parts,id',
+          // 'color_id '=>' required |exists:colors,id',
+          // 'warehouse_has_good_id '=>' required |exists:warehouse_has_goods,id',
+          // 'vendor_code '=>' nullable',
+          // 'amount '=>' required|numeric| max:490 |min:1',
+          // 'retail_price '=>' nullable',
+          // 'wholesale_price '=>' nullable'
         ];
     }
 

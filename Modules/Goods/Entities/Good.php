@@ -41,21 +41,24 @@ class Good extends Model
     public function edit($request): Good{
       // ADD THIS GOOD TO BRANCH
       $warehouse_has_good = WarehouseHasGood::find($request->warehouse_has_good_id);
-      $warehouse_has_good = $warehouse_has_good->storeUpdate($this->id);
+      $request->good_id = $this->id;
 
+      $warehouse_has_good = $warehouse_has_good->storeUpdate($request);
       $branch_id = Warehouse::find($warehouse_has_good->warehouse_id)->getBranchId();
       $branch_has_good = BranchHasGood::where('branch_id',$branch_id)->where('good_id',$request->good_id)->first();
+
       $good_has_prices = GoodHasPrices::where('branch_has_good_id',$branch_has_good->id)->first();
 
       $branch_has_good = $branch_has_good->storeUpdate($this->id);
-      $good_has_prices = $good_has_prices->updateBranchHasGood($branch_has_good->id);
+      $request->branch_has_good_id = $branch_has_good->id;
+      $good_has_prices = $good_has_prices->updateBranchHasGood($request);
 
       return $this;
     }
 
     public function addToBranch($request){
       $request->good_id = $this->id;
-      $request->branch_id = Warehouse::find($request->warehouse_id)->getBranchId();
+      $request->branch_id = $this->getBranchIdOfWarehouse($request);
       $branch_has_good = new BranchHasGood();
       $branch_has_good = $branch_has_good->store($request);
 
@@ -66,6 +69,17 @@ class Good extends Model
       $good_has_prices = new GoodHasPrices();
       $good_has_prices = $good_has_prices->store($request);
       return $this;
+    }
+
+    public function getBranchIdOfWarehouse($request){
+      if(is_null($request->warehouse_has_good_id)){
+        $branch_id = Warehouse::find($request->warehouse_id)->getBranchId();
+      }else{
+        $warehouse_has_good = WarehouseHasGood::find($request->warehouse_has_good_id);
+        $branch_id = Warehouse::find($warehouse_has_good->warehouse_id)->getBranchId();
+        $request->warehouse_id = $warehouse_has_good->warehouse_id;
+      }
+      return $branch_id;
     }
 
     public function checkIfExistsOnWarehouse($request){

@@ -37,9 +37,10 @@ class WarehouseHasGood extends Model
       return $this;
     }
 
-    public function storeUpdate($good_id){
-      $this->good_id = $good_id;
+    public function storeUpdate($request){
+      $this->good_id = $request->good_id;
       $this->save();
+      $this->edit($request);
       return $this;
     }
 
