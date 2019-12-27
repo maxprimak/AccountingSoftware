@@ -15,16 +15,18 @@ class CreateGoodHasPricesTable extends Migration
     {
         Schema::create('good_has_prices', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('branch_has_good_id');
+            $table->unsignedInteger('good_id');
             $table->unsignedInteger('supplier_id')->nullable();
             $table->double('retail_price')->nullable();
             $table->double('wholesale_price')->nullable();
+            $table->unsignedInteger('branch_id');
             $table->timestamps();
         });
 
         Schema::table('good_has_prices', function($table) {
-          $table->foreign('branch_has_good_id')->references('id')->on('branch_has_goods');
           $table->foreign('supplier_id')->references('id')->on('suppliers');
+          $table->foreign('good_id')->references('id')->on('goods');
+          $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 

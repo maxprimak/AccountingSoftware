@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Warehouses\Entities\WarehouseHasGood;
+use Modules\Warehouses\Entities\Warehouse;
+use Modules\Goods\Entities\GoodHasPrices;
+use Modules\Goods\Entities\Good;
 use Modules\Warehouses\Http\Requests\moveGoodToWarehouseRequest;
 use Modules\Warehouses\Http\Requests\UpdateWarehouseHasGoodRequest;
 
@@ -90,7 +93,13 @@ class WarehouseHasGoodController extends Controller
     public function destroy($id)
     {
         $warehouse_has_good = WarehouseHasGood::find($id);
+        $good = Good::find($warehouse_has_good->good_id);
+        $warehouse = Warehouse::find($warehouse_has_good->warehouse_id);
+        $good_has_prices = GoodHasPrices::where('good_id',$good->id)->where('branch_id',$warehouse->getBranchId())->first();
+
         $warehouse_has_good->delete();
+        $good_has_prices->delete();
+        $good->delete();
         return response()->json(['message' => 'Successfully deleted!']);
     }
 }

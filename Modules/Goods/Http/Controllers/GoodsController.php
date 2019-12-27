@@ -11,7 +11,6 @@ use Modules\Goods\Http\Requests\UpdateGoodRequest;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Warehouses\Entities\Warehouse;
-use Modules\Goods\Entities\BranchHasGood;
 use Illuminate\Support\Facades\DB;
 
 class GoodsController extends Controller
@@ -27,8 +26,8 @@ class GoodsController extends Controller
         $branch_id = $warehouse->getBranchId();
         $goods_id = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('good_id')->toArray();
         $warehouse_has_goods_ids = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('id')->toArray();
-        $branch_has_goods_ids = BranchHasGood::whereIn('good_id',$goods_id)->where('branch_id',$branch_id)->pluck('id')->toArray();
-        $goods_has_prices = GoodHasPrices::whereIn('branch_has_good_id',$branch_has_goods_ids)->get();
+
+        $goods_has_prices = GoodHasPrices::where('branch_id',$branch_id)->whereIn('good_id',$goods_id)->get();
 
         $goods = DB::table('warehouse_has_goods')
                 ->join('goods','goods.id', '=', 'warehouse_has_goods.good_id')
@@ -67,25 +66,16 @@ class GoodsController extends Controller
      */
     public function store(StoreGoodRequest $request)
     {
-      //IF THIS GOOD ALREADY EXIST THEN WE NEED TO ADD ONLY AMOUNT AND PRICE FROM REQUEST
-      //IF GOOD DOES NOT EXIST CREATE A NEW ONE
         $existing_good = new Good();
-        $existing_good = $existing_good->check_if_exists($request);
+        $exists = $existing_good->checkIfExistsOnWarehouse($request);
 
-        if($existing_good){
-          $exists = $existing_good->checkIfExistsOnWarehouse($request);
-          if(!$exists){
-            $existing_good->addToBranch($request);
-            return response()->json(['message' => 'Successfully added!', 'good' => $existing_good], 200);
-          }else{
-            return response()->json(['message' => 'This good already exists in chosen Warehouse'], 422);
-          }
+        if(!$exists){
+          $good = new Good();
+          $good = $good->store($request);
+          return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
+        }else{
+          return response()->json(['message' => 'This good already exists in chosen Warehouse'], 422);
         }
-
-        $good = new Good();
-        $good = $good->store($request);
-
-        return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
     }
 
     /**
@@ -118,37 +108,8 @@ class GoodsController extends Controller
     {
       try {
         $good = Good::find($id);
-        $request->brand_id = $good->brand_id;
-        $request->model_id = $good->model_id;
-        $request->submodel_id = $good->submodel_id;
-
-        $existing_good = new Good();
-        $existing_good = $existing_good->check_if_exists($request);
-        if(!$existing_good){
-          $warehouse_has_good = WarehouseHasGood::find($request->warehouse_has_good_id);
-          $request->warehouse_id = $warehouse_has_good->id;
-
-          $good = new Good();
-          $good = $good->store($request);
-
-          //remove from warehouse has good
-
-          $warehouse_has_good->delete();
-
-          //remove from branch has good
-          $branch_id = Warehouse::find($warehouse_has_good->warehouse_id)->getBranchId();
-          $branch_has_good = BranchHasGood::where('branch_id',$branch_id)->where('good_id',$id)->first();
-          //remove from good has prices
-          $good_has_prices = GoodHasPrices::where('branch_has_good_id',$branch_has_good->id)->first();
-          $good_has_prices->delete();
-          $branch_has_good->delete();
-
-          return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
-        }else{
-            $request->good_id = $id;
-            $good = $existing_good->edit($request);
-          return response()->json(['message' => 'Successfully updated!', 'good' => $good]);
-        }
+        $good = $good->edit($request);
+        return response()->json(['message' => 'Successfully updated!', 'good' => $good]);
       } catch (\Exception $e) {
         return response()->json(['message' => $e->getMessage()], 500);
       }

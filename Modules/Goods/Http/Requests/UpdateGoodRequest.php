@@ -14,8 +14,8 @@ class UpdateGoodRequest extends FormRequest
     public function rules()
     {
         return [
-          // 'part_id ' => 'required |exists:parts,id',
-          // 'color_id '=>' required |exists:colors,id',
+          // 'part_id ' => 'required',
+          // 'color_id '=>' required',
           // 'warehouse_has_good_id '=>' required |exists:warehouse_has_goods,id',
           // 'vendor_code '=>' nullable',
           // 'amount '=>' required|numeric| max:490 |min:1',

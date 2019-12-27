@@ -16,7 +16,8 @@ class moveGoodToWarehouseRequest extends FormRequest
         return [
           'warehouse_id' => 'required | numeric |exists:warehouses,id',
           'stock_amount' => 'required |numeric |',
-          'amount' => 'required|numeric|max:'. $this->stock_amount
+          'warehouse_has_good_id' => 'required |numeric |exists:warehouse_has_goods,id',
+          'amount' => 'required|numeric|min:0 |max:'. $this->stock_amount
          ];
     }
 

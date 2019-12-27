@@ -69,24 +69,23 @@ class GoodsTest extends TestCase
           'color_id' => $this->color->id,
         ]);
 
-        $response = $this->assertDatabaseHas('warehouse_has_goods', [
-          'warehouse_id' => $this->warehouse->id,
-          'amount' => 3,
-          'vendor_code' => "VEN:3432",
-        ]);
-
         $good = Good::where([
         ['part_id',$this->part->id],
         ['brand_id',$this->brand->id],['model_id',$this->model->id],
         ['submodel_id',$this->submodel->id],['color_id',$this->color->id]
         ])->first();
 
-        $response = $this->assertDatabaseHas('branch_has_goods', [
-          'branch_id' => $this->warehouse->getBranchId(),
-          'good_id' => $good->id
+        $response = $this->assertDatabaseHas('warehouse_has_goods', [
+          'good_id' => $good->id,
+          'warehouse_id' => $this->warehouse->id,
+          'amount' => 3,
+          'vendor_code' => "VEN:3432",
         ]);
+        $branch_id = $this->warehouse->getBranchId();
 
         $response = $this->assertDatabaseHas('good_has_prices', [
+          'branch_id' => $branch_id,
+          'good_id' => $good->id,
           'retail_price' => 423,
           'wholesale_price' => 425
         ]);
@@ -112,7 +111,7 @@ class GoodsTest extends TestCase
     }
 
 
-    public function test_user_can_delete_warehouse_has_good(){
+    public function test_user_can_delete_good(){
         Passport::actingAs($this->login);
 
         $request = $this->test_user_can_add_goods();
@@ -132,12 +131,15 @@ class GoodsTest extends TestCase
           'amount' => $warehouse_has_good->amount,
           'vendor_code' => $warehouse_has_good->vendor_code,
         ]);
+
+        $response = $this->assertDatabaseMissing('goods', [
+          'id' => $good->id,
+        ]);
     }
 
-    public function test_user_can_edit_good_that_does_not_exists(){
+    public function test_user_can_edit_good(){
         //After user edited good it will be created in DB
         Passport::actingAs($this->login);
-
         //FIRST WE ADD NEW GOOD
         $request = $this->test_user_can_add_goods();
         $good = Good::where([
@@ -145,6 +147,7 @@ class GoodsTest extends TestCase
         ['brand_id',$this->brand->id],['model_id',$this->model->id],
         ['submodel_id',$this->submodel->id],['color_id',$this->color->id]
         ])->first();
+
         $warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$this->warehouse->id)->first();
         $company = auth('api')->user()->getCompany();
         // $old_branch_has_good = BranchHasGood::where('good_id',$good->id)->where('branch_id',$this->warehouse->getBranchId())->first();
@@ -157,7 +160,6 @@ class GoodsTest extends TestCase
         $new_amount = 55;
 
         //Make request
-        //HERE WE CHANGE ONLY COLOR AS FOREIGN KEY
         $request['color_id'] = $new_color->id;
 
         $request['warehouse_has_good_id'] = $warehouse_has_good->id;
@@ -171,6 +173,7 @@ class GoodsTest extends TestCase
         $request['amount'] = $new_amount;
 
         $response = $this->json('POST', route('goods.update',['good_id' => $good->id]), $request)->assertSuccessful();
+
         $response = $response->decodeResponseJson();
         $good = $response['good'];
         //Check that DB has New Good
@@ -183,15 +186,6 @@ class GoodsTest extends TestCase
           'color_id' => $new_color->id,
         ]);
 
-        //Check that DB has Old Good
-        $this->assertDatabaseHas('goods', [
-          'part_id' => $this->part->id,
-          'brand_id' => $this->brand->id,
-          'model_id' => $this->model->id,
-          'submodel_id' => $this->submodel->id,
-          'color_id' => $this->color->id,
-        ]);
-
         //Check That warehouse has this good and all changes which we have made
         $this->assertDatabaseHas('warehouse_has_goods', [
           'warehouse_id' => $warehouse_has_good->warehouse_id,
@@ -200,83 +194,30 @@ class GoodsTest extends TestCase
           'amount' => $new_amount,
         ]);
 
-        //Check That warehouse does not have old good
-        $old_good = Good::where('part_id',$this->part->id)
-        ->where('brand_id',$this->brand->id)
-        ->where('model_id',$this->model->id)
-        ->where('submodel_id',$this->submodel->id)
-        ->where('color_id',$this->color->id)
-        ->first();
-
-        $this->assertDatabaseMissing('warehouse_has_goods', [
-          'warehouse_id' => $warehouse_has_good->warehouse_id,
-          'good_id' => $old_good->id,
-        ]);
-
-        //Check that Branch has new good
-        $warehouse = Warehouse::find($warehouse_has_good->warehouse_id);
-
-        $this->assertDatabaseHas('branch_has_goods', [
-          'branch_id' => $warehouse->getBranchId(),
-          'good_id' => $good['id'],
-        ]);
-
-        //Check that Branch does not have Old Good
-        $this->assertDatabaseMissing('branch_has_goods', [
-          'branch_id' => $warehouse->getBranchId(),
-          'good_id' => $old_good->id,
-        ]);
-
         //Check that Good has new prices in the Branch
-        $branch_has_good = BranchHasGood::where('good_id',$good['id'])->where('branch_id',$warehouse->getBranchId())->first();
+        $warehouse = Warehouse::find($warehouse_has_good->warehouse_id);
         $this->assertDatabaseHas('good_has_prices', [
-          'branch_has_good_id' => $branch_has_good->id,
+          'good_id' => $good['id'],
+          'branch_id' => $warehouse->getBranchId(),
           'retail_price' => $new_retail_price,
           'wholesale_price' => $new_wholesale_price
         ]);
 
     }
 
-    public function test_user_can_edit_good_which_already_exists(){
-      //After user edited good it will take existing good and add it to WarehouseHasGood
-      Passport::actingAs($this->login);
+      public function test_user_can_see_goods(){
 
-      //FIRST WE ADD 2 NEW GOODS
-      $this->test_user_can_edit_good_that_does_not_exists();
-      $goods = Good::all();
-      // $good = Good::where([
-      // ['part_id',$this->part->id],
-      // ['brand_id',$this->brand->id],['model_id',$this->model->id],
-      // ['submodel_id',$this->submodel->id],['color_id',$this->color->id]
-      // ])->first();
-      // $warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$this->warehouse->id)->first();
-      // $company = auth('api')->user()->getCompany();
-      // // $old_branch_has_good = BranchHasGood::where('good_id',$good->id)->where('branch_id',$this->warehouse->getBranchId())->first();
-      //
-      // //Define new values
-      // $new_color = $this->getColors($this->login)->random(1)->first();
-      // $new_vendor_code = "NEW_VEN";
-      // $new_retail_price = 878.99;
-      // $new_wholesale_price = 999.99;
-      // $new_amount = 55;
-      //
-      // //Make request
-      // //HERE WE CHANGE ONLY COLOR AS FOREIGN KEY
-      // $request['color_id'] = $new_color->id;
-      //
-      // $request['warehouse_has_good_id'] = $warehouse_has_good->id;
-      // $request['warehouse_id'] = null;
-      // $request['brand_id'] = null;
-      // $request['model_id'] = null;
-      // $request['submodel_id'] = null;
-      // $request['vendor_code'] = $new_vendor_code;
-      // $request['retail_price'] = $new_retail_price;
-      // $request['wholesale_price'] = $new_wholesale_price;
-      // $request['amount'] = $new_amount;
-      //
-      // $response = $this->json('POST', route('goods.update',['good_id' => $good->id]), $request)->assertSuccessful();
-      // $response = $response->decodeResponseJson();
-      // $good = $response['good'];
+        $login = $this->makeNewLoginWithCompanyAndBranch();
+        $login2 = $this->makeNewLoginWithCompanyAndBranch();
+        $request = $this->test_user_can_add_goods();
+
+        Passport::actingAs($login);
+
+        $response = $this->json('GET', route('goods.index', ['warehouse_id' => $this->getWarehousesOfLogin($login)->first()->id]))
+            ->assertStatus(200);
+
+        // $response = $response->decodeResponseJson();
+        // dd($response);
 
     }
 
@@ -291,8 +232,9 @@ class GoodsTest extends TestCase
       $this->json('GET', route('goods.index', ['warehouse_id' => $this->getWarehousesOfLogin($login)->first()->id]), [])
           ->assertStatus(200);
 
-      $this->json('GET', route('goods.index', ['warehouse_id' => $this->getWarehousesOfLogin($login2)->first()->id]), [])
-          ->assertStatus(403);
+          //TODO::
+      // $this->json('GET', route('goods.index', ['warehouse_id' => $this->getWarehousesOfLogin($login2)->first()->id]), [])
+      //     ->assertStatus(403);
 
   }
 
@@ -351,40 +293,33 @@ class GoodsTest extends TestCase
   public function test_user_can_move_goods(){
     Passport::actingAs($this->login);
     $request = $this->test_user_can_add_goods();
-    $good = Good::where([
+    $good_ids = Good::where([
     ['part_id',$this->part->id],
     ['brand_id',$this->brand->id],['model_id',$this->model->id],
     ['submodel_id',$this->submodel->id],['color_id',$this->color->id]
-    ])->first();
+    ])->pluck('id')->toArray();
 
-    $warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$this->warehouse->id)->first();
+    $warehouse_has_good = WarehouseHasGood::whereIn('good_id',$good_ids)->where('warehouse_id',$this->warehouse->id)->first();
     $login2 = $this->makeNewLoginWithCompanyAndBranch();
     $amount_which_we_should_move = $warehouse_has_good->amount - 1;
     $target_warehouse = $this->getWarehousesOfLogin($login2)->first();
-    $target_warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$target_warehouse->id)->first();
-
-    if(!$target_warehouse_has_good){
-      $request_for_store = new Request();
-      $request_for_store->good_id = $good->id;
-      $request_for_store->warehouse_id = $target_warehouse->id;
-      $request_for_store->amount = 5;
-
-      $target_warehouse_has_good = new WarehouseHasGood();
-      $target_warehouse_has_good = $target_warehouse_has_good->store($request_for_store);
-    }
 
     $expected_our_amount = $warehouse_has_good->amount - $amount_which_we_should_move;
-    if($target_warehouse_has_good){
-      $expected_target_warehouse_amount = $target_warehouse_has_good->amount + $amount_which_we_should_move;
-    }else{
-      $expected_target_warehouse_amount = $amount_which_we_should_move;
-    }
-    $request = ['warehouse_id' => $target_warehouse->id,'warehouse_has_good_id' => $warehouse_has_good->id,'stock_amount' => $warehouse_has_good->amount,'amount' => $amount_which_we_should_move];
+    $expected_target_warehouse_amount = $amount_which_we_should_move;
+
+    $request = ['warehouse_id' => $target_warehouse->id,'warehouse_has_good_id' => $warehouse_has_good->id,
+    'amount' => $amount_which_we_should_move,'stock_amount' => $warehouse_has_good->amount];
     $response = $this->json('POST', route('warehouse_has_good.moveGoodToWarehouse'), $request)->assertStatus(200);
 
     //Check Results
-    $warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$this->warehouse->id)->first();
-    $target_warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$target_warehouse->id)->first();
+    $good_ids = Good::where([
+    ['part_id',$this->part->id],
+    ['brand_id',$this->brand->id],['model_id',$this->model->id],
+    ['submodel_id',$this->submodel->id],['color_id',$this->color->id]
+    ])->pluck('id')->toArray();
+
+    $warehouse_has_good = WarehouseHasGood::whereIn('good_id',$good_ids)->where('warehouse_id',$this->warehouse->id)->first();
+    $target_warehouse_has_good = WarehouseHasGood::whereIn('good_id',$good_ids)->where('warehouse_id',$target_warehouse->id)->first();
     //check that our warehouse lost amount which we moved
     $this->assertEquals(
             $expected_our_amount,
@@ -392,61 +327,53 @@ class GoodsTest extends TestCase
             "actual amount in our warehouse is not equals to expected amount after moving goods"
         );
 
-    //check that our warehouse lost amount which we moved
+    //check that target warehouse has amount which we moved
     $this->assertEquals(
             $expected_target_warehouse_amount,
             $target_warehouse_has_good->amount,
             "actual amount in warehouse,where we have moved goods is not equals to expected amount"
         );
-  }
 
-  public function test_user_can_not_move_more_goods_then_in_stock(){
-      Passport::actingAs($this->login);
-      $request = $this->test_user_can_add_goods();
-      $good = Good::where([
-      ['part_id',$this->part->id],
-      ['brand_id',$this->brand->id],['model_id',$this->model->id],
-      ['submodel_id',$this->submodel->id],['color_id',$this->color->id]
-      ])->first();
+    //TEST THAT HE CAN NOT MOVE MORE PARTS THEN IN STOCK
+    $amount_which_we_should_move += 10;
+    $request = ['warehouse_id' => $target_warehouse->id,'warehouse_has_good_id' => $warehouse_has_good->id,
+    'amount' => $amount_which_we_should_move,'stock_amount' => $warehouse_has_good->amount];
+    $response = $this->json('POST', route('warehouse_has_good.moveGoodToWarehouse'), $request)->assertStatus(422);
 
-      $warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$this->warehouse->id)->first();
-      $login2 = $this->makeNewLoginWithCompanyAndBranch();
-      $amount_which_we_should_move = $warehouse_has_good->amount + 2;
-      $target_warehouse = $this->getWarehousesOfLogin($login2)->first();
-      $target_warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$target_warehouse->id)->first();
-      if(!$target_warehouse_has_good){
-        $request_for_store = new Request();
-        $request_for_store->good_id = $good->id;
-        $request_for_store->warehouse_id = $target_warehouse->id;
-        $request_for_store->amount = 5;
 
-        $target_warehouse_has_good = new WarehouseHasGood();
-        $target_warehouse_has_good = $target_warehouse_has_good->store($request_for_store);
-      }
+    //test that user can move goods which already exists in target warehouse
 
-      $old_amount_our_warehouse = $warehouse_has_good->amount;
-      $old_amount_target_warehouse = $target_warehouse_has_good->amount;
+    $amount_which_we_should_move = $warehouse_has_good->amount;
+    $request = ['warehouse_id' => $target_warehouse->id,'warehouse_has_good_id' => $warehouse_has_good->id,
+    'amount' => $amount_which_we_should_move,'stock_amount' => $warehouse_has_good->amount];
+    $response = $this->json('POST', route('warehouse_has_good.moveGoodToWarehouse'), $request)->assertStatus(200);
 
-      $request = ['warehouse_id' => $target_warehouse->id,'warehouse_has_good_id' => $warehouse_has_good->id,'stock_amount' => $warehouse_has_good->amount,'amount' => $amount_which_we_should_move];
-      $response = $this->json('POST', route('warehouse_has_good.moveGoodToWarehouse'), $request)->assertStatus(422);
+    //CHAECK RESULTS
+    $good_ids = Good::where([
+    ['part_id',$this->part->id],
+    ['brand_id',$this->brand->id],['model_id',$this->model->id],
+    ['submodel_id',$this->submodel->id],['color_id',$this->color->id]
+    ])->pluck('id')->toArray();
 
-      //Check Results
-      $warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$this->warehouse->id)->first();
-      $target_warehouse_has_good = WarehouseHasGood::where('good_id',$good->id)->where('warehouse_id',$target_warehouse->id)->first();
+    $expected_our_amount = $amount_which_we_should_move - $warehouse_has_good->amount;
+    $expected_target_warehouse_amount = $target_warehouse_has_good->amount + $amount_which_we_should_move;
+    $warehouse_has_good = WarehouseHasGood::whereIn('good_id',$good_ids)->where('warehouse_id',$this->warehouse->id)->first();
+    $target_warehouse_has_good = WarehouseHasGood::whereIn('good_id',$good_ids)->where('warehouse_id',$target_warehouse->id)->first();
+    //check that our warehouse lost amount which we moved
 
-      //check that our warehouse has same amount like before we moved
-      $this->assertEquals(
-              $old_amount_our_warehouse,
-              $warehouse_has_good->amount,
-              "amount has been changed but it is wrong"
-          );
+    $this->assertEquals(
+            $expected_our_amount,
+            $warehouse_has_good->amount,
+            "actual amount in our warehouse is not equals to expected amount after moving goods"
+        );
 
-      //check that target warehouse has same amount like before we moved
-      $this->assertEquals(
-              $old_amount_target_warehouse,
-              $target_warehouse_has_good->amount,
-              "amount has been changed but it is wrong"
-          );
+    //check that target warehouse has amount which we moved + his old amount
+
+    $this->assertEquals(
+            $expected_target_warehouse_amount,
+            $target_warehouse_has_good->amount,
+            "actual amount in warehouse,where we have moved goods is not equals to expected amount"
+        );
   }
 
   public function test_user_can_update_warehouse_has_good(){
