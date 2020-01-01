@@ -39,7 +39,7 @@ class GoodsController extends Controller
                 ->join('colors','colors.id', '=', 'goods.color_id')
                 ->select('goods.id as id', 'brands.name as brand_name','brands.id as brand_id' ,'models.name as model_name','models.id as model_id',
                         'submodels.name as submodel_name','submodels.id as submodel_id' ,'parts_translations.name as part_name','parts.id as part_id','colors.name as color_name',
-                        'colors.id as color_id','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
+                        'colors.id as color_id','colors.hex_code as color_hexcode','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
                         'warehouse_has_goods.amount as amount')
                 ->whereIn('warehouse_has_goods.id',$warehouse_has_goods_ids)
                 ->where('parts_translations.language_id',$company->language_id)
