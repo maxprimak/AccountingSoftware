@@ -3,6 +3,7 @@
 namespace Modules\Devices\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Devices\Entities\Device;
 
 class UpdateDeviceRequest extends FormRequest
 {
@@ -13,10 +14,13 @@ class UpdateDeviceRequest extends FormRequest
      */
     public function rules()
     {
+        //TODO: make it work
+        //$device = Device::find($this->route('device_id'));
+
         return [
             'submodel_id' => 'required|exists:submodels,id',
             'color_id' => 'required|exists:colors,id',
-            'serial_nr' => 'required|unique:devices,serial_nr'
+            'serial_nr' => 'required|' //unique:devices,serial_nr,'.$device->serial_nr
         ];
     }
 

@@ -71,6 +71,8 @@ class PartsController extends Controller
 
         $part = new Part();
         $part = $part->store($request);
+        $part->name = $part->getTranslatedName();
+        $part->part_id = $part->id;
 
         return response()->json(['message' => 'Successfully added!', 'part' => $part], 200);
     }
