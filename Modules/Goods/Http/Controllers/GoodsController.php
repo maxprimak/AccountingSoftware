@@ -19,15 +19,12 @@ class GoodsController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index($warehouse_id)
+    public function index()
     {
         $company = auth('api')->user()->getCompany();
-        $warehouse = Warehouse::find($warehouse_id);
-        $branch_id = $warehouse->getBranchId();
-        $goods_id = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('good_id')->toArray();
-        $warehouse_has_goods_ids = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('id')->toArray();
-
-        $goods_has_prices = GoodHasPrices::where('branch_id',$branch_id)->whereIn('good_id',$goods_id)->get();
+        $warehouse_ids = $company->getWarehousesIdsOfCompany();
+        $goods_id = WarehouseHasGood::whereIn('warehouse_id',$warehouse_ids)->pluck('good_id')->toArray();
+        $goods_has_prices = GoodHasPrices::whereIn('good_id',$goods_id)->get();
 
         $goods = DB::table('warehouse_has_goods')
                 ->join('goods','goods.id', '=', 'warehouse_has_goods.good_id')
@@ -41,7 +38,6 @@ class GoodsController extends Controller
                         'submodels.name as submodel_name','submodels.id as submodel_id' ,'parts_translations.name as part_name','parts.id as part_id','colors.name as color_name',
                         'colors.id as color_id','colors.hex_code as color_hexcode','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
                         'warehouse_has_goods.amount as amount')
-                ->whereIn('warehouse_has_goods.id',$warehouse_has_goods_ids)
                 ->where('parts_translations.language_id',$company->language_id)
                 ->get();
         $new_good = new Good();
@@ -83,9 +79,35 @@ class GoodsController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show($id)
+    public function show($warehouse_id)
     {
-        return view('goods::show');
+        $company = auth('api')->user()->getCompany();
+        $warehouse = Warehouse::find($warehouse_id);
+        $branch_id = $warehouse->getBranchId();
+        $goods_id = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('good_id')->toArray();
+        $warehouse_has_goods_ids = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('id')->toArray();
+
+        $goods_has_prices = GoodHasPrices::where('branch_id',$branch_id)->whereIn('good_id',$goods_id)->get();
+
+        $goods = DB::table('warehouse_has_goods')
+                ->join('goods','goods.id', '=', 'warehouse_has_goods.good_id')
+                ->join('brands', 'brands.id', '=', 'goods.brand_id')
+                ->join('models', 'models.id', '=', 'goods.model_id')
+                ->join('submodels', 'submodels.id', '=', 'goods.submodel_id')
+                ->join('parts','parts.id', '=', 'goods.part_id')
+                ->join('parts_translations','parts_translations.part_id', '=', 'goods.part_id')
+                ->join('colors','colors.id', '=', 'goods.color_id')
+                ->select('goods.id as id', 'brands.name as brand_name','brands.id as brand_id' ,'models.name as model_name','models.id as model_id',
+                        'submodels.name as submodel_name','submodels.id as submodel_id' ,'parts_translations.name as part_name','parts.id as part_id','colors.name as color_name',
+                        'colors.id as color_id','colors.hex_code as color_hexcode','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
+                        'warehouse_has_goods.amount as amount')
+                ->whereIn('warehouse_has_goods.id',$warehouse_has_goods_ids)
+                ->where('parts_translations.language_id',$company->language_id)
+                ->get();
+        $new_good = new Good();
+        $result_of_goods = $new_good->combineGoodsWithPrices($goods_has_prices,$goods);
+
+        return response()->json($result_of_goods);
     }
 
     /**

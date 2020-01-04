@@ -38,7 +38,8 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
     Route::get('colors/{color_id}', 'ColorsController@show')->name('colors.show');
 
     //Goods
-    Route::get('goods/{warehouse_id}', 'GoodsController@index')->name('goods.index');
+    Route::get('goods', 'GoodsController@index')->name('goods.index');
+    Route::get('goods/{warehouse_id}', 'GoodsController@show')->name('goods.show');
     Route::post('goods', 'GoodsController@store')->name('goods.store');
     Route::post('goods/{good_id}', 'GoodsController@update')->name('goods.update');
     // Route::delete('goods/{good_id}', 'GoodsController@destroy')->name('goods.delete');

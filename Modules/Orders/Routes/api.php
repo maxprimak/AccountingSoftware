@@ -25,4 +25,12 @@ Route::post('/orders/sales/{order_id}', 'SalesOrdersController@update')->name('o
 Route::get('/orders/sales/branch/{branch_id}', 'SalesOrdersBranchController@index')->name('orders.sales.branch.index')->middleware('my_branch');
 Route::delete('/orders/sales/{branch_id}', 'SalesOrdersController@destroy')->name('orders.sales.destroy');
 
+//warranties
+Route::get('/warranties', 'WarrantyController@index')->name('warranties.index');
+Route::post('/warranties', 'WarrantyController@store')->name('warranties.store');
+
+//discount_codes
+Route::get('/discount_codes', 'DiscountCodesController@index')->name('discount_codes.index');
+Route::post('/discount_codes', 'DiscountCodesController@store')->name('discount_codes.store');
+
 });

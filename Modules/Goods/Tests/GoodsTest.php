@@ -205,7 +205,7 @@ class GoodsTest extends TestCase
 
     }
 
-      public function test_user_can_see_goods(){
+      public function test_user_can_see_goods_of_warehouse(){
 
         $login = $this->makeNewLoginWithCompanyAndBranch();
         $login2 = $this->makeNewLoginWithCompanyAndBranch();
@@ -213,7 +213,7 @@ class GoodsTest extends TestCase
 
         Passport::actingAs($login);
 
-        $response = $this->json('GET', route('goods.index', ['warehouse_id' => $this->getWarehousesOfLogin($login)->first()->id]))
+        $response = $this->json('GET', route('goods.show', ['warehouse_id' => $this->getWarehousesOfLogin($login)->first()->id]))
             ->assertStatus(200);
 
         // $response = $response->decodeResponseJson();
@@ -221,7 +221,7 @@ class GoodsTest extends TestCase
 
     }
 
-    public function test_user_can_see_only_goods_of_his_company(){
+    public function test_user_can_see_goods_of_company(){
 
       $login = $this->makeNewLoginWithCompanyAndBranch();
       $login2 = $this->makeNewLoginWithCompanyAndBranch();
@@ -229,7 +229,23 @@ class GoodsTest extends TestCase
 
       Passport::actingAs($login);
 
-      $this->json('GET', route('goods.index', ['warehouse_id' => $this->getWarehousesOfLogin($login)->first()->id]), [])
+      $response = $this->json('GET', route('goods.index'))
+          ->assertStatus(200);
+
+      // $response = $response->decodeResponseJson();
+      // dd($response);
+
+  }
+
+    public function test_user_can_see_only_goods_of_his_warehouse(){
+
+      $login = $this->makeNewLoginWithCompanyAndBranch();
+      $login2 = $this->makeNewLoginWithCompanyAndBranch();
+      $request = $this->test_user_can_add_goods();
+
+      Passport::actingAs($login);
+
+      $this->json('GET', route('goods.show', ['warehouse_id' => $this->getWarehousesOfLogin($login)->first()->id]), [])
           ->assertStatus(200);
 
           //TODO::
