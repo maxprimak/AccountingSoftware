@@ -12,7 +12,7 @@ class Warranty extends Model
       $company = auth('api')->user()->getCompany();
       $this->name = $request->name;
       $this->days_number = $request->days_number;
-      $this->is_active = $request->is_active;
+      $this->is_active = 1;
       $this->company_id = $company->id;
       $this->is_default = $request->is_default;
       $this->save();
