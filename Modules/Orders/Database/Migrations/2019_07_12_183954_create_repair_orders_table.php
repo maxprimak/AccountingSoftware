@@ -26,6 +26,7 @@ class CreateRepairOrdersTable extends Migration
             $table->unsignedInteger('payment_status_id');
             $table->unsignedInteger('warranty_id');
             $table->unsignedInteger('discount_code_id');
+            $table->unsignedInteger('order_type_id');
             $table->timestamps();
 
             //Foreign
@@ -35,6 +36,7 @@ class CreateRepairOrdersTable extends Migration
             $table->foreign('payment_status_id')->references('id')->on('payment_statuses');
             $table->foreign('warranty_id')->references('id')->on('warranties');
             $table->foreign('discount_code_id')->references('id')->on('discount_codes');
+            $table->foreign('order_type_id')->references('id')->on('order_types');
         });
     }
 

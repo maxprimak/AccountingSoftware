@@ -34,6 +34,7 @@ class RepairOrder extends Model
         $this->warranty_id = $request->warranty_id;
         $this->discount_code_id = $request->discount_code_id;
         $this->prepay_sum = $request->prepay_sum;
+        $this->order_type_id = $request->order_type_id;
         $this->save();
 
         $request->repair_order_id = $this->id;
@@ -109,9 +110,39 @@ class RepairOrder extends Model
 
     public function storeDeviceHasService(Request $request){
       foreach ($request->devices as $device) {
-        $repair_order_has_good = new DeviceHasService();
-        $repair_order_has_good->store($device,$this->id);
+        foreach ($device['services_id'] as $service_id) {
+          $repair_order_has_good = new DeviceHasService();
+          $repair_order_has_good->store($device,$service_id,$this->id);
+        }
       }
+    }
+
+    public function combineDevicesWithServices($devices,$services,$repair_order_has_devices,$device_has_services){
+      $result_of_devices = array();
+      foreach ($devices as $device) {
+        $array_of_device = array();
+        $array_of_device['id'] = $device->id;
+        $array_of_device['submodel_id'] = $device->submodel_id;
+        $array_of_device['color_id'] = $device->color_id;
+        $array_of_device['serial_nr'] = $device->serial_nr;
+        foreach ($repair_order_has_devices as $repair_order_has_device) {
+          if($array_of_device['id'] == $repair_order_has_device->device_id){
+            $array_of_device['defect_description'] = $repair_order_has_device->defect_description;
+          }
+        }
+        foreach ($device_has_services as $device_has_service) {
+          foreach ($services as $service) {
+            $service = (array) $service;
+            if($device_has_service->device_id == $array_of_device['id'] && $device_has_service->service_id == $service['id']){
+              $array_of_device['services'] = array();
+              $service['is_completed'] = $device_has_service->is_completed;
+              array_push($array_of_device['services'],$service);
+            }
+          }
+        }
+        array_push($result_of_devices,$array_of_device);
+      }
+      return $result_of_devices;
     }
 
 }

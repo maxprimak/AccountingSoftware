@@ -20,6 +20,7 @@ use Modules\Orders\Database\Seeders\RepairOrdersTableSeeder;
 use Modules\Orders\Database\Seeders\SalesOrdersTableSeeder;
 use Modules\Orders\Database\Seeders\OrderTypesSeederTableSeeder;
 use Modules\Orders\Database\Seeders\PaymentStatusesTableSeeder;
+use Modules\Orders\Database\Seeders\OrderStatusesTableSeeder;
 use Modules\Services\Database\Seeders\LanguagesTableSeeder;
 use Modules\Services\Database\Seeders\ModelFixTableSeeder;
 
@@ -51,6 +52,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PartSeederTableSeeder::class);
         $this->call(ColorSeederTableSeeder::class);
         $this->call(GoodsDatabaseSeeder::class);
+        $this->call(OrderStatusesTableSeeder::class);
         $this->call(RepairOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
         $this->call(OrderTypesSeederTableSeeder::class);
