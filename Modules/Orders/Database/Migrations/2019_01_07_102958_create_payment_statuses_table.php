@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSellOrderHasGoodsTable extends Migration
+class CreatePaymentStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateSellOrderHasGoodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sell_order_has_goods', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('order_id');
-            $table->bigInteger('good_id');
+        Schema::create('payment_statuses', function (Blueprint $table) {
+            $table->increments('id');
             $table->timestamps();
-            //TODO: foreign keys
         });
     }
 
@@ -29,6 +26,6 @@ class CreateSellOrderHasGoodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sell_order_has_goods');
+        Schema::dropIfExists('payment_statuses');
     }
 }

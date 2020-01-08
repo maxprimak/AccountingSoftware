@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Orders\Entities;
+namespace Modules\Devices\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SellOrderHasService extends Model
+class DeviceHasDeviceLocations extends Model
 {
     protected $fillable = [];
 }

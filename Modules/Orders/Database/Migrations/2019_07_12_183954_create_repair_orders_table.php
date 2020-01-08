@@ -14,20 +14,27 @@ class CreateRepairOrdersTable extends Migration
     public function up()
     {
         Schema::create('repair_orders', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->unsignedInteger('order_id');
             $table->string("order_nr");
             $table->unsignedInteger("customer_id");
-            $table->string("defect_description");
             $table->string("comment")->nullable();
             $table->unsignedInteger("status_id");
             $table->double("prepay_sum")->nullable();
-            $table->unsignedInteger("located_in");
+            $table->date("deadline")->nullable();
+            $table->tinyInteger("is_completed");
+            $table->unsignedInteger('payment_status_id');
+            $table->unsignedInteger('warranty_id');
+            $table->unsignedInteger('discount_code_id');
             $table->timestamps();
+
+            //Foreign
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->foreign('status_id')->references('id')->on('order_statuses');
-            $table->foreign('located_in')->references('id')->on('branches');
+            $table->foreign('payment_status_id')->references('id')->on('payment_statuses');
+            $table->foreign('warranty_id')->references('id')->on('warranties');
+            $table->foreign('discount_code_id')->references('id')->on('discount_codes');
         });
     }
 

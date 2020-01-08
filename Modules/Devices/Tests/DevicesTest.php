@@ -47,17 +47,17 @@ class DevicesTest extends TestCase
 
     }
 
-    private function createDevice($serial_nr){
-
+    public function createDevice($serial_nr){
+        $condition = $this->faker->name;
         $response = $this->json('POST', route('devices.store', ['customer_id' => $this->customer->id]), [
         'submodel_id' => $this->submodel->id,
         'color_id' => $this->color->id,
         'serial_nr' => $serial_nr,
-        'condition' => $this->faker->name
-        ]);
+        'condition' => $condition
+        ])->dump();
 
         return $response;
-
+        //TODO: Database Has Check
     }
 
     private function updateDevice($device_id, $serial_nr, $condition){
@@ -68,7 +68,7 @@ class DevicesTest extends TestCase
             'serial_nr' => $serial_nr,
             'condition' => $condition
             ]);
-    
+
             return $response;
 
     }
@@ -108,9 +108,9 @@ class DevicesTest extends TestCase
             'serial_nr' => $this->faker->name,
             'condition' => $this->faker->name
         ]);
-        
+
         $response->assertStatus(422);
-    
+
     }
 
     public function test_device_can_be_created_without_condition(){
@@ -120,7 +120,7 @@ class DevicesTest extends TestCase
             'color_id' => $this->color->id,
             'serial_nr' => "serialNr",
         ]);
-    
+
         $response->assertStatus(200);
 
     }

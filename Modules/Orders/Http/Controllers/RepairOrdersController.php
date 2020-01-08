@@ -45,12 +45,8 @@ class RepairOrdersController extends Controller
         $order = $order->store($request);
 
         $repair_order = new RepairOrder();
+        $request = $repair_order->setPaymentStatus($request);
         $repair_order = $repair_order->store($request, $order->id);
-
-        $permission = new CustomerHasBranch();
-        $permission->customer_id = $repair_order->customer_id;
-        $permission->branch_id = $order->branch_id;
-        $permission->save();
 
         return response()->json([
             'status' => 'Successfully created',
@@ -60,13 +56,9 @@ class RepairOrdersController extends Controller
                 'price' => $order->price,
                 'branch_id' => $order->branch_id,
                 'order_nr' => $repair_order->order_nr,
-                'customer_name' => $request->customer_name,
-                'customer_phone' => $request->customer_phone,
-                'defect_description' => $repair_order->defect_description,
                 'comment' => $repair_order->comment,
                 'prepay_sum' => $repair_order->prepay_sum,
                 'status_id' => $repair_order->status_id,
-                'located_in' => $repair_order->located_in,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
                 'created_by' => $order->created_by,
@@ -139,7 +131,7 @@ class RepairOrdersController extends Controller
      * @return Response
      */
     public function destroy($id)
-    {   
+    {
 
         $repair_order = RepairOrder::findOrFail($id);
         $order = Order::findOrFail($repair_order->order_id);

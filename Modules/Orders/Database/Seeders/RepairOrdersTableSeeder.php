@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Orders\Entities\RepairOrder;
 
+
 class RepairOrdersTableSeeder extends Seeder
 {
     /**
@@ -42,6 +43,6 @@ class RepairOrdersTableSeeder extends Seeder
         factory('Modules\Orders\Entities\PaymentType')->create([
             'name' => 'Card'
         ]);
-        
+
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRepairOrderTypesTable extends Migration
+class CreateDeviceLocationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,15 @@ class CreateRepairOrderTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('repair_order_types', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('device_locations', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('name');
+            $table->unsignedInteger('warehouse_id');
             $table->timestamps();
-            //TODO: foreign keys
+        });
+
+        Schema::table('device_locations', function($table) {
+          $table->foreign('warehouse_id')->references('id')->on('warehouses');
         });
     }
 
@@ -28,6 +32,6 @@ class CreateRepairOrderTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('repair_order_types');
+        Schema::dropIfExists('device_locations');
     }
 }

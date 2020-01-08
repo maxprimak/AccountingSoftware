@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRepairOrderHasWarrantiesTable extends Migration
+class CreateOrderTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateRepairOrderHasWarrantiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('repair_order_has_warranties', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('order_id');
-            $table->bigInteger('warranty_id');
+        Schema::create('order_types', function (Blueprint $table) {
+            $table->increments('id');
             $table->timestamps();
-            //TODO: foreign keys
         });
     }
 
@@ -29,6 +26,6 @@ class CreateRepairOrderHasWarrantiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('repair_order_has_warranties');
+        Schema::dropIfExists('order_types');
     }
 }

@@ -13,15 +13,21 @@ class StoreRepairOrderRequest extends FormRequest
      */
     public function rules()
     {
+      $accept_date = $this->accept_date;
+      $accept_date = str_replace('-', '/', $accept_date);
+      $yesterday = date('Y-m-d',strtotime($accept_date . "-1 days"));
         return [
+            'order_type_id' => 'required|exists:order_types,id',
             'accept_date' => 'required|date|before:tomorrow',
-            'price' => 'required|numeric',
             'branch_id' => 'required|exists:branches,id',
             'order_nr' => 'required|max:190',
-            'customer_name' => 'required|max:50',
-            'customer_phone' => 'required|max:50',
-            'defect_description' => 'required|max:190',
-            'comment' => 'max:190',
+            'customer_id' => 'required|exists:customers,id',
+            'devices' => 'required',
+            'price' => 'required|numeric',
+            'warranty_id' => 'required|exists:warranties,id',
+            'discount_code_id' => 'required|exists:discount_codes,id',
+            'deadline' => 'nullable|date|after:'.$yesterday,
+            'comment' => 'nullable|max:190',
             'prepay_sum' => 'nullable|numeric|max:'. $this->price
         ];
     }
