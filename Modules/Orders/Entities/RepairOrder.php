@@ -9,8 +9,8 @@ use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
 use Modules\Orders\Entities\OrderStatus;
 use Modules\Orders\Entities\Order;
-use Modules\Orders\Entities\RepairOrderHasDevice;
 use Modules\Orders\Entities\RepairOrderHasGood;
+use Modules\Orders\Entities\RepairOrderHasDevice;
 use Modules\Orders\Entities\DeviceHasService;
 use Modules\Orders\Entities\PayOrders;
 use Modules\Orders\Entities\WarrantyOrders;
@@ -103,16 +103,18 @@ class RepairOrder extends Model
 
     public function storeRepairOrderHasGood(Request $request){
       foreach ($request->devices as $device) {
-        $repair_order_has_good = new RepairOrderHasGood();
-        $repair_order_has_good->store($device,$this->id);
+          foreach ($device['warehouse_has_good'] as $warehouse_has_good){
+              $repair_order_has_good = new RepairOrderHasGood();
+              $repair_order_has_good->store($warehouse_has_good,$this->id,$device['device_id']);
+          }
       }
     }
 
     public function storeDeviceHasService(Request $request){
       foreach ($request->devices as $device) {
         foreach ($device['services_id'] as $service_id) {
-          $repair_order_has_good = new DeviceHasService();
-          $repair_order_has_good->store($device,$service_id,$this->id);
+          $device_has_service = new DeviceHasService();
+            $device_has_service->store($device,$service_id,$this->id);
         }
       }
     }
