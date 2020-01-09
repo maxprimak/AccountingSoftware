@@ -180,6 +180,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Modules\Customers\Providers\CustomersServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*

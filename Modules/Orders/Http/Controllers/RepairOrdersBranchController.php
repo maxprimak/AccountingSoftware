@@ -30,10 +30,10 @@ class RepairOrdersBranchController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index($id)
+    public function index($id,$is_completed)
     {
         $company = auth('api')->user()->getCompany();
-        $repair_order_ids = RepairOrder::all()->pluck('order_id');
+        $repair_order_ids = RepairOrder::where('is_completed',$is_completed)->pluck('order_id');
         $order_ids = Order::whereIn('id', $repair_order_ids)->where('branch_id', $id)->pluck('id');
         $repair_orders = RepairOrder::whereIn('order_id', $order_ids)->orderBy('id', 'DESC')->get();
 

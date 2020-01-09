@@ -14,11 +14,12 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware(['is_authorized', 'is_registered'])->group(function () {
-
+//Repair Orders
 Route::post('/orders/repair', 'RepairOrdersController@store')->name('orders.repair.store');
 Route::post('/orders/repair/{order_id}', 'RepairOrdersController@update')->name('orders.repair.update');
-Route::get('/orders/repair/branch/{branch_id}', 'RepairOrdersBranchController@index')->name('orders.repair.branch.index')->middleware('my_branch');
+Route::get('/orders/repair/branch/{branch_id}/{is_completed}', 'RepairOrdersBranchController@index')->name('orders.repair.branch.index')->middleware('my_branch');
 Route::delete('/orders/repair/{branch_id}', 'RepairOrdersController@destroy')->name('orders.repair.destroy');
+Route::post('/orders/repair/{order_id}/status', 'RepairOrderStatusController@update')->name('repair_orders_status.update');
 
 Route::post('/orders/sales', 'SalesOrdersController@store')->name('orders.sales.store');
 Route::post('/orders/sales/{order_id}', 'SalesOrdersController@update')->name('orders.sales.update');
@@ -33,4 +34,17 @@ Route::post('/warranties', 'WarrantyController@store')->name('warranties.store')
 Route::get('/discount_codes', 'DiscountCodesController@index')->name('discount_codes.index');
 Route::post('/discount_codes', 'DiscountCodesController@store')->name('discount_codes.store');
 
+//payment statuses
+    Route::get('/payment_statuses', 'PaymentStatusController@index')->name('payment_statuses.index');
+
+//Device + Service
+    Route::post('/device/{device_id}/services', 'DeviceServicesController@index')->name('device_service.index');
+    Route::post('/orders/repair/{device_id}/services', 'DeviceServicesController@update')->name('device_service.update');
+
+//RepairOrdersCompleted
+    Route::post('/orders/repair/{order_id}/complete ', 'RepairOrderCompletedController@update')->name('repair_order_complete.update');
+
+//RepairOrderHasGoodsController
+    Route::post('/orders/goods/{order_id} ', 'RepairOrderHasGoodsController@store')->name('repair_order_has_goods.store');
+    //Route::post('/orders/repair/{device_id}/services', 'DeviceServicesController@update')->name('repair_order_has_goods.update');
 });

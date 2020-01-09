@@ -145,4 +145,16 @@ class RepairOrder extends Model
       return $result_of_devices;
     }
 
+    public function updateStatus(Request $request): RepairOrder{
+        $this->status_id = $request->status_id;
+        $this->save();
+        return $this;
+    }
+
+    public function complete(): RepairOrder{
+        $this->is_completed = 1;
+        $this->save();
+        return $this;
+    }
+
 }

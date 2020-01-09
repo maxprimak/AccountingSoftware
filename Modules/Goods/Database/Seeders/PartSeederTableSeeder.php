@@ -27,6 +27,7 @@ class PartSeederTableSeeder extends Seeder
         $part = new Part();
         $request->name = "Battery";
         $part->save();
+        $part->storePartTranslation($request);
 
         $part = new Part();
         $request->name = "Side Buttons";

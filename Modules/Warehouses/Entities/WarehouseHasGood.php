@@ -3,7 +3,11 @@
 namespace Modules\Warehouses\Entities;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Warehouses\Entities\WarehouseHasGood;
+use Modules\Companies\Entities\Branch;
+use Modules\Goods\Entities\Brand;
+use Modules\Goods\Entities\Color;
+use Modules\Goods\Entities\Models;
+use Modules\Goods\Entities\Part;
 use Modules\Goods\Entities\Good;
 
 class WarehouseHasGood extends Model
@@ -48,7 +52,7 @@ class WarehouseHasGood extends Model
       ['submodel_id',$existing_good->submodel_id],['color_id',$existing_good->color_id]
       ])->pluck('id')->toArray();
 
-      $existing_good_in_target_warehouse = WarehouseHasGood::whereIn('good_id',$good_ids)->where('warehouse_id', $request->warehouse_id)->first();
+      $existing_good_in_target_warehouse = $this::whereIn('good_id',$good_ids)->where('warehouse_id', $request->warehouse_id)->first();
       if($existing_good_in_target_warehouse){
         $existing_good_in_target_warehouse->amount += $request->amount;
         $existing_good_in_target_warehouse->save();
@@ -67,5 +71,26 @@ class WarehouseHasGood extends Model
       $this->save();
 
       return $this;
+    }
+
+    public function getGoodForDevice(){
+        $warehouse = Warehouse::find($this->warehouse_id);
+        $good = Good::find($this->good_id);
+        $color = Color::find($good->color_id);
+        $part = Part::find($good->part_id);
+        $brand = Brand::find($good->brand_id);
+        $model = Models::find($good->model_id);
+
+        $result_good = array();
+        $result_good['id'] = $good->id;
+        $result_good['branch_name'] = $warehouse->name;
+        $result_good['color_name'] = $color->name;
+        $result_good['color_hex_code'] = $color->hex_code;
+        $result_good['part_name'] = $part->getTranslatedName();
+        $result_good['brand_name'] = $brand->name;
+        $result_good['model_name'] = $model->name;
+        $result_good['warehouse_has_good_id'] = $this->id;
+        $result_good['amount_in_warehouse'] = $this->amount;
+        return $result_good;
     }
 }
