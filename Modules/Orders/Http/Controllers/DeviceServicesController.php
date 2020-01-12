@@ -6,8 +6,11 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Devices\Entities\Device;
 use Modules\Orders\Entities\DeviceHasService;
+use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Http\Requests\IndexDeviceServiceRequest;
+use Modules\Orders\Http\Requests\UpdateDeviceServicesRequest;
 
 class DeviceServicesController extends Controller
 {
@@ -87,9 +90,21 @@ class DeviceServicesController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateDeviceServicesRequest $request, $device_id)
     {
-        //
+        $repair_order = RepairOrder::findOrFail($request->repair_order_id);
+        $device = Device::findOrFail($device_id);
+       $device_has_services = DeviceHasService::where('device_id',$device_id)->where('repair_order_id',$request->repair_order_id)->get();
+           foreach ($device_has_services as $device_has_service){
+               $device_has_service->delete();
+           }
+        $device = (array) $device;
+        $device['device_id'] = $device_id;
+        $device['services_id'] = array();
+        $device['services_id'] = $request->services_id;
+        $repair_order->storeDeviceHasService($device);
+
+        return response()->json(['message' => 'Services are successfully updated!']);
     }
 
     /**

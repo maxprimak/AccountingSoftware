@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Goods\Entities\Good;
 use Modules\Orders\Entities\RepairOrderHasGood;
+use Modules\Orders\Http\Requests\DestroyGoodFromDeviceRequest;
 use Modules\Orders\Http\Requests\StoreRepairOrderHasGoodsRequest;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 
@@ -89,7 +90,7 @@ class RepairOrderHasGoodsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -97,8 +98,13 @@ class RepairOrderHasGoodsController extends Controller
      * @param int $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(DestroyGoodFromDeviceRequest $request, $repair_order_id)
     {
-        //
+        $repair_order_has_good = RepairOrderHasGood::where('device_id',$request->device_id)
+            ->where('warehouse_has_good_id',$request->warehouse_has_good_id)
+            ->where('repair_order_id',$repair_order_id)->firstOrFail();
+
+        $repair_order_has_good->delete();
+        return response()->json("Good was successfully deleted!");
     }
 }
