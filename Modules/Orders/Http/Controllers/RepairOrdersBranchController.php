@@ -5,6 +5,7 @@ namespace Modules\Orders\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Orders\Entities\OrderTypesTranslations;
 use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Entities\OrderStatus;
 use Modules\Orders\Entities\OrderStatusesTranslation;
@@ -47,6 +48,7 @@ class RepairOrdersBranchController extends Controller
             $status = OrderStatus::find($repair_order->status_id);
             $branch = Branch::find($order->branch_id);
             $order_type = OrderTypes::find($repair_order->order_type_id);
+            $order_type_translation = OrderTypesTranslations::where('order_type_id',$order_type->id)->where('language_id',$company->language_id)->first();
             $status_translation = OrderStatusesTranslation::where('order_status_id',$status->id)->where('language_id',$company->language_id)->first();
 
             $repair_order_has_devices = RepairOrderHasDevice::where('repair_order_id',$repair_order->id)->get();
@@ -71,7 +73,7 @@ class RepairOrdersBranchController extends Controller
                 'accept_date' => $order->accept_date,
                 'order_nr' => $repair_order->order_nr,
                 'order_type_id' => $order_type->id,
-                'order_type_name' => $order_type->name,
+                'order_type_name' => $order_type_translation->name,
                 'customer_id' => $customer->id,
                 'customer_name' => $person->name,
                 'customer_phone' => $person->phone,

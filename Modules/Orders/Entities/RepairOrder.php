@@ -7,6 +7,8 @@ use Modules\Customers\Entities\Customer;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
+use Modules\Goods\Entities\Models;
+use Modules\Goods\Entities\Submodel;
 use Modules\Orders\Entities\OrderStatus;
 use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\RepairOrderHasGood;
@@ -122,9 +124,10 @@ class RepairOrder extends Model
     public function combineDevicesWithServices($devices,$services,$repair_order_has_devices,$device_has_services){
       $result_of_devices = array();
       foreach ($devices as $device) {
+          $submodel = Submodel::find($device->submodel_id);
         $array_of_device = array();
         $array_of_device['id'] = $device->id;
-        $array_of_device['submodel_id'] = $device->submodel_id;
+        $array_of_device['submodel_name'] = $submodel->name;
         $array_of_device['color_id'] = $device->color_id;
         $array_of_device['serial_nr'] = $device->serial_nr;
         foreach ($repair_order_has_devices as $repair_order_has_device) {
@@ -132,11 +135,12 @@ class RepairOrder extends Model
             $array_of_device['defect_description'] = $repair_order_has_device->defect_description;
           }
         }
+
+        $array_of_device['services'] = array();
         foreach ($device_has_services as $device_has_service) {
           foreach ($services as $service) {
             $service = (array) $service;
-            if($device_has_service->device_id == $array_of_device['id'] && $device_has_service->service_id == $service['id']){
-              $array_of_device['services'] = array();
+            if(($device_has_service->device_id == $array_of_device['id']) && ($device_has_service->service_id == $service['id'])){
               $service['is_completed'] = $device_has_service->is_completed;
               array_push($array_of_device['services'],$service);
             }
