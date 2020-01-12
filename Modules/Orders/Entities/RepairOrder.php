@@ -43,7 +43,7 @@ class RepairOrder extends Model
         $this->storeTypeOfOrder($request);
         $this->storeRepairOrderHasDevice($request);
         $this->storeRepairOrderHasGood($request);
-        $this->storeDeviceHasService($request);
+        $this->storeDevicesHasService($request);
         return $this;
     }
 
@@ -112,14 +112,19 @@ class RepairOrder extends Model
       }
     }
 
-    public function storeDeviceHasService(Request $request){
+    public function storeDevicesHasService(Request $request){
       foreach ($request->devices as $device) {
-        foreach ($device['services_id'] as $service_id) {
-          $device_has_service = new DeviceHasService();
-            $device_has_service->store($device,$service_id,$this->id);
-        }
+          $this->storeDeviceHasService($device);
       }
     }
+
+    public function storeDeviceHasService($device){
+        foreach ($device['services_id'] as $service_id) {
+            $device_has_service = new DeviceHasService();
+            $device_has_service->store($device,$service_id,$this->id);
+        }
+    }
+
 
     public function combineDevicesWithServices($devices,$services,$repair_order_has_devices,$device_has_services){
       $result_of_devices = array();
@@ -163,4 +168,23 @@ class RepairOrder extends Model
         return $this;
     }
 
+    public function changePaymentStatus(Payment $payment): RepairOrder{
+        $rest_of_payment = $this->getRestOfPayment($payment);
+        if($rest_of_payment <= 0) $this->payment_status_id = 1;
+        if($rest_of_payment > 0) $this->payment_status_id = 2;
+        $this->save();
+        return $this;
+    }
+
+    private function getOrder()
+    {
+        return Order::findOrFail($this->order_id);
+    }
+
+    private function getRestOfPayment(Payment $payment)
+    {
+        $order = $this->getOrder();
+        $rest_of_payment = $order->price - ($this->prepay_sum + $payment->amount);
+        return $rest_of_payment;
+    }
 }

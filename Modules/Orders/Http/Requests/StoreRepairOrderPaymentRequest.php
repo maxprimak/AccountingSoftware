@@ -4,7 +4,7 @@ namespace Modules\Orders\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DestroyGoodFromDeviceRequest extends FormRequest
+class StoreRepairOrderPaymentRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,8 +14,8 @@ class DestroyGoodFromDeviceRequest extends FormRequest
     public function rules()
     {
         return [
-            'device_id' => 'required|exists:devices,id',
-            'warehouse_has_good_id' => 'required|exists:warehouse_has_goods,id',
+            'payment_type_id' => 'required|exists:payment_types,id',
+            'amount' => 'required|numeric|min: 0',
         ];
     }
 
