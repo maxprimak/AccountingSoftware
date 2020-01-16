@@ -38,18 +38,33 @@ class Device extends Model
 
     public function getStatus(){
 
-        if(RepairOrderHasDevice::where('device_id')->exists()){
+        if(RepairOrderHasDevice::where('device_id', $this->id)->exists()){
 
-            $query = RepairOrderHasDevice::where('device_id')->orderBy('created_at', 'DESC')->first();
-            $query_order = RepairOrder::find($query->repair_order_id);
-            $status = OrderStatus::find($query_order->status_id);
+            $query = RepairOrderHasDevice::where('device_id', $this->id)->pluck('repair_order_id')->toArray();
+            $query_orders = RepairOrder::whereIn('id', $query)->where('is_completed', 0)->get();
+            
+            if($query_orders->count() > 0){
+                
+                $query_order = $query_orders->sortByDesc('created_at')->first();
+                $status = OrderStatus::find($query_order->status_id);
 
-            $has_device = array();
-            $has_device['name'] = $status->getTranslatedName();
-            $has_device['hexcode'] = $status->hex_code;
-            $has_device['last_request'] = $query->created_at;
+                $has_device = array();
+                $has_device['name'] = $status->getTranslatedName();
+                $has_device['hexcode'] = $status->hex_code;
+                $has_device['last_request'] = date('d-m-Y', strtotime($query_order->created_at));
+    
+                return $has_device;
 
-            return $has_device;
+            }else{
+
+                $has_device = array();
+                $has_device['name'] = "None";
+                $has_device['hexcode'] = "#CCCCCC";
+                $has_device['last_request'] = "None";
+    
+                return $has_device;
+                
+            }
 
         }else{
             
