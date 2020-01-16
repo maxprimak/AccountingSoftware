@@ -21,9 +21,9 @@ class CustomerDeviceController extends Controller
         $devices = Device::whereIn('id', $devices_ids)->orderBy('id', 'DESC')->get();
 
         foreach($devices as $device){
-            $device->status_name = "In Progress";
-            $device->status_hexcode = "#ffff00";
-            $device->last_request = date("Y-m-d");
+            $device->status_name = $device->getStatus()['name'];
+            $device->status_hexcode = $device->getStatus()['hexcode'];
+            $device->last_request = $device->getStatus()['last_request'];
         }
 
         return response()->json($devices);

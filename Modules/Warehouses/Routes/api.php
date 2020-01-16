@@ -22,5 +22,6 @@ Route::post('/warehouse/{warehouse_id}', 'WarehouseController@update')->name('wa
 Route::delete('/warehouse_has_good/{warehouse_has_good_id}', 'WarehouseHasGoodController@destroy')->name('warehouse_has_good.delete');
 Route::post('/warehouse_has_good/move', 'WarehouseHasGoodController@moveGoodToWarehouse')->name('warehouse_has_good.moveGoodToWarehouse');
 Route::post('/warehouse_has_good/{warehouse_has_good_id}', 'WarehouseHasGoodController@update')->name('warehouse_has_good.update');
+Route::get('/warehouse_has_good/{warehouse_has_good_id}', 'WarehouseHasGoodController@index')->name('warehouse_has_good.index');
 
 });

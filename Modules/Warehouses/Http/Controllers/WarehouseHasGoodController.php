@@ -21,9 +21,12 @@ class WarehouseHasGoodController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index($id)
     {
-        return view('warehouses::index');
+        $has_good = WarehouseHasGood::find($id);
+        $has_good->warehouse_name = Warehouse::find($has_good->warehouse_id)->name;
+
+        return response()->json($has_good);
     }
 
     /**
