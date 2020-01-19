@@ -90,7 +90,7 @@ class DeviceServicesController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(UpdateDeviceServicesRequest $request, $device_id)
+    public function update( $request, $device_id)
     {
         $repair_order = RepairOrder::findOrFail($request->repair_order_id);
         $device = Device::findOrFail($device_id);

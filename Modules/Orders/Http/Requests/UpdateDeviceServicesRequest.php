@@ -15,7 +15,7 @@ class UpdateDeviceServicesRequest extends FormRequest
     {
         return [
             'services_id' => 'required',
-            'repair_order_id' => 'required|exists:repair_orders,id',
+            'repair_order_id' => 'required|UpdateDeviceServicesRequestexists:repair_orders,id',
         ];
     }
 

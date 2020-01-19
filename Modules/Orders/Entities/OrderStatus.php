@@ -10,6 +10,13 @@ class OrderStatus extends Model
 {
     protected $fillable = [];
 
+    public static function getOrderStatusWithTranslation($repair_order)
+    {
+        $order_status = self::findOrFail($repair_order->status_id);
+        $order_status->name = OrderStatusesTranslation::getOrderStatusTranslation($repair_order->status_id)->name;
+        return $order_status;
+    }
+
     public function store(Request $request): OrderStatusesTranslation{
       $this->hex_code = $request->hex_code;
       $this->save();
