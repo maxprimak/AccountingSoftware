@@ -24,8 +24,8 @@ class CreateRepairOrdersTable extends Migration
             $table->date("deadline")->nullable();
             $table->tinyInteger("is_completed");
             $table->unsignedInteger('payment_status_id');
-            $table->unsignedInteger('warranty_id');
-            $table->unsignedInteger('discount_code_id');
+            $table->unsignedInteger('warranty_id')->default(1);
+            $table->unsignedInteger('discount_code_id')->default(1);
             $table->unsignedInteger('order_type_id');
             $table->timestamps();
 

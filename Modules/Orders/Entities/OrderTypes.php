@@ -9,6 +9,14 @@ class OrderTypes extends Model
 {
     protected $fillable = [];
 
+    public static function getOrderTypeWithTranslation($repair_order)
+    {
+        $company = auth('api')->user()->getCompany();
+        $order_type = self::findOrFail($repair_order->order_type_id);
+        $order_type->name = OrderTypesTranslations::where('order_type_id',$order_type->id)->where('language_id',$company->language_id)->firstOrFail()->name;
+        return $order_type;
+    }
+
     public function store($request): OrderTypesTranslations{
       $this->save();
       $request->order_type_id = $this->id;

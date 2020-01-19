@@ -87,12 +87,18 @@ class RepairOrder extends Model
     public function storeTypeOfOrder(Request $request){
       if($request->order_type_id == 1){
         $order_type = new PayOrders();
+        $order_type = $order_type->store($request);
       }elseif($request->order_type_id == 2){
         $order_type = new WarrantyOrders();
+        $order_type = $order_type->store($request);
       }else {
         $order_type = new ReworkOrders();
+        $order_type = $order_type->store($request);
+          foreach ($request->devices as $device) {
+              $rework_order_has_warranty_case = new ReworkOrderHasWarrantyCase();
+              $rework_order_has_warranty_case->store($device,$order_type->id);
+          }
       }
-      $order_type = $order_type->store($request);
       return $order_type;
     }
 

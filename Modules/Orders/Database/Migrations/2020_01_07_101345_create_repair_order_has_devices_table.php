@@ -15,7 +15,7 @@ class CreateRepairOrderHasDevicesTable extends Migration
     {
         Schema::create('repair_order_has_devices', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('defect_description');
+            $table->string('defect_description')->nullable();
             $table->unsignedInteger('repair_order_id');
             $table->unsignedInteger('device_id');
             $table->timestamps();
