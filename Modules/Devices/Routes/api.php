@@ -19,4 +19,7 @@ Route::post('/devices/{customer_id}', "DevicesController@store")->name('devices.
 Route::post('/devices/update/{device_id}', "DevicesController@update")->name('devices.update');
 Route::get('/customers/devices/{customer_id}', "CustomerDeviceController@index")->name('customers.devices.index');
 
+//DeviceHasService
+Route::get('/device_has_services/{device_id}', 'DeviceHasServiceController@show')->name('device_has_service.show');
+
 });

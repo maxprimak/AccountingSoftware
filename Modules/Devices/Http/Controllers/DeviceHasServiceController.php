@@ -5,20 +5,14 @@ namespace Modules\Devices\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Devices\Entities\Device;
-use Modules\Devices\Entities\CustomerHasDevice;
-use Modules\Devices\Http\Requests\StoreDeviceRequest;
-use Modules\Devices\Http\Requests\UpdateDeviceRequest;
+use Modules\Orders\Entities\DeviceHasService;
 
-class DevicesController extends Controller
+class DeviceHasServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
-    {
-        return view('devices::index');
+    public function show($device_id){
+
+        return response()->json(DeviceHasService::where('device_id', $device_id)->get());
+
     }
 
     /**
@@ -35,21 +29,9 @@ class DevicesController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(StoreDeviceRequest $request)
+    public function store(Request $request)
     {
-        
-        $device = new Device();
-        $device->store($request, $request->customer_id);
-
-        $device->status_name = "No Status";
-        $device->status_hexcode = "#CCCCCC";
-        $device->last_request = "None";
-
-        return response()->json([
-            "message" => "device created",
-            "device" => $device
-        ]);
-
+        //
     }
 
     /**
@@ -57,9 +39,9 @@ class DevicesController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show($id)
+    public function index()
     {
-        return view('devices::show');
+        return view('devices::index');
     }
 
     /**
@@ -78,15 +60,9 @@ class DevicesController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(UpdateDeviceRequest $request, $id)
+    public function update(Request $request, $id)
     {
-
-        $device = Device::find($id);
-        $device->storeUpdated($request);
-
-        return response()->json([
-            "message" => "device updated"
-        ]);
+        //
     }
 
     /**

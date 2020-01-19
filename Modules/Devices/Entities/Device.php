@@ -58,7 +58,7 @@ class Device extends Model
             }else{
 
                 $has_device = array();
-                $has_device['name'] = "None";
+                $has_device['name'] = "No Status";
                 $has_device['hexcode'] = "#CCCCCC";
                 $has_device['last_request'] = "None";
     
@@ -69,7 +69,7 @@ class Device extends Model
         }else{
             
             $has_device = array();
-            $has_device['name'] = "None";
+            $has_device['name'] = "No Status";
             $has_device['hexcode'] = "#CCCCCC";
             $has_device['last_request'] = "None";
 
