@@ -24,4 +24,8 @@ class OrderTypes extends Model
       $order_type_translation = $order_type_translation->store($request);
       return $order_type_translation;
     }
+
+    public function isRework(){
+        return $this->id == 3;
+    }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Customers\Entities\CustomerType;
 use Modules\Login\Entities\Login;
+use Modules\Orders\Entities\DeviceHasService;
 use Modules\Orders\Entities\DiscountCode;
 use Modules\Orders\Entities\OrderStatusesTranslation;
 use Modules\Orders\Entities\OrderTypes;
@@ -15,6 +16,8 @@ use Modules\Orders\Entities\Payment;
 use Modules\Orders\Entities\PaymentStatuses;
 use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Entities\RepairOrderHasDevice;
+use Modules\Orders\Entities\ReworkOrderHasWarrantyCase;
+use Modules\Orders\Entities\ReworkOrders;
 use Modules\Orders\Entities\SalesOrder;
 use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\OrderStatus;
@@ -23,6 +26,7 @@ use Modules\Orders\Entities\Warranty;
 use Modules\Orders\Http\Requests\StoreRepairOrderRequest;
 use Modules\Orders\Http\Requests\UpdateRepairOrderRequest;
 use Modules\Customers\Entities\CustomerHasBranch;
+use Modules\Services\Entities\Service;
 use Modules\Users\Entities\People;
 
 class RepairOrdersController extends Controller
@@ -123,6 +127,7 @@ class RepairOrdersController extends Controller
 
     public function show($repair_order_id)
     {
+        $company = auth('api')->user()->getCompany();
         $repair_order = RepairOrder::findOrFail($repair_order_id);
         $order = Order::findOrFail($repair_order->order_id);
         $login = Login::findOrFail($order->created_by);
@@ -135,6 +140,23 @@ class RepairOrdersController extends Controller
         $discount_code = DiscountCode::findOrFail($repair_order->discount_code_id);
         $warranty = Warranty::findOrFail($repair_order->warranty_id);
         $payment_status = PaymentStatuses::getPaymentStatusWithTranslation($repair_order);
+
+//        if($order_type->isRework()){
+//            $rework_order = ReworkOrders::where('repair_order_id',$repair_order->id)->firstOrFail();
+//            $repair_order_has_device_ids = ReworkOrderHasWarrantyCase::where('rework_order_id',$rework_order->id)->pluck('order_has_device_id');
+//            $warranty_repair_order_ids = RepairOrderHasDevice::whereIn('id',$repair_order_has_device_ids)->pluck('repair_order_id');
+//            foreach ($result_devices as $device){
+//                $device['warranty_case'] = array();
+//                $services_ids = DeviceHasService::where('device_id',$device['id'])->whereIn('repair_order_id',$warranty_repair_order_ids)->pluck('service_id');
+//                $services = Service::whereIn('id',$services_ids)->get();
+//                foreach ($services as $service){
+//                    $service->name = $service->getTranslatedName($company->language_id);
+//                }
+//                $device['warranty_case'] = $services;
+//                dd($device);
+//            }
+//        }
+//        dd($result_devices);
 
         return response()->json([
             'order' => [
