@@ -5,6 +5,7 @@ namespace Modules\Orders\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Orders\Entities\OrderStatus;
 use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Http\Requests\UpdateRepairOrderStatusRequest;
 
@@ -12,11 +13,12 @@ class RepairOrderStatusController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        return view('orders::index');
+        $orders_statuses = OrderStatus::getOrderStatusesWithTranslations();
+        return response()->json($orders_statuses);
     }
 
     /**

@@ -21,6 +21,7 @@ Route::post('/orders/repair/{order_id}', 'RepairOrdersController@update')->name(
 Route::get('/orders/repair/branch/{branch_id}/{is_completed}', 'RepairOrdersBranchController@index')->name('orders.repair.branch.index')->middleware('my_branch');
 Route::delete('/orders/repair/{branch_id}', 'RepairOrdersController@destroy')->name('orders.repair.destroy');
 Route::post('/orders/repair/{order_id}/status', 'RepairOrderStatusController@update')->name('repair_orders_status.update');
+Route::get('/orders/repair/status', 'RepairOrderStatusController@index')->name('repair_orders_status.index');
 
 Route::post('/orders/sales', 'SalesOrdersController@store')->name('orders.sales.store');
 Route::post('/orders/sales/{order_id}', 'SalesOrdersController@update')->name('orders.sales.update');
@@ -28,6 +29,7 @@ Route::get('/orders/sales/branch/{branch_id}', 'SalesOrdersBranchController@inde
 Route::delete('/orders/sales/{branch_id}', 'SalesOrdersController@destroy')->name('orders.sales.destroy');
 
 //warranties
+
 Route::get('/warranties', 'WarrantyController@index')->name('warranties.index');
 Route::post('/warranties', 'WarrantyController@store')->name('warranties.store');
 
