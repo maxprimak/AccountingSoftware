@@ -140,7 +140,7 @@ class RepairOrdersController extends Controller
         $discount_code = DiscountCode::findOrFail($repair_order->discount_code_id);
         $warranty = Warranty::findOrFail($repair_order->warranty_id);
         $payment_status = PaymentStatuses::getPaymentStatusWithTranslation($repair_order);
-
+        $branch = $order->getBranch();
 //        if($order_type->isRework()){
 //            $rework_order = ReworkOrders::where('repair_order_id',$repair_order->id)->firstOrFail();
 //            $repair_order_has_device_ids = ReworkOrderHasWarrantyCase::where('rework_order_id',$rework_order->id)->pluck('order_has_device_id');
@@ -179,9 +179,9 @@ class RepairOrdersController extends Controller
                 'discount_code_name' => $discount_code->name,
                 'discount_code_percent' => $discount_code->percent_amount,
                 'prepay_sum' => $repair_order->prepay_sum,
-                'branch_name' => $repair_order->defect_description,
-                'branch_id' => $repair_order->comment,
-                'comment' => $repair_order->prepay_sum,
+                'branch_name' => $branch->name,
+                'branch_id' => $branch->id,
+                'comment' => $repair_order->comment,
                 'price' => $order->price,
                 'warranty_id' => $warranty->id,
                 'warranty_name' => $warranty->name,

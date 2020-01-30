@@ -4,6 +4,7 @@ namespace Modules\Orders\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Companies\Entities\Branch;
 
 class Order extends Model
 {
@@ -33,5 +34,10 @@ class Order extends Model
 
         return $order;
 
-}
+    }
+
+    public function getBranch(): Branch{
+            $branch = Branch::findOrFail($this->branch_id);
+            return $branch;
+    }
 }
