@@ -50,21 +50,11 @@ class RepairOrder extends Model
     public function storeUpdated(FormRequest $request, $id){
 
         $repair_order = RepairOrder::find($id);
-
+        $request = $repair_order->setPaymentStatus($request);
         $repair_order->order_nr = $request->order_nr;
-
-        $customer = Customer::find($repair_order->customer_id);
-        $customer->updateFromOrder($request->customer_name, $request->customer_phone, $customer->id);
-
-        $repair_order->defect_description = $request->defect_description;
         $repair_order->comment = $request->comment;
-
-        $status = OrderStatus::where('name', $request->status)->firstOrFail();
-
-        $repair_order->status_id = $status->id;
         $repair_order->prepay_sum = $request->prepay_sum;
-        $repair_order->located_in = Branch::where('name',$request->located_in)->firstOrFail()->id;
-
+        $repair_order->payment_status_id = $request->payment_status_id;
         $repair_order->update();
 
         return $repair_order;

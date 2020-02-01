@@ -87,14 +87,12 @@ class RepairOrdersController extends Controller
      * @param int $id
      */
     public function update(UpdateRepairOrderRequest $request, $id)
-    {
-
-        $repair_order = RepairOrder::find($id);
-        $order = Order::find($repair_order->order_id);
+    {   
+        $repair_order = RepairOrder::findOrFail($id);
+        $order = Order::findOrFail($repair_order->order_id);
 
         $order = $order->storeUpdated($request, $order->id);
         $repair_order = $repair_order->storeUpdated($request, $repair_order->id);
-        $status_name = OrderStatus::find($repair_order->status_id)->name;
 
         return response()->json([
             'status' => 'Successfully updated',
@@ -109,11 +107,10 @@ class RepairOrdersController extends Controller
                 'defect_description' => $repair_order->defect_description,
                 'comment' => $repair_order->comment,
                 'prepay_sum' => $repair_order->prepay_sum,
-                'status' => $status_name,
                 'located_in' => $repair_order->located_in,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,
-                'created_by' => $order->created_by,
+                'created_by' => $order->created_by
             ]
         ]);
 
@@ -141,26 +138,11 @@ class RepairOrdersController extends Controller
         $warranty = Warranty::findOrFail($repair_order->warranty_id);
         $payment_status = PaymentStatuses::getPaymentStatusWithTranslation($repair_order);
         $branch = $order->getBranch();
-//        if($order_type->isRework()){
-//            $rework_order = ReworkOrders::where('repair_order_id',$repair_order->id)->firstOrFail();
-//            $repair_order_has_device_ids = ReworkOrderHasWarrantyCase::where('rework_order_id',$rework_order->id)->pluck('order_has_device_id');
-//            $warranty_repair_order_ids = RepairOrderHasDevice::whereIn('id',$repair_order_has_device_ids)->pluck('repair_order_id');
-//            foreach ($result_devices as $device){
-//                $device['warranty_case'] = array();
-//                $services_ids = DeviceHasService::where('device_id',$device['id'])->whereIn('repair_order_id',$warranty_repair_order_ids)->pluck('service_id');
-//                $services = Service::whereIn('id',$services_ids)->get();
-//                foreach ($services as $service){
-//                    $service->name = $service->getTranslatedName($company->language_id);
-//                }
-//                $device['warranty_case'] = $services;
-//                dd($device);
-//            }
-//        }
-//        dd($result_devices);
 
         return response()->json([
             'order' => [
                 'id' => $repair_order->id,
+                'order_nr' => $repair_order->order_nr,
                 'created_by_name' => $login->username,
                 'created_by' => $login->id,
                 'status_color' => $order_status->hex_code,

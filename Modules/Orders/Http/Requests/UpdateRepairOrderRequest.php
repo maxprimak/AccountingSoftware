@@ -14,16 +14,10 @@ class UpdateRepairOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'accept_date' => 'required|date|before:tomorrow',
-            'price' => 'required|numeric',
-            'order_nr' => 'required|max:190',
-            'customer_name' => 'required|max:50',
-            'customer_phone' => 'required|max:50',
-            'defect_description' => 'required|max:190',
-            'comment' => 'max:190',
-            'status' => 'required|exists:order_statuses,name',
-            'located_in' => 'required|exists:branches,name',
-            'prepay_sum' => 'nullable|numeric|max:'. $this->price
+            'order_nr' => 'required',
+            'prepay_sum' =>  'nullable|numeric|min: 0|max: ' . $this->price,
+            'comment' => 'nullable',
+            'price' => 'required|numeric| min: 0',
         ];
     }
 

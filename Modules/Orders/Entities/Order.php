@@ -25,11 +25,8 @@ class Order extends Model
 
     public function storeUpdated(FormRequest $request, $id){
 
-        $order = Order::find($id);
-
-        $order->accept_date = $request->accept_date;
+        $order = Order::findOrFail($id);
         $order->price = $request->price;
-
         $order->update();
 
         return $order;
