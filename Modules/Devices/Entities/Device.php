@@ -57,26 +57,27 @@ class Device extends Model
 
             }else{
 
-                $has_device = array();
-                $has_device['name'] = "No Status";
-                $has_device['hexcode'] = "#CCCCCC";
-                $has_device['last_request'] = "None";
-    
+                $has_device = $this->getNoStatusArray();   
                 return $has_device;
                 
             }
 
         }else{
             
-            $has_device = array();
-            $has_device['name'] = "No Status";
-            $has_device['hexcode'] = "#CCCCCC";
-            $has_device['last_request'] = "None";
-
+            $has_device = $this->getNoStatusArray();
             return $has_device;
 
         }
 
+    }
+
+    public function getNoStatusArray(){
+        $has_device = array();
+        $has_device['name'] = "No Status";
+        $has_device['hexcode'] = "#CCCCCC";
+        $has_device['last_request'] = "None";
+
+        return $has_device;
     }
 
 }

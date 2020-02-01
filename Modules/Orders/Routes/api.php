@@ -35,10 +35,10 @@ Route::post('/warranties', 'WarrantyController@store')->name('warranties.store')
 Route::get('/discount_codes', 'DiscountCodesController@index')->name('discount_codes.index');
 Route::post('/discount_codes', 'DiscountCodesController@store')->name('discount_codes.store');
 
-//payment statuses
+    //payment statuses
     Route::get('/payment_statuses', 'PaymentStatusController@index')->name('payment_statuses.index');
 
-//Device + Service
+    //Device + Service
     Route::post('/device/{device_id}/services', 'DeviceServicesController@index')->name('device_service.index');
     Route::post('/orders/repair/{device_id}/services', 'DeviceServicesController@update')->name('device_service.update');
 
