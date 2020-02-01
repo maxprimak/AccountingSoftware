@@ -2,6 +2,7 @@
 
 namespace Modules\Orders\Entities;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Modules\Orders\Entities\OrderStatusesTranslation;
@@ -15,6 +16,16 @@ class OrderStatus extends Model
         $order_status = self::findOrFail($repair_order->status_id);
         $order_status->name = OrderStatusesTranslation::getOrderStatusTranslation($repair_order->status_id)->name;
         return $order_status;
+    }
+
+    public static function getOrderStatusesWithTranslations()
+    {
+        $company = auth('api')->user()->getCompany();
+        return DB::table('order_statuses')
+            ->join('order_statuses_translations','order_statuses_translations.order_status_id', '=', 'order_statuses.id')
+            ->select('order_statuses.id as id', 'order_statuses.hex_code as hex_code','order_statuses_translations.name as name')
+            ->where('order_statuses_translations.language_id',$company->language_id)
+            ->get();
     }
 
     public function store(Request $request): OrderStatusesTranslation{
