@@ -152,6 +152,9 @@ class RepairOrder extends Model
         $array_of_device['submodel_name'] = $submodel->name;
         $array_of_device['color_id'] = $device->color_id;
         $array_of_device['serial_nr'] = $device->serial_nr;
+        $array_of_device['status_name'] = $device->getStatus()['name'];
+        $array_of_device['status_hexcode'] = $device->getStatus()['hexcode'];
+        $array_of_device['last_request'] = $device->getStatus()['last_request'];
         foreach ($repair_order_has_devices as $repair_order_has_device) {
           if($array_of_device['id'] == $repair_order_has_device->device_id){
             $array_of_device['defect_description'] = $repair_order_has_device->defect_description;
