@@ -21,7 +21,7 @@ class DeviceServicesController extends Controller
      * @return Response
      */
     public function index(IndexDeviceServiceRequest $request,$device_id)
-    {
+    {   
         $company = auth('api')->user()->getCompany();
         $services_ids = DeviceHasService::where('device_id',$device_id)->where('repair_order_id',$request->repair_order_id)->pluck('service_id');
         $device_has_services = DeviceHasService::where('device_id',$device_id)->where('repair_order_id',$request->repair_order_id)->get();

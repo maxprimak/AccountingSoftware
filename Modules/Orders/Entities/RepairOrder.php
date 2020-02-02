@@ -162,7 +162,8 @@ class RepairOrder extends Model
         foreach ($device_has_services as $device_has_service) {
           foreach ($services as $service) {
             $service = (array) $service;
-            if(($device_has_service->device_id == $array_of_device['id']) && ($device_has_service->service_id == $service['id'])){
+            if(($device_has_service->device_id == $array_of_device['id']) && ($device_has_service->service_id == $service['id'])
+              && ($device_has_service->repair_order_id == $this->id)){
               $service['is_completed'] = $device_has_service->is_completed;
               array_push($array_of_device['services'],$service);
             }
