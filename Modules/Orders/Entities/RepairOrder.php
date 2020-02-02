@@ -74,6 +74,27 @@ class RepairOrder extends Model
       return $request;
     }
 
+    public function updateWarranty($warranty_id){
+
+      $this->warranty_id = $warranty_id;
+      $this->save();
+
+    }
+
+    public function updateDiscountCode($discount_code_id){
+
+      $this->discount_code_id = $discount_code_id;
+      $this->save();
+
+    }
+
+    public function updateDeadline($deadline){
+
+      $this->deadline = $deadline;
+      $this->save();
+
+    }
+
     public function storeTypeOfOrder(Request $request){
       if($request->order_type_id == 1){
         $order_type = new PayOrders();

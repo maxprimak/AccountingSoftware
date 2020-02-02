@@ -22,4 +22,7 @@ Route::get('/customers/devices/{customer_id}', "CustomerDeviceController@index")
 //DeviceHasService
 Route::get('/device_has_services/{device_id}', 'DeviceHasServiceController@show')->name('device_has_service.show');
 
+//UseGood
+Route::post('devices/goods/use', 'DeviceGoodsController@store')->name('device.goods.store');
+
 });

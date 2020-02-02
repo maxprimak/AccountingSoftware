@@ -9,6 +9,7 @@ use Modules\Goods\Entities\Color;
 use Modules\Goods\Entities\Models;
 use Modules\Goods\Entities\Part;
 use Modules\Goods\Entities\Good;
+use Exception;
 
 class WarehouseHasGood extends Model
 {
@@ -42,6 +43,21 @@ class WarehouseHasGood extends Model
       $this->vendor_code = $request->vendor_code;
       $this->save();
       return $this;
+    }
+
+    public function use($amount){
+
+      $warehouse_amount = $this->amount;
+
+      if($warehouse_amount >= $amount && $amount >= 0){
+        $this->amount -= $amount;
+      }
+      else{
+        throw new \Exception('Amount for warehouse_has_good with id ' . $this->id. ' is invalid');
+      }
+
+      $this->save();
+
     }
 
     public function moveToAnotherWarehouse($request){

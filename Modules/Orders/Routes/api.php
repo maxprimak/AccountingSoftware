@@ -22,6 +22,7 @@ Route::get('/orders/repair/branch/{branch_id}/{is_completed}', 'RepairOrdersBran
 Route::delete('/orders/repair/{branch_id}', 'RepairOrdersController@destroy')->name('orders.repair.destroy');
 Route::post('/orders/repair/{order_id}/status', 'RepairOrderStatusController@update')->name('repair_orders_status.update');
 Route::get('/orders/repair/status', 'RepairOrderStatusController@index')->name('repair_orders_status.index');
+Route::post('/orders/repair/deadline/{repair_order_id}', 'RepairOrderDeadlineController@update')->name('orders.repair.deadline.update');
 
 Route::post('/orders/sales', 'SalesOrdersController@store')->name('orders.sales.store');
 Route::post('/orders/sales/{order_id}', 'SalesOrdersController@update')->name('orders.sales.update');
@@ -31,10 +32,12 @@ Route::delete('/orders/sales/{branch_id}', 'SalesOrdersController@destroy')->nam
 //warranties
 
 Route::get('/warranties', 'WarrantyController@index')->name('warranties.index');
+Route::post('orders/repair/warranties/{repair_order_id}', 'WarrantyOrdersController@update')->name('warranties.update');
 Route::post('/warranties', 'WarrantyController@store')->name('warranties.store');
 
 //discount_codes
 Route::get('/discount_codes', 'DiscountCodesController@index')->name('discount_codes.index');
+Route::post('orders/repair/dicount_codes/{repair_order_id}', 'DiscountCodesOrdersController@update')->name('warranties.update');
 Route::post('/discount_codes', 'DiscountCodesController@store')->name('discount_codes.store');
 
     //payment statuses
