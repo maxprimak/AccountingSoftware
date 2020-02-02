@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Orders\Entities\DeviceHasService;
+use Modules\Services\Entities\Service;
+use Modules\Devices\Http\Requests\CompleteServiceRequest;
 
 class DeviceHasServiceController extends Controller
 {
@@ -60,9 +62,26 @@ class DeviceHasServiceController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(CompleteServiceRequest $request)
+    {   
+
+        $device_has_services_id = $request->device_has_services_id;
+        
+        foreach($device_has_services_id as $device_has_service_id){
+
+            try{
+                $device_has_service = DeviceHasService::findOrFail($device_has_service_id); 
+                $device_has_service->completeService();
+            }catch(\Exception $e){
+                return response()->json(['error' => 'device_has_service_id '. $device_has_service_id .' is not valid'],403);
+            }
+
+        }
+
+        return response()->json([
+            'message' => 'services completed',
+        ]);
+
     }
 
     /**

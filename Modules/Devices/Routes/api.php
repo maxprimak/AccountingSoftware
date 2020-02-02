@@ -25,4 +25,6 @@ Route::get('/device_has_services/{device_id}', 'DeviceHasServiceController@show'
 //UseGood
 Route::post('devices/goods/use', 'DeviceGoodsController@store')->name('device.goods.store');
 
+Route::post('/service/complete', 'DeviceHasServiceController@update')->name('services.complete');
+
 });

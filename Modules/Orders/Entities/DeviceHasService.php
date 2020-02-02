@@ -16,4 +16,9 @@ class DeviceHasService extends Model
       $this->save();
       return $this;
     }
+
+    public function completeService(){
+      $this->is_completed = 1;
+      $this->save();
+    }
 }
