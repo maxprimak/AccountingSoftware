@@ -18,24 +18,6 @@ class RepairOrdersTableSeeder extends Seeder
     {
         Model::unguard();
 
-        // $statuses = [
-        //     'Accepted for repair',
-        //     'In progress',
-        //     'Order parts',
-        //     'Waiting for parts',
-        //     'Repaired',
-        //     'Not repairable',
-        //     'Called to client',
-        //     'Returned to client',
-        //     'Warranty',
-        // ];
-        //
-        // foreach($statuses as $status){
-        //     factory('Modules\Orders\Entities\OrderStatus')->create([
-        //         'name' => $statu
-        //     ]);
-        // }
-
         factory('Modules\Orders\Entities\PaymentType')->create([
             'name' => 'Cash'
         ]);

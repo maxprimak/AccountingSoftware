@@ -49,18 +49,13 @@ class OrderStatusesTableSeeder extends Seeder
         $order_status = new OrderStatus();
         $order_status->store($request);
 
-        $request->name = 'Called to client';
+        $request->name = 'Waiting for customer';
         $request->hex_code = '#BBBBBB';
         $order_status = new OrderStatus();
         $order_status->store($request);
 
         $request->name = 'Returned to client';
         $request->hex_code = '#4BAF50';
-        $order_status = new OrderStatus();
-        $order_status->store($request);
-
-        $request->name = 'Warranty';
-        $request->hex_code = '#00B9B9';
         $order_status = new OrderStatus();
         $order_status->store($request);
     }
