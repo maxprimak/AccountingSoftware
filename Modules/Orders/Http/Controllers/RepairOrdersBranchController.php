@@ -80,8 +80,6 @@ class RepairOrdersBranchController extends Controller
 
         }
 
-        $result = json_encode($result);
-
         return response()->json($result);
     }
 
