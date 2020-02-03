@@ -103,17 +103,30 @@ abstract class TestCase extends BaseTestCase
 
           $yesterday = date('Y-m-d', strtotime(date('Y-m-d'). ' + 1 day'));
 
-          $service = [
-            "service_id" => $service->id
-          ];
+          $services = [$service->id];
 
           $device = [
-            'device_id' => $device->id, 
-            'defect_description' => $this->faker->text(50),
-            'services_id' => [$service],
-            'warehouse_has_good' => array()
+              'submodel_id' => Submodel::all()->first()->id,
+              'color_id' => Color::all()->first()->id,
+              'serial_nr' => $device->serial_nr,
+              'condition' => $device->condition,
+              'status_name' => OrderStatusesTranslation::all()->first()->name,
+              'status_hexcode' => OrderStatus::all()->first()->hex_code,
+              'last_request' => "2020-02-03",
+              'name' => 'Apple iPhone 5',
+              'brand_name' => Brand::all()->first()->name,
+              'model_name' => Models::all()->first()->name,
+              'submodel_name' => Submodel::all()->first()->name,
+              'color_hexcode' => Color::all()->first()->hex_code,
+              'color_name' => Color::all()->first()->name,
+              'services' => [$service],
+              'issue_description' => $this->faker->text(50),
+              'device_id' => $device->id, 
+              'defect_description' => $this->faker->text(50),
+              'services_id' => $services,
+              'warehouse_has_good' => array()
           ];
-
+  
           $devices = [$device];
 
           $response = $this->json('POST', route('orders.repair.store'), [
@@ -128,9 +141,11 @@ abstract class TestCase extends BaseTestCase
             'accept_date' => date('Y-m-d'),
             'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 19),
             'deadline' => $yesterday
-          ]);
+        ])->assertJsonStructure([
+            'status', 'order'
+        ])->assertStatus(200);
 
-          $this->assertEquals(RepairOrder::all()->count(), 1);
+        $this->assertEquals(1, RepairOrder::all()->count());
 
           $order = RepairOrder::all()->first();
 
@@ -479,8 +494,8 @@ abstract class TestCase extends BaseTestCase
 
             $device = new Device();
 
-            $device->submodel_id = 1;
-            $device->color_id = 1;
+            $device->submodel_id = Submodel::all()->first()->id;
+            $device->color_id = Color::all()->first()->id;
             $device->serial_nr = "serialNumber";
             $device->condition = "condition";
             $device->save();
