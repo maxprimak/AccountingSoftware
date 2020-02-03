@@ -38,7 +38,8 @@ class RepairOrderHasGoodsController extends Controller
      */
     public function store(StoreRepairOrderHasGoodsRequest $request,$repair_order_id)
     {
-        //TODO::Make sure that is we could not store new RepairOrderHasGood it will not delete existin RepairOrderHasGoods
+        //TODO::Make sure that is we 
+        //could not store new RepairOrderHasGood it will not delete existin RepairOrderHasGoods
         $delete_repair_order_has_goods = new RepairOrderHasGood();
         $delete_repair_order_has_goods->deleteExistingGoods($repair_order_id);
 
@@ -55,6 +56,7 @@ class RepairOrderHasGoodsController extends Controller
         $goods = array();
         foreach ($warehouse_has_goods as $warehouse_has_good){
             $good = $warehouse_has_good->getGoodForDevice();
+            $good['warehouse_name'] = $warehouse_has_good->getWarehouseName();
             array_push($goods,$good);
         }
         $result_goods = $repair_order_has_good->combineGoodsRepairOrderHasGood($repair_order_has_goods,$goods);

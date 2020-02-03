@@ -68,6 +68,7 @@ class GoodsController extends Controller
         if(!$exists){
           $good = new Good();
           $good = $good->store($request);
+          $good->warehouse_name = Warehouse::find($request->warehouse_id)->name;
           return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
         }else{
           return response()->json(['message' => 'This good already exists in chosen Warehouse'], 422);

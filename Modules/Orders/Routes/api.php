@@ -51,7 +51,7 @@ Route::post('/discount_codes', 'DiscountCodesController@store')->name('discount_
     Route::post('/orders/repair/{order_id}/complete ', 'RepairOrderCompletedController@update')->name('repair_order_complete.update');
 
 //RepairOrderHasGoodsController
-    Route::post('/orders/goods/{order_id} ', 'RepairOrderHasGoodsController@store')->name('repair_order_has_goods.store');
+    Route::post('/orders/goods/{order_id}', 'RepairOrderHasGoodsController@store')->name('repair_order_has_goods.store');
     Route::post('/orders/repair/{order_id}/good', 'RepairOrderHasGoodsController@destroy')->name('repair_order_has_goods.destroy');
 
     //Route::post('/orders/repair/{device_id}/services', 'DeviceServicesController@update')->name('repair_order_has_goods.update');

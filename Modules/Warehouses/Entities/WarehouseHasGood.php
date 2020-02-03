@@ -9,6 +9,7 @@ use Modules\Goods\Entities\Color;
 use Modules\Goods\Entities\Models;
 use Modules\Goods\Entities\Part;
 use Modules\Goods\Entities\Good;
+use Modules\Warehouses\Entities\Warehouse;
 use Exception;
 
 class WarehouseHasGood extends Model
@@ -58,6 +59,11 @@ class WarehouseHasGood extends Model
 
       $this->save();
 
+    }
+
+    public function getWarehouseName(){
+      $warehouse = Warehouse::find($this->warehouse_id);
+      return $warehouse->name;
     }
 
     public function moveToAnotherWarehouse($request){
