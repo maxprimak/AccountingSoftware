@@ -6,6 +6,8 @@ use Modules\Users\Entities\People;
 use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Login\Entities\Login;
+use Modules\Orders\Entities\Warranty;
+use Modules\Orders\Entities\DiscountCode;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
 use Modules\Employees\Entities\Employee;
@@ -101,6 +103,9 @@ class CreateUsers{
         $company->phone = $request->company_phone;
         $company->currency_id = $request->currency_id;
         $company->save();
+
+        Warranty::createDefaultForNewCompany($company->id);
+        DiscountCode::createDefaultForNewCompany($company->id);
 
         $user = new User();
         $user->login_id = $login->id;

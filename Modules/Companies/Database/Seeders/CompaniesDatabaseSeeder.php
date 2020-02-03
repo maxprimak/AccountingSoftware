@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Login\Entities\Login;
 use Modules\Warehouses\Entities\Warehouse;
+use Modules\Orders\Entities\Warranty;
+use Modules\Orders\Entities\DiscountCode;
 
 class CompaniesDatabaseSeeder extends Seeder
 {
@@ -28,12 +30,15 @@ class CompaniesDatabaseSeeder extends Seeder
             'symbol' => 'EUR'
         ]);
 
-       factory('Modules\Companies\Entities\Company')->create([
+       $company = factory('Modules\Companies\Entities\Company')->create([
             'name' => 'PhoneFactory',
             'currency_id' => 1,
             'address' => 'Wagramerstraße 94, Top 1A',
             'phone' => '+43 1 3694001',
         ]);
+
+        Warranty::createDefaultForNewCompany($company->id);
+        DiscountCode::createDefaultForNewCompany($company->id);
 
         $branch = factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'DZ',

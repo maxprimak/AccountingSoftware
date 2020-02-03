@@ -18,4 +18,14 @@ class Warranty extends Model
       $this->save();
       return $this;
     }
+
+    public static function createDefaultForNewCompany($company_id){
+      $warranty = new Warranty();
+      $warranty->name = "Default Warranty";
+      $warranty->days_number = 30;
+      $warranty->is_active = 1;
+      $warranty->company_id = $company_id;
+      $warranty->is_default = 1;
+      $warranty->save();
+    }
 }

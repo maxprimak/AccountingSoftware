@@ -16,4 +16,13 @@ class DiscountCode extends Model
       $this->save();
       return $this;
     }
+
+    public static function createDefaultForNewCompany($company_id){
+      $code = new DiscountCode();
+      $code->name = "Default Discount Code";
+      $code->percent_amount = 5;
+      $code->company_id = $company_id;
+      $code->save();
+    }
+
 }
