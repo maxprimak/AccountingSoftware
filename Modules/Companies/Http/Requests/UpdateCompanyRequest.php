@@ -16,7 +16,7 @@ class UpdateCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'currency_id' => 'required',
+            'currency_id' => 'required|exists:currencies,id',
             'name' => 'required | unique:companies,name,' . $this->route('company_id'),
             'address' => 'required',
             'phone' => 'required | unique:companies,phone,' . $this->route('company_id')
