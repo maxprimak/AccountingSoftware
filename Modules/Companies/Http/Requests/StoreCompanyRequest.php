@@ -16,10 +16,14 @@ class StoreCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'currency_id' => 'required',
+            'currency_id' => 'required|exists:currencies,id',
             'name' => 'required | unique:companies',
-            'address' => 'required',
-            'phone' => 'required'
+            'phone' => 'required',
+            'tax' => 'required|numeric|min:1|max:100',
+            'house_number' => 'required|max:190',
+            'postcode' => 'required|max:190',
+            'street_name' => 'required|max:190',
+            'city_id' => 'required|exists:cities,id'
         ];
     }
 

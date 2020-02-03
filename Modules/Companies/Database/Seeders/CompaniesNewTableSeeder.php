@@ -5,6 +5,7 @@ namespace Modules\Companies\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Warehouses\Entities\Warehouse;
+use Modules\Companies\Entities\Address;
 
 class CompaniesNewTableSeeder extends Seeder
 {
@@ -26,15 +27,16 @@ class CompaniesNewTableSeeder extends Seeder
         $company = factory('Modules\Companies\Entities\Company')->create([
             'name' => 'NewCompany',
             'currency_id' => 1,
-            'address' => 'Brigittenau',
-            'phone' => '+43 1 23456789'
+            'phone' => '+43 1 23456789',
+            'tax' => 10,
+            'address_id' => Address::all()->first()->id,
         ]);
 
         $firstBranch = factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'NewBranch 11',
             'company_id' => $company->id,
             'color' => '#F64272',
-            'address' => 'Brigittenau 1',
+            'address_id' => Address::all()->first()->id,
             'phone' => '+43 1 123456789'
         ]);
         $this->store_warehouse($firstBranch);
@@ -43,7 +45,7 @@ class CompaniesNewTableSeeder extends Seeder
             'name' => 'NewBranch 22',
             'company_id' => $company->id,
             'color' => '#f7ff16',
-            'address' => 'Brigittenau 2',
+            'address_id' => Address::all()->first()->id,
             'phone' => '+43 9 87654321'
         ]);
 

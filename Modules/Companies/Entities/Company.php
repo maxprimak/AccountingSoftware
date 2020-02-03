@@ -8,6 +8,8 @@ use Modules\Companies\Http\Requests\UpdateCompanyRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Companies\Entities\Branch;
 use Modules\Warehouses\Entities\Warehouse;
+use Modules\Companies\Entities\Address;
+
 class Company extends Model
 {
     protected $fillable = ['name', 'phone', 'address'];
@@ -30,8 +32,13 @@ class Company extends Model
     public function store(FormRequest $request){
         $this->currency_id = $request->currency_id;
         $this->name = $request->name;
-        $this->address = $request->address;
         $this->phone = $request->phone;
+        $this->tax = $request->tax;
+
+        $address = new Address();
+        $address->store($request);
+
+        $this->address_id = $address->id;
         $this->save();
 
         return $this;
@@ -40,8 +47,13 @@ class Company extends Model
     public function storeUpdated(FormRequest $request){
         $this->currency_id = $request->currency_id;
         $this->name = $request->name;
-        $this->address = $request->address;
         $this->phone = $request->phone;
+        $this->tax = $request->tax;
+
+        $address = Address::find($this->address_id);
+        $address->store($request);
+
+        $this->address_id = $address->id;
         $this->save();
 
         return $this;

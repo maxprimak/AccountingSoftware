@@ -18,10 +18,11 @@ class CreateBranchesTable extends Migration
             $table->unsignedInteger('company_id');
             $table->string('name');
             $table->string('color')->nullable();
-            $table->string('address')->nullable();
+            $table->unsignedInteger('address_id');
             $table->string('phone')->nullable();
             $table->timestamps();
             $table->foreign('company_id')->references('id')->on('companies');
+            $table->foreign('address_id')->references('id')->on('addresses');
         });
     }
 

@@ -18,8 +18,12 @@ class UpdateCompanyRequest extends FormRequest
         return [
             'currency_id' => 'required|exists:currencies,id',
             'name' => 'required | unique:companies,name,' . $this->route('company_id'),
-            'address' => 'required',
-            'phone' => 'required | unique:companies,phone,' . $this->route('company_id')
+            'phone' => 'required',
+            'tax' => 'required|numeric|min:1|max:100',
+            'house_number' => 'required|max:190',
+            'postcode' => 'required|max:190',
+            'street_name' => 'required|max:190',
+            'city_id' => 'required|exists:cities,id'
         ];
     }
     /**

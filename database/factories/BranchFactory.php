@@ -13,7 +13,6 @@ $factory->define(Branch::class, function (Faker $faker) {
         'name' => $faker->unique()->word . ' branch',
         'company_id' => 1,
         'color' => '#F64272',
-        'address' => $faker->address,
         'phone' => $faker->phoneNumber
     ];
 });

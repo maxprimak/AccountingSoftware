@@ -17,7 +17,11 @@ class StoreBranchRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'color' => ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/']
+            'color' => ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'house_number' => 'required|max:190',
+            'postcode' => 'required|max:190',
+            'street_name' => 'required|max:190',
+            'city_id' => 'required|exists:cities,id'
         ];
     }
 

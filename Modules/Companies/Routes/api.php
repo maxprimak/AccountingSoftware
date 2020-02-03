@@ -17,6 +17,7 @@ Route::middleware(['is_authorized', 'is_registered'])->group(function () {
 
 Route::get('companies', 'CompaniesController@index')->name('companies.index');
 Route::post('companies/{company_id}', 'CompaniesController@update')->name('companies.update');
+Route::post('companies', 'CompaniesController@store')->name('companies.store');
 
 Route::get('branches', 'BranchesController@index')->name('branches.index');
 Route::post('branches', 'BranchesController@store')->name('branches.store');
