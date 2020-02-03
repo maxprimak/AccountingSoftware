@@ -16,13 +16,16 @@ class RegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'phone' => 'required',
-            'address' => 'required',
-            'company_name' => 'required',
-            'company_phone' => 'required',
-            'company_address' => 'required',
-            'currency_id' => 'required'
+            'name' => 'required|max:190',
+            'phone' => 'required|max:190',
+            'company_name' => 'required|max:190|unique:companies,name',
+            'company_phone' => 'required|max:190',
+            'company_tax' => 'required|numeric|min:0|max:100',
+            'currency_id' => 'required|exists:currencies,id',
+            'house_number' => 'required|max:190',
+            'street_name' => 'required|max:190',
+            'postcode' => 'required|max:190',  
+            'city_id' => 'required|exists:cities,id'
         ];
     }
 

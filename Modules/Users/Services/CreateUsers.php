@@ -4,6 +4,7 @@ namespace Modules\Users\Services;
 use Modules\Employees\Http\Requests\StoreEmployeeRequest;
 use Modules\Users\Entities\People;
 use Modules\Users\Entities\User;
+use Modules\Companies\Entities\Address;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Login\Entities\Login;
 use Modules\Orders\Entities\Warranty;
@@ -99,9 +100,19 @@ class CreateUsers{
 
         $company = new Company();
         $company->name = $request->company_name;
-        $company->address = $request->company_address;
         $company->phone = $request->company_phone;
         $company->currency_id = $request->currency_id;
+        $company->tax = $request->company_tax;
+
+        $address = new Address();
+        $address->house_number = $request->house_number;
+        $address->street_name = $request->street_name;
+        $address->postcode = $request->postcode;
+        $address->city_id = $request->city_id;
+        $address->save();
+
+        $company->address_id = $address->id;
+
         $company->save();
 
         Warranty::createDefaultForNewCompany($company->id);
@@ -115,7 +126,7 @@ class CreateUsers{
 
         $branch = new Branch();
         $request->name = $company->name . ' Main Branch';
-        $request->address = $request->company_address;
+        $request->address_id = $address->id;
         $request->phone = $request->company_phone;
         $request->color = "#F64272";
         $branch = $branch->store($request);
