@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Orders\Entities\RepairOrderHasGood;
+use Modules\Goods\Entities\Submodel;
 use Modules\Orders\Http\Requests\IndexRepairOrderDeviceGoodsRequest;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 
@@ -16,7 +17,7 @@ class RepairOrderDeviceGoodsController extends Controller
      * @return Response
      */
     public function index(IndexRepairOrderDeviceGoodsRequest $request, $device_id)
-    {
+    {   
         $repair_order_has_goods = RepairOrderHasGood::where('device_id',$device_id)->where('repair_order_id',$request->repair_order_id)->get();
         if(sizeof($repair_order_has_goods) == 0){
             return response()->json();

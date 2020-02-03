@@ -7,6 +7,7 @@ use Modules\Companies\Entities\Branch;
 use Modules\Goods\Entities\Brand;
 use Modules\Goods\Entities\Color;
 use Modules\Goods\Entities\Models;
+use Modules\Goods\Entities\Submodel;
 use Modules\Goods\Entities\Part;
 use Modules\Goods\Entities\Good;
 use Modules\Warehouses\Entities\Warehouse;
@@ -24,12 +25,6 @@ class WarehouseHasGood extends Model
     }
 
     public function store(FormRequest $request){
-      // $existing_warehouse_has_good = $this->checkIfExistsOnWarehouse($request);
-      //
-      // if($existing_warehouse_has_good){
-      //   return $existing_warehouse_has_good;
-      // }
-
       $this->good_id = $request->good_id;
       $this->warehouse_id = $request->warehouse_id;
       //$this->location_in_warehouse_id = $request->location_in_warehouse_id;
@@ -100,6 +95,7 @@ class WarehouseHasGood extends Model
         $good = Good::find($this->good_id);
         $color = Color::find($good->color_id);
         $part = Part::find($good->part_id);
+        $submodel = Submodel::find($good->submodel_id);
         $brand = Brand::find($good->brand_id);
         $model = Models::find($good->model_id);
 
@@ -111,6 +107,8 @@ class WarehouseHasGood extends Model
         $result_good['part_name'] = $part->getTranslatedName();
         $result_good['brand_name'] = $brand->name;
         $result_good['model_name'] = $model->name;
+        $result_good['submodel_name'] = $submodel->name;
+        $result_good['name'] = $brand->name . ' ' . $submodel->name;
         $result_good['warehouse_has_good_id'] = $this->id;
         $result_good['amount_in_warehouse'] = $this->amount;
         return $result_good;
