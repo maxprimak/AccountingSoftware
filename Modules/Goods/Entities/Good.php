@@ -88,9 +88,11 @@ class Good extends Model
       foreach ($goods_has_prices as $good_has_prices) {
         foreach ($goods as $good) {
           if($good->id == $good_has_prices->good_id){
+            $warehouse_has_good_id = $good->warehouse_has_good_id;
             $good = (array) $good;
             $good['retail_price'] = $good_has_prices->retail_price;
             $good['wholesale_price'] = $good_has_prices->wholesale_price;
+            $good['warehouse_name'] = WarehouseHasGood::find($warehouse_has_good_id)->getWarehouseName();
             array_push($result_of_goods,$good);
           }
         }

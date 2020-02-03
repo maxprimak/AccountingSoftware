@@ -14,6 +14,8 @@ use Modules\Goods\Entities\Models;
 use Modules\Goods\Entities\Submodel;
 use Modules\Goods\Entities\Brand;
 use Modules\Goods\Entities\Color;
+use Modules\Orders\Entities\Warranty;
+use Modules\Orders\Entities\DiscountCode;
 
 class RepairOrdersTest extends TestCase
 {
@@ -48,59 +50,56 @@ class RepairOrdersTest extends TestCase
 
     }
 
-    /*
     public function test_user_can_create_repair_order(){
 
         $login = $this->makeNewLoginWithCompanyAndBranch();
 
         Passport::actingAs($login);
 
-        $devices = array();
-        $devices_test = new DevicesTest();
-        $devices_test->customer = $this->customer;
-        $devices_test->submodel = $this->submodel;
-        $devices_test->color = $this->color;
-        $devices_test->faker->name = $this->faker->name;
-        $device_response = $devices_test->createDevice(12345);
-        dd($device_response);
+        $this->addCustomersToBranch(Branch::all()->first(), $login, 1);
+        $customer = Customer::all()->first();
+        $device = $this->addDeviceToCustomer($customer->id);
+        $service = $this->makeServiceForCompanyOfLogin($login);
 
-        // $devices['id'] = 1;
-        // $response = $this->json('POST', route('orders.repair.store'), [
-            // 'order_type' => 1,
-            // 'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
-            // 'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
-            // 'order_nr' => $this->faker->swiftBicNumber(),
-            // 'customer_id' => ,
-            // 'devices' => [],
-            // 'warranty_id' => ,
-            // 'discount_code_id' => ,
-            // 'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 19),
-            // 'deadline' => $this->faker->date('Y-m-d', '1461067200'),
-            // 'comment' => $this->faker->text(50)
-        // ])->assertJsonStructure([
-        //     'status',
-        //     'order' => [
-        //         'id',
-        //         'accept_date',
-        //         'price',
-        //         'branch_id',
-        //         'order_nr',
-        //         'customer_name',
-        //         'customer_phone',
-        //         'defect_description',
-        //         'comment',
-        //         'prepay_sum',
-        //         'status_id',
-        //         'located_in',
-        //         'created_at',
-        //         'updated_at',
-        //         'created_by',
-        //     ]
-        // ])->assertStatus(200);
+        $yesterday = date('Y-m-d', strtotime(date('Y-m-d'). ' + 1 day'));
+
+        $service = [
+          "service_id" => $service->id
+        ];
+
+        $device = [
+            'submodel_id' => Submodel::all()->first()->id,
+            'color_id' => Color::all()->first()->id,
+            'serial_nr' => $this->faker->text(10),
+            'condition' => $this->faker->text(10),
+            'status_name' => OrderStatusesTranslation::find(OrderStatus::all()->first()->id)->name,
+            
+            ///status_name
+            'device_id' => $device->id, 
+            'defect_description' => $this->faker->text(50),
+            'services_id' => [$service],
+            'warehouse_has_good' => array()
+        ];
+
+        $devices = [$device];
+
+        $response = $this->json('POST', route('orders.repair.store'), [
+            'order_type_id' => 1,
+            'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
+            'branch_id' => $this->getBranchesOfLogin($login)->first()->id,
+            'order_nr' => $this->faker->swiftBicNumber(),
+            'customer_id' => $customer->id,
+            'devices' => $devices,
+            'warranty_id' => Warranty::all()->first()->id,
+            'discount_code_id' => DiscountCode::all()->first()->id,
+            'accept_date' => date('Y-m-d'),
+            'prepay_sum' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 19),
+            'deadline' => $yesterday
+        ])->dump();
 
     }
-    */
 
+    /*
     public function test_user_can_update_repair_order(){
 
         $login = $this->makeNewLoginWithCompanyAndBranch();
@@ -124,6 +123,7 @@ class RepairOrdersTest extends TestCase
         $this->assertEquals(1, Order::all()->count());
 
     }
+    */
 
     /*
     public function test_user_can_see_orders_of_branch(){
