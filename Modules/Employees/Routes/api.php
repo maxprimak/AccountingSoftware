@@ -16,8 +16,8 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
 
     Route::get('employees', 'EmployeesController@index')->name('employees.index');
     Route::post('employees', 'EmployeesController@store')->name('employees.store');
-    Route::post('employees/{employee_id}', 'EmployeesController@update')->name('employees.update');
-    Route::delete('employees/{employee_id}', 'EmployeesController@destroy')->name('employees.destroy');
+    Route::post('employees/{employee_id}', 'EmployeesController@update')->name('employees.update')->middleware('my_employee');
+    Route::delete('employees/{employee_id}', 'EmployeesController@destroy')->name('employees.destroy')->middleware('my_employee');
 
     Route::get('roles', 'RolesController@index')->name('roles.index');
 

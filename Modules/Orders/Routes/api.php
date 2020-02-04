@@ -16,18 +16,18 @@ use Illuminate\Http\Request;
 Route::middleware(['is_authorized', 'is_registered'])->group(function () {
 //Repair Orders
 Route::post('/orders/repair', 'RepairOrdersController@store')->name('orders.repair.store');
-Route::get('/orders/repair/edit/{order_id}', 'RepairOrdersController@show')->name('orders.repair.show');
-Route::post('/orders/repair/{order_id}', 'RepairOrdersController@update')->name('orders.repair.update');
+Route::get('/orders/repair/edit/{order_id}', 'RepairOrdersController@show')->name('orders.repair.show')->middleware('my_repair_order');
+Route::post('/orders/repair/{order_id}', 'RepairOrdersController@update')->name('orders.repair.update')->middleware('my_repair_order');
 Route::get('/orders/repair/branch/{branch_id}/{is_completed}', 'RepairOrdersBranchController@index')->name('orders.repair.branch.index')->middleware('my_branch');
-Route::delete('/orders/repair/{branch_id}', 'RepairOrdersController@destroy')->name('orders.repair.destroy');
-Route::post('/orders/repair/{order_id}/status', 'RepairOrderStatusController@update')->name('repair_orders_status.update');
+Route::delete('/orders/repair/{branch_id}', 'RepairOrdersController@destroy')->name('orders.repair.destroy')->middleware('my_branch');
+Route::post('/orders/repair/{order_id}/status', 'RepairOrderStatusController@update')->name('repair_orders_status.update')->middleware('my_repair_order');
 Route::get('/orders/repair/status', 'RepairOrderStatusController@index')->name('repair_orders_status.index');
-Route::post('/orders/repair/deadline/{repair_order_id}', 'RepairOrderDeadlineController@update')->name('orders.repair.deadline.update');
+Route::post('/orders/repair/deadline/{repair_order_id}', 'RepairOrderDeadlineController@update')->name('orders.repair.deadline.update')->middleware('my_repair_order');
 
 Route::post('/orders/sales', 'SalesOrdersController@store')->name('orders.sales.store');
-Route::post('/orders/sales/{order_id}', 'SalesOrdersController@update')->name('orders.sales.update');
+Route::post('/orders/sales/{order_id}', 'SalesOrdersController@update')->name('orders.sales.update')->middleware('my_sales_order');
 Route::get('/orders/sales/branch/{branch_id}', 'SalesOrdersBranchController@index')->name('orders.sales.branch.index')->middleware('my_branch');
-Route::delete('/orders/sales/{branch_id}', 'SalesOrdersController@destroy')->name('orders.sales.destroy');
+Route::delete('/orders/sales/{branch_id}', 'SalesOrdersController@destroy')->name('orders.sales.destroy')->middleware('my_branch');
 
 //warranties
 
