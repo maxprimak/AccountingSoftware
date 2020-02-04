@@ -11,6 +11,7 @@ use Modules\Employees\Entities\Role;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Currency;
 use Modules\Companies\Entities\Branch;
+use Modules\Companies\Entities\Address;
 use Modules\Users\Entities\User;
 use Modules\Login\Entities\Login;
 use Modules\Companies\Http\Requests\StoreCompanyRequest;
@@ -27,19 +28,15 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        /*
-        $user = User::where('login_id', auth()->user()->id)->firstOrFail();
-        $company = Company::findOrFail($user->company_id);
-        $currencies = Currency::all();
-        $branches = BranchesService::getUserBranches($user->id);
-
-        return view('companies::companies.index')->with(compact('company', 'currencies', 'branches'));
-        */
-
-        //$companies = Company::all();
 
         $user = User::where('login_id', auth('api')->user()->id)->firstOrFail();
         $company = Company::findOrFail($user->company_id);
+        $address = Address::findOrFail($company->address_id);
+        $company->street_name = $address->street_name;
+        $company->house_number = $address->house_number;
+        $company->postcode = $address->postcode;
+        $company->city_id = $address->city_id;
+
 
         return response()->json(['company' => $company], 200);
     }

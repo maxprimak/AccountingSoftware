@@ -22,6 +22,7 @@ class CompaniesDatabaseSeeder extends Seeder
       $branch->branch_id = $branch->id;
       $warehouse->store($branch);
     }
+
     public function run()
     {
         Model::unguard();
@@ -59,7 +60,7 @@ class CompaniesDatabaseSeeder extends Seeder
             'name' => 'DZ',
             'company_id' => 1,
             'color' => '#F64272',
-            'address_id' => Address::all()->first()->id,
+            'address_id' => Address::makeCopy($address)->id,
             'phone' => '+43 1 3694001'
         ]);
         $this->store_warehouse($branch);
@@ -68,7 +69,7 @@ class CompaniesDatabaseSeeder extends Seeder
             'name' => 'DZ Neu',
             'company_id' => 1,
             'color' => '#0a9901',
-            'address_id' => Address::all()->first()->id,
+            'address_id' => Address::makeCopy($address)->id,
             'phone' => '+43 1 3694001'
         ]);
         $this->store_warehouse($branch);
@@ -77,7 +78,7 @@ class CompaniesDatabaseSeeder extends Seeder
             'name' => 'KG',
             'company_id' => 1,
             'color' => '#0970c7',
-            'address_id' => Address::all()->first()->id,
+            'address_id' => Address::makeCopy($address)->id,
             'phone' => '+43 1 3694001'
         ]);
         $this->store_warehouse($branch);
@@ -86,7 +87,7 @@ class CompaniesDatabaseSeeder extends Seeder
             'name' => 'Huma',
             'company_id' => 1,
             'color' => '#ec9a5d',
-            'address_id' => Address::all()->first()->id,
+            'address_id' => Address::makeCopy($address)->id,
             'phone' => '+43 1 7670666'
         ]);
         $this->store_warehouse($branch);

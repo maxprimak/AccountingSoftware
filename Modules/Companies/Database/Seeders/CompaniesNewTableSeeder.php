@@ -29,14 +29,14 @@ class CompaniesNewTableSeeder extends Seeder
             'currency_id' => 1,
             'phone' => '+43 1 23456789',
             'tax' => 10,
-            'address_id' => Address::all()->first()->id,
+            'address_id' => Address::makeCopy(Address::all()->first())->id,
         ]);
 
         $firstBranch = factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'NewBranch 11',
             'company_id' => $company->id,
             'color' => '#F64272',
-            'address_id' => Address::all()->first()->id,
+            'address_id' => Address::makeCopy(Address::all()->first())->id,
             'phone' => '+43 1 123456789'
         ]);
         $this->store_warehouse($firstBranch);
@@ -45,7 +45,7 @@ class CompaniesNewTableSeeder extends Seeder
             'name' => 'NewBranch 22',
             'company_id' => $company->id,
             'color' => '#f7ff16',
-            'address_id' => Address::all()->first()->id,
+            'address_id' => Address::makeCopy(Address::all()->first())->id,
             'phone' => '+43 9 87654321'
         ]);
 

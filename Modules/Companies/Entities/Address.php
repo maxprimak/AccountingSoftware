@@ -17,5 +17,16 @@ class Address extends Model
         $this->city_id = $request->city_id;
         $this->save();
   
-      }
+    }
+
+    public static function makeCopy($address){
+      $new_address = new Address();
+      $new_address->street_name = $address->street_name;
+      $new_address->postcode = $address->postcode;
+      $new_address->house_number = $address->house_number;
+      $new_address->city_id = $address->city_id;
+      $new_address->save();
+
+      return $new_address;
+    }
 }
