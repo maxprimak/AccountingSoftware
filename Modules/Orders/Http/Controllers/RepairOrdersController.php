@@ -28,6 +28,7 @@ use Modules\Orders\Http\Requests\UpdateRepairOrderRequest;
 use Modules\Customers\Entities\CustomerHasBranch;
 use Modules\Services\Entities\Service;
 use Modules\Users\Entities\People;
+use Modules\Companies\Entities\Currency;
 
 class RepairOrdersController extends Controller
 {
@@ -138,6 +139,8 @@ class RepairOrdersController extends Controller
         $warranty = Warranty::findOrFail($repair_order->warranty_id);
         $payment_status = PaymentStatuses::getPaymentStatusWithTranslation($repair_order);
         $branch = $order->getBranch();
+        $currency_id = Login::find(auth('api')->id())->getCompany()->currency_id;
+        $currency = Currency::find($currency_id);
 
         return response()->json([
             'order' => [
@@ -169,7 +172,11 @@ class RepairOrdersController extends Controller
                 'warranty_name' => $warranty->name,
                 'warranty_days_number' => $warranty->days_number,
                 'payment_status_id' => $payment_status->id,
-                'payment_status_name' => $payment_status->name,]
+                'payment_status_name' => $payment_status->name,
+                'currency_id' => $currency->id,
+                'currency_name' => $currency->name,
+                'currency_symbol' => $currency->symbol
+                ]
         ]);
     }
 
