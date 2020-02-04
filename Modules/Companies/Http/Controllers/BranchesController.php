@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Currency;
 use Modules\Companies\Entities\Branch;
+use Modules\Companies\Entities\Address;
 use Modules\Users\Entities\User;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Companies\Http\Requests\StoreBranchRequest;

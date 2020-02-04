@@ -19,6 +19,8 @@ Route::get('companies', 'CompaniesController@index')->name('companies.index');
 Route::post('companies/{company_id}', 'CompaniesController@update')->name('companies.update')->middleware('my_company');
 Route::post('companies', 'CompaniesController@store')->name('companies.store');
 
+Route::get('cities', 'CitiesController@index')->name('cities.index');
+
 Route::get('branches', 'BranchesController@index')->name('branches.index');
 Route::post('branches', 'BranchesController@store')->name('branches.store');
 Route::post('branches/{branch_id}', 'BranchesController@update')->name('branches.update')->middleware('my_branch');
