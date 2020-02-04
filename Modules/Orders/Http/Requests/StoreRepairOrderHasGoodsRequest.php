@@ -14,8 +14,8 @@ class StoreRepairOrderHasGoodsRequest extends FormRequest
     public function rules()
     {
         return [
-            'warehouse_has_goods' => 'required',
-            'device_id' => 'required|exists:devices,id'
+            //'warehouse_has_goods' => 'required',
+            'device_id' => 'nullable|exists:devices,id'
         ];
     }
 
