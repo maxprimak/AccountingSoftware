@@ -20,7 +20,7 @@ class UpdateDeviceRequest extends FormRequest
         return [
             'submodel_id' => 'required|exists:submodels,id',
             'color_id' => 'required|exists:colors,id',
-            'serial_nr' => 'required|', //unique:devices,serial_nr,'.$device->serial_nr
+            //'serial_nr' => 'required|', //unique:devices,serial_nr,'.$device->serial_nr
         ];
     }
 

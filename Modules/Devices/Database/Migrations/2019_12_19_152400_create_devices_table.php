@@ -17,7 +17,7 @@ class CreateDevicesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('submodel_id');
             $table->unsignedInteger('color_id');
-            $table->string('serial_nr');
+            $table->string('serial_nr')->nullable();
             $table->string('condition')->nullable();
             $table->timestamps();
             $table->foreign('color_id')->references('id')->on('colors');
