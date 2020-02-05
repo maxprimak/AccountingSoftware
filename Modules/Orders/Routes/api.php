@@ -19,7 +19,7 @@ Route::post('/orders/repair', 'RepairOrdersController@store')->name('orders.repa
 Route::get('/orders/repair/edit/{order_id}', 'RepairOrdersController@show')->name('orders.repair.show')->middleware('my_repair_order');
 Route::post('/orders/repair/{order_id}', 'RepairOrdersController@update')->name('orders.repair.update')->middleware('my_repair_order');
 Route::get('/orders/repair/branch/{branch_id}/{is_completed}', 'RepairOrdersBranchController@index')->name('orders.repair.branch.index')->middleware('my_branch');
-Route::delete('/orders/repair/{branch_id}', 'RepairOrdersController@destroy')->name('orders.repair.destroy')->middleware('my_branch');
+Route::delete('/orders/repair/{repair_order_id}', 'RepairOrdersController@destroy')->name('orders.repair.destroy')->middleware('my_repair_order');
 Route::post('/orders/repair/{order_id}/status', 'RepairOrderStatusController@update')->name('repair_orders_status.update')->middleware('my_repair_order');
 Route::get('/orders/repair/status', 'RepairOrderStatusController@index')->name('repair_orders_status.index');
 Route::post('/orders/repair/deadline/{repair_order_id}', 'RepairOrderDeadlineController@update')->name('orders.repair.deadline.update')->middleware('my_repair_order');

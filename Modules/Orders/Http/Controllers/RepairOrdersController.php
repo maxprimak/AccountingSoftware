@@ -16,6 +16,7 @@ use Modules\Orders\Entities\Payment;
 use Modules\Orders\Entities\PaymentStatuses;
 use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Entities\RepairOrderHasDevice;
+use Modules\Orders\Entities\RepairOrderHasGood;
 use Modules\Orders\Entities\ReworkOrderHasWarrantyCase;
 use Modules\Orders\Entities\ReworkOrders;
 use Modules\Orders\Entities\SalesOrder;
@@ -23,6 +24,7 @@ use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\OrderStatus;
 use Modules\Customers\Entities\Customer;
 use Modules\Orders\Entities\Warranty;
+use Modules\Orders\Entities\PayOrders;
 use Modules\Orders\Http\Requests\StoreRepairOrderRequest;
 use Modules\Orders\Http\Requests\UpdateRepairOrderRequest;
 use Modules\Customers\Entities\CustomerHasBranch;
@@ -200,6 +202,10 @@ class RepairOrdersController extends Controller
 
         $repair_order = RepairOrder::findOrFail($id);
         $order = Order::findOrFail($repair_order->order_id);
+
+        RepairOrderHasGood::where('repair_order_id',$repair_order->id)->delete();
+        RepairOrderHasDevice::where('repair_order_id',$repair_order->id)->delete();
+        PayOrders::where('repair_order_id',$repair_order->id)->delete();
         $repair_order->delete();
         $order->delete();
 
