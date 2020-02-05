@@ -90,7 +90,7 @@ class RepairOrdersController extends Controller
      * @param int $id
      */
     public function update(UpdateRepairOrderRequest $request, $id)
-    {   
+    {
         $repair_order = RepairOrder::findOrFail($id);
         $order = Order::findOrFail($repair_order->order_id);
 
@@ -163,6 +163,7 @@ class RepairOrdersController extends Controller
                 'devices' => $result_devices,
                 'order_type_name' => $order_type->name,
                 'deadline_date' => $repair_order->deadline,
+                'discount_code_id' => $discount_code->id,
                 'discount_code_name' => $discount_code->name,
                 'discount_code_percent' => $discount_code->percent_amount,
                 'prepay_sum' => $repair_order->prepay_sum,
