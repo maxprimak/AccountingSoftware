@@ -44,7 +44,7 @@ class DeviceGoodsController extends Controller
         foreach($goods as $good){
             $warehouse_has_good = WarehouseHasGood::find($good['warehouse_has_good_id']);
             try{
-                $warehouse_has_good->use($good['amount']);
+                $warehouse_has_good->use($good['amount'], $request->repair_order_id, $good['device_id']);
             }catch(\Exception $e){
                 return response()->json(['error' => $e->getMessage()], 403);
             }

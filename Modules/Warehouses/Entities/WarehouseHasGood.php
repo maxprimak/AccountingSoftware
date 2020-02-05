@@ -10,6 +10,7 @@ use Modules\Goods\Entities\Models;
 use Modules\Goods\Entities\Submodel;
 use Modules\Goods\Entities\Part;
 use Modules\Goods\Entities\Good;
+use Modules\Orders\Entities\RepairOrderHasGood;
 use Modules\Warehouses\Entities\Warehouse;
 use Exception;
 
@@ -41,18 +42,31 @@ class WarehouseHasGood extends Model
       return $this;
     }
 
-    public function use($amount){
+    public function use($amount, $repair_order_id, $device_id){
+ 
+          $has_good = RepairOrderHasGood::where('warehouse_has_good_id', $this->id)
+          ->where('repair_order_id', $repair_order_id)->where('device_id',$device_id)->first();
 
-      $warehouse_amount = $this->amount;
+          $amount = ($has_good->is_used == 0) ? $amount : $amount - $has_good->amount;  
+          
+          if($amount >= 1 && $amount < $this->amount){
 
-      if($warehouse_amount >= $amount && $amount >= 0){
-        $this->amount -= $amount;
-      }
-      else{
-        throw new \Exception('Amount for warehouse_has_good with id ' . $this->id. ' is invalid');
-      }
+            if($has_good->is_used == 0){
+              $has_good->amount = $amount;
+              $has_good->is_used = 1;
+            }
+            else{   
+              $has_good->amount += $amount;
+            }
+            $has_good->save();
 
-      $this->save();
+          }else{
+             throw new \Exception('given amount is invalid for good id '. $this->good_id);
+          }
+
+          $this->amount -= $amount;
+
+          $this->save();
 
     }
 
