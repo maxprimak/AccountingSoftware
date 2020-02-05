@@ -63,14 +63,19 @@ class DeviceHasServiceController extends Controller
      * @return Response
      */
     public function update(CompleteServiceRequest $request)
-    {   
+    {
 
         $device_has_services_id = $request->device_has_services_id;
-        
-        foreach($device_has_services_id as $device_has_service_id){
+        $device_has_service = DeviceHasService::whereIn('id',$device_has_services_id)->first();
+        $device_has_services = DeviceHasService::where('device_id',$device_has_service->device_id)->where('repair_order_id',$device_has_service->repair_order_id)->get();
+        foreach ($device_has_services as $device_has_service){
+            $device_has_service->is_completed = 0;
+            $device_has_service->save();
+        }
 
+        foreach($device_has_services_id as $device_has_service_id){
             try{
-                $device_has_service = DeviceHasService::findOrFail($device_has_service_id); 
+                $device_has_service = DeviceHasService::findOrFail($device_has_service_id);
                 $device_has_service->completeService();
             }catch(\Exception $e){
                 return response()->json(['error' => 'device_has_service_id '. $device_has_service_id .' is not valid'],403);
