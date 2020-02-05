@@ -36,8 +36,9 @@ class RepairOrderHasGood extends Model
         return $result;
     }
 
-    public function deleteExistingGoods($repair_order_id){
-        $repair_order_has_goods = $this::where('repair_order_id',$repair_order_id)->get();
+    public function deleteExistingGoods($repair_order_id, $device_id){
+        $repair_order_has_goods = $this::where('repair_order_id',$repair_order_id)
+                        ->where('device_id', $device_id)->get();
         foreach ($repair_order_has_goods as $repair_order_has_good){
             $repair_order_has_good->delete();
         }

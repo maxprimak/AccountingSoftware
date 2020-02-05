@@ -41,7 +41,7 @@ class RepairOrderHasGoodsController extends Controller
         //TODO::Make sure that is we 
         //could not store new RepairOrderHasGood it will not delete existin RepairOrderHasGoods
         $delete_repair_order_has_goods = new RepairOrderHasGood();
-        $delete_repair_order_has_goods->deleteExistingGoods($repair_order_id);
+        $delete_repair_order_has_goods->deleteExistingGoods($repair_order_id, $request->device_id);
 
         if($request->warehouse_has_goods != []){
 
