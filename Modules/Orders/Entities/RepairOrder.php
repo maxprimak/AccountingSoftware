@@ -53,8 +53,6 @@ class RepairOrder extends Model
         $request = $repair_order->setPaymentStatus($request);
         $repair_order->order_nr = $request->order_nr;
         $repair_order->comment = $request->comment;
-        $repair_order->prepay_sum = $request->prepay_sum;
-        $repair_order->payment_status_id = $request->payment_status_id;
         $repair_order->update();
 
         return $repair_order;

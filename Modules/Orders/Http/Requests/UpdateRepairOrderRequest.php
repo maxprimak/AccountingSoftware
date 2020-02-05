@@ -15,7 +15,6 @@ class UpdateRepairOrderRequest extends FormRequest
     {
         return [
             'order_nr' => 'required',
-            'prepay_sum' =>  'nullable|numeric|min: 0|max: ' . $this->price,
             'comment' => 'nullable',
             'price' => 'required|numeric| min: 0',
         ];
