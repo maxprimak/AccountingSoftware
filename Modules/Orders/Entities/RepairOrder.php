@@ -191,8 +191,13 @@ class RepairOrder extends Model
 
     public function changePaymentStatus(Payment $payment): RepairOrder{
         $rest_of_payment = $this->getRestOfPayment($payment);
-        if($rest_of_payment <= 0) $this->payment_status_id = 1;
-        if($rest_of_payment > 0) $this->payment_status_id = 2;
+        if($rest_of_payment <= 0){
+          $this->payment_status_id = 1;
+        } 
+        if($rest_of_payment > 0){
+          $this->payment_status_id = 2;
+          $this->prepay_sum += $payment->amount;
+        } 
         $this->save();
         return $this;
     }

@@ -37,32 +37,30 @@ Route::post('/warranties', 'WarrantyController@store')->name('warranties.store')
 
 //discount_codes
 Route::get('/discount_codes', 'DiscountCodesController@index')->name('discount_codes.index');
-Route::post('orders/repair/dicount_codes/{repair_order_id}', 'DiscountCodesOrdersController@update')->name('warranties.update');
+Route::post('orders/repair/dicount_codes/{repair_order_id}', 'DiscountCodesOrdersController@update')->name('warranties.update')->middleware('my_repair_order');
 Route::post('/discount_codes', 'DiscountCodesController@store')->name('discount_codes.store');
 
     //payment statuses
     Route::get('/payment_statuses', 'PaymentStatusController@index')->name('payment_statuses.index');
 
     //Device + Service
-    Route::post('/device/{device_id}/services', 'DeviceServicesController@index')->name('device_service.index');
-    Route::post('/orders/repair/{device_id}/services', 'DeviceServicesController@update')->name('device_service.update');
+    Route::post('/device/{device_id}/services', 'DeviceServicesController@index')->name('device_service.index')->middleware('my_device');
+    Route::post('/orders/repair/{device_id}/services', 'DeviceServicesController@update')->name('device_service.update')->middleware('my_device');
 
 //RepairOrdersCompleted
-    Route::post('/orders/repair/{order_id}/complete ', 'RepairOrderCompletedController@update')->name('repair_order_complete.update');
+    Route::post('/orders/repair/{order_id}/complete ', 'RepairOrderCompletedController@update')->name('repair_order_complete.update')->middleware('my_repair_order');
 
 //RepairOrderHasGoodsController
-    Route::post('/orders/goods/{order_id}', 'RepairOrderHasGoodsController@store')->name('repair_order_has_goods.store');
-    Route::post('/orders/repair/{order_id}/good', 'RepairOrderHasGoodsController@destroy')->name('repair_order_has_goods.destroy');
-
-    //Route::post('/orders/repair/{device_id}/services', 'DeviceServicesController@update')->name('repair_order_has_goods.update');
+    Route::post('/orders/goods/{order_id}', 'RepairOrderHasGoodsController@store')->name('repair_order_has_goods.store')->middleware('my_repair_order');
+    Route::post('/orders/repair/{order_id}/good', 'RepairOrderHasGoodsController@destroy')->name('repair_order_has_goods.destroy')->middleware('my_repair_order');
 
 //RepairOrderDeviceGoodsController
-    Route::post('/orders/repair/{device_id}/goods', 'RepairOrderDeviceGoodsController@index')->name('device_has_goods.index');
+    Route::post('/orders/repair/{device_id}/goods', 'RepairOrderDeviceGoodsController@index')->name('device_has_goods.index')->middleware('my_device');
 
 //RepairOrderPaymentController
-    Route::post('/orders/repair/{order_id}/paid', 'RepairOrderPaymentController@store')->name('repair_order_payment.store');
+    Route::post('/orders/repair/{order_id}/paid', 'RepairOrderPaymentController@store')->name('repair_order_payment.store')->middleware('my_repair_order');
 
 //RepairOrderHasDeviceController
-    Route::post('/orders/repair/{order_id}/device', 'RepairOrderHasDeviceController@destroy')->name('repair_order_has_device.destroy');
+    Route::post('/orders/repair/{order_id}/device', 'RepairOrderHasDeviceController@destroy')->name('repair_order_has_device.destroy')->middleware('my_repair_order');
 
 });

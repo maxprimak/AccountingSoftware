@@ -29,7 +29,12 @@ class CompaniesDatabaseSeeder extends Seeder
 
         factory('Modules\Companies\Entities\Currency')->create([
             'name' => 'Euro',
-            'symbol' => 'EUR'
+            'symbol' => '€'
+        ]);
+        
+        factory('Modules\Companies\Entities\Currency')->create([
+            'name' => 'Dollar',
+            'symbol' => '$'
         ]);
 
         $country = factory('Modules\Companies\Entities\Country')->create();
