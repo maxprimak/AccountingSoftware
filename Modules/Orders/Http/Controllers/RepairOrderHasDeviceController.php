@@ -89,10 +89,13 @@ class RepairOrderHasDeviceController extends Controller
                 $repair_order_has_good->delete();
             }
 
-            $device_has_service = DeviceHasService::where('repair_order_id',$repair_order_id)
+            $device_has_services = DeviceHasService::where('repair_order_id',$repair_order_id)
                 ->where('device_id',$request->device_id)
                 ->get();
-            $device_has_service->delete();
+            
+            foreach($device_has_services as $device_has_service){
+                $device_has_service->delete();
+            }
 
 //        $device_has_service= DeviceHasDeviceLocations::where('device_id',$request->device_id)->first();
 //        $device_has_service->delete();
