@@ -21,8 +21,11 @@ class RepairOrderHasDevice extends Model
         $company = auth('api')->user()->getCompany();
         $services = DB::table('services')
             ->join('services_translations','services_translations.service_id', '=', 'services.id')
-            ->select('services.id as id', 'services.is_custom as is_custom','services_translations.name as name')
+            ->join('device_has_services','device_has_services.service_id', '=', 'services.id')
+            ->select('services.id as id', 'services.is_custom as is_custom','services_translations.name as name','device_has_services.id as device_has_services_id')
             ->whereIn('services.id',$services_ids)
+            ->whereIn('device_has_services.device_id',$devices_ids)
+            ->where('device_has_services.repair_order_id',$repair_order->id)
             ->where('services_translations.language_id',$company->language_id)
             ->get();
         return $repair_order->combineDevicesWithServices($devices,$services,$repair_order_has_devices,$device_has_services);
