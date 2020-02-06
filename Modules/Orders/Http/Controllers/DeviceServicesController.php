@@ -92,35 +92,28 @@ class DeviceServicesController extends Controller
      */
     public function update(UpdateDeviceServicesRequest $request, $device_id)
     {
+
         $repair_order = RepairOrder::findOrFail($request->repair_order_id);
         $device = Device::findOrFail($device_id);
         $services_ids['services_id'] = $request->services_id;
+
         DeviceHasService::where('device_id',$device_id)
             ->where('repair_order_id',$request->repair_order_id)
             ->whereNotIn('service_id',$request->services_id)
             ->delete();
 
-
-        $existing_services = DeviceHasService::where('device_id',$device_id)
+        foreach($services_ids['services_id'] as $id){
+            if(!DeviceHasService::where('device_id',$device_id)
             ->where('repair_order_id',$request->repair_order_id)
-            ->whereIn('service_id',$services_ids)
-            ->pluck('service_id')
-            ->toArray();
-
-
-        //TODO::посмотреть ошибку из за того что в $services_ids тип стринг в другом тип int
-        foreach ($existing_services as $existing_service){
-            if (($key = array_search($existing_service, $services_ids)) !== false) {
-                unset($services_ids[$key]);
-            }
+            ->where('service_id',$id)
+            ->exists())
+            DeviceHasService::create([
+                'device_id' => $device_id,
+                'service_id' => $id,
+                'repair_order_id' => $request->repair_order_id,
+                'is_completed' => 0
+            ]);
         }
-
-        //dd($services_ids);
-        $device = (array) $device;
-        $device['device_id'] = $device_id;
-        $device['services_id'] = array();
-        $device['services_id'] = $services_ids['services_id'];
-        $repair_order->storeDeviceHasService($device);
 
         return response()->json(['message' => 'Services are successfully updated!']);
     }
