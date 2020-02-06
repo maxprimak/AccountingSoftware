@@ -7,6 +7,7 @@ use Modules\Users\Entities\UserHasBranch;
 use Modules\Customers\Entities\Customer;
 use Modules\Customers\Entities\CustomerHasBranch;
 use Modules\Companies\Entities\Branch;
+use Modules\Companies\Entities\City;
 use Modules\Companies\Entities\Address;
 use Modules\Employees\Entities\Employee;
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,6 +25,7 @@ class GetUserBranches{
             $branch->house_number = $address->house_number;
             $branch->postcode = $address->postcode;
             $branch->city_id = $address->city_id;
+            $branch->city_name = City::find($address->city_id)->name;
         }
 
         return $user_branches;
