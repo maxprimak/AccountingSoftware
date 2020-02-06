@@ -38,6 +38,7 @@ class StoreRepairOrderRequest extends FormRequest
             'devices.*.color_hexcode' => 'required|exists:colors,hex_code',
             'devices.*.color_name' => 'required|exists:colors,name',
             'devices.*.services' => 'required|array',
+            'devices.*.issue_description' => 'nullable|max:700',
             'devices.*.goods.*.id' => 'required|exists:goods,id',
             'devices.*.goods.*.brand_name' => 'required|max:190',
             'devices.*.goods.*.brand_id' => 'required|exists:brands,id',
@@ -65,7 +66,6 @@ class StoreRepairOrderRequest extends FormRequest
     return [
         'devices.required' => 'order does not contain any device',
         'devices.*.services.required' => 'some devices do not have any service',
-        'devices.*.issue_description.required' => 'some devices do not have issue description'
         ];
     }
 
