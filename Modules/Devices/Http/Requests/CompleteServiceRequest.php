@@ -14,7 +14,7 @@ class CompleteServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'device_has_services_id' => 'required'
+            //
         ];
     }
 
