@@ -64,9 +64,10 @@ class DeviceHasServiceController extends Controller
      */
     public function update(CompleteServiceRequest $request)
     {
-        if($request->device_has_services_id == []){
+        if($request->device_has_services_id == [] || $request->device_has_services_id == null){
             $device_has_services = DeviceHasService::where('device_id', $request->device_id)
                                     ->where('repair_order_id', $request->repair_order_id)->get();
+
             foreach($device_has_services as $device_has_service){
                 $device_has_service->is_completed = 0;
                 $device_has_service->save();
