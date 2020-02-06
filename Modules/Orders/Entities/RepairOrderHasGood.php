@@ -29,7 +29,7 @@ class RepairOrderHasGood extends Model
                 foreach ($goods as $good){
                     if($repair_order_has_good['warehouse_has_good_id'] == $good['warehouse_has_good_id']){
                         $good['amount_in_order'] = $repair_order_has_good->amount;
-                        $good['is_used'] = $this->is_used;
+                        $good['is_used'] = $repair_order_has_good->is_used;
                         $good['repair_order_has_goods_amount'] = $this->amount;
                         array_push($result,$good);
                     }
