@@ -21,7 +21,7 @@ class DeviceServicesController extends Controller
      * @return Response
      */
     public function index(IndexDeviceServiceRequest $request,$device_id)
-    {   
+    {
         $company = auth('api')->user()->getCompany();
         $services_ids = DeviceHasService::where('device_id',$device_id)->where('repair_order_id',$request->repair_order_id)->pluck('service_id');
         $device_has_services = DeviceHasService::where('device_id',$device_id)->where('repair_order_id',$request->repair_order_id)->get();
@@ -94,14 +94,32 @@ class DeviceServicesController extends Controller
     {
         $repair_order = RepairOrder::findOrFail($request->repair_order_id);
         $device = Device::findOrFail($device_id);
-       $device_has_services = DeviceHasService::where('device_id',$device_id)->where('repair_order_id',$request->repair_order_id)->get();
-           foreach ($device_has_services as $device_has_service){
-               $device_has_service->delete();
-           }
+        $services_ids['services_id'] = $request->services_id;
+        DeviceHasService::where('device_id',$device_id)
+            ->where('repair_order_id',$request->repair_order_id)
+            ->whereNotIn('service_id',$request->services_id)
+            ->delete();
+
+
+        $existing_services = DeviceHasService::where('device_id',$device_id)
+            ->where('repair_order_id',$request->repair_order_id)
+            ->whereIn('service_id',$services_ids)
+            ->pluck('service_id')
+            ->toArray();
+
+
+        //TODO::посмотреть ошибку из за того что в $services_ids тип стринг в другом тип int
+        foreach ($existing_services as $existing_service){
+            if (($key = array_search($existing_service, $services_ids)) !== false) {
+                unset($services_ids[$key]);
+            }
+        }
+
+        //dd($services_ids);
         $device = (array) $device;
         $device['device_id'] = $device_id;
         $device['services_id'] = array();
-        $device['services_id'] = $request->services_id;
+        $device['services_id'] = $services_ids['services_id'];
         $repair_order->storeDeviceHasService($device);
 
         return response()->json(['message' => 'Services are successfully updated!']);
