@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\Services\Http\Requests\StoreServiceRequest;
 use Modules\Services\Http\Requests\UpdateServiceRequest;
 use Modules\Services\Entities\Service;
+use Modules\Goods\Entities\Part;
 use Modules\Services\Entities\ServicesTranslation;
 use Modules\Services\Entities\ServiceHasPart;
 use Modules\Services\Entities\CompanyHasService;
@@ -38,7 +39,8 @@ class ServicesController extends Controller
             $service_json = [
                 'id' => $service->id,
                 'name' => $service->getTranslatedName($language_id),
-                'part_id' => $service->getPartId()
+                'part_id' => $service->getPartId(),
+                'part_name' => ($service->getPartId() == null) ? "Without part" : Part::find($service->getPartId())->getTranslatedName()
             ];
 
             array_push($response, $service_json);

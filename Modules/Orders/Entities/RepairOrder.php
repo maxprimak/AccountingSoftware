@@ -148,6 +148,14 @@ class RepairOrder extends Model
           $submodel = Submodel::find($device->submodel_id);
         $array_of_device = array();
         $array_of_device['id'] = $device->id;
+        if($this->order_type_id == 3){
+          $rework_order = ReworkOrders::where('repair_order_id', $this->id)->first();
+          $rework_order_has_warranty_case = ReworkOrderHasWarrantyCase::where('rework_order_id', $rework_order->id)->first();
+          $repair_order_has_device = RepairOrderHasDevice::find($rework_order_has_warranty_case->order_has_device_id);
+          $repair_order_for_rework = RepairOrder::find($repair_order_has_device->repair_order_id);
+          $array_of_device['warranty_case_order_id'] = $repair_order_for_rework->id;
+          $array_of_device['warranty_case_date'] = $repair_order_for_rework->created_at->toDateString();
+        }
         $array_of_device['submodel_name'] = $submodel->name;
         $array_of_device['color_id'] = $device->color_id;
         $array_of_device['serial_nr'] = $device->serial_nr;
