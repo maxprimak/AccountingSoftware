@@ -13,9 +13,9 @@ class CitiesController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index($country_id)
     {   
-        return response()->json(City::all());
+        return response()->json(City::where('country_id', $country_id)->get());
     }
 
     /**

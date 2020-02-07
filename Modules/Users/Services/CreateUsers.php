@@ -5,6 +5,8 @@ use Modules\Employees\Http\Requests\StoreEmployeeRequest;
 use Modules\Users\Entities\People;
 use Modules\Users\Entities\User;
 use Modules\Companies\Entities\Address;
+use Modules\Companies\Entities\City;
+use Modules\Companies\Entities\Country;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Login\Entities\Login;
 use Modules\Orders\Entities\Warranty;
@@ -108,7 +110,8 @@ class CreateUsers{
         $address->house_number = $request->house_number;
         $address->street_name = $request->street_name;
         $address->postcode = $request->postcode;
-        $address->city_id = $request->city_id;
+        $city_id = City::where('name', $request->city_name)->where('country_id', $request->country_id)->first()->id;
+        $address->city_id = $city_id;
         $address->save();
 
         $company->address_id = $address->id;
@@ -127,6 +130,7 @@ class CreateUsers{
         $branch = new Branch();
         $request->name = $company->name . ' Main Branch';
         $request->address_id = $address->id;
+        $request->city_id = $address->city_id;
         $request->phone = $request->company_phone;
         $request->color = "#F64272";
         $branch = $branch->store($request);

@@ -25,7 +25,8 @@ class RegistrationRequest extends FormRequest
             'house_number' => 'required|max:190',
             'street_name' => 'required|max:190',
             'postcode' => 'required|max:190',  
-            'city_id' => 'required|exists:cities,id'
+            'city_name' => 'required|exists:cities,name',
+            'country_id' => 'required|exists:countries,id'
         ];
     }
 

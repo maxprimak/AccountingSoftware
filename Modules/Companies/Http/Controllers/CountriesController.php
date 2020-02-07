@@ -1,18 +1,13 @@
 <?php
 
-namespace Modules\Registration\Http\Controllers;
+namespace Modules\Companies\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Companies\Entities\Company;
-use Modules\Companies\Entities\Currency;
-use Modules\Companies\Entities\City;
-use Modules\Registration\Http\Requests\RegistrationRequest;
+use Modules\Companies\Entities\Country;
 
-use CreateUsersService;
-
-class RegistrationController extends Controller
+class CountriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,10 +15,7 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-        $currencies = Currency::all();
-
-        return view('registration::index')->with(compact('currencies'));
-
+        return response()->json(Country::all());
     }
 
     /**
@@ -32,7 +24,7 @@ class RegistrationController extends Controller
      */
     public function create()
     {
-        return view('registration::create');
+        return view('companies::create');
     }
 
     /**
@@ -40,18 +32,9 @@ class RegistrationController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(RegistrationRequest $request)
+    public function store(Request $request)
     {
-        try{
-            $employee = CreateUsersService::registerFirstEmployee($request, auth('api')->id());
-        }catch( \Exception $e ){
-            return response()->json($e->getMessage(), 500);
-        }
-
-        return response()->json([
-            'message' => 'Successfully created!',
-            'employee' => $employee
-        ]);
+        //
     }
 
     /**
@@ -61,7 +44,7 @@ class RegistrationController extends Controller
      */
     public function show($id)
     {
-        return view('registration::show');
+        return view('companies::show');
     }
 
     /**
@@ -71,7 +54,7 @@ class RegistrationController extends Controller
      */
     public function edit($id)
     {
-        return view('registration::edit');
+        return view('companies::edit');
     }
 
     /**
