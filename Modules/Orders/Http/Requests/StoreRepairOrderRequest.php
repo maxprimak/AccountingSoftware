@@ -38,6 +38,7 @@ class StoreRepairOrderRequest extends FormRequest
             'devices.*.color_hexcode' => 'required|exists:colors,hex_code',
             'devices.*.color_name' => 'required|exists:colors,name',
             'devices.*.services' => 'required|array',
+            'devices.*.warranty_case_order_id' => 'required_if:order_type_id,3',
             'devices.*.issue_description' => 'nullable|max:700',
             'devices.*.goods.*.id' => 'required|exists:goods,id',
             'devices.*.goods.*.brand_name' => 'required|max:190',
