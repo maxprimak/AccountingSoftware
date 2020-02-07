@@ -142,6 +142,7 @@ class RepairOrder extends Model
 
 
     public function combineDevicesWithServices($devices,$services,$repair_order_has_devices,$device_has_services){
+      $services = $services->unique('id');
       $result_of_devices = array();
       foreach ($devices as $device) {
           $submodel = Submodel::find($device->submodel_id);

@@ -30,6 +30,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
+            'is_registered' => ($user->isRegistered()) ? 1 : 0,
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
@@ -78,6 +79,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
+            'is_registered' => 0,
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
