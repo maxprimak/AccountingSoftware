@@ -8,6 +8,9 @@ use Modules\Devices\Entities\CustomerHasDevice;
 use Modules\Orders\Entities\RepairOrderHasDevice;
 use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Entities\OrderStatus;
+use Modules\Goods\Entities\Brand;
+use Modules\Goods\Entities\Submodel;
+use Modules\Goods\Entities\Models;
 
 class Device extends Model
 {
@@ -78,6 +81,15 @@ class Device extends Model
         $has_device['last_request'] = "None";
 
         return $has_device;
+    }
+
+    public function getName(){
+
+        $submodel = Submodel::find($this->submodel_id);
+        $model = Models::find($submodel->model_id);
+
+        return Brand::find($model->brand_id)->name . " " .$submodel->name;
+
     }
 
 }

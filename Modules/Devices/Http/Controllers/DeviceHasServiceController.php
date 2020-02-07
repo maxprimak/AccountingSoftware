@@ -6,14 +6,31 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Orders\Entities\DeviceHasService;
+use Modules\Orders\Entities\RepairOrder;
 use Modules\Services\Entities\Service;
+use Modules\Devices\Entities\Device;
 use Modules\Devices\Http\Requests\CompleteServiceRequest;
 
 class DeviceHasServiceController extends Controller
 {
     public function show($device_id){
+        $has_services = DeviceHasService::where('device_id', $device_id)->get();
 
-        return response()->json(DeviceHasService::where('device_id', $device_id)->get());
+        foreach($has_services as $has_service){
+            $repair_order = RepairOrder::find($has_service->repair_order_id);
+            $has_service->warranty_case_date = $repair_order->created_at->toDateString();
+            $services_ids = DeviceHasService::where('device_id', $device_id)
+                            ->where('repair_order_id', $repair_order->id)
+                            ->pluck('service_id')->toArray();
+            $has_service->services = Service::whereIn('id', $services_ids)->get();
+            foreach($has_service->services as $service){
+                $service->name = $service->getTranslatedName(1);
+            }
+        }
+
+        $has_services = $has_services->unique('repair_order_id');
+
+        return response()->json($has_services);
 
     }
 
