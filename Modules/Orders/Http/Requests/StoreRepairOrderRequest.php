@@ -53,7 +53,6 @@ class StoreRepairOrderRequest extends FormRequest
             'devices.*.goods.*.color_id' => 'required|exists:colors,id',
             'devices.*.goods.*.color_hexcode' => 'required|exists:colors,hex_code',
             'devices.*.goods.*.warehouse_has_good_id' => 'required|exists:warehouse_has_goods,id',
-            'devices.*.goods.*.vendor_code' => 'required|max:190',
             'devices.*.goods.*.amount' => 'required|numeric|min:1',
             'devices.*.goods.*.order_amount' => 'required|numeric|min:1|',
             'devices.*.goods.*.warehouse_name' => 'required|exists:warehouses,name',
