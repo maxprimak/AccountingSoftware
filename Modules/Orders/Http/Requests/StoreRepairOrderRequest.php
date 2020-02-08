@@ -53,7 +53,7 @@ class StoreRepairOrderRequest extends FormRequest
             'devices.*.goods.*.color_id' => 'required|exists:colors,id',
             'devices.*.goods.*.color_hexcode' => 'required|exists:colors,hex_code',
             'devices.*.goods.*.warehouse_has_good_id' => 'required|exists:warehouse_has_goods,id',
-            'devices.*.goods.*.amount' => 'required|numeric|min:1',
+            'devices.*.goods.*.amount' => 'required|numeric|min:0',
             'devices.*.goods.*.order_amount' => 'required|numeric|min:1|',
             'devices.*.goods.*.warehouse_name' => 'required|exists:warehouses,name',
             'devices.*.warehouse_has_good.*.id' => 'required',
@@ -66,6 +66,13 @@ class StoreRepairOrderRequest extends FormRequest
     return [
         'devices.required' => 'order does not contain any device',
         'devices.*.services.required' => 'some devices do not have any service',
+        ];
+    }
+
+    public function attributes()
+    {   
+    return [
+        'devices.*.goods.*.order_amount' => 'amount of goods for device',
         ];
     }
 

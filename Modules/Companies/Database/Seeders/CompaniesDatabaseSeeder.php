@@ -46,18 +46,7 @@ class CompaniesDatabaseSeeder extends Seeder
             'symbol' => '₽'
         ]);
 
-        $country = factory('Modules\Companies\Entities\Country')->create();
-
-        $city = factory('Modules\Companies\Entities\City')->create([
-            'country_id' => $country->id
-        ]);
-
-        $address = new Address();
-        $address->house_number = '22';
-        $address->postcode = '1200';
-        $address->street_name = 'Brigittaplatz';
-        $address->city_id = 1;
-        $address->save();
+        $address = Address::all()->first();
 
        $company = factory('Modules\Companies\Entities\Company')->create([
             'name' => 'PhoneFactory',
@@ -124,7 +113,7 @@ class CompaniesDatabaseSeeder extends Seeder
                 $city = new City();
                 $city->name = $value;
                 $city->country_id = $country->id;
-                if(!City::where('name',$value)->exists())
+                if(!City::where('name',$value)->where('country_id', $country->id)->exists())
                 $city->save();
 
             }
