@@ -30,6 +30,13 @@ class RegistrationRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'currency_id.required' => 'currency is required',
+        ];
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
