@@ -148,6 +148,7 @@ class RepairOrdersController extends Controller
             'order' => [
                 'id' => $repair_order->id,
                 'order_nr' => $repair_order->order_nr,
+                'order_type_id' => $repair_order->order_type_id,
                 'created_by_name' => $login->username,
                 'created_by' => $login->id,
                 'status_color' => $order_status->hex_code,
