@@ -49,7 +49,7 @@ class WarehouseHasGood extends Model
 
           $amount = ($has_good->is_used == 0) ? $amount : $amount - $has_good->amount;  
           
-          if($amount >= 1 && $amount < $this->amount){
+          if($amount >= 0 && $amount <= $this->amount){
 
             if($has_good->is_used == 0){
               $has_good->amount = $amount;
