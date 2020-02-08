@@ -175,6 +175,10 @@ class RepairOrder extends Model
             if(($device_has_service->device_id == $array_of_device['id']) && ($device_has_service->service_id == $service['id'])
               && ($device_has_service->repair_order_id == $this->id)){
               $service['is_completed'] = $device_has_service->is_completed;
+              $service['device_has_services_id'] = DeviceHasService::where('service_id', $service['id'])
+                                                      ->where('device_id', $array_of_device['id'])
+                                                      ->where('repair_order_id', $this->id)
+                                                      ->first()->id;
               array_push($array_of_device['services'],$service);
             }
           }
