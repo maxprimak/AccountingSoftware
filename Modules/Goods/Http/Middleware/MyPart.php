@@ -19,6 +19,13 @@ class MyPart
     public function handle(Request $request, Closure $next)
     {   
         $part_id = $request->route('part_id');
+
+        if($part_id == "null"){
+
+            return response()->json('Without part', 200);
+
+        }
+
         $default_parts = Part::where('is_custom',0)->get();
 
         if($default_parts->contains('id', $part_id)){
