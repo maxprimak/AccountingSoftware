@@ -200,6 +200,7 @@ class RepairOrder extends Model
         $rest_of_payment = $this->getRestOfPayment($payment);
         if($rest_of_payment <= 0){
           $this->payment_status_id = 1;
+          $this->prepay_sum = Order::find($this->order_id)->price;
         } 
         if($rest_of_payment > 0){
           $this->payment_status_id = 2;
