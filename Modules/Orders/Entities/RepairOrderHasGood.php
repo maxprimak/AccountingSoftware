@@ -20,8 +20,10 @@ class RepairOrderHasGood extends Model
         $this->amount = $warehouse_has_good['amount'];
         $this->device_id = $device_id;
         dd($this);
-        //$this->save();
-      return $this; 
+        $this->save();
+      //return $this; 
+      dd($this);
+      return null;
     }
 
     public function combineGoodsRepairOrderHasGood($repair_order_has_goods,$goods){
