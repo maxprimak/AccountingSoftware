@@ -14,13 +14,14 @@ class RepairOrderHasGood extends Model
     protected $fillable = [];
 
     public function store($warehouse_has_good,$repair_order_id,$device_id) {
-        $this->repair_order_id = $repair_order_id;
-        $this->warehouse_has_good_id = $warehouse_has_good['id'];
+        $this->repair_order_id = 281;
+        $this->warehouse_has_good_id = 135;
         $this->is_used = 0;
-        $this->amount = $warehouse_has_good['amount'];
-        $this->device_id = $device_id;
-        dd($this,  $this->repair_order_id,  $this->warehouse_has_good_id, $this->is_used, $this->amount, $this->device_id);
+        $this->amount = 1;
+        $this->device_id = 8;
+        //dd($this,  $this->repair_order_id,  $this->warehouse_has_good_id, $this->is_used, $this->amount, $this->device_id);
         $this->save();
+        dd('saved!');
       //return $this; 
       dd($this);
       return null;
