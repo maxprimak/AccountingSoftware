@@ -57,10 +57,10 @@ class RepairOrderHasGoodsController extends Controller
                                 ->where('device_id', $request->device_id)
                                 ->where('warehouse_has_good_id', $warehouse_has_good['id'])->exists()){
                 $repair_order_has_good = new RepairOrderHasGood();
-                dd("here");
                 $repair_order_has_good->repair_order_id = $repair_order_id;
                 $repair_order_has_good->warehouse_has_good_id = $warehouse_has_good['id'];
                 $repair_order_has_good->is_used = 0;
+                dd("here");
                 $repair_order_has_good->amount = $warehouse_has_good['amount'];
                 $repair_order_has_good->device_id = $device_id;
                 dd($repair_order_has_good);
