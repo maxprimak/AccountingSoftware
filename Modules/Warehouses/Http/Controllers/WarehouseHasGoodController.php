@@ -81,7 +81,7 @@ class WarehouseHasGoodController extends Controller
       return response()->json(['message' => 'Successfully updated!']);;
     }
 
-    public function moveGoodToWarehouse(moveGoodToWarehouseRequest $request)
+    public function moveGoodToWarehouse(MoveGoodToWarehouseRequest $request)
     {
         dd('here');
       $warehouse_has_good = WarehouseHasGood::find($request->warehouse_has_good_id);
