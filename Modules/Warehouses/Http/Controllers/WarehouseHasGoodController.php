@@ -9,7 +9,7 @@ use Modules\Warehouses\Entities\WarehouseHasGood;
 use Modules\Warehouses\Entities\Warehouse;
 use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Goods\Entities\Good;
-use Modules\Warehouses\Http\Requests\moveGoodToWarehouseRequest;
+use Modules\Warehouses\Http\Requests\MoveGoodToWarehouseRequest;
 use Modules\Warehouses\Http\Requests\UpdateWarehouseHasGoodRequest;
 
 
