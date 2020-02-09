@@ -47,12 +47,12 @@ class RepairOrderHasGoodsController extends Controller
         foreach($request->warehouse_has_goods as $warehouse_has_good){
             array_push($is_not_for_delete, $warehouse_has_good['id']);
         }
-        /*RepairOrderHasGood::where('repair_order_id', $repair_order_id)
+        RepairOrderHasGood::where('repair_order_id', $repair_order_id)
                         ->where('device_id', $request->device_id)
                         ->whereNotIn('warehouse_has_good_id', $is_not_for_delete)
                         ->delete();
         
-        foreach ($request->warehouse_has_goods as $warehouse_has_good){
+         /*foreach ($request->warehouse_has_goods as $warehouse_has_good){
             if(!RepairOrderHasGood::where('repair_order_id', $repair_order_id)
                                 ->where('device_id', $request->device_id)
                                 ->where('warehouse_has_good_id', $warehouse_has_good['id'])->exists()){
@@ -72,7 +72,7 @@ class RepairOrderHasGoodsController extends Controller
         $repair_order_has_good = new RepairOrderHasGood();
         //$result_goods = $repair_order_has_good->combineGoodsRepairOrderHasGood($repair_order_has_goods,$goods);
 
-        return response()->json("here");
+        return response()->json("here2");
         
         }
         return response()->json([]);
