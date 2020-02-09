@@ -12,9 +12,6 @@ use Modules\Goods\Entities\Good;
 use Modules\Warehouses\Http\Requests\MoveGoodToWarehouseRequest;
 use Modules\Warehouses\Http\Requests\UpdateWarehouseHasGoodRequest;
 
-
-
-
 class WarehouseHasGoodController extends Controller
 {
     /**
@@ -83,7 +80,6 @@ class WarehouseHasGoodController extends Controller
 
     public function moveGoodToWarehouse(MoveGoodToWarehouseRequest $request)
     {
-        dd('here');
       $warehouse_has_good = WarehouseHasGood::find($request->warehouse_has_good_id);
       $warehouse_has_good = $warehouse_has_good->moveToAnotherWarehouse($request);
       return response()->json(['message' => $request->amount.' goods are successfully moved!']);
