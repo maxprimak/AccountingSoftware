@@ -52,7 +52,7 @@ class RepairOrderHasGoodsController extends Controller
                         ->whereNotIn('warehouse_has_good_id', $is_not_for_delete)
                         ->delete();*/
         
-        foreach ($request->warehouse_has_goods as $warehouse_has_good){
+        /*foreach ($request->warehouse_has_goods as $warehouse_has_good){
             if(!RepairOrderHasGood::where('repair_order_id', $repair_order_id)
                                 ->where('device_id', $request->device_id)
                                 ->where('warehouse_has_good_id', $warehouse_has_good['id'])->exists()){
@@ -61,7 +61,7 @@ class RepairOrderHasGoodsController extends Controller
                 array_push($repair_order_has_goods,$repair_order_has_good);
                 array_push($warehouse_has_good_ids,$warehouse_has_good['id']);
             }
-        }
+        }*/
         $warehouse_has_goods = WarehouseHasGood::whereIn('id',$warehouse_has_good_ids)->get();
         $goods = array();
         foreach ($warehouse_has_goods as $warehouse_has_good){
