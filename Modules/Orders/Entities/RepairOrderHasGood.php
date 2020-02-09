@@ -13,7 +13,7 @@ class RepairOrderHasGood extends Model
 {
     protected $fillable = ['repair_order_id', 'warehouse_has_good_id', 'is_used', 'amount', 'device_id'];
 
-    public function store($warehouse_has_good,$repair_order_id,$device_id) {
+    public function store(/*$warehouse_has_good,$repair_order_id,$device_id*/) {
         $this->repair_order_id = 281;
         $this->warehouse_has_good_id = 135;
         $this->is_used = 0;
