@@ -31,7 +31,6 @@ class CustomersController extends Controller
     public function index()
     {
         try {
-
           $user = User::where('login_id',auth('api')->id())->firstOrFail();
           $customers = CustomerServiceFacad::getCustomerUserCanSee($user->id);
         } catch (\Exception $e) {
