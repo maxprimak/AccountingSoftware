@@ -38,21 +38,21 @@ class RepairOrderHasGoodsController extends Controller
      */
     public function store(StoreRepairOrderHasGoodsRequest $request,$repair_order_id)
     {
-        //if($request->warehouse_has_goods != []){
+        if($request->warehouse_has_goods != []){
 
-        //$repair_order_has_goods = array();
-        //$warehouse_has_good_ids = array();
+        $repair_order_has_goods = array();
+        $warehouse_has_good_ids = array();
 
-        //$is_not_for_delete = array();
-        //foreach($request->warehouse_has_goods as $warehouse_has_good){
-            //array_push($is_not_for_delete, $warehouse_has_good['id']);
-        //}
-        /*RepairOrderHasGood::where('repair_order_id', $repair_order_id)
+        $is_not_for_delete = array();
+        foreach($request->warehouse_has_goods as $warehouse_has_good){
+            array_push($is_not_for_delete, $warehouse_has_good['id']);
+        }
+        RepairOrderHasGood::where('repair_order_id', $repair_order_id)
                         ->where('device_id', $request->device_id)
                         ->whereNotIn('warehouse_has_good_id', $is_not_for_delete)
-                        ->delete();*/
+                        ->delete();
         
-        /*foreach ($request->warehouse_has_goods as $warehouse_has_good){
+        foreach ($request->warehouse_has_goods as $warehouse_has_good){
             if(!RepairOrderHasGood::where('repair_order_id', $repair_order_id)
                                 ->where('device_id', $request->device_id)
                                 ->where('warehouse_has_good_id', $warehouse_has_good['id'])->exists()){
@@ -61,20 +61,20 @@ class RepairOrderHasGoodsController extends Controller
                 array_push($repair_order_has_goods,$repair_order_has_good);
                 array_push($warehouse_has_good_ids,$warehouse_has_good['id']);
             }
-        }*/
-        /*$warehouse_has_goods = WarehouseHasGood::whereIn('id',$warehouse_has_good_ids)->get();
+        }
+        $warehouse_has_goods = WarehouseHasGood::whereIn('id',$warehouse_has_good_ids)->get();
         $goods = array();
         foreach ($warehouse_has_goods as $warehouse_has_good){
             $good = $warehouse_has_good->getGoodForDevice();
             $good['warehouse_name'] = $warehouse_has_good->getWarehouseName();
             array_push($goods,$good);
-        }*/
+        }
         $repair_order_has_good = new RepairOrderHasGood();
         //$result_goods = $repair_order_has_good->combineGoodsRepairOrderHasGood($repair_order_has_goods,$goods);
 
-        //return response()->json($result_goods);
+        return response()->json("here");
         
-        //}
+        }
         return response()->json([]);
     }
 
