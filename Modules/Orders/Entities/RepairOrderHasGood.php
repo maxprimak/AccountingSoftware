@@ -11,20 +11,17 @@ use Modules\Warehouses\Entities\Warehouse;
 
 class RepairOrderHasGood extends Model
 {
-    protected $fillable = ['repair_order_id', 'warehouse_has_good_id', 'is_used', 'amount', 'device_id'];
+    protected $fillable = [];
 
-    public function store(/*$warehouse_has_good,$repair_order_id,$device_id*/) {
-        $this->repair_order_id = 281;
-        $this->warehouse_has_good_id = 135;
+    public function store($warehouse_has_good,$repair_order_id,$device_id) {
+        $this->repair_order_id = $repair_order_id;
+        $this->warehouse_has_good_id = $warehouse_has_good['id'];
         $this->is_used = 0;
-        $this->amount = 1;
-        $this->device_id = 8;
-        //dd($this,  $this->repair_order_id,  $this->warehouse_has_good_id, $this->is_used, $this->amount, $this->device_id);
+        $this->amount = $warehouse_has_good['amount'];
+        $this->device_id = $device_id;
         $this->save();
-        dd('saved!');
-      //return $this; 
-      dd($this);
-      return null;
+        
+        return $this; 
     }
 
     public function combineGoodsRepairOrderHasGood($repair_order_has_goods,$goods){
