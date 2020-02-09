@@ -62,6 +62,7 @@ class RepairOrderHasGoodsController extends Controller
                 $repair_order_has_good->is_used = 0;
                 $repair_order_has_good->amount = $warehouse_has_good['amount'];
                 //
+                dd($device_id);
                 $repair_order_has_good->device_id = $device_id;
                 dd("here");
                 dd($repair_order_has_good);
