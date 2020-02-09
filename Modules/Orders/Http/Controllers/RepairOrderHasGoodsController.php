@@ -62,13 +62,13 @@ class RepairOrderHasGoodsController extends Controller
                 array_push($warehouse_has_good_ids,$warehouse_has_good['id']);
             }
         }*/
-        $warehouse_has_goods = WarehouseHasGood::whereIn('id',$warehouse_has_good_ids)->get();
+        /*$warehouse_has_goods = WarehouseHasGood::whereIn('id',$warehouse_has_good_ids)->get();
         $goods = array();
         foreach ($warehouse_has_goods as $warehouse_has_good){
             $good = $warehouse_has_good->getGoodForDevice();
             $good['warehouse_name'] = $warehouse_has_good->getWarehouseName();
             array_push($goods,$good);
-        }
+        }*/
         $repair_order_has_good = new RepairOrderHasGood();
         $result_goods = $repair_order_has_good->combineGoodsRepairOrderHasGood($repair_order_has_goods,$goods);
 
