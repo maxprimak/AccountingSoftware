@@ -19,7 +19,7 @@ class RepairOrderHasGood extends Model
         $this->is_used = 0;
         $this->amount = $warehouse_has_good['amount'];
         $this->device_id = $device_id;
-        //$this->save();
+        $this->save();
       //return $this; 
       return null;
     }
