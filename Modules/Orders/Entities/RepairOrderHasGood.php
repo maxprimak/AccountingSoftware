@@ -19,7 +19,6 @@ class RepairOrderHasGood extends Model
         $this->is_used = 0;
         $this->amount = $warehouse_has_good['amount'];
         $this->device_id = $device_id;
-        dd($this);
         $this->save();
       //return $this; 
       dd($this);
