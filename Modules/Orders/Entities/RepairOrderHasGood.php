@@ -11,7 +11,7 @@ use Modules\Warehouses\Entities\Warehouse;
 
 class RepairOrderHasGood extends Model
 {
-    protected $fillable = [];
+    protected $fillable = ['repair_order_id', 'warehouse_has_good_id', 'is_used', 'amount', 'device_id'];
 
     public function store($warehouse_has_good,$repair_order_id,$device_id) {
         $this->repair_order_id = $repair_order_id;
@@ -20,7 +20,7 @@ class RepairOrderHasGood extends Model
         $this->amount = $warehouse_has_good['amount'];
         $this->device_id = $device_id;
         $this->save();
-        
+
         return $this; 
     }
 
