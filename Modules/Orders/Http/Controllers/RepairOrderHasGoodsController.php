@@ -70,7 +70,7 @@ class RepairOrderHasGoodsController extends Controller
             array_push($goods,$good);
         }*/
         $repair_order_has_good = new RepairOrderHasGood();
-        $result_goods = $repair_order_has_good->combineGoodsRepairOrderHasGood($repair_order_has_goods,$goods);
+        //$result_goods = $repair_order_has_good->combineGoodsRepairOrderHasGood($repair_order_has_goods,$goods);
 
         //return response()->json($result_goods);
         
