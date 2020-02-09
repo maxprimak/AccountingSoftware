@@ -8,7 +8,6 @@ use Illuminate\Routing\Controller;
 use Modules\Goods\Entities\Good;
 use Modules\Orders\Entities\RepairOrderHasGood;
 use Modules\Orders\Http\Requests\DestroyGoodFromDeviceRequest;
-use Modules\Orders\Http\Requests\StoreRepairOrderHasGoodsRequest;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 
 class RepairOrderHasGoodsController extends Controller
@@ -36,7 +35,7 @@ class RepairOrderHasGoodsController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(StoreRepairOrderHasGoodsRequest $request,$repair_order_id)
+    public function store(Request $request,$repair_order_id)
     {
         if($request->warehouse_has_goods != []){
 
