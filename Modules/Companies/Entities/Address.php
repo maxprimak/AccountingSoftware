@@ -19,6 +19,18 @@ class Address extends Model
   
     }
 
+    //for seeder
+    public static function saveAddress($house_number, $postcode, $street_name, $city_id){
+      $address = new Address();
+      $address->house_number = $house_number;
+      $address->postcode = $postcode;
+      $address->street_name = $street_name;
+      $address->city_id = $city_id;
+      $address->save();
+
+      return $address;
+  }
+
     public static function makeCopy($address){
       $new_address = new Address();
       $new_address->street_name = $address->street_name;

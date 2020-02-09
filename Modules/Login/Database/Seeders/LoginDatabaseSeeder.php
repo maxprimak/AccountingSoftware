@@ -16,7 +16,6 @@ class LoginDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        //Create login data of user oliinykm95
         factory('Modules\Login\Entities\Login')->create([
             'username' => 'me@phonefactory.at',
             'password' => bcrypt('123456789'),

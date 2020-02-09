@@ -29,7 +29,7 @@ class CompaniesDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->seedCountries();
+        $this->seedVienna();
 
         factory('Modules\Companies\Entities\Currency')->create([
             'name' => 'Euro',
@@ -46,24 +46,31 @@ class CompaniesDatabaseSeeder extends Seeder
             'symbol' => '₽'
         ]);
 
-        $address = Address::all()->first();
+        $vienna_id = 3899;
+
+        $company_address = Address::saveAddress("94, Top 1A", "1220", "Wagramerstraße", $vienna_id);
 
        $company = factory('Modules\Companies\Entities\Company')->create([
             'name' => 'PhoneFactory',
             'currency_id' => 1,
             'phone' => '+43 1 3694001',
             'tax' => 20,
-            'address_id' => $address->id
+            'address_id' => $company_address->id
         ]);
 
         Warranty::createDefaultForNewCompany($company->id);
         DiscountCode::createDefaultForNewCompany($company->id);
 
+        $dz_address = Address::makeCopy($company_address);
+        $dz_neu_address = Address::makeCopy($company_address);
+        $kg_address = Address::saveAddress("1", "1070", "Kirchengasse", $vienna_id);
+        $huma_address = Address::saveAddress("6, Top 126A", "1110", "Landwehrstraße", $vienna_id);
+
         $branch = factory('Modules\Companies\Entities\Branch')->create([
             'name' => 'DZ',
             'company_id' => 1,
             'color' => '#F64272',
-            'address_id' => Address::makeCopy($address)->id,
+            'address_id' => $dz_address->id,
             'phone' => '+43 1 3694001'
         ]);
         $this->store_warehouse($branch);
@@ -72,7 +79,7 @@ class CompaniesDatabaseSeeder extends Seeder
             'name' => 'DZ Neu',
             'company_id' => 1,
             'color' => '#0a9901',
-            'address_id' => Address::makeCopy($address)->id,
+            'address_id' => $dz_neu_address->id,
             'phone' => '+43 1 3694001'
         ]);
         $this->store_warehouse($branch);
@@ -81,7 +88,7 @@ class CompaniesDatabaseSeeder extends Seeder
             'name' => 'KG',
             'company_id' => 1,
             'color' => '#0970c7',
-            'address_id' => Address::makeCopy($address)->id,
+            'address_id' => $kg_address->id,
             'phone' => '+43 1 3694001'
         ]);
         $this->store_warehouse($branch);
@@ -90,10 +97,24 @@ class CompaniesDatabaseSeeder extends Seeder
             'name' => 'Huma',
             'company_id' => 1,
             'color' => '#ec9a5d',
-            'address_id' => Address::makeCopy($address)->id,
+            'address_id' => $huma_address->id,
             'phone' => '+43 1 7670666'
         ]);
         $this->store_warehouse($branch);
+    }
+
+    public function seedVienna(){
+        
+        $country = new Country();
+        $country->name = "Austria";
+        $country->save();
+
+        $city = new City();
+        $city->id = 3899;
+        $city->name = "Vienna";
+        $city->country_id = $country->id;
+        $city->save();
+
     }
 
     public function seedCountries(){

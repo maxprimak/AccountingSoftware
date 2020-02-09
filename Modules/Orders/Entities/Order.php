@@ -37,4 +37,9 @@ class Order extends Model
             $branch = Branch::findOrFail($this->branch_id);
             return $branch;
     }
+
+    //for seeder
+    public static function makeOrder(){
+        
+    }
 }

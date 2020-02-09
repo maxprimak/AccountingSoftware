@@ -18,7 +18,7 @@ class CreateRepairOrdersTable extends Migration
             $table->unsignedInteger('order_id');
             $table->string("order_nr");
             $table->unsignedInteger("customer_id");
-            $table->string("comment")->nullable();
+            $table->string("comment", 900)->nullable();
             $table->unsignedInteger("status_id");
             $table->double("prepay_sum")->nullable();
             $table->date("deadline")->nullable();
