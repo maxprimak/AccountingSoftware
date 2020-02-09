@@ -14,15 +14,15 @@ class RepairOrderHasGood extends Model
     protected $fillable = [];
 
     public function store($warehouse_has_good,$repair_order_id,$device_id) {
-        RepairOrderHasGood::create([
-        'repair_order_id' => $repair_order_id,
-        'warehouse_has_good_id' => $warehouse_has_good['id'],
-        'is_used' => 0,
-        'amount' => $warehouse_has_good['amount'],
-        'device_id' => $device_id,
-        ]);
+        $this->repair_order_id = $repair_order_id;
+        $this->warehouse_has_good_id = $warehouse_has_good['id'];
+        $this->is_used = 0;
+        $this->amount = $warehouse_has_good['amount'];
+        $this->device_id = $device_id;
+        dd($this,  $this->repair_order_id,  $this->warehouse_has_good_id, $this->is_used, $this->amount, $this->device_id);
+        $this->save();
       //return $this; 
-      dd("created!");
+      dd($this);
       return null;
     }
 
