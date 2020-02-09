@@ -38,7 +38,7 @@ class RepairOrderHasGoodsController extends Controller
      */
     public function store(StoreRepairOrderHasGoodsRequest $request,$repair_order_id)
     {
-        /*if($request->warehouse_has_goods != []){
+        if($request->warehouse_has_goods != []){
 
         $repair_order_has_goods = array();
         $warehouse_has_good_ids = array();
@@ -47,7 +47,7 @@ class RepairOrderHasGoodsController extends Controller
         foreach($request->warehouse_has_goods as $warehouse_has_good){
             array_push($is_not_for_delete, $warehouse_has_good['id']);
         }
-        RepairOrderHasGood::where('repair_order_id', $repair_order_id)
+        /*RepairOrderHasGood::where('repair_order_id', $repair_order_id)
                         ->where('device_id', $request->device_id)
                         ->whereNotIn('warehouse_has_good_id', $is_not_for_delete)
                         ->delete();
