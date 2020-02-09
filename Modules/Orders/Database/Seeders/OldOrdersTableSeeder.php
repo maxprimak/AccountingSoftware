@@ -51,7 +51,7 @@ class OldOrdersTableSeeder extends Seeder
             $repairOrder->prepay_sum = $eachRepairOrder['prepay_sum'];
             $repairOrder->deadline = null;
             $repairOrder->is_completed = 0;
-            $repairOrder->payment_status_id = 1;
+            $repairOrder->payment_status_id = 3;
             $repairOrder->warranty_id = 1;
             $repairOrder->discount_code_id = 1;
             $repairOrder->order_type_id = ($eachRepairOrder['status_id'] == 9) ? 3 : 1;
