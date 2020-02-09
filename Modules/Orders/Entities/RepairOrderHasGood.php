@@ -13,14 +13,15 @@ class RepairOrderHasGood extends Model
 {
     protected $fillable = [];
 
-    public function store($warehouse_has_good,$repair_order_id,$device_id): RepairOrderHasGood{
-        $this->repair_order_id = $repair_order_id;
+    public function store($warehouse_has_good,$repair_order_id,$device_id) {
+       /* $this->repair_order_id = $repair_order_id;
         $this->warehouse_has_good_id = $warehouse_has_good['id'];
         $this->is_used = 0;
         $this->amount = $warehouse_has_good['amount'];
         $this->device_id = $device_id;
         $this->save();
-      return $this;
+      return $this;*/
+      return null;
     }
 
     public function combineGoodsRepairOrderHasGood($repair_order_has_goods,$goods){
