@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Modules\Login\Http\Requests\LoginRequest;
+use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
@@ -56,7 +57,9 @@ class AuthController extends Controller
             'username' => 'required|min:6|unique:logins,username',
             'email' => 'required|email|unique:logins,email',
             'password' => 'required|min:8',
-            'repassword' => 'required|same:password'
+            'repassword' => 'required|same:password',
+            'recaptchaToken' => 'required',
+            'ip' => 'required'
         ]);
     }
 
@@ -64,6 +67,7 @@ class AuthController extends Controller
 
         $validator = $this->regValidator($request->all());
         if ($validator->fails()) return response()->json($validator->errors(), 422);
+        if (!$this->checkRecaptcha($request->recaptchaToken, $request->ip)) return response()->json("Recaptcha is not correct", 422);
 
         $user = Login::create([
             'username' => $request->username,
@@ -85,6 +89,19 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]);
 
+    }
+
+    protected function checkRecaptcha($token, $ip)
+    {
+        $response = (new Client)->post('https://www.google.com/recaptcha/api/siteverify', [
+            'form_params' => [
+                'secret'   => '6LeyZdcUAAAAABcWJFllsT3ysAS1P58XegJSYvFS',
+                'response' => $token,
+                'remoteip' => $ip,
+            ],
+        ]);
+        $response = json_decode((string)$response->getBody(), true);
+        return $response['success'];
     }
 
     public function logout(){
