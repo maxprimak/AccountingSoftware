@@ -15,7 +15,7 @@ class VerificationApiController extends Controller
         $date = date('Y-m-d');
         $user->email_verified_at = $date; 
         $user->save();
-        return "<script>alert('Your email was successfully verified!'); window.location.href = 'https://relist.at'</script>";
+        return "<script>alert('Your email was successfully verified!'); window.location.href = '". env('REDIRECT_AFTER_EMAIL_VERIFICATION') ."'</script>";
         //return redirect('https://relist.at');
     }
 }

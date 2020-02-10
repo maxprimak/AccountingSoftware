@@ -64,7 +64,6 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
-
         $validator = $this->regValidator($request->all());
         if ($validator->fails()) return response()->json($validator->errors(), 422);
         if (!$this->checkRecaptcha($request->recaptchaToken, $request->ip)) return response()->json("Recaptcha is not correct", 422);
@@ -95,7 +94,7 @@ class AuthController extends Controller
     {
         $response = (new Client)->post('https://www.google.com/recaptcha/api/siteverify', [
             'form_params' => [
-                'secret'   => '6LeyZdcUAAAAABcWJFllsT3ysAS1P58XegJSYvFS',
+                'secret'   => env('RECAPTCHA_KEY'),
                 'response' => $token,
                 'remoteip' => $ip,
             ],
