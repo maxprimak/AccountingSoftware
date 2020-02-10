@@ -23,7 +23,7 @@ class DiscountCodesOrdersController extends Controller
         $repair_order = RepairOrder::find($id);
         $repair_order->updateDiscountCode($request->discount_code_id);
 
-        $repair_order->warranty_name = Warranty::findOrFail($repair_order->warranty_id)->name;
+        $repair_order->warranty_name = ($repair_order->warranty_id == null) ? null : Warranty::findOrFail($repair_order->warranty_id)->name;
         $repair_order->discount_code_name = DiscountCode::findOrFail($repair_order->discount_code_id)->name;
         
         return response()->json([

@@ -137,8 +137,8 @@ class RepairOrdersController extends Controller
         $customer_type = CustomerType::findOrFail($customer->type_id);
         $result_devices = RepairOrderHasDevice::getDevicesOfOrderWithServices($repair_order);
         $order_type = OrderTypes::getOrderTypeWithTranslation($repair_order);
-        $discount_code = DiscountCode::findOrFail($repair_order->discount_code_id);
-        $warranty = Warranty::findOrFail($repair_order->warranty_id);
+        $discount_code = ($repair_order->discount_code_id == null) ? null : DiscountCode::findOrFail($repair_order->discount_code_id);
+        $warranty = ($repair_order->warranty_id == null) ? null : Warranty::findOrFail($repair_order->warranty_id);
         $payment_status = PaymentStatuses::getPaymentStatusWithTranslation($repair_order);
         $branch = $order->getBranch();
         $currency_id = Login::find(auth('api')->id())->getCompany()->currency_id;
@@ -164,17 +164,17 @@ class RepairOrdersController extends Controller
                 'devices' => $result_devices,
                 'order_type_name' => $order_type->name,
                 'deadline_date' => $repair_order->deadline,
-                'discount_code_id' => $discount_code->id,
-                'discount_code_name' => $discount_code->name,
-                'discount_code_percent' => $discount_code->percent_amount,
+                'discount_code_id' => ($discount_code == null) ? null : $discount_code->id,
+                'discount_code_name' => ($discount_code == null) ? null : $discount_code->name,
+                'discount_code_percent' => ($discount_code == null) ? null : $discount_code->percent_amount,
                 'prepay_sum' => $repair_order->prepay_sum,
                 'branch_name' => $branch->name,
                 'branch_id' => $branch->id,
                 'comment' => $repair_order->comment,
                 'price' => $order->price,
-                'warranty_id' => $warranty->id,
-                'warranty_name' => $warranty->name,
-                'warranty_days_number' => $warranty->days_number,
+                'warranty_id' => ($warranty == null) ? null : $warranty->id,
+                'warranty_name' => ($warranty == null) ? null : $warranty->name,
+                'warranty_days_number' => ($warranty == null) ? null : $warranty->days_number,
                 'payment_status_id' => $payment_status->id,
                 'payment_status_name' => $payment_status->name,
                 'currency_id' => $currency->id,

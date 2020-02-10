@@ -24,7 +24,7 @@ class WarrantyOrdersController extends Controller
         $repair_order->updateWarranty($request->warranty_id);
 
         $repair_order->warranty_name = Warranty::findOrFail($repair_order->warranty_id)->name;
-        $repair_order->discount_code_name = DiscountCode::findOrFail($repair_order->discount_code_id)->name;
+        $repair_order->discount_code_name = ($repair_order->discount_code_id == null) ? null : DiscountCode::findOrFail($repair_order->discount_code_id)->name;
 
         return response()->json(['message' => 'successfully updated', 
                                 'order' => $repair_order]);

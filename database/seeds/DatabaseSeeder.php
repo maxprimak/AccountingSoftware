@@ -47,20 +47,20 @@ class DatabaseSeeder extends Seeder
         $this->call(EmployeesDatabaseSeeder::class);
         $this->call(CustomerTypesTableSeeder::class);
         $this->call(CompaniesNewTableSeeder::class);
-        $this->call(OldCustomersDatabaseSeeder::class);
+        //$this->call(OldCustomersDatabaseSeeder::class);
         //$this->call(CategoriesSeederTableSeeder::class);
         $this->call(BrandsSeederTableSeeder::class);
         $this->call(ModelsSeederTableSeeder::class);
         $this->call(SubmodelSeederTableSeeder::class);
         $this->call(PartSeederTableSeeder::class);
         $this->call(ColorSeederTableSeeder::class);
-        $this->call(OldGoodsTableSeeder::class);
+        //$this->call(OldGoodsTableSeeder::class);
         $this->call(GoodsDatabaseSeeder::class);
         $this->call(OrderStatusesTableSeeder::class);
         $this->call(RepairOrdersTableSeeder::class);
         $this->call(PaymentStatusesTableSeeder::class);
         $this->call(OrderTypesSeederTableSeeder::class);
-        $this->call(OldOrdersTableSeeder::class);
+        //$this->call(OldOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
         $this->call(ModelFixTableSeeder::class);
     }
