@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "401f436de4ac0dd6e131dcf285855630",
+    "content-hash": "9b5db9f51aa1fd18238c57963d03137f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -915,7 +915,6 @@
                 "selenium",
                 "webdriver"
             ],
-            "abandoned": "php-webdriver/webdriver",
             "time": "2019-06-13T08:02:18+00:00"
         },
         {
