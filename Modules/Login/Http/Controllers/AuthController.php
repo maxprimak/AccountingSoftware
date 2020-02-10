@@ -76,7 +76,7 @@ class AuthController extends Controller
             'is_active' => 1,
         ]);
 
-        //$user->sendEmailVerificationNotification(); //TODO: does NOT work on server
+        $user->sendEmailVerificationNotification(); 
 
         $tokenResult = $this->getToken($user, $request);
 

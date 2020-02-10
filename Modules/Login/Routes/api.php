@@ -18,3 +18,6 @@ Route::prefix('auth')->group(function () {
     Route::post('register', 'AuthController@register')->name('register');
     Route::post('logout', 'AuthController@logout')->name('logout');
 });
+
+Route::get('email/verify/{id}', 'VerificationApiController@verify')->name('verification.verify');
+//Route::get('email/verify/{id}', 'VerificationController@verify')->name('verification.verify');
