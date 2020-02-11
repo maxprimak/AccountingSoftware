@@ -25,6 +25,7 @@ use Modules\Orders\Entities\OrderStatus;
 use Modules\Customers\Entities\Customer;
 use Modules\Orders\Entities\Warranty;
 use Modules\Orders\Entities\PayOrders;
+use Modules\Orders\Entities\WarrantyOrders;
 use Modules\Orders\Http\Requests\StoreRepairOrderRequest;
 use Modules\Orders\Http\Requests\UpdateRepairOrderRequest;
 use Modules\Customers\Entities\CustomerHasBranch;
@@ -199,17 +200,25 @@ class RepairOrdersController extends Controller
      * @param int $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
 
-        $repair_order = RepairOrder::findOrFail($id);
-        $order = Order::findOrFail($repair_order->order_id);
+        $ids = $request->repair_order_id;
 
-        RepairOrderHasGood::where('repair_order_id',$repair_order->id)->delete();
-        RepairOrderHasDevice::where('repair_order_id',$repair_order->id)->delete();
-        PayOrders::where('repair_order_id',$repair_order->id)->delete();
-        $repair_order->delete();
-        $order->delete();
+        foreach($ids as $id){
+
+            $repair_order = RepairOrder::findOrFail($id);
+            $order = Order::findOrFail($repair_order->order_id);
+            DeviceHasService::where('repair_order_id', $repair_order->id)->delete();
+            RepairOrderHasGood::where('repair_order_id',$repair_order->id)->delete();
+            RepairOrderHasDevice::where('repair_order_id',$repair_order->id)->delete();
+            PayOrders::where('repair_order_id',$repair_order->id)->delete();
+            ReworkOrders::where('repair_order_id',$repair_order->id)->delete();
+            WarrantyOrders::where('repair_order_id',$repair_order->id)->delete();
+            $repair_order->delete();
+            $order->delete();
+
+        }
 
         return response()->json(["status" => "Successfully deleted"]);
 
