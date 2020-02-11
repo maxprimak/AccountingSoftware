@@ -3,6 +3,8 @@
 namespace Modules\Companies\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Companies\Entities\City;
+use Modules\Companies\Entities\Country;
 
 class Address extends Model
 {
@@ -14,7 +16,9 @@ class Address extends Model
         $this->postcode = $request->postcode;
         $this->street_name = $request->street_name;
         $this->house_number = $request->house_number;
-        $this->city_id = $request->city_id;
+        $this->city_id = City::where('name', $request->city_name)
+                        ->where('country_id', $request->country_id)
+                        ->firstOrFail()->id;
         $this->save();
   
     }

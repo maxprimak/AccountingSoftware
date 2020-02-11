@@ -12,6 +12,8 @@ use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Currency;
 use Modules\Companies\Entities\Branch;
 use Modules\Companies\Entities\Address;
+use Modules\Companies\Entities\City;
+use Modules\Companies\Entities\Country;
 use Modules\Users\Entities\User;
 use Modules\Login\Entities\Login;
 use Modules\Companies\Http\Requests\StoreCompanyRequest;
@@ -35,8 +37,12 @@ class CompaniesController extends Controller
         $company->street_name = $address->street_name;
         $company->house_number = $address->house_number;
         $company->postcode = $address->postcode;
-        $company->city_id = $address->city_id;
 
+        $city = City::findOrFail($address->city_id);
+        $country = Country::findOrFail($city->country_id);
+
+        $company->city_name = $city->name;
+        $company->country_name = $country->name;
 
         return response()->json(['company' => $company], 200);
     }
