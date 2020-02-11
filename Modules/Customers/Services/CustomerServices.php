@@ -7,6 +7,8 @@ use Modules\Users\Entities\UserHasBranch;
 use Modules\Customers\Entities\CustomerHasBranch;
 use Modules\Customers\Entities\Customer;
 use Modules\Companies\Entities\Branch;
+use Modules\Devices\Entities\Device;
+use Modules\Devices\Entities\CustomerHasDevice;
 use Modules\Employees\Entities\Employee;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -77,6 +79,20 @@ class CustomerServices{
         foreach($customers as $customer){
             $permissions = CustomerHasBranch::where('customer_id', $customer->id)->pluck('branch_id')->toArray();
             $customer->branch_id = $permissions;
+            
+            $devices_ids = CustomerHasDevice::where('customer_id', $customer->id)->pluck('device_id')->toArray();
+            $devices = Device::whereIn('id', $devices_ids)->orderBy('id', 'DESC')->get();
+    
+            foreach($devices as $device){
+                $device->status_name = $device->getStatus()['name'];
+                $device->status_hexcode = $device->getStatus()['hexcode'];
+                $device->last_request = $device->getStatus()['last_request'];
+            }
+
+            $customer->devices = $devices;
+
+
+
         }
         return $customers;
     }
