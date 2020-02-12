@@ -12,9 +12,13 @@ use Modules\Companies\Entities\Address;
 use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Entities\SalesOrder;
+use Laravel\Cashier\Billable;
 
 class Company extends Model
-{
+{ 
+
+    use Billable;
+
     protected $fillable = ['name', 'phone', 'address'];
 
     public function __construct(array $attributes = array()){

@@ -21,6 +21,10 @@ class CreateCompaniesTable extends Migration
             $table->unsignedInteger('currency_id');
             $table->unsignedInteger('language_id')->default(1);
             $table->unsignedInteger('address_id');
+            $table->string('stripe_id')->nullable()->collation('utf8mb4_bin')->index();
+            $table->string('card_brand')->nullable();
+            $table->string('card_last_four', 4)->nullable();
+            $table->timestamp('trial_ends_at')->nullable();
             //$table->unsignedInteger('package_id');
             $table->timestamps();
             $table->foreign('currency_id')->references('id')->on('currencies');
