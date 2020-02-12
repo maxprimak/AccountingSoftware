@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
 
         // Use the Cashier migrations from migration folder instead of vendor folder
-        Cashier::ignoreMigrations();
+        //Cashier::ignoreMigrations();
 
     }
 
