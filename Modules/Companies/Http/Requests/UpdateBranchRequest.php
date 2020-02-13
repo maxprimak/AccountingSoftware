@@ -21,8 +21,8 @@ class UpdateBranchRequest extends FormRequest
             'house_number' => 'required|max:190',
             'postcode' => 'required|max:190',
             'street_name' => 'required|max:190',
-            'city_name' => 'required|exists:cities,name',
-            'country_id' => 'required|exists:countries,id'
+            'country_id' => 'required|exists:countries,id',
+            'city_name' => 'required|exists:cities,name,country_id,'.$this->input('country_id'),
         ];
     }
 
