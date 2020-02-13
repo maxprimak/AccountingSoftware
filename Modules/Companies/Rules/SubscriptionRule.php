@@ -7,10 +7,10 @@ use Illuminate\Contracts\Validation\Rule;
 class SubscriptionRule implements Rule
 {   
 
-    private $message = 'Your subscription plan does not allow you to perform this action.'; 
-    private $message_orders = " You have reached the orders limit.";
-    private $message_branches = " You have reached the branches limit.";
-    private $message_employees = " You have reached the employees limit.";
+    public $message = 'Your subscription plan does not allow you to perform this action.'; 
+    public $message_orders = " You have reached the orders limit.";
+    public $message_branches = " You have reached the branches limit.";
+    public $message_employees = " You have reached the employees limit.";
 
     public static $free_orders_number = 25;
     public static $free_branches_number = 1;
@@ -25,6 +25,12 @@ class SubscriptionRule implements Rule
 
     public $pro_branches_number = 1;
     public $pro_employees_number = 10;
+
+    public $company;
+    public $plan_name;
+    public $orders_this_month_number;
+    public $branches_number;
+    public $employees_number;
 
     public function incrementProNumbersIfExtraBranches($company){
         if($company->hasExtraBranches()){
@@ -49,7 +55,12 @@ class SubscriptionRule implements Rule
      */
     public function __construct()
     {
-        //
+        $this->company = auth('api')->user()->getCompany();
+        $this->plan_name = $this->company->getStripePlanName();
+
+        $this->orders_this_month_number = $this->company->getRepairOrdersThisMonthNumber();
+        $this->branches_number = $this->company->getBranchesNumber();
+        $this->employees_number = $this->company->getEmployeesNumber();
     }
 
     /**
@@ -61,38 +72,8 @@ class SubscriptionRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $company = auth('api')->user()->getCompany();
-        $plan_name = $company->getStripePlanName();
 
-        $orders_this_month_number = $company->getRepairOrdersThisMonthNumber();
-        $branches_number = $company->getBranchesNumber();
-        $employees_number = $company->getEmployeesNumber();
-
-        if($plan_name == "free"){
-            if(!$this->checkRule($orders_this_month_number, SubscriptionRule::$free_orders_number, $this->message_orders)) return false;
-            if(!$this->checkRule($branches_number, SubscriptionRule::$free_branches_number, $this->message_branches)) return false;
-            if(!$this->checkRule($employees_number, SubscriptionRule::$free_employees_number, $this->message_employees)) return false;
-            return true;
-        }   
-        else if($plan_name == "startup"){
-            if(!$this->checkRule($orders_this_month_number, SubscriptionRule::$startup_orders_number, $this->message_orders)) return false;
-            if(!$this->checkRule($branches_number, SubscriptionRule::$startup_branches_number, $this->message_branches)) return false;
-            if(!$this->checkRule($employees_number, SubscriptionRule::$startup_employees_number, $this->message_employees)) return false;
-            return true;
-        }
-        else if($plan_name == "pro"){
-            $this->incrementProNumbersIfExtraBranches($company);
-            if(!$this->checkRule($branches_number, $this->pro_branches_number, $this->message_branches)) return false;
-            if(!$this->checkRule($employees_number, $this->pro_employees_number, $this->message_employees)) return false;
-            return true;
-        }
-        else if($plan_name == "enterprise"){
-            return true;
-        }
-        else{
-            $message .= " Your plan was not detected";
-            return false;
-        }
+        return true;
 
     }
 

@@ -5,6 +5,7 @@ namespace Modules\Employees\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Modules\Companies\Rules\SubscriptionRuleEmployees;
 
 class StoreEmployeeRequest extends FormRequest
 {
@@ -16,7 +17,7 @@ class StoreEmployeeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => ['required', new SubscriptionRuleEmployees ],
             'username' => 'required|min:6|unique:logins,username',
             'password' => 'required|min:8',
             're_password' => 'required|same:password',
