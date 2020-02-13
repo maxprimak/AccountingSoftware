@@ -22,9 +22,10 @@ class StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder extends Seeder
 
         foreach($companies as $company){
             $company->createAsStripeCustomer([
-                'description' => $company->name
-                //email for new
+                'description' => $company->name 
             ]);
+
+            $company->subscribeToFreePlan();
         }
 
     }

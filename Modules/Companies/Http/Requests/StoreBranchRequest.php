@@ -5,6 +5,7 @@ namespace Modules\Companies\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Modules\Companies\Rules\SubscriptionRule;
 
 class StoreBranchRequest extends FormRequest
 {
@@ -16,7 +17,7 @@ class StoreBranchRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => ['required', new SubscriptionRule],
             'color' => ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
             'house_number' => 'required|max:190',
             'postcode' => 'required|max:190',
