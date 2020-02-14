@@ -96,4 +96,9 @@ class Company extends Model
       return $warehouses_ids;
     }
 
+    public function getCurrency(){
+        $currency = Currency::find($this->currency_id);
+        return $currency;
+    }
+
 }
