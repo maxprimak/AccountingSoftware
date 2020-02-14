@@ -38,7 +38,7 @@ class RepairOrderHasGoodsController extends Controller
      */
     public function store(StoreRepairOrderHasGoodsRequest $request,$repair_order_id)
     {
-        if($request->warehouse_has_goods != []){
+        if($request->has('warehouse_has_goods') && $request->warehouse_has_goods != []){
 
         $repair_order_has_goods = array();
         $warehouse_has_good_ids = array();
@@ -84,7 +84,15 @@ class RepairOrderHasGoodsController extends Controller
         return response()->json($result_goods);
         
         }
-        return response()->json([]);
+        else{
+
+            RepairOrderHasGood::where('repair_order_id', $repair_order_id)
+            ->where('device_id', $request->device_id)
+            ->delete();
+
+            return response()->json([]);
+        }
+        
     }
 
     /**
