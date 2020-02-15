@@ -14,9 +14,6 @@ class Customer extends Model
   }
 
   public function store($request){
-      // foreach ($request as $key => $value) {
-      //   $this->$key = $request[$value];
-      // }
       $this->person_id = $request['person_id'];
       $this->email = $request['email'];
       $this->type_id = $request['type_id'];
@@ -74,6 +71,10 @@ class Customer extends Model
       $this->save();
       
       return $this;
+  }
+
+  public function getPerson(){
+    return People::find($this->person_id);
   }
 
 }

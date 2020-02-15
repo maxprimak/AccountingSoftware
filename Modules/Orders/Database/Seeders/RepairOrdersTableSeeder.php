@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Orders\Entities\RepairOrder;
 
+
 class RepairOrdersTableSeeder extends Seeder
 {
     /**
@@ -17,24 +18,6 @@ class RepairOrdersTableSeeder extends Seeder
     {
         Model::unguard();
 
-        $statuses = [
-            'Accepted for repair',
-            'In progress',
-            'Order parts',
-            'Waiting for parts',
-            'Repaired',
-            'Not repairable',
-            'Called to client',
-            'Returned to client',
-            'Warranty',
-        ];
-
-        foreach($statuses as $status){
-            factory('Modules\Orders\Entities\OrderStatus')->create([
-                'name' => $status
-            ]);
-        }
-
         factory('Modules\Orders\Entities\PaymentType')->create([
             'name' => 'Cash'
         ]);
@@ -42,6 +25,6 @@ class RepairOrdersTableSeeder extends Seeder
         factory('Modules\Orders\Entities\PaymentType')->create([
             'name' => 'Card'
         ]);
-        
+
     }
 }

@@ -17,6 +17,7 @@ class CreateSubmodelsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('model_id');
             $table->string('name');
+            $table->tinyInteger('is_custom')->default(0);
             $table->timestamps();
         });
 

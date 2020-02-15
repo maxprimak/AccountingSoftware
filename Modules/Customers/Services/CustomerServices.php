@@ -25,10 +25,13 @@ class CustomerServices{
         $customer->email = $request->email;
         $customer->type_id = $request->customer_type_id;
         $customer->company_id = $company_id;
-        $customer->created_by = auth('api')->id();
+        $customer->created_by = User::where('login_id', auth('api')->user()->id)->first()->id;
         $customer->save();
 
-        BranchesService::addCustomerToBranches($customer->id,$request->branch_id);
+        //$branch_id = $request->branch_id;
+        $branch_id = Branch::where('company_id',$company_id)->pluck('id')->toArray();
+
+        BranchesService::addCustomerToBranches($customer->id,$branch_id);
         return $customer;
     }
 
@@ -37,10 +40,13 @@ class CustomerServices{
         try {
           $customer = Customer::findOrFail($customer_id);
 
+          //$branch_id = $request->branch_id;
+          $branch_id = Branch::where('company_id',$customer->company_id)->pluck('id')->toArray();
+
           CreateUsersService::updatePerson($request,$customer);
 
           BranchesService::deleteCustomerFromAllBranches($customer_id);
-          BranchesService::addCustomerToBranches($customer_id, $request->branch_id);
+          BranchesService::addCustomerToBranches($customer_id, $branch_id);
 
           $customer = $customer->storeUpdated($request);
 
@@ -65,7 +71,7 @@ class CustomerServices{
                     ->join('companies', 'companies.id', '=', 'customers.company_id')
                     ->select('customers.id as id','customers.*', 'companies.id as company_id' ,'people.name',
                     'people.phone', 'people.address')
-                    ->whereIn('customers.id',$customer_ids)
+                    ->whereIn('customers.id',$customer_ids)->orderBy('id')
                     ->get();
 
         foreach($customers as $customer){

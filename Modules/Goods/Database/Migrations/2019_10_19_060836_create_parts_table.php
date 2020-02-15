@@ -15,7 +15,7 @@ class CreatePartsTable extends Migration
     {
         Schema::create('parts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->tinyInteger('is_custom')->default(0);
             $table->timestamps();
         });
     }

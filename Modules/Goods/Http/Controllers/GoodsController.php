@@ -8,6 +8,9 @@ use Illuminate\Routing\Controller;
 use Modules\Goods\Entities\Good;
 use Modules\Goods\Http\Requests\StoreGoodRequest;
 use Modules\Goods\Http\Requests\UpdateGoodRequest;
+use Modules\Warehouses\Entities\WarehouseHasGood;
+use Modules\Goods\Entities\GoodHasPrices;
+use Modules\Warehouses\Entities\Warehouse;
 use Illuminate\Support\Facades\DB;
 
 class GoodsController extends Controller
@@ -16,20 +19,31 @@ class GoodsController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index($branch_id)
+    public function index()
     {
-        $goods_id = Good::where('branch_id',$branch_id)->pluck('id')->toArray();
-        $goods = DB::table('goods')
-                    ->join('brands', 'brands.id', '=', 'goods.brand_id')
-                    ->join('models', 'models.id', '=', 'goods.model_id')
-                    ->join('submodels', 'submodels.id', '=', 'goods.submodel_id')
-                    ->join('parts','parts.id', '=', 'goods.part_id')
-                    ->join('colors','colors.id', '=', 'goods.color_id')
-                    ->select('goods.id as id', 'brands.name as brand_name' ,'models.name as model_name',
-                    'submodels.name as submodel_name', 'parts.name as part_name','colors.name as color_name','goods.amount')
-                    ->whereIn('goods.id',$goods_id)
-                    ->get();
-        return response()->json($goods);
+        $company = auth('api')->user()->getCompany();
+        $warehouse_ids = $company->getWarehousesIdsOfCompany();
+        $goods_id = WarehouseHasGood::whereIn('warehouse_id',$warehouse_ids)->pluck('good_id')->toArray();
+        $goods_has_prices = GoodHasPrices::whereIn('good_id',$goods_id)->get();
+
+        $goods = DB::table('warehouse_has_goods')
+                ->join('goods','goods.id', '=', 'warehouse_has_goods.good_id')
+                ->join('brands', 'brands.id', '=', 'goods.brand_id')
+                ->join('models', 'models.id', '=', 'goods.model_id')
+                ->join('submodels', 'submodels.id', '=', 'goods.submodel_id')
+                ->join('parts','parts.id', '=', 'goods.part_id')
+                ->join('parts_translations','parts_translations.part_id', '=', 'goods.part_id')
+                ->join('colors','colors.id', '=', 'goods.color_id')
+                ->select('goods.id as id', 'brands.name as brand_name','brands.id as brand_id' ,'models.name as model_name','models.id as model_id',
+                        'submodels.name as submodel_name','submodels.id as submodel_id' ,'parts_translations.name as part_name','parts.id as part_id','colors.name as color_name',
+                        'colors.id as color_id','colors.hex_code as color_hexcode','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
+                        'warehouse_has_goods.amount as amount')
+                ->where('parts_translations.language_id',$company->language_id)
+                ->get();
+        $new_good = new Good();
+        $result_of_goods = $new_good->combineGoodsWithPrices($goods_has_prices,$goods);
+
+        return response()->json($result_of_goods);
     }
 
     /**
@@ -48,25 +62,17 @@ class GoodsController extends Controller
      */
     public function store(StoreGoodRequest $request)
     {
-      //IF THIS GOOD ALREADY EXIST THEN WE NEED TO ADD ONLY AMOUNT AND PRICE FROM REQUEST
-      //IF GOOD DOES NOT EXIST CREATE A NEW ONE
-        $existing_good = Good::where([['branch_id','=', $request->branch_id],['brand_id','=', $request->brand_id],
-                                      ['color_id','=', $request->color_id],['model_id','=', $request->model_id],
-                                      ['submodel_id','=', $request->submodel_id],['part_id','=', $request->part_id]
-                                      ])->first();
+        $existing_good = new Good();
+        $exists = $existing_good->checkIfExistsOnWarehouse($request);
 
-        if($existing_good){
-          $existing_good->amount += $request->amount;
-          $existing_good->price = $request->price;
-          $existing_good->save();
-
-          return response()->json(['message' => 'Amount was added to good id:' .$existing_good->id, 'good' => $existing_good], 200);
+        if(!$exists){
+          $good = new Good();
+          $good = $good->store($request);
+          $good->warehouse_name = Warehouse::find($request->warehouse_id)->name;
+          return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
+        }else{
+          return response()->json(['message' => 'This good already exists in chosen Warehouse'], 422);
         }
-
-        $good = new Good();
-        $good = $good->store($request);
-
-        return response()->json(['message' => 'Successfully added!', 'good' => $good], 200);
     }
 
     /**
@@ -74,9 +80,35 @@ class GoodsController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show($id)
+    public function show($warehouse_id)
     {
-        return view('goods::show');
+        $company = auth('api')->user()->getCompany();
+        $warehouse = Warehouse::find($warehouse_id);
+        $branch_id = $warehouse->getBranchId();
+        $goods_id = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('good_id')->toArray();
+        $warehouse_has_goods_ids = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('id')->toArray();
+
+        $goods_has_prices = GoodHasPrices::where('branch_id',$branch_id)->whereIn('good_id',$goods_id)->get();
+
+        $goods = DB::table('warehouse_has_goods')
+                ->join('goods','goods.id', '=', 'warehouse_has_goods.good_id')
+                ->join('brands', 'brands.id', '=', 'goods.brand_id')
+                ->join('models', 'models.id', '=', 'goods.model_id')
+                ->join('submodels', 'submodels.id', '=', 'goods.submodel_id')
+                ->join('parts','parts.id', '=', 'goods.part_id')
+                ->join('parts_translations','parts_translations.part_id', '=', 'goods.part_id')
+                ->join('colors','colors.id', '=', 'goods.color_id')
+                ->select('goods.id as id', 'brands.name as brand_name','brands.id as brand_id' ,'models.name as model_name','models.id as model_id',
+                        'submodels.name as submodel_name','submodels.id as submodel_id' ,'parts_translations.name as part_name','parts.id as part_id','colors.name as color_name',
+                        'colors.id as color_id','colors.hex_code as color_hexcode','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
+                        'warehouse_has_goods.amount as amount')
+                ->whereIn('warehouse_has_goods.id',$warehouse_has_goods_ids)
+                ->where('parts_translations.language_id',$company->language_id)
+                ->get();
+        $new_good = new Good();
+        $result_of_goods = $new_good->combineGoodsWithPrices($goods_has_prices,$goods);
+
+        return response()->json($result_of_goods);
     }
 
     /**
@@ -98,8 +130,9 @@ class GoodsController extends Controller
     public function update(UpdateGoodRequest $request, $id)
     {
       try {
-        $good = Good::findOrFail($id);
+        $good = Good::find($id);
         $good = $good->edit($request);
+        return response()->json(['message' => 'Successfully updated!', 'good' => $good]);
       } catch (\Exception $e) {
         return response()->json(['message' => $e->getMessage()], 500);
       }
@@ -111,9 +144,9 @@ class GoodsController extends Controller
      * @param int $id
      * @return Response
      */
-    public function destroy($id)
-    {
-        Good::findOrFail($id)->delete();
-        return response()->json(['message' => 'Successfully deleted!']);
-    }
+    // public function destroy($id)
+    // {
+    //
+    //     return response()->json(['message' => 'Successfully deleted!']);
+    // }
 }

@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Passport\Passport;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
+        // Use the Cashier migrations from migration folder instead of vendor folder
+        //Cashier::ignoreMigrations();
+
     }
 
     /**

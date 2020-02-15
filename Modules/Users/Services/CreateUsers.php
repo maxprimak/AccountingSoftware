@@ -4,8 +4,13 @@ namespace Modules\Users\Services;
 use Modules\Employees\Http\Requests\StoreEmployeeRequest;
 use Modules\Users\Entities\People;
 use Modules\Users\Entities\User;
+use Modules\Companies\Entities\Address;
+use Modules\Companies\Entities\City;
+use Modules\Companies\Entities\Country;
 use Modules\Users\Entities\UserHasBranch;
 use Modules\Login\Entities\Login;
+use Modules\Orders\Entities\Warranty;
+use Modules\Orders\Entities\DiscountCode;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Branch;
 use Modules\Employees\Entities\Employee;
@@ -97,10 +102,29 @@ class CreateUsers{
 
         $company = new Company();
         $company->name = $request->company_name;
-        $company->address = $request->company_address;
         $company->phone = $request->company_phone;
         $company->currency_id = $request->currency_id;
+        $company->tax = $request->company_tax;
+
+        $address = new Address();
+        $address->house_number = $request->house_number;
+        $address->street_name = $request->street_name;
+        $address->postcode = $request->postcode;
+        $city_id = City::where('name', $request->city_name)->where('country_id', $request->country_id)->first()->id;
+        $address->city_id = $city_id;
+        $address->save();
+
+        $company->address_id = $address->id;
+
         $company->save();
+
+        $company->createAsStripeCustomer([
+            'description' => $company->name 
+        ]);
+        $company->subscribeToFreePlan();
+
+        Warranty::createDefaultForNewCompany($company->id);
+        DiscountCode::createDefaultForNewCompany($company->id);
 
         $user = new User();
         $user->login_id = $login->id;
@@ -109,13 +133,14 @@ class CreateUsers{
         $user->save();
 
         $branch = new Branch();
-        $branch->company_id = $company->id;
-        $branch->name = $company->name . ' Main Branch';
-        $branch->address = $company->address;
-        $branch->phone = $company->phone;
-        $branch->color = "#F64272";
-        $branch->save();
+        $request->name = $company->name . ' Main Branch';
+        $request->address_id = $address->id;
+        $request->city_id = $address->city_id;
+        $request->phone = $request->company_phone;
+        $request->color = "#F64272";
+        $branch = $branch->store($request);
 
+        $branch->saveStandardReceiptMainText();
         BranchesService::addUserToBranches($user->id, array($branch->id));
 
         $employee = new Employee();
@@ -138,8 +163,10 @@ class CreateUsers{
 
         $user = $this->updateUser($request,$employee);
 
-        BranchesService::deleteUserFromAllBranches($user->id);
-        BranchesService::addUserToBranches($user->id, $request->branch_id);
+        //commented it because now we do not have a function to change branches of user
+
+        //BranchesService::deleteUserFromAllBranches($user->id);
+        //BranchesService::addUserToBranches($user->id, $branch_id);
 
         //update Employee
         $employee = Employee::find($employee_id);

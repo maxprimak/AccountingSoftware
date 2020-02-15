@@ -33,12 +33,7 @@ class Employee extends Model
         return $this;
     }
 
-    /*
-    public function getBranchIdAttribute()
-    {
-
-        return $this->attributes['branch_id'];
-
+    public function getUser(){
+        return User::find($this->user_id);
     }
-    */
 }

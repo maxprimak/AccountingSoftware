@@ -14,11 +14,15 @@ class CreateWarehousesTable extends Migration
     public function up()
     {
         Schema::create('warehouses', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name');
-            $table->bigInteger('branch_id');
+            $table->unsignedInteger('branch_id');
             $table->timestamps();
             //TODO:foreign keys
+        });
+
+        Schema::table('warehouses', function($table) {
+          $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 
