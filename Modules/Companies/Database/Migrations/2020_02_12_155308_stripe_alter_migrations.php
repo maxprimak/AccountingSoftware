@@ -21,10 +21,10 @@ class StripeAlterMigrations extends Migration
         });*/
 
         Schema::table('companies', function(Blueprint $table){
-            $table->string('stripe_id');
-            $table->string('card_brand');
-            $table->string('card_last_four', 4);
-            $table->date('trial_ends_at');
+            $table->string('stripe_id')->nullable();
+            $table->string('card_brand')->nullable();
+            $table->string('card_last_four', 4)->nullable();
+            $table->date('trial_ends_at')->nullable();
         });
 
     }
