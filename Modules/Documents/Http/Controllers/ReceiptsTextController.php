@@ -18,7 +18,7 @@ class ReceiptsTextController extends Controller
         $order = Order::find($repairOrder->order_id);
         $result = Receipt::where('branch_id', $order->branch_id)->where('language_id', $language_id)->first()->main_text;
 
-        return response()->json(['main text' => $result]);
+        return response()->json(['main_text' => $result]);
 
    }
 
@@ -30,7 +30,7 @@ class ReceiptsTextController extends Controller
     $result->main_text = $request->main_text;
     $result->save();
 
-    return response()->json(['success' => true, 'main text' => $result->main_text]);
+    return response()->json(['success' => true, 'main_text' => $result->main_text]);
 
     }
 }
