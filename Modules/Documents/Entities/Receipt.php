@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Receipt extends Model
 {
-    protected $fillable = [];
+    protected $fillable = ['branch_id', 'main_text', 'language_id'];
 }
