@@ -37,7 +37,7 @@ class RepairOrdersBranchController extends Controller
         $repair_order_ids = RepairOrder::where('is_completed',$is_completed)->pluck('order_id');
         $order_ids = Order::whereIn('id', $repair_order_ids)->where('branch_id', $id)->pluck('id');
         $repair_orders = RepairOrder::whereIn('order_id', $order_ids)->orderBy('id', 'DESC')->get();
-
+        $currency = $company->getCurrency();
         $result = array();
 
         foreach($repair_orders as $repair_order){
@@ -70,6 +70,7 @@ class RepairOrdersBranchController extends Controller
                 'payment_status' => $payment_status->name,
                 'branch_id' => $order->branch_id,
                 'branch_name' => $branch->name,
+                'currency_symbol' => $currency->symbol,
                 'deadline' => $repair_order->deadline,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,

@@ -24,6 +24,7 @@ Route::get('countries', 'CountriesController@index')->name('countries.index');
 
 Route::middleware(['is_authorized', 'is_registered'])->group(function () {
 
+
 Route::get('companies', 'CompaniesController@index')->name('companies.index');
 Route::post('companies/{company_id}', 'CompaniesController@update')->name('companies.update')->middleware('my_company');
 Route::post('companies', 'CompaniesController@store')->name('companies.store');

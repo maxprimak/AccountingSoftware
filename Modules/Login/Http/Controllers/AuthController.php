@@ -64,7 +64,7 @@ class AuthController extends Controller
             'ip' => 'required'
         ]);
     }
-
+    /*
     public function register(Request $request){
         $validator = $this->regValidator($request->all());
         if ($validator->fails()) return response()->json($validator->errors(), 422);
@@ -93,6 +93,7 @@ class AuthController extends Controller
         ]);
 
     }
+    */
 
     protected function checkRecaptcha($token, $ip)
     {

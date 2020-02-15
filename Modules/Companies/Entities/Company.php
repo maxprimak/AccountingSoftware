@@ -51,6 +51,10 @@ class Company extends Model
       return $warehouses_ids;
     }
 
+    public function getCurency(){
+      return Currency::find($this->currency_id);
+    }
+
     public function store(FormRequest $request){
         $this->currency_id = $request->currency_id;
         $this->name = $request->name;
@@ -184,6 +188,11 @@ class Company extends Model
       $warehouses_ids = Warehouse::whereIn('branch_id', $branch_ids)->pluck('id')->toArray();
 
       return $warehouses_ids;
+    }
+
+    public function getCurrency(){
+        $currency = Currency::find($this->currency_id);
+        return $currency;
     }
 
 }
