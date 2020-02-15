@@ -53,6 +53,7 @@ class Branch extends Model
 
         $this->address_id = $address->id;
         $this->save();
+        $this->saveStandardReceiptMainText();
 
         $warehouse = Warehouse::where('branch_id',$this->id)->first();
         $warehouse = $warehouse->storeUpdate($request);
