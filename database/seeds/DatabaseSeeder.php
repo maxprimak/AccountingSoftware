@@ -38,7 +38,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        /*
         $this->call(LanguagesTableSeeder::class);
         $this->call(CompaniesDatabaseSeeder::class);
         $this->call(LoginDatabaseSeeder::class);
@@ -63,10 +62,8 @@ class DatabaseSeeder extends Seeder
         //$this->call(OldOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
         $this->call(ModelFixTableSeeder::class);  
-        */
-        //NEW
-        $this->call(StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder::class);
-        $this->call(AddGermanAndRussianTableSeeder::class);
-        $this->call(AddReceiptMainTextForEveryExistingBranchTableSeeder::class);
+        //$this->call(StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder::class);
+        //$this->call(AddGermanAndRussianTableSeeder::class);
+        //$this->call(AddReceiptMainTextForEveryExistingBranchTableSeeder::class);
     }
 }
