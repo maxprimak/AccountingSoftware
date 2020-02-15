@@ -39,7 +39,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            //'throttle:60,1',
             'bindings',
         ],
     ];
@@ -73,7 +73,25 @@ class Kernel extends HttpKernel
         'is_registered' => \Modules\Registration\Http\Middleware\IsRegistered::class,
 
         'is_authorized' => \Modules\Login\Http\Middleware\IsAuthorized::class,
-        'my_branch' => \Modules\Companies\Http\Middleware\MyBranch::class
+
+        'my_branch' => \Modules\Companies\Http\Middleware\MyBranch::class,
+        'my_company' => \Modules\Companies\Http\Middleware\MyCompany::class,
+        'my_customer' => \Modules\Customers\Http\Middleware\MyCustomer::class,
+        'my_repair_order' => \Modules\Orders\Http\Middleware\MyRepairOrder::class,
+        'my_sales_order' => \Modules\Orders\Http\Middleware\MySalesOrder::class,
+        'my_order' => \Modules\Orders\Http\Middleware\MyOrder::class,
+        'my_brand' => \Modules\Goods\Http\Middleware\MyBrand::class,
+        'my_model' => \Modules\Goods\Http\Middleware\MyModel::class,
+        'my_submodel' => \Modules\Goods\Http\Middleware\MySubmodel::class,
+        'my_part' => \Modules\Goods\Http\Middleware\MyPart::class,
+        'my_color' => \Modules\Goods\Http\Middleware\MyColor::class,
+        'my_warehouse' => \Modules\Goods\Http\Middleware\MyWarehouse::class,
+        'my_good' => \Modules\Goods\Http\Middleware\MyGood::class,
+        'my_device' => \Modules\Devices\Http\Middleware\MyDevice::class,
+        'my_employee' => \Modules\Employees\Http\Middleware\MyEmployee::class,
+        'my_service' => \Modules\Services\Http\Middleware\MyService::class,
+        'my_warehouse_has_good' => \Modules\Warehouses\Http\Middleware\MyWarehouseHasGood::class,
+
     ];
 
     /**

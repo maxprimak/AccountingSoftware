@@ -20,7 +20,7 @@ class UpdateCustomerRequest extends FormRequest
 
         return [
             'name' => 'required',
-            'email' => 'required|email|unique:customers,email,' . $customer->id,
+            'email' => 'nullable|email|unique:customers,email,' . $customer->id,
             'phone' => 'required|unique:people,phone,'. $customer->person_id,
             'type_id' => 'required|integer',
             'branch_id' => 'required',

@@ -4,6 +4,7 @@ namespace Modules\Login\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Modules\Login\Entities\Login;
 
 class VerificationController extends Controller
 {
@@ -38,14 +39,5 @@ class VerificationController extends Controller
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
-
-    public function showVerification(){
-        $login = auth()->user();
-        if($login->hasVerifiedEmail()){
-           return redirect('/dashboard') ;
-        }
-        else{
-            return view('login::verification_form'); 
-        }
-    }
+    
 }

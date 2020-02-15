@@ -14,10 +14,12 @@ class CreateSuppliersTable extends Migration
     public function up()
     {
         Schema::create('suppliers', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('person_id');
+            $table->increments('id');
+            $table->string('name');
             $table->string('email');
-            $table->string('note');
+            $table->string('phone');
+            $table->string('comment');
+            $table->string('address_id');
             $table->timestamps();
             //TODO: foreign keys
         });

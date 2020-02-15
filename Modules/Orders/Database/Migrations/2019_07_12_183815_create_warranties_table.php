@@ -14,11 +14,17 @@ class CreateWarrantiesTable extends Migration
     public function up()
     {
         Schema::create('warranties', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name');
-            $table->integer('days_amount');
+            $table->integer('days_number');
+            $table->tinyInteger('is_active');
+            $table->unsignedInteger('company_id');
+            $table->tinyInteger('is_default');
             $table->timestamps();
-            //TODO: foreign keys
+        });
+
+        Schema::table('warranties', function($table) {
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

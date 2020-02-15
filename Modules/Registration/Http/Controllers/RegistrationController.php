@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Companies\Entities\Company;
 use Modules\Companies\Entities\Currency;
+use Modules\Companies\Entities\City;
 use Modules\Registration\Http\Requests\RegistrationRequest;
 
 use CreateUsersService;

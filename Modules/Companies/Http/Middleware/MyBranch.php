@@ -25,7 +25,7 @@ class MyBranch
         if(in_array($branch_id, $branches)){
             return $next($request);
         }else{
-            return response()->json(['error' => 'You do not have permission to this branch'], 403);
+            return response()->json(['error' => 'You do not have permission to this branch or this branch does not exist'], 403);
         }
         return $next($request);
     }

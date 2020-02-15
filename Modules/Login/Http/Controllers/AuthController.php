@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Modules\Login\Http\Requests\LoginRequest;
+use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
@@ -30,6 +31,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
+            'is_registered' => ($user->isRegistered()) ? 1 : 0,
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
@@ -55,14 +57,16 @@ class AuthController extends Controller
             'username' => 'required|min:6|unique:logins,username',
             'email' => 'required|email|unique:logins,email',
             'password' => 'required|min:8',
-            'repassword' => 'required|same:password'
+            'repassword' => 'required|same:password',
+            'recaptchaToken' => 'required',
+            'ip' => 'required'
         ]);
     }
     /*
     public function register(Request $request){
-
         $validator = $this->regValidator($request->all());
         if ($validator->fails()) return response()->json($validator->errors(), 422);
+        if (!$this->checkRecaptcha($request->recaptchaToken, $request->ip)) return response()->json("Recaptcha is not correct", 422);
 
         $user = Login::create([
             'username' => $request->username,
@@ -71,13 +75,14 @@ class AuthController extends Controller
             'is_active' => 1,
         ]);
 
-        //$user->sendEmailVerificationNotification(); //TODO: does NOT work on server
+        $user->sendEmailVerificationNotification(); 
 
         $tokenResult = $this->getToken($user, $request);
 
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
+            'is_registered' => 0,
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
@@ -85,6 +90,19 @@ class AuthController extends Controller
 
     }
     */
+
+    protected function checkRecaptcha($token, $ip)
+    {
+        $response = (new Client)->post('https://www.google.com/recaptcha/api/siteverify', [
+            'form_params' => [
+                'secret'   => env('RECAPTCHA_KEY'),
+                'response' => $token,
+                'remoteip' => $ip,
+            ],
+        ]);
+        $response = json_decode((string)$response->getBody(), true);
+        return $response['success'];
+    }
 
     public function logout(){
 

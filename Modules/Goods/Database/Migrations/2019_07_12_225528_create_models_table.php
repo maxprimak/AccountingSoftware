@@ -18,6 +18,7 @@ class CreateModelsTable extends Migration
             $table->unsignedInteger('brand_id');
             $table->string('name');
             $table->string('logo');
+            $table->tinyInteger('is_custom')->default(1);
             $table->timestamps();
         });
 

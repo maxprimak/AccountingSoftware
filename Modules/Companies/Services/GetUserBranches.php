@@ -7,6 +7,9 @@ use Modules\Users\Entities\UserHasBranch;
 use Modules\Customers\Entities\Customer;
 use Modules\Customers\Entities\CustomerHasBranch;
 use Modules\Companies\Entities\Branch;
+use Modules\Companies\Entities\City;
+use Modules\Companies\Entities\Country;
+use Modules\Companies\Entities\Address;
 use Modules\Employees\Entities\Employee;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -16,6 +19,18 @@ class GetUserBranches{
 
         $user_branches_ids = UserHasBranch::where('user_id', $user_id)->pluck('branch_id')->toArray();
         $user_branches = Branch::whereIn('id', $user_branches_ids)->get();
+
+        foreach($user_branches as $branch){
+            $address = Address::find($branch->address_id);
+            $branch->street_name = $address->street_name;
+            $branch->house_number = $address->house_number;
+            $branch->postcode = $address->postcode;
+            $branch->city_id = $address->city_id;
+            $city = City::findOrFail($address->city_id);
+            $branch->city_name = $city->name;
+            $branch->country_name = Country::findOrFail($city->country_id)->name;
+
+        }
 
         return $user_branches;
     }

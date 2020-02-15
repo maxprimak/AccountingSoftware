@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Users\Entities\User;
+use Modules\Companies\Entities\Company;
 use Modules\Employees\Entities\Employee;
 
 class Login extends Authenticatable implements MustVerifyEmail
@@ -27,6 +28,19 @@ class Login extends Authenticatable implements MustVerifyEmail
         $this->save();
 
         return $this;
+    }
+
+    public function isRegistered(){
+        return User::where('login_id', $this->id)->exists();
+    }
+
+    public function getCompany(){
+
+        $user = User::where('login_id', $this->id)->first();
+        $company = Company::find($user->company_id);
+
+        return $company;
+
     }
 
     public function checkRole(){

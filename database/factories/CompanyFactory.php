@@ -12,7 +12,7 @@ $factory->define(Company::class, function (Faker $faker) {
         //package_id 
         'name' => $faker->unique()->word.' company',
         'currency_id' => 1,
-        'address' => $faker->address,
-        'phone' => $faker->phoneNumber
+        'phone' => $faker->phoneNumber,
+        'language_id' => 1
     ];
 });

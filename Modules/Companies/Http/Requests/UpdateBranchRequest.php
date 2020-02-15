@@ -17,7 +17,12 @@ class UpdateBranchRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'color' => ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/']
+            'color' => ['required', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'house_number' => 'required|max:190',
+            'postcode' => 'required|max:190',
+            'street_name' => 'required|max:190',
+            'country_id' => 'required|exists:countries,id',
+            'city_name' => 'required|exists:cities,name,country_id,'.$this->input('country_id'),
         ];
     }
 

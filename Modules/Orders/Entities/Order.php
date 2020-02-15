@@ -4,6 +4,7 @@ namespace Modules\Orders\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Companies\Entities\Branch;
 
 class Order extends Model
 {
@@ -24,14 +25,21 @@ class Order extends Model
 
     public function storeUpdated(FormRequest $request, $id){
 
-        $order = Order::find($id);
-
-        $order->accept_date = $request->accept_date;
+        $order = Order::findOrFail($id);
         $order->price = $request->price;
-
         $order->update();
 
         return $order;
 
-}
+    }
+
+    public function getBranch(): Branch{
+            $branch = Branch::findOrFail($this->branch_id);
+            return $branch;
+    }
+
+    //for seeder
+    public static function makeOrder(){
+        
+    }
 }

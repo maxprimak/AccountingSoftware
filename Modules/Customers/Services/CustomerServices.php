@@ -25,7 +25,7 @@ class CustomerServices{
         $customer->email = $request->email;
         $customer->type_id = $request->customer_type_id;
         $customer->company_id = $company_id;
-        $customer->created_by = auth('api')->id();
+        $customer->created_by = User::where('login_id', auth('api')->user()->id)->first()->id;
         $customer->save();
 
         //$branch_id = $request->branch_id;
@@ -71,7 +71,7 @@ class CustomerServices{
                     ->join('companies', 'companies.id', '=', 'customers.company_id')
                     ->select('customers.id as id','customers.*', 'companies.id as company_id' ,'people.name',
                     'people.phone', 'people.address')
-                    ->whereIn('customers.id',$customer_ids)
+                    ->whereIn('customers.id',$customer_ids)->orderBy('id')
                     ->get();
 
         foreach($customers as $customer){
