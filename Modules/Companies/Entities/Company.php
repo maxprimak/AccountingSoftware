@@ -32,6 +32,10 @@ class Company extends Model
       return $warehouses_ids;
     }
 
+    public function getCurency(){
+      return Currency::find($this->currency_id);
+    }
+
     public function store(FormRequest $request){
         $this->currency_id = $request->currency_id;
         $this->name = $request->name;

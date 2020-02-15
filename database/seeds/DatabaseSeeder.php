@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Modules\Companies\Database\Seeders\AddGermanAndRussianTableSeeder;
 use Modules\Login\Database\Seeders\LoginDatabaseSeeder;
 use Modules\Users\Database\Seeders\UsersDatabaseSeeder;
 use Modules\Companies\Database\Seeders\CompaniesDatabaseSeeder;
@@ -10,6 +11,7 @@ use Modules\Employees\Database\Seeders\EmployeesDatabaseSeeder;
 use Modules\Customers\Database\Seeders\OldCustomersDatabaseSeeder;
 use Modules\Goods\Database\Seeders\OldGoodsTableSeeder;
 use Modules\Customers\Database\Seeders\CustomerTypesTableSeeder;
+use Modules\Documents\Database\Seeders\AddReceiptMainTextForEveryExistingBranchTableSeeder;
 use Modules\Goods\Database\Seeders\CategoriesSeederTableSeeder;
 use Modules\Goods\Database\Seeders\BrandsSeederTableSeeder;
 use Modules\Goods\Database\Seeders\ModelsSeederTableSeeder;
@@ -63,5 +65,9 @@ class DatabaseSeeder extends Seeder
         //$this->call(OldOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
         $this->call(ModelFixTableSeeder::class);
+        
+        //NEW
+        $this->call(AddGermanAndRussianTableSeeder::class);
+        $this->call(AddReceiptMainTextForEveryExistingBranchTableSeeder::class);
     }
 }

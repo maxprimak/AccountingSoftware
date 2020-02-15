@@ -38,6 +38,11 @@ class Order extends Model
             return $branch;
     }
 
+    public function showPriceAsString(){
+        $company = auth('api')->user()->getCompany();
+        return number_format($this->price, 2, '.', '') . " " . $company->getCurrency()->symbol;
+    }
+
     //for seeder
     public static function makeOrder(){
         

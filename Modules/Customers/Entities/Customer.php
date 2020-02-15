@@ -73,4 +73,8 @@ class Customer extends Model
       return $this;
   }
 
+  public function getPerson(){
+    return People::find($this->person_id);
+  }
+
 }

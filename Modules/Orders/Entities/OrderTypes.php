@@ -28,4 +28,8 @@ class OrderTypes extends Model
     public function isRework(){
         return $this->id == 3;
     }
+
+    public function getTranslatedName($language_id){
+        return OrderTypesTranslations::where('order_type_id', $this->id)->where('language_id', $language_id)->first()->name;
+    }
 }

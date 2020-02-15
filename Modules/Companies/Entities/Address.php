@@ -45,4 +45,9 @@ class Address extends Model
 
       return $new_address;
     }
+
+    public function getName(){
+      $city = City::find($this->city_id);
+      return $this->street_name . " " . $this->house_number . ", " . $this->postcode . ", " . $city->name; 
+    }
 }
