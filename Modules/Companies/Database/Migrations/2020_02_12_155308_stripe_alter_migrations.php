@@ -14,10 +14,17 @@ class StripeAlterMigrations extends Migration
     public function up()
     {
         
-        Schema::table('subscriptions', function (Blueprint $table) {
+        /*Schema::table('subscriptions', function (Blueprint $table) {
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('user_id')->nullable()->change();
             $table->foreign('company_id')->references('id')->on('companies');
+        });*/
+
+        Schema::table('companies', function(Blueprint $table){
+            $table->string('stripe_id');
+            $table->string('card_brand');
+            $table->string('card_last_four', 4);
+            $table->date('trial_ends_at');
         });
 
     }
