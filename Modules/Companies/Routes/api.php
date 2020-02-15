@@ -34,4 +34,7 @@ Route::post('branches', 'BranchesController@store')->name('branches.store');
 Route::post('branches/{branch_id}', 'BranchesController@update')->name('branches.update')->middleware('my_branch');
 Route::delete('branches/{branch_id}', 'BranchesController@destroy')->name('branches.destroy')->middleware('my_branch');
 
+Route::post('payment/subscription/make', 'PaymentController@store')->name('payment.subscription.store');
+Route::post('payment/method/attach', 'PaymentController@attachMethod')->name('payment.method.attach');
+
 });

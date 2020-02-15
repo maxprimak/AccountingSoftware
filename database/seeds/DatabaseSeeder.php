@@ -27,10 +27,7 @@ use Modules\Orders\Database\Seeders\OrderStatusesTableSeeder;
 use Modules\Orders\Database\Seeders\OldOrdersTableSeeder;
 use Modules\Services\Database\Seeders\LanguagesTableSeeder;
 use Modules\Services\Database\Seeders\ModelFixTableSeeder;
-
-
-
-
+use Modules\Companies\Database\Seeders\StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -64,9 +61,9 @@ class DatabaseSeeder extends Seeder
         $this->call(OrderTypesSeederTableSeeder::class);
         //$this->call(OldOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
-        $this->call(ModelFixTableSeeder::class);
-        
+        $this->call(ModelFixTableSeeder::class);  
         //NEW
+        $this->call(StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder::class);
         $this->call(AddGermanAndRussianTableSeeder::class);
         $this->call(AddReceiptMainTextForEveryExistingBranchTableSeeder::class);
     }

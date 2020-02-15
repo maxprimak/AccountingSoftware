@@ -3,6 +3,7 @@
 namespace Modules\Orders\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Companies\Rules\SubscriptionRuleRepairOrders;
 
 class StoreRepairOrderRequest extends FormRequest
 {
@@ -56,7 +57,7 @@ class StoreRepairOrderRequest extends FormRequest
             'devices.*.goods.*.amount' => 'required|numeric|min:0',
             'devices.*.goods.*.order_amount' => 'required|numeric|min:1|',
             'devices.*.goods.*.warehouse_name' => 'required|exists:warehouses,name',
-            'devices.*.warehouse_has_good.*.id' => 'required',
+            'devices.*.warehouse_has_good.*.id' => ['required', new SubscriptionRuleRepairOrders ],
             'devices.*.warehouse_has_good.*.amount' => 'required|min:1',
         ];
     }
