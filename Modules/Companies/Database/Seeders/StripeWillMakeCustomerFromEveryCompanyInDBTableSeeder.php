@@ -5,7 +5,6 @@ namespace Modules\Companies\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Companies\Entities\Company;
-use Modules\Login\Entities\Login;
 
 class StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder extends Seeder
 {

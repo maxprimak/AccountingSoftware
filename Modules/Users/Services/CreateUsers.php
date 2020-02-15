@@ -118,6 +118,11 @@ class CreateUsers{
 
         $company->save();
 
+        $company->createAsStripeCustomer([
+            'description' => $company->name 
+        ]);
+        $company->subscribeToFreePlan();
+
         Warranty::createDefaultForNewCompany($company->id);
         DiscountCode::createDefaultForNewCompany($company->id);
 
