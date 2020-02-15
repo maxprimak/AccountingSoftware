@@ -135,6 +135,7 @@ class CreateUsers{
         $request->color = "#F64272";
         $branch = $branch->store($request);
 
+        $branch->saveStandardReceiptMainText();
         BranchesService::addUserToBranches($user->id, array($branch->id));
 
         $employee = new Employee();

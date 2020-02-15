@@ -18,7 +18,9 @@ use Modules\Orders\Entities\PayOrders;
 use Modules\Orders\Entities\WarrantyOrders;
 use Modules\Orders\Entities\ReworkOrders;
 use Illuminate\Http\Request;
-
+use Modules\Devices\Entities\Device;
+use Modules\Services\Entities\Service;
+use Modules\Services\Entities\ServicesTranslation;
 
 class RepairOrder extends Model
 {
@@ -86,6 +88,10 @@ class RepairOrder extends Model
 
     }
 
+    public function getType(){
+      return OrderTypes::find($this->order_type_id);
+    }
+
     public function updateDeadline($deadline){
 
       $this->deadline = $deadline;
@@ -109,6 +115,67 @@ class RepairOrder extends Model
           }
       }
       return $order_type;
+    }
+
+    public function getServicesNamesString(){
+      $company = auth('api')->user()->getCompany();
+      $servicesIds = DeviceHasService::where('repair_order_id', $this->id)->pluck('service_id')->toArray();
+      $services = ServicesTranslation::whereIn('service_id', $servicesIds)->where('language_id', $company->language_id)
+                                      ->pluck('name')->toArray();
+      return implode(", ",$services);
+    }
+
+    public function getDevicesSerialNumberString(){
+      $devicesIds = $this->getDevicesIds();
+      $result = Device::whereIn('id', $devicesIds)->pluck('serial_nr')->toArray();
+      $counter = 1;
+      $result = array_map(function($s)use($counter){
+        $s = ($s == null) ? "Not set" : $s;
+        return $s . " (". $counter++ .")";
+      }, $result);
+
+      return implode(", ", $result);
+
+    }
+
+    public function getDefectDescriptionsAsString(){
+      $result = RepairOrderHasDevice::where('repair_order_id', $this->id)->pluck('defect_description')->toArray();
+      $result = array_map(function($d){
+        $d = ($d == null) ? "Not set" : $d;
+        return $d;
+      }, $result);
+      return implode(", ", $result);
+    }
+
+    public function showPrepayAsString(){
+      $company = auth('api')->user()->getCompany();
+      return number_format($this->prepay_sum, 2, '.', '') . " " . $company->getCurrency()->symbol;
+    }
+
+    public function getDevicesConditionsString(){
+      $devicesIds = $this->getDevicesIds();
+      $result = Device::whereIn('id', $devicesIds)->pluck('condition')->toArray();
+      $counter = 1;
+      $result = array_map(function($s)use($counter){
+        $s = ($s == null) ? "Not set" : $s;
+        return $s . " (". $counter++ .")";
+      }, $result);
+
+      return implode(", ", $result);
+    }
+
+    public function getDevicesNamesString(){
+      $devicesIds = $this->getDevicesIds();
+      $devices = Device::whereIn('id', $devicesIds)->pluck('submodel_id')->toArray();
+      $counter = 1;
+      $devices = array_map(function($s)use($counter){return Submodel::find($s)->getName(). " (". $counter++ .")";}, $devices);
+
+      return implode(", ", $devices);
+    }
+
+    private function getDevicesIds(){
+      $devicesIds = DeviceHasService::where('repair_order_id', $this->id)->pluck('device_id')->toArray();
+      return $devicesIds;
     }
 
     public function storeRepairOrderHasDevice(Request $request){
