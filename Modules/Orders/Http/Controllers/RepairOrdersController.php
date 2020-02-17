@@ -209,6 +209,11 @@ class RepairOrdersController extends Controller
 
             $repair_order = RepairOrder::findOrFail($id);
             $order = Order::findOrFail($repair_order->order_id);
+            
+            if(ReworkOrders::where('repair_order_id',$repair_order->id)->exists()){
+                $id = ReworkOrders::where('repair_order_id',$repair_order->id)->first()->id;
+                ReworkOrderHasWarrantyCase::where('rework_order_id', $id)->delete();
+            }
             Payment::where('repair_order_id', $repair_order->id)->delete();
             DeviceHasService::where('repair_order_id', $repair_order->id)->delete();
             RepairOrderHasGood::where('repair_order_id',$repair_order->id)->delete();

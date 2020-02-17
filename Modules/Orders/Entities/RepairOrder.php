@@ -19,8 +19,13 @@ use Modules\Orders\Entities\WarrantyOrders;
 use Modules\Orders\Entities\ReworkOrders;
 use Illuminate\Http\Request;
 use Modules\Devices\Entities\Device;
+use Modules\Goods\Entities\Color;
+use Modules\Goods\Entities\Good;
+use Modules\Goods\Entities\Part;
 use Modules\Services\Entities\Service;
 use Modules\Services\Entities\ServicesTranslation;
+use Modules\Warehouses\Entities\Warehouse;
+use Modules\Warehouses\Entities\WarehouseHasGood;
 
 class RepairOrder extends Model
 {
@@ -81,10 +86,6 @@ class RepairOrder extends Model
 
     }
 
-    //public function getGoodsAsString(){
-      	
-    //}
-
     public function updateDiscountCode($discount_code_id){
 
       $this->discount_code_id = $discount_code_id;
@@ -119,6 +120,32 @@ class RepairOrder extends Model
           }
       }
       return $order_type;
+    }
+
+    public function getGoodsAsString(){
+      $devices_ids = $this->getDevicesIds();
+      $counter = 1;
+      $result = "";
+      foreach($devices_ids as $device_id){
+        $has_good_ids = RepairOrderHasGood::where('device_id', $device_id)
+                                      ->where('repair_order_id', $this->id)
+                                      ->pluck('warehouse_has_good_id')->toArray();
+                                      
+        $good_ids = WarehouseHasGood::whereIn('id', $has_good_ids)->get()->toArray();
+
+        $good_ids = array_map(function($g)use($counter, $device_id){
+          return Warehouse::find($g['warehouse_id'])->name . " " . Submodel::find(Good::find($g['good_id'])->submodel_id)->getName() . " " .
+                  Color::find(Good::find($g['good_id'])->color_id)->name . " " . RepairOrderHasGood::where('repair_order_id', $this->id)
+                  ->where('device_id', $device_id)->where('warehouse_has_good_id', $g['id'])->first()->amount . " "  . "(". $counter++ .")";
+        }, $good_ids);
+
+        $result .= implode(", ",$good_ids);    
+
+      }
+
+      if($result == "") $result = "Not set";
+
+      return $result;
     }
 
     public function getServicesNamesString(){

@@ -38,6 +38,7 @@ class ReceiptsController extends Controller
             'order_prepay_sum' => $repairOrder->showPrepayAsString(),
             'order_price' => $order->showPriceAsString(),
             'defect_description_names' => $repairOrder->getDefectDescriptionsAsString(),
+            'repair_parts' => $repairOrder->getGoodsAsString(),
             'order_comment' => ($repairOrder->comment != null) ? $repairOrder->comment : "Not set",
             'receipt_text' => Receipt::where('branch_id', $branch->id)->where('language_id', $company->language_id)->first()->main_text,
         ]);
