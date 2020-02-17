@@ -31,8 +31,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
-            'plan' => $user->getCompany()->getStripePlanName(),
-            'extra_branches_paid' => $user->getCompany()->getExtraBranchesAmount(),
+            'plan' => ($user->getCompany() == null) ? "no_company_yet" : $user->getCompany()->getStripePlanName(),
+            'extra_branches_paid' => ($user->getCompany() == null) ? "no_company_yet" : $user->getCompany()->getExtraBranchesAmount(),
             'is_registered' => ($user->isRegistered()) ? 1 : 0,
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at
@@ -60,15 +60,15 @@ class AuthController extends Controller
             'email' => 'required|email|unique:logins,email',
             'password' => 'required|min:8',
             'repassword' => 'required|same:password',
-            'recaptchaToken' => 'required',
-            'ip' => 'required'
+            //'recaptchaToken' => 'required',
+            //'ip' => 'required'
         ]);
     }
 
     public function register(Request $request){
         $validator = $this->regValidator($request->all());
         if ($validator->fails()) return response()->json($validator->errors(), 422);
-        if (!$this->checkRecaptcha($request->recaptchaToken, $request->ip)) return response()->json("Recaptcha is not correct", 422);
+        //if (!$this->checkRecaptcha($request->recaptchaToken, $request->ip)) return response()->json("Recaptcha is not correct", 422);
 
         $user = Login::create([
             'username' => $request->username,
