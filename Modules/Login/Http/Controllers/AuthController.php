@@ -60,15 +60,15 @@ class AuthController extends Controller
             'email' => 'required|email|unique:logins,email',
             'password' => 'required|min:8',
             'repassword' => 'required|same:password',
-            //'recaptchaToken' => 'required',
-            //'ip' => 'required'
+            'recaptchaToken' => 'required',
+            'ip' => 'required'
         ]);
     }
 
     public function register(Request $request){
         $validator = $this->regValidator($request->all());
         if ($validator->fails()) return response()->json($validator->errors(), 422);
-        //if (!$this->checkRecaptcha($request->recaptchaToken, $request->ip)) return response()->json("Recaptcha is not correct", 422);
+        if (!$this->checkRecaptcha($request->recaptchaToken, $request->ip)) return response()->json("Recaptcha is not correct", 422);
 
         $user = Login::create([
             'username' => $request->username,
