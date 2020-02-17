@@ -15,9 +15,9 @@ use Illuminate\Http\Request;
 
 Route::middleware(['is_authorized'])->group(function () {
 
-Route::get('cities/{country_id}', 'CitiesController@index')->name('cities.index')->middleware('my_cors');
+Route::get('cities/{country_id}', 'CitiesController@index')->name('cities.index');
 Route::get('currencies', 'CurrenciesController@index')->name('currencies.index');
-Route::get('countries', 'CountriesController@index')->name('countries.index')->middleware('my_cors');
+Route::get('countries', 'CountriesController@index')->name('countries.index');
 
 });
 

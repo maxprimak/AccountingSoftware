@@ -33,7 +33,7 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
     Route::get('parts/{part_id}', 'PartsController@show')->name('parts.show')->middleware('my_part');
 
     //Colors
-    Route::get('colors', 'ColorsController@index')->name('colors.index')->middleware('my_cors');
+    Route::get('colors', 'ColorsController@index')->name('colors.index');
     Route::post('colors', 'ColorsController@store')->name('colors.store');
     Route::get('colors/{color_id}', 'ColorsController@show')->name('colors.show')->middleware('my_color');
 
