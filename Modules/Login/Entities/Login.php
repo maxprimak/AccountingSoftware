@@ -37,6 +37,9 @@ class Login extends Authenticatable implements MustVerifyEmail
     public function getCompany(){
 
         $user = User::where('login_id', $this->id)->first();
+
+        if($user == null) return null;
+
         $company = Company::find($user->company_id);
 
         return $company;

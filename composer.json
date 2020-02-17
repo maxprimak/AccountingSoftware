@@ -14,6 +14,7 @@
         "bugsnag/bugsnag-laravel": "^2.0",
         "facebook/webdriver": "^1.7",
         "fideloper/proxy": "^4.0",
+        "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.5",
         "intervention/image": "^2.5",
         "laravel/cashier": "^10.5",

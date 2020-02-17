@@ -19,7 +19,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        \Barryvdh\Cors\HandleCors::class,
+        \Fruitcake\Cors\HandleCors::class,
     ];
 
     /**
@@ -91,6 +91,7 @@ class Kernel extends HttpKernel
         'my_employee' => \Modules\Employees\Http\Middleware\MyEmployee::class,
         'my_service' => \Modules\Services\Http\Middleware\MyService::class,
         'my_warehouse_has_good' => \Modules\Warehouses\Http\Middleware\MyWarehouseHasGood::class,
+        'my_cors' => \Modules\Companies\Http\Middleware\MyCors::class
 
     ];
 

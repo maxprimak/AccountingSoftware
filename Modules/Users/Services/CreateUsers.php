@@ -119,7 +119,9 @@ class CreateUsers{
         $company->save();
 
         $company->createAsStripeCustomer([
-            'description' => $company->name 
+            'description' => $request->company_name,
+            'name' => $person->name,
+            'email' => auth('api')->user()->email,
         ]);
         $company->subscribeToFreePlan();
 
