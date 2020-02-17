@@ -119,10 +119,17 @@ class RepairOrder extends Model
 
     public function getServicesNamesString(){
       $company = auth('api')->user()->getCompany();
-      $servicesIds = DeviceHasService::where('repair_order_id', $this->id)->pluck('service_id')->toArray();
+      $devices = Device::whereIn('id', $this->getDevicesIds())->get();
+      //IN WORK
+      /*$result = "";
+      foreach($devices as $device){
+        $servicesIds = DeviceHasService::where('repair_order_id', $this->id)
+                                        ->where('device')->pluck('service_id')->toArray();
+      }
+      $servicesIds = DeviceHasService::where('repair_order_id', $this->id)->where('device')->pluck('service_id')->toArray();
       $services = ServicesTranslation::whereIn('service_id', $servicesIds)->where('language_id', $company->language_id)
-                                      ->pluck('name')->toArray();
-      return implode(", ",$services);
+                                      ->pluck('name')->toArray();*/
+      return 0;//implode(", ",$services);
     }
 
     public function getDevicesSerialNumberString(){
