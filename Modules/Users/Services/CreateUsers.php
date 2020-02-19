@@ -105,12 +105,14 @@ class CreateUsers{
         $company->phone = $request->company_phone;
         $company->currency_id = $request->currency_id;
         $company->tax = $request->company_tax;
+        $company->language_id = $request->language_id;
 
         $address = new Address();
         $address->house_number = $request->house_number;
         $address->street_name = $request->street_name;
         $address->postcode = $request->postcode;
-        $city_id = City::where('name', $request->city_name)->where('country_id', $request->country_id)->first()->id;
+        $city = City::firstOrCreate(['name' => $request->city_name, 'country_id' => $request->country_id]);
+        $city_id = $city->id;
         $address->city_id = $city_id;
         $address->save();
 

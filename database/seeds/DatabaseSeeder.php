@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Modules\Companies\Database\Seeders\AddGermanAndRussianTableSeeder;
+use Modules\Companies\Database\Seeders\AddISOCodesSeederTableSeeder;
 use Modules\Login\Database\Seeders\LoginDatabaseSeeder;
 use Modules\Users\Database\Seeders\UsersDatabaseSeeder;
 use Modules\Companies\Database\Seeders\CompaniesDatabaseSeeder;
@@ -38,7 +39,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(LanguagesTableSeeder::class);
+        /*$this->call(LanguagesTableSeeder::class);
         $this->call(CompaniesDatabaseSeeder::class);
         $this->call(LoginDatabaseSeeder::class);
         $this->call(UsersDatabaseSeeder::class);
@@ -62,8 +63,9 @@ class DatabaseSeeder extends Seeder
         //$this->call(OldOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
         $this->call(ModelFixTableSeeder::class);  
-        //$this->call(StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder::class);
-        //$this->call(AddGermanAndRussianTableSeeder::class);
-        //$this->call(AddReceiptMainTextForEveryExistingBranchTableSeeder::class);
+        $this->call(StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder::class);
+        $this->call(AddGermanAndRussianTableSeeder::class);
+        $this->call(AddReceiptMainTextForEveryExistingBranchTableSeeder::class);*/
+        $this->call(AddISOCodesSeederTableSeeder::class);
     }
 }

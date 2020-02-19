@@ -26,7 +26,8 @@ class RegistrationRequest extends FormRequest
             'street_name' => 'required|max:190',
             'postcode' => 'required|max:190',  
             'country_id' => 'required|exists:countries,id',
-            'city_name' => 'required|exists:cities,name,country_id,'.$this->input('country_id'),
+            'city_name' => 'required',
+            'language_id' => 'required|exists:languages,id',
         ];
     }
 
