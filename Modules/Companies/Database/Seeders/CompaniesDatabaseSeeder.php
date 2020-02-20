@@ -29,7 +29,7 @@ class CompaniesDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->seedCountries();
+        $this->seedVienna();
 
         factory('Modules\Companies\Entities\Currency')->create([
             'name' => 'Euro',
