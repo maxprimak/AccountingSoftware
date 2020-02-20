@@ -45,7 +45,8 @@ class Part extends Model
     }
 
     public function getTranslatedName($language_id){
-      return PartsTranslation::where('part_id', $this->id)->where('language_id', $language_id)->first()->name;
+      return ($this->is_custom) ?  PartsTranslation::where('part_id', $this->id)->first()->name : 
+                                  PartsTranslation::where('part_id', $this->id)->where('language_id', $language_id)->first()->name;
     }
 
 }
