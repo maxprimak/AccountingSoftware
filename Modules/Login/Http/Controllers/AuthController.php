@@ -74,8 +74,6 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'plan' => 'free',
-            'additional_items' => '0',
             'is_active' => 1,
         ]);
 
@@ -87,6 +85,8 @@ class AuthController extends Controller
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'is_registered' => 0,
+            'plan' => 'free',
+            'extra_branches_paid' => 0,
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
