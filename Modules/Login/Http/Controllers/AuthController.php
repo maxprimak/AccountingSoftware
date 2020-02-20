@@ -57,7 +57,7 @@ class AuthController extends Controller
     {
         return Validator::make($data, [
             'username' => 'required|min:6|unique:logins,username',
-            'email' => 'required|email|unique:logins,email',
+            'email' => 'required|email:rfc,dns,strict|unique:logins,email',
             'password' => 'required|min:8',
             'repassword' => 'required|same:password',
             'recaptchaToken' => 'required',
