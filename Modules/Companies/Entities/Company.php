@@ -96,6 +96,10 @@ class Company extends Model
       return $result;
     }
 
+    public function getPlanExpirationDate(){
+      return date('d.m.Y', $this->subscription(env('STANDARD_SUBSCRIPTION_NAME'))->asStripeSubscription()->current_period_end);
+    }
+
     public function getStripePlanName(){
       if($this->subscribedToPlan(env('ENTERPRISE_PLAN_STRIPE_ID'), env('STANDARD_SUBSCRIPTION_NAME'))){
         return "enterprise";
