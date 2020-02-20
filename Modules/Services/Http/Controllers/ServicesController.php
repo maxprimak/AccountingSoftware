@@ -40,7 +40,7 @@ class ServicesController extends Controller
                 'id' => $service->id,
                 'name' => $service->getTranslatedName($language_id),
                 'part_id' => $service->getPartId(),
-                'part_name' => ($service->getPartId() == null) ? "Without part" : Part::find($service->getPartId())->getTranslatedName($language_id)
+                'part_name' => ($service->getPartId() == null) ? Part::getWithoutPartText() : Part::find($service->getPartId())->getTranslatedName($language_id)
             ];
 
             array_push($response, $service_json);

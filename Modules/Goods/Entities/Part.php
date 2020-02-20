@@ -39,6 +39,11 @@ class Part extends Model
       return $company_has_part;
     }
 
+    public static function getWithoutPartText(){
+      $company = auth('api')->user()->getCompany();
+      return ($company->language_id == 1) ? "Without part" : "Ohne Ersatzteil";
+    }
+
     public function getTranslatedName($language_id){
       return PartsTranslation::where('part_id', $this->id)->where('language_id', $language_id)->first()->name;
     }
