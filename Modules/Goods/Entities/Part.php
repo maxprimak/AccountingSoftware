@@ -39,8 +39,8 @@ class Part extends Model
       return $company_has_part;
     }
 
-    public function getTranslatedName(){
-      return PartsTranslation::where('part_id', $this->id)->first()->name;
+    public function getTranslatedName($language_id){
+      return PartsTranslation::where('part_id', $this->id)->where('language_id', $language_id)->first()->name;
     }
 
 }
