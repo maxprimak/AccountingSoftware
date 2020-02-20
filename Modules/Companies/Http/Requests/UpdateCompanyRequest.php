@@ -25,6 +25,7 @@ class UpdateCompanyRequest extends FormRequest
             'street_name' => 'required|max:190',
             'country_id' => 'required|exists:countries,id',
             'city_name' => 'required',
+            'language_id' => 'required|exists:languages,id'
         ];
     }
     /**

@@ -75,6 +75,7 @@ class Company extends Model
         $this->name = $request->name;
         $this->phone = $request->phone;
         $this->tax = $request->tax;
+        $this->language_id = $request->language_id;
 
         $address = Address::find($this->address_id);
         $address->store($request);
