@@ -27,14 +27,14 @@ class OrderStatusesTranslationsTableSeeder extends Seeder
 
         private function getDETranslations(){
         return  [
-            1 => "Zur Reparatur angenommen",
+            1 => "Angenommen",
             2 => "In Bearbeitung",
             3 => "Ersatzteile bestellen",
             4 => "Warten auf Ersatzteile",
             5 => "Repariert",
             6 => "Nicht reparierbar",
             7 => "Warten auf Kunden",
-            8 => "Zurückgegeben"
+            8 => "Abgeholt"
         ];
     }
 

@@ -62,7 +62,7 @@ class MorePartsAndPartsTranslationTableSeeder extends Seeder
             "TrackPad" => "TrackPad",
             "Keyboard" => "Tastatur",
             "Display" => "Display",
-            "Battery" => "Batterie",
+            "Battery" => "Akku",
             "Side Buttons" => "Seitentasten",
             "Vibration motor" => "Vibrationsmotor",
             "Home-button" => "Home-Taste",

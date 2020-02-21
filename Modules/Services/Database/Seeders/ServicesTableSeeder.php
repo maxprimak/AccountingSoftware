@@ -60,7 +60,7 @@ class ServicesTableSeeder extends Seeder
             ],
             2 => [
                 "en" => "Battery Repair",
-                "de" => "Batterie Reparatur",
+                "de" => "Akku Reparatur",
                 "part_id" => 2
             ],
             3 => [
