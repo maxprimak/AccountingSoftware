@@ -106,7 +106,9 @@ class RepairOrderHasDeviceController extends Controller
 
             return response()->json("Successfully deleted!");
         }else{
-            return response()->json("You can not delete last Device");
+            $language_id = auth('api')->user()->getCompany()->language_id;
+            $message = ($language_id == 1) ? "You can not delete last Device" : "Sie können letztes Gerät nicht löschen";
+            return response()->json($message);
         }
 
     }

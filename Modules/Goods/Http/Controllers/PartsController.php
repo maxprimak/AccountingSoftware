@@ -19,7 +19,7 @@ class PartsController extends Controller
     {
         $company = auth('api')->user()->getCompany();
         $parts_ids = Part::where('is_custom',0)->pluck('id')->toArray();
-        $parts = PartsTranslation::whereIn('part_id',$parts_ids)->get();
+        $parts = PartsTranslation::whereIn('part_id',$parts_ids)->where('language_id', auth('api')->user()->getCompany()->language_id)->get();
         $parts_of_company = DB::table('company_has_parts')
                     ->join('parts', 'parts.id', '=', 'company_has_parts.part_id')
                     ->join('parts_translations', 'parts_translations.part_id', '=', 'company_has_parts.part_id')

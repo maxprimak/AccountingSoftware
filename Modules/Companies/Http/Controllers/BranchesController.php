@@ -56,7 +56,7 @@ class BranchesController extends Controller
         $address = Address::find($branch->address_id);
         $city = City::find($address->city_id);
         $branch->city_name = $city->name;
-        $branch->country_name = Country::find($city->country_id)->name;
+        $branch->country_name = Country::find($city->country_id)->code;
         $branch->street_name = $address->street_name;
         $branch->house_number = $address->house_number;
         $branch->postcode = $address->postcode;

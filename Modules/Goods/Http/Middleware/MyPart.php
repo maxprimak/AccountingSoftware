@@ -22,7 +22,7 @@ class MyPart
 
         if($part_id == "null"){
 
-            return response()->json('Without part', 200);
+            return response()->json(Part::getWithoutPartText(), 200);
 
         }
 
