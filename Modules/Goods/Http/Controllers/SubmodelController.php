@@ -87,7 +87,9 @@ class SubmodelController extends Controller
           $exists = $existing_submodel->checkIfExistsInCompany();
           if(!$exists){
             $existing_submodel->addToCompany($request);
-            return response()->json(['message' => 'Successfully added!', 'submodel' => $existing_submodel], 200);
+            $language_id = auth('api')->user()->getCompany()->language_id;
+            $message = ($language_id == 1) ? 'Successfully added!' : "Erfolgreich hinzugefügt!" ;
+            return response()->json(['message' => $message, 'submodel' => $existing_submodel], 200);
           }else{
             return response()->json(['message' => 'This submodel already exists for this model'], 200);
           }
@@ -96,7 +98,10 @@ class SubmodelController extends Controller
         $submodel = new Submodel();
         $submodel->store($request);
 
-        return response()->json(['message' => 'Successfully added!', 'submodel' => $submodel], 200);
+        $language_id = auth('api')->user()->getCompany()->language_id;
+        $message = ($language_id == 1) ? 'Successfully added!' : "Erfolgreich hinzugefügt!" ;
+
+        return response()->json(['message' => $message, 'submodel' => $submodel], 200);
     }
 
     /**
