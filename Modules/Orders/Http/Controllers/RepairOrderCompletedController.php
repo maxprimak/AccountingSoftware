@@ -66,8 +66,10 @@ class RepairOrderCompletedController extends Controller
     {
         $repair_order = RepairOrder::find($repair_order_id);
         $repair_order = $repair_order->complete();
-
-        return response()->json("Order is completed!");
+        $language_id = auth('api')->user()->getCompany()->language_id;
+        $response = ($language_id == 1) ? "Order is completed!" : "Auftrag ist abgeschlossen";
+        
+        return response()->json($response);
     }
 
     /**

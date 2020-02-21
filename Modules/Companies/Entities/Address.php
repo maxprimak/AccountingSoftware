@@ -16,9 +16,10 @@ class Address extends Model
         $this->postcode = $request->postcode;
         $this->street_name = $request->street_name;
         $this->house_number = $request->house_number;
-        $this->city_id = City::where('name', $request->city_name)
-                        ->where('country_id', $request->country_id)
-                        ->firstOrFail()->id;
+        $this->city_id = City::firstOrCreate([
+          'country_id' => $request->country_id,
+          'name' => $request->city_name
+        ])->id;
         $this->save();
   
     }

@@ -45,6 +45,15 @@ class Company extends Model
       return $result;
     }
 
+    public function getLanguage(){
+      $languages = [
+        1 => "en",
+        2 => "de"
+      ];
+
+      return $languages[$this->language_id];
+    }
+
     public function getWarehousesIdsOfCompany(){
       $branches_ids = $this->getBranchesIdsOfCompany();
       $warehouses_ids = Warehouse::whereIn('branch_id',$branches_ids)->pluck('id');
@@ -75,6 +84,7 @@ class Company extends Model
         $this->name = $request->name;
         $this->phone = $request->phone;
         $this->tax = $request->tax;
+        $this->language_id = $request->language_id;
 
         $address = Address::find($this->address_id);
         $address->store($request);

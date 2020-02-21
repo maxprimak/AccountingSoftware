@@ -34,6 +34,7 @@ class AuthController extends Controller
             'plan' => ($user->getCompany() == null) ? "no_company_yet" : $user->getCompany()->getStripePlanName(),
             'extra_branches_paid' => ($user->getCompany() == null) ? "no_company_yet" : $user->getCompany()->getExtraBranchesAmount(),
             'is_registered' => ($user->isRegistered()) ? 1 : 0,
+            'language' => $user->getCompany()->getLanguage(),
             'plan_expires_at' => $user->getCompany()->getPlanExpirationDate(),
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at

@@ -28,7 +28,7 @@ class GetUserBranches{
             $branch->city_id = $address->city_id;
             $city = City::findOrFail($address->city_id);
             $branch->city_name = $city->name;
-            $branch->country_name = Country::findOrFail($city->country_id)->name;
+            $branch->country_name = Country::findOrFail($city->country_id)->code;
 
         }
 

@@ -42,7 +42,7 @@ class CompaniesController extends Controller
         $country = Country::findOrFail($city->country_id);
 
         $company->city_name = $city->name;
-        $company->country_name = $country->name;
+        $company->country_name = $country->code;
 
         return response()->json(['company' => $company], 200);
     }
