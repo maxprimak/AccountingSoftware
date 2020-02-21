@@ -36,6 +36,7 @@ class AuthController extends Controller
             'is_registered' => ($user->isRegistered()) ? 1 : 0,
             'language' => $user->getCompany()->getLanguage(),
             'plan_expires_at' => $user->getCompany()->getPlanExpirationDate(),
+            'orders_left' => 3,
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
