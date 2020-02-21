@@ -36,5 +36,6 @@ Route::delete('branches/{branch_id}', 'BranchesController@destroy')->name('branc
 
 Route::post('payment/subscription/make', 'PaymentController@store')->name('payment.subscription.store');
 Route::post('payment/method/attach', 'PaymentController@attachMethod')->name('payment.method.attach');
+Route::get('payment/plans', 'PaymentPlansController@index')->name('payment.plans.index');
 
 });

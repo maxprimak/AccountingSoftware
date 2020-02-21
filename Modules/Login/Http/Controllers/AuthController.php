@@ -35,6 +35,7 @@ class AuthController extends Controller
             'extra_branches_paid' => ($user->getCompany() == null) ? "no_company_yet" : $user->getCompany()->getExtraBranchesAmount(),
             'is_registered' => ($user->isRegistered()) ? 1 : 0,
             'language' => $user->getCompany()->getLanguage(),
+            'plan_expires_at' => $user->getCompany()->getPlanExpirationDate(),
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
@@ -58,7 +59,7 @@ class AuthController extends Controller
     {
         return Validator::make($data, [
             'username' => 'required|min:6|unique:logins,username',
-            'email' => 'required|email|unique:logins,email',
+            'email' => 'required|email:rfc,dns,strict|unique:logins,email',
             'password' => 'required|min:8',
             'repassword' => 'required|same:password',
             'recaptchaToken' => 'required',
@@ -75,8 +76,6 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'plan' => 'free',
-            'additional_items' => '0',
             'is_active' => 1,
         ]);
 
@@ -88,6 +87,8 @@ class AuthController extends Controller
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'is_registered' => 0,
+            'plan' => 'free',
+            'extra_branches_paid' => 0,
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
