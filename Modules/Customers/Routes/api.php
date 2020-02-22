@@ -24,4 +24,6 @@ Route::middleware(['is_authorized', 'is_registered'])->group(function () {
 
     Route::get('customer_types', 'CustomerTypesController@index')->name('customer_types.index');
 
+    //update regular customer
+    Route::get('regular_customers/{customer_id}', 'RegularCustomerController@update')->name('regular_customers.update')->middleware('my_customer');
 });

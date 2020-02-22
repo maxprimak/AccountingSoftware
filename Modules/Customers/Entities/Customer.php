@@ -4,6 +4,7 @@ namespace Modules\Customers\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Users\Entities\People;
+use phpDocumentor\Reflection\Types\Self_;
 
 class Customer extends Model
 {
@@ -75,6 +76,20 @@ class Customer extends Model
 
   public function getPerson(){
     return People::find($this->person_id);
+  }
+
+  public function isRegular(){
+      return $this->is_regular;
+  }
+
+  public function makeNotRegular(): void{
+      $this->is_regular = 0;
+      $this->save();
+  }
+
+  public function makeRegular(): void{
+        $this->is_regular = 1;
+        $this->save();
   }
 
 }
