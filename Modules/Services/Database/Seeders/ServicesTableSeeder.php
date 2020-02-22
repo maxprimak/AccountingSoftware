@@ -4,6 +4,8 @@ namespace Modules\Services\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Goods\Entities\Part;
+use Modules\Goods\Entities\PartsTranslation;
 use Modules\Services\Entities\Service;
 use Modules\Services\Entities\ServiceHasPart;
 use Modules\Services\Entities\ServicesTranslation;
@@ -51,42 +53,47 @@ class ServicesTableSeeder extends Seeder
 
     }
 
+    private function getPartIdByName($name){
+        $translation = PartsTranslation::where('name',$name)->firstOrFail();
+        return $translation->part_id;
+    }
+
     private function getServices(){
         return [
             1 => [
                 "en" => "Display Repair",
                 "de" => "Display Reparatur",
-                "part_id" => 1
+                "part_id" => $this->getPartIdByName("Display")
             ],
             2 => [
                 "en" => "Battery Repair",
                 "de" => "Akku Reparatur",
-                "part_id" => 2
+                "part_id" => $this->getPartIdByName("Akku")
             ],
             3 => [
                 "en" => "Charging port + (Headphone Jack Repair)",
                 "de" => "Ladeanschluss + (Reparatur der Kopfhörerbuchse)",
-                "part_id" => 8
+                "part_id" => $this->getPartIdByName("Charging port")
             ],
             4 => [
                 "en" => "Microphone Repair",
                 "de" => "Mikrofon Reparatur",
-                "part_id" => 9
+                "part_id" => $this->getPartIdByName("Mikrofon")
             ],
             5 => [
                 "en" => "Home-button Repair",
                 "de" => "Home-Taste Reparatur",
-                "part_id" => 5
+                "part_id" => $this->getPartIdByName("Home-Taste")
             ],
             6 => [
                 "en" => "Ear Speaker Repair",
                 "de" => "Ohrhörer Reparatur",
-                "part_id" => 10
+                "part_id" => $this->getPartIdByName("Ohrhörer")
             ],
             7 => [
                 "en" => "Loud Speaker Repair",
                 "de" => "Lautsprecher Reparatur",
-                "part_id" => 11
+                "part_id" => $this->getPartIdByName("Lautsprecher")
             ],
             8 => [
                 "en" => "Software problems solving",
@@ -96,7 +103,7 @@ class ServicesTableSeeder extends Seeder
             9 => [
                 "en" => "Back Cover Repair",
                 "de" => "Rückseite Reparatur",
-                "part_id" => 12
+                "part_id" => $this->getPartIdByName("Back Cover")
             ],
             10 => [
                 "en" => "Data Recovery",
@@ -106,7 +113,7 @@ class ServicesTableSeeder extends Seeder
             11 => [
                 "en" => "Power Button Repair",
                 "de" => "Power-Taste Reparatur",
-                "part_id" => 13
+                "part_id" => $this->getPartIdByName("Power-Taste")
             ],
             12 => [
                 "en" => "Logic Board Repair",
@@ -115,18 +122,18 @@ class ServicesTableSeeder extends Seeder
             ],
             13 => [
                 "en" => "Main-camera Repair",
-                "de" => "Mainkamera Reparatur",
-                "part_id" => 7
+                "de" => "Hauptkamera Reparatur",
+                "part_id" => $this->getPartIdByName("Hauptkamera")
             ],
             14 => [
                 "en" => "Front-camera + Proximity Sensor Repair",
                 "de" => "Frontkamera + Näherungssensor Reparatur",
-                "part_id" => 6
+                "part_id" => $this->getPartIdByName("Frontkamera")
             ],
             15 => [
                 "en" => "Back Camera Glass Repair",
                 "de" => "Rückkameraglas Reparatur ",
-                "part_id" => 14
+                "part_id" => $this->getPartIdByName("Rückkameraglas")
             ],
             16 => [
                 "en" => "Diagnostics",
@@ -141,12 +148,12 @@ class ServicesTableSeeder extends Seeder
             18 => [
                 "en" => "TrackPad Repair",
                 "de" => "TrackPad Reparatur",
-                "part_id" => 15
+                "part_id" => $this->getPartIdByName("TrackPad")
             ],
             19 => [
                 "en" => "Keyboard Repair",
                 "de" => "Tastatur Reparatur",
-                "part_id" => 16
+                "part_id" => $this->getPartIdByName("Keyboard")
             ],
         ];
     }
