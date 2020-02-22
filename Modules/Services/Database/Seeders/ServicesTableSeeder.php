@@ -130,7 +130,7 @@ class ServicesTableSeeder extends Seeder
             ],
             16 => [
                 "en" => "Diagnostics",
-                "de" => "Diagnose",
+                "de" => "Analyse",
                 "part_id" => null
             ],
             17 => [
