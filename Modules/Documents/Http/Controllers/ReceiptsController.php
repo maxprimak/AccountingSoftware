@@ -10,6 +10,7 @@ use Modules\Orders\Entities\Order;
 use Modules\Companies\Entities\Branch;
 use Modules\Customers\Entities\Customer;
 use Modules\Documents\Entities\Receipt;
+use Modules\Services\Entities\Language;
 
 class ReceiptsController extends Controller
 {
@@ -28,7 +29,7 @@ class ReceiptsController extends Controller
             'order_nr' => $repairOrder->order_nr,
             'branch_phone' => $branch->phone,
             'current_date' => date('d.m.Y'),
-            'order_type' => $repairOrder->getType()->getTranslatedName($company->language_id),
+            'order_type' => $repairOrder->getType()->getTranslatedName(Language::getMyLanguageId()),
             'customer_name' => $customer->getPerson()->name,
             'customer_phone' => $customer->getPerson()->phone,
             'services_names' => $repairOrder->getServicesNamesString(),

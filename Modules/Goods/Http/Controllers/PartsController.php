@@ -9,6 +9,8 @@ use Modules\Goods\Entities\Part;
 use Modules\Goods\Entities\PartsTranslation;
 use Modules\Goods\Http\Requests\StorePartRequest;
 use DB;
+use Modules\Services\Entities\Language;
+
 class PartsController extends Controller
 {
     /**
@@ -71,7 +73,7 @@ class PartsController extends Controller
 
         $part = new Part();
         $part = $part->store($request);
-        $part->name = $part->getTranslatedName();
+        $part->name = $part->getTranslatedName(Language::getMyLanguageId());
         $part->part_id = $part->id;
 
         return response()->json(['message' => 'Successfully added!', 'part' => $part], 200);
@@ -85,7 +87,7 @@ class PartsController extends Controller
     public function show($id)
     {   
         $part = Part::find($id);
-        $part->name = $part->getTranslatedName();
+        $part->name = $part->getTranslatedName(Language::getMyLanguageId());
         return response()->json($part);
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Modules\Services\Entities\Service;
 use Modules\Services\Entities\ServicesTranslation;
 use Modules\Services\Entities\CompanyHasService;
+use Modules\Services\Entities\Language;
 
 class UpdateServiceRequest extends FormRequest
 {
@@ -32,7 +33,7 @@ class UpdateServiceRequest extends FormRequest
         $chosen_service = Service::find($this->route('service_id'));
 
         $names = ServicesTranslation::whereIn('service_id', $services_ids)->pluck('name')->toArray();
-        $names = array_filter($names, function ($x) use($chosen_service) { return $x != $chosen_service->getTranslatedName(1);});
+        $names = array_filter($names, function ($x) use($chosen_service) { return $x != $chosen_service->getTranslatedName(Language::getMyLanguageId());});
 
         return !in_array($this->name, $names);
 

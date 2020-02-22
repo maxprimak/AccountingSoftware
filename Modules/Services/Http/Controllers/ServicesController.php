@@ -12,7 +12,7 @@ use Modules\Goods\Entities\Part;
 use Modules\Services\Entities\ServicesTranslation;
 use Modules\Services\Entities\ServiceHasPart;
 use Modules\Services\Entities\CompanyHasService;
-
+use Modules\Services\Entities\Language;
 
 class ServicesController extends Controller
 {
@@ -38,9 +38,9 @@ class ServicesController extends Controller
 
             $service_json = [
                 'id' => $service->id,
-                'name' => $service->getTranslatedName($language_id),
+                'name' => $service->getTranslatedName(Language::getMyLanguageId()),
                 'part_id' => $service->getPartId(),
-                'part_name' => ($service->getPartId() == null) ? Part::getWithoutPartText() : Part::find($service->getPartId())->getTranslatedName($language_id)
+                'part_name' => ($service->getPartId() == null) ? Part::getWithoutPartText() : Part::find($service->getPartId())->getTranslatedName(Language::getMyLanguageId())
             ];
 
             array_push($response, $service_json);
@@ -83,7 +83,7 @@ class ServicesController extends Controller
             "message" => "service created",
             "service" => [
                 'id' => $service->id,
-                'name' => $service->getTranslatedName(auth('api')->user()->getCompany()->language_id),
+                'name' => $service->getTranslatedName(Language::getMyLanguageId()),
                 'part_id' => $service->getPartId()
             ]
         ]);
