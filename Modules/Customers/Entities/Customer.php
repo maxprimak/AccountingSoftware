@@ -20,6 +20,7 @@ class Customer extends Model
       $this->type_id = $request['type_id'];
       $this->company_id = $request['company_id'];
       $this->created_by = $request['created_by'];
+      $this->marketing_channel_id = $request['marketing_channel_id'];
 
       $this->save();
 
@@ -62,6 +63,7 @@ class Customer extends Model
       $this->email = $request->email;
       $this->stars_number = $request->stars_number;
       $this->type_id = $request->type_id;
+      $this->marketing_channel_id = $request->marketing_channel_id;
       $this->save();
 
       return $this;

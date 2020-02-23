@@ -22,6 +22,7 @@ class StoreCustomerRequest extends FormRequest
             'stars_number' => 'numeric',
             'customer_type_id' => 'required | numeric',
             'branch_id' => 'required',
+            'marketing_channel_id' => 'nullable|exists:marketing_channels,id',
         ];
     }
 

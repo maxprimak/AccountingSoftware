@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Modules\Companies\Database\Seeders\AddGermanAndRussianTableSeeder;
 use Modules\Companies\Database\Seeders\AddISOCodesSeederTableSeeder;
+use Modules\Customers\Database\Seeders\MarketingChannelTableSeeder;
 use Modules\Login\Database\Seeders\LoginDatabaseSeeder;
 use Modules\Users\Database\Seeders\UsersDatabaseSeeder;
 use Modules\Companies\Database\Seeders\CompaniesDatabaseSeeder;
@@ -77,5 +78,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentStatusesTranslationsTableSeeder::class);
         $this->call(MorePartsAndPartsTranslationTableSeeder::class);
         $this->call(ServicesTableSeeder::class);
+        $this->call(MarketingChannelTableSeeder::class);
     }
 }
