@@ -13,7 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware(['is_authorized', 'is_registered'])->group(function () {
-    Route::get('/suppliers/orders', 'SupplierOrdersController@index')->name('orders.repair.index');
-    Route::post('/suppliers/orders', 'SupplierOrdersController@store')->name('supplier.orders.store');
+Route::middleware(['is_authorized','is_registered'])->group(function () {
+
+    Route::get('/suppliers', 'SuppliersController@index')->name('suppliers.index');
+    Route::post('/suppliers', 'SuppliersController@store')->name('suppliers.store');
+    Route::post('/suppliers/{supplier_id}', 'SuppliersController@update')->name('suppliers.update');
+    Route::delete('/suppliers/{supplier_id}', 'SuppliersController@destroy')->name('suppliers.destroy');
+
+    Route::post('/orders/suppliers/email', 'SupplierOrderNotificationsController@email')->name('orders.suppliers.email');
+
+    //NOTE: needs facebook business verification to use twilio
+    //Route::post('/orders/suppliers/whatsapp', 'SupplierOrderNotificationsController@whatsapp')->name('orders.suppliers.whatsapp');
+
 });

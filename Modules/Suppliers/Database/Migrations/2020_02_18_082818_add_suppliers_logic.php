@@ -30,6 +30,7 @@ class AddSuppliersLogic extends Migration
             $table->increments('id');
             $table->unsignedInteger('address_id');
             $table->unsignedInteger('supplier_id');
+            $table->timestamps();
 
             $table->foreign('address_id')->references('id')->on('addresses');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
