@@ -7,6 +7,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Mail;
 use Modules\Suppliers\Emails\SupplierOrderEmail;
+use Modules\Suppliers\Entities\Supplier;
+use Modules\Suppliers\Notifications\SupplierNotified;
 
 class SupplierOrderNotificationsController extends Controller
 {
@@ -18,8 +20,10 @@ class SupplierOrderNotificationsController extends Controller
         return response()->json(["success" => true, "message" => "sent"]);
     }
 
-    public function whatsapp()
+    public function whatsapp(Request $request)
     {
-        return view('suppliers::create');
+        Supplier::find($request->supplier_id)->notify(new SupplierNotified());
+
+        return response()->json(["success" => true, "message" => "notified"]);
     }
 }

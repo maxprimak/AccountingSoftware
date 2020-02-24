@@ -4,6 +4,7 @@ namespace Modules\Suppliers\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Notifications\Notifiable;
 use Modules\Companies\Entities\Address;
 use Modules\Companies\Entities\City;
 use Modules\Companies\Entities\Country;
@@ -11,6 +12,13 @@ use Modules\Companies\Entities\Country;
 class Supplier extends Model
 {
     protected $fillable = [];
+
+    use Notifiable;
+
+    public function routeNotificationForWhatsApp()
+    {
+        return $this->phone;   
+    }
 
     public function addAddressInfo(){
         $address_id = $this->getAddressId();
