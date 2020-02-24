@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Modules\Companies\Database\Seeders\AddGermanAndRussianTableSeeder;
 use Modules\Login\Database\Seeders\LoginDatabaseSeeder;
+use Modules\Suppliers\Database\Seeders\SupplierOrdersStatusesTableSeeder;
 use Modules\Users\Database\Seeders\UsersDatabaseSeeder;
 use Modules\Companies\Database\Seeders\CompaniesDatabaseSeeder;
 use Modules\Companies\Database\Seeders\CompaniesNewTableSeeder;
@@ -61,7 +62,8 @@ class DatabaseSeeder extends Seeder
         $this->call(OrderTypesSeederTableSeeder::class);
         //$this->call(OldOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
-        $this->call(ModelFixTableSeeder::class);  
+        $this->call(ModelFixTableSeeder::class);
+        $this->call(SupplierOrdersStatusesTableSeeder::class);
         //$this->call(StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder::class);
         //$this->call(AddGermanAndRussianTableSeeder::class);
         //$this->call(AddReceiptMainTextForEveryExistingBranchTableSeeder::class);

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/suppliers', function (Request $request) {
-    return $request->user();
+Route::middleware(['is_authorized', 'is_registered'])->group(function () {
+    Route::get('/suppliers/orders', 'SupplierOrdersController@index')->name('orders.repair.index');
+    Route::post('/suppliers/orders', 'SupplierOrdersController@store')->name('supplier.orders.store');
 });

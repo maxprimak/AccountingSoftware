@@ -66,6 +66,13 @@ class Login extends Authenticatable implements MustVerifyEmail
 
     }
 
+    public function getEmployee() : Employee
+    {
+        $user = User::where('login_id',$this->id)->firstOrFail();
+        $employee = Employee::where('user_id',$user->id)->firstOrFail();
+        return $employee;
+    }
+
     public function isHead(){ return $this->getRoleId() == 1; }
     public function isTopManager(){ return $this->getRoleId() == 2; }
     public function isTech(){ return $this->getRoleId() == 3; }
