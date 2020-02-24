@@ -14,8 +14,10 @@ class SupplierOrderNotificationsController extends Controller
 {
 
     public function email(Request $request)
-    {
-        Mail::to($request->to)->send(new SupplierOrderEmail($request));
+    {   
+        $supplier = Supplier::find($request->supplier_id);
+        $to = $supplier->email;
+        Mail::to($to)->send(new SupplierOrderEmail($request));
 
         return response()->json(["success" => true, "message" => "sent"]);
     }

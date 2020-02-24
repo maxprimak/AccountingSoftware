@@ -34,9 +34,19 @@ class SupplierOrderEmail extends Mailable
         return $this->markdown('vendor.mail.text.message')
                     ->from('no-reply@relist.at')
                     ->with([
-                        'slot' => $this->request->text
+                        'slot' => $this->getText()
                     ])
-                    ->subject('attachments')
+                    ->subject($this->getSubject())
                     ->attach($this->request->file);
     }
+
+    private function getSubject(){
+        return "Supplier Order#TEST1 Info";
+    }
+
+    private function getText(){
+        return "Branch 'BranchName' from company 'CompanyName' has Ordered to you following goods: iPhone 7 Display (2 pieces), iPhone 8 Battery(3 pieces).
+                Comment of an employee of BranchName: Please do it really quickly guys!!!";
+    }
+
 }
