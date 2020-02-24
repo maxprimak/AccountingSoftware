@@ -46,6 +46,10 @@ class MarketingChannelTableSeeder extends Seeder
         $email = new MarketingChannel();
         $email->store($request);
 
+        $request->name = "Other";
+        $other = new MarketingChannel();
+        $other->store($request);
+
         // $this->call("OthersTableSeeder");
     }
 }
