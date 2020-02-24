@@ -22,6 +22,9 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
 
     Route::post('/orders/suppliers/email', 'SupplierOrderNotificationsController@email')->name('orders.suppliers.email');
 
+
+    Route::get('/suppliers/orders', 'SupplierOrdersController@index')->name('suppliers.orders.index');
+    Route::post('/suppliers/orders', 'SupplierOrdersController@store')->name('suppliers.orders.store');
     //NOTE: needs facebook business verification to use twilio
     //Route::post('/orders/suppliers/whatsapp', 'SupplierOrderNotificationsController@whatsapp')->name('orders.suppliers.whatsapp');
 

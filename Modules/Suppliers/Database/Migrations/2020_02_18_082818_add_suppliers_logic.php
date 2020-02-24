@@ -47,31 +47,21 @@ class AddSuppliersLogic extends Migration
 
         Schema::create('orders_to_supplier_statuses', function (Blueprint $table){
             $table->increments('id');
-            $table->unsignedInteger('color_id');
-
-            $table->foreign('color_id')->references('id')->on('colors');
-        });
-
-        Schema::create('orders_to_supplier_statuses_translations', function(Blueprint $table){
-            $table->increments('id');
-            $table->unsignedInteger('orders_to_supplier_statuses_id');
-            $table->unsignedInteger('languages_id');
             $table->string('name');
-
-            $table->foreign('orders_to_supplier_statuses_id' ,'statuses_id_foreign')->references('id')->on('orders_to_supplier_statuses');
-            $table->foreign('languages_id')->references('id')->on('languages');
+            $table->string('hex_code');
+            $table->timestamps();
         });
 
         Schema::create('orders_to_suppliers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description');
-            $table->integer('amount');
             $table->date('delivery_date');
             $table->string('order_nr');
             $table->unsignedInteger('accepted_by');
             $table->unsignedInteger('orders_to_supplier_statuses_id');
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('supplier_id');
+            $table->string('comment');
+            $table->timestamps();
 
             $table->foreign('accepted_by')->references('id')->on('employees');
             $table->foreign('orders_to_supplier_statuses_id', 'statuses_id_foreign_to_suppliers')->references('id')->on('orders_to_supplier_statuses');
@@ -83,6 +73,8 @@ class AddSuppliersLogic extends Migration
             $table->increments('id');
             $table->unsignedInteger('orders_to_supplier_id');
             $table->unsignedInteger('good_id');
+            $table->integer('amount');
+            $table->timestamps();
 
             $table->foreign('orders_to_supplier_id', 'orders_to_supplier_id_foreign')->references('id')->on('orders_to_suppliers');
             $table->foreign('good_id')->references('id')->on('goods');
