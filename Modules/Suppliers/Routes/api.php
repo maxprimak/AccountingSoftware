@@ -20,4 +20,6 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
     Route::post('/suppliers/{supplier_id}', 'SuppliersController@update')->name('suppliers.update');
     Route::delete('/suppliers/{supplier_id}', 'SuppliersController@destroy')->name('suppliers.destroy');
 
+    Route::post('/orders/suppliers/email', 'SupplierOrderNotificationsController@email')->name('orders.suppliers.email');
+
 });
