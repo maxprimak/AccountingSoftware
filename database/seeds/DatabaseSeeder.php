@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        /*
         $this->call(LanguagesTableSeeder::class);
         $this->call(CompaniesDatabaseSeeder::class);
         $this->call(LoginDatabaseSeeder::class);
@@ -78,6 +79,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentStatusesTranslationsTableSeeder::class);
         $this->call(MorePartsAndPartsTranslationTableSeeder::class);
         $this->call(ServicesTableSeeder::class);
+        */
         $this->call(MarketingChannelTableSeeder::class);
     }
 }
