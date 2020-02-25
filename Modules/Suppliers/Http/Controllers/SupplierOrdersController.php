@@ -26,13 +26,8 @@ class SupplierOrdersController extends Controller
         $supplier_orders = SupplierOrder::whereIn('order_id',$order_ids)->get();
 
         foreach ($supplier_orders as $supplier_order){
-            $result_goods = SupplierOrderHasGood::getGoodsForSupplierOrder($supplier_order);
+            $supplier_order->addInfoForIndex();
 
-            $supplier = Supplier::find($supplier_order->supplier_id);
-            $order = Order::find($supplier_order->order_id);
-            $supplier_order->supplier_name = $supplier->name;
-            $supplier_order->price = $order->price;
-            $supplier_order->description = $result_goods;
         }
        return response()->json($supplier_orders);
     }
@@ -55,7 +50,8 @@ class SupplierOrdersController extends Controller
     {
         $supplier_order = new SupplierOrder();
         $supplier_order = $supplier_order->store($request);
-        return response()->json('Successfully created');
+
+        return response()->json($supplier_order->addInfoForIndex());
     }
 
     /**

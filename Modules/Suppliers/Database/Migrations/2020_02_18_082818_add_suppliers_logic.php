@@ -40,6 +40,7 @@ class AddSuppliersLogic extends Migration
             $table->increments('id');
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('supplier_id');
+            $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
@@ -61,12 +62,14 @@ class AddSuppliersLogic extends Migration
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('supplier_id');
             $table->string('comment');
+            $table->unsignedInteger('payment_status_id');
             $table->timestamps();
 
             $table->foreign('accepted_by')->references('id')->on('employees');
             $table->foreign('orders_to_supplier_statuses_id', 'statuses_id_foreign_to_suppliers')->references('id')->on('orders_to_supplier_statuses');
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
+            $table->foreign('payment_status_id')->references('id')->on('payment_statuses');
         });
 
         Schema::create('orders_to_supplier_has_goods', function(Blueprint $table){

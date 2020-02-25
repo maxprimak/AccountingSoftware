@@ -51,6 +51,15 @@ class Good extends Model
       return $this;
     }
 
+    public function getName(){
+      $language_id = auth('api')->user()->getCompany()->language_id;
+      $part_name =  Part::find($this->part_id)->getTranslatedName($language_id);
+      $submodel_name = Submodel::find($this->submodel_id)->getName();
+      $result = $part_name. " " . $submodel_name;
+
+      return $result;
+    }
+
     public function addToBranch(FormRequest $request){
       $request->good_id = $this->id;
       $request->branch_id = $this->getBranchIdOfWarehouse($request);

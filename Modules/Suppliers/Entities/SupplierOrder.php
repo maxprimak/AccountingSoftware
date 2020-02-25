@@ -4,7 +4,10 @@ namespace Modules\Suppliers\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Modules\Companies\Entities\Branch;
+use Modules\Goods\Entities\Good;
 use Modules\Orders\Entities\Order;
+use Modules\Orders\Entities\PaymentStatuses;
 
 class SupplierOrder extends Model
 {
@@ -31,6 +34,59 @@ class SupplierOrder extends Model
         return $supplier_order;
     }
 
+    public function addInfoForIndex(){
+        $this->branch_name = $this->getBranchName();
+        $this->goods_description = $this->getGoodsDescription();
+        $this->price = $this->getPrice();
+        $this->payment_status_name = PaymentStatuses::getPaymentStatusWithTranslation($this)->name;
+        $this->supplier_name = $this->getSupplierName();
+        $this->status_name = $this->getStatus()->name;
+        $this->status_hexcode = $this->getStatus()->hex_code;
+
+        return $this;
+    }
+
+    private function getStatus(){
+        return SupplierOrdersStatuses::find($this->orders_to_supplier_statuses_id);
+    }
+
+    private function getSupplierName(){
+        $supplier = $this->getSupplier();
+        return $supplier->name;
+    }
+
+    private function getSupplier(){
+        return Supplier::find($this->supplier_id);
+    }
+
+    private function getPrice(){
+        $order = $this->getOrder();
+        
+        return $order->price;
+    }
+
+    private function getGoodsDescription(){
+        $has_good_query = SupplierOrderHasGood::where('orders_to_supplier_id', $this->id);
+        $amount = $has_good_query->count();
+        $good_ids = $has_good_query->pluck('good_id')->toArray();
+        $first_item = Good::whereIn('id', $good_ids)->first();
+        $alternative_string = $first_item->getName() . " +" . strval($amount-1); 
+        $result = ($amount < 2) ? $first_item->getName() : $alternative_string; 
+
+        return $result;
+    }
+
+    private function getBranchName(){
+        $order = $this->getOrder();
+        $branch = Branch::find($order->branch_id);
+
+        return $branch->name;
+    }
+
+    private function getOrder(){
+        return Order::find($this->order_id);
+    }
+
     private function calculate_price(Request $request)
     {
         $price = 0;
@@ -44,6 +100,7 @@ class SupplierOrder extends Model
 
     private function saveSupplierOrder(Request $request): SupplierOrder
     {
+        $this->payment_status_id = 3;
         $this->supplier_id = $request->supplier_id;
         $this->delivery_date = $request->delivery_date;
         $this->orders_to_supplier_statuses_id = $request->orders_to_supplier_statuses_id;
