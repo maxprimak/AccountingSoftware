@@ -33,15 +33,6 @@ class SupplierOrdersController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        return view('suppliers::create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      * @param Request $request
      * @return Response
@@ -55,34 +46,17 @@ class SupplierOrdersController extends Controller
     }
 
     /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('suppliers::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('suppliers::edit');
-    }
-
-    /**
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreSupplierOrderRequest $request, $id)
     {
-        //
+        $supplier_order = SupplierOrder::find($id);
+        $supplier_order = $supplier_order->edit($request);
+
+        return response()->json($supplier_order->addInfoForIndex());
     }
 
     /**

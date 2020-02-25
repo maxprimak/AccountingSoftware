@@ -8,7 +8,7 @@ use Modules\Goods\Entities\Good;
 
 class SupplierOrderHasGood extends Model
 {
-    protected $fillable = [];
+    protected $fillable = ['orders_to_supplier_id', 'good_id'];
 
     protected $table = 'orders_to_supplier_has_goods';
 

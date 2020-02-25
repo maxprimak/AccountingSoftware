@@ -46,6 +46,31 @@ class SupplierOrder extends Model
         return $this;
     }
 
+    public function edit($request){
+        $this->updateSupplierOrder($request);
+        $this->updateGoods($request);
+
+        return $this;
+    }
+
+    private function updateGoods($request){
+        $good_ids = array();
+        foreach($request->goods as $good){
+            array_push($good_ids, $good['good_id']);
+        }
+        SupplierOrderHasGood::where('orders_to_supplier_id', $this->id)->whereNotIn('good_id', $good_ids)->delete();
+
+        foreach($request->goods as $good){
+           $has_good = SupplierOrderHasGood::firstOrNew([
+            'orders_to_supplier_id' => $this->id,
+            'good_id' => $good['good_id'],
+           ]);
+           $has_good->amount = $good['amount'];
+           $has_good->save();
+        }
+        
+    }
+
     private function getStatus(){
         return SupplierOrdersStatuses::find($this->orders_to_supplier_statuses_id);
     }
@@ -113,6 +138,20 @@ class SupplierOrder extends Model
         $this->order_id = $request->order_id;
         $this->comment = $request->comment;
         $this->accepted_by = auth('api')->user()->getEmployee()->id;
+
+        $this->save();
+
+        return $this;
+    }
+
+    private function updateSupplierOrder(Request $request): SupplierOrder
+    {
+        $this->payment_status_id = $request->payment_status_id;
+        $this->supplier_id = $request->supplier_id;
+        $this->delivery_date = $request->delivery_date;
+        $this->orders_to_supplier_statuses_id = $request->orders_to_supplier_statuses_id;
+        $this->order_nr = $request->order_nr;
+        $this->comment = $request->comment;
 
         $this->save();
 
