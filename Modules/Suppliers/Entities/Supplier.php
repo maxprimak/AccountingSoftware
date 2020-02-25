@@ -39,6 +39,7 @@ class Supplier extends Model
 
         $this->updateMainInfo($request);
         $this->save();
+        $this->addToCompany();
         $this->storeAddress($request);
 
     }
@@ -54,6 +55,13 @@ class Supplier extends Model
     public function removeFromDB(){
         SupplierHasAddress::where('supplier_id', $this->id)->delete();
         $this->delete();
+    }
+
+    private function addToCompany(){
+        $has_company = new SupplierHasCompany();
+        $has_company->company_id = auth('api')->user()->getCompany()->id;
+        $has_company->supplier_id = $this->id;
+        $has_company->save();
     }
 
     private function updateMainInfo($request){

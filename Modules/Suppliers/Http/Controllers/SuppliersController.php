@@ -9,6 +9,7 @@ use Modules\Companies\Entities\Address;
 use Modules\Companies\Entities\City;
 use Modules\Companies\Entities\Country;
 use Modules\Suppliers\Entities\Supplier;
+use Modules\Suppliers\Entities\SupplierHasCompany;
 use Modules\Suppliers\Http\Requests\StoreSupplierRequest;
 
 class SuppliersController extends Controller
@@ -19,7 +20,8 @@ class SuppliersController extends Controller
      */
     public function index()
     {
-        $suppliers = Supplier::all();
+        $ids = SupplierHasCompany::where('company_id', auth('api')->user()->getCompany()->id)->pluck('supplier_id')->toArray();
+        $suppliers = Supplier::whereIn('id', $ids)->get();
 
         foreach($suppliers as $supplier){
             $supplier->addAddressInfo();

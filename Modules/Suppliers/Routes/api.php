@@ -20,12 +20,16 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
     Route::post('/suppliers/{supplier_id}', 'SuppliersController@update')->name('suppliers.update');
     Route::delete('/suppliers/{supplier_id}', 'SuppliersController@destroy')->name('suppliers.destroy');
 
+    Route::get('/suppliers/orders/{supplier_id}/supplier', 'SupplierHasOrdersController@show')->name('suppliers.orders.show.supplier');
+
     Route::post('/orders/suppliers/email', 'SupplierOrderNotificationsController@email')->name('orders.suppliers.email');
 
+    Route::get('/suppliers/orders/', 'SupplierOrdersController@index')->name('suppliers.orders.index');
+    Route::post('/suppliers/orders/store', 'SupplierOrdersController@store')->name('suppliers.orders.store');
 
-    Route::get('/suppliers/orders', 'SupplierOrdersController@index')->name('suppliers.orders.index');
-    Route::post('/suppliers/orders', 'SupplierOrdersController@store')->name('suppliers.orders.store');
+    Route::get('/goods/{supplier_order_id}/suppliers/orders', 'SupplierOrderHasGoodsController@index')->name('goods.index.suppliers.orders');
+
     //NOTE: needs facebook business verification to use twilio
-    //Route::post('/orders/suppliers/whatsapp', 'SupplierOrderNotificationsController@whatsapp')->name('orders.suppliers.whatsapp');
+    //Route::post('/orders/suppliers/whatsapp', 'SuplierOrderNotificationsController@whatsapp')->name('orders.suppliers.whatsapp');
 
 });
