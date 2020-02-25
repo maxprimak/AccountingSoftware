@@ -19,6 +19,10 @@ class SupplierHasOrdersController extends Controller
     {
         $orders = SupplierOrder::where('supplier_id', $id)->get();
 
+        foreach($orders as $order){
+            $order->addInfoForIndex();
+        }
+
         return response()->json($orders);
         
     }
