@@ -92,6 +92,9 @@ class SupplierOrdersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $supplier_order = SupplierOrder::find($id);
+        $supplier_order->removeFromDB();
+
+        return response()->json(["success" => true, "message" => "deleted"]);
     }
 }

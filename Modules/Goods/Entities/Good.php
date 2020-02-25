@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 use Modules\Goods\Entities\GoodHasPrices;
+use Modules\Suppliers\Entities\SupplierOrderHasGood;
 use Modules\Warehouses\Entities\Warehouse;
 
 
@@ -58,6 +59,63 @@ class Good extends Model
       $result = $part_name. " " . $submodel_name;
 
       return $result;
+    }
+
+    public function addInfoForSupplierOrder($supplier_order){
+      $this->part_name = $this->getPartName();
+      $this->brand_name = $this->getBrand()->name;
+      $this->type_name = $this->getType()->name;
+      $this->model_name = $this->getModel()->name;
+      $this->color_name = $this->getColor()->name;
+      $this->color_hexcode = $this->getColor()->hex_code;
+      $this->supplier_price = $supplier_order->getPrice();
+      $this->in_stock = $this->getInStockAmount($supplier_order);
+      $this->amount = $this->getAmount($supplier_order);
+      $this->warehouse_id = $this->getWarehouse($supplier_order)->id;
+    }
+
+    private function getWarehouse($order){
+      $branch_id = $order->getOrder()->branch_id;
+      $warehouse_id = Warehouse::where('branch_id', $branch_id)->first()->id;
+      return Warehouse::find($warehouse_id);
+    }
+
+    private function getAmount($order){
+      $has_goods = SupplierOrderHasGood::where('orders_to_supplier_id', $order->id)->where('good_id', $this->id)->first();
+      return $has_goods->amount;
+    }
+
+    private function getInStockAmount($order){
+      $warehouse_id = $this->getWarehouse($order)->id;
+      $warehouse_has_good = WarehouseHasGood::where('good_id', $this->id)->where('warehouse_id', $warehouse_id)->first();
+      return ($warehouse_has_good == null) ? 0 : $warehouse_has_good->amount;
+    }
+
+    private function getColor(){
+      return Color::find($this->color_id);
+    }
+
+    private function getModel(){
+      return Submodel::find($this->submodel_id);
+    }
+
+    private function getType(){
+      return Models::find($this->model_id);
+    }
+
+    private function getBrand(){
+      return Brand::find($this->brand_id);
+    }
+
+    private function getPartName(){
+      $part = $this->getPart();
+      $language_id = auth('api')->user()->getCompany()->language_id;
+
+      return $part->getTranslatedName($language_id);
+    }
+
+    private function getPart(){
+      return Part::find($this->part_id);
     }
 
     public function addToBranch(FormRequest $request){

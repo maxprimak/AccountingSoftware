@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Goods\Entities\Good;
 use Modules\Suppliers\Entities\SupplierOrder;
+use Modules\Suppliers\Entities\SupplierOrderHasGood;
 
 class SupplierOrderHasGoodsController extends Controller
 {
@@ -16,8 +17,13 @@ class SupplierOrderHasGoodsController extends Controller
      */
     public function index($id)
     {
-        $ids = SupplierOrder::where('orders_to_supplier_id', $id)->pluck('good_id')->toArray();
+        $ids = SupplierOrderHasGood::where('orders_to_supplier_id', $id)->pluck('good_id')->toArray();
         $goods = Good::whereIn('id', $ids)->get();
+        $order = SupplierOrder::find($id);
+
+        foreach($goods as $good){
+            $good->addInfoForSupplierOrder($order);
+        }
 
         return response()->json($goods);
     }

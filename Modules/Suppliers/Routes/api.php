@@ -26,6 +26,7 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
 
     Route::get('/suppliers/orders/', 'SupplierOrdersController@index')->name('suppliers.orders.index');
     Route::post('/suppliers/orders/store', 'SupplierOrdersController@store')->name('suppliers.orders.store');
+    Route::delete('/suppliers/orders/{supplier_order_id}/destroy', 'SupplierOrdersController@destroy')->name('suppliers.orders.destroy');
 
     Route::get('/goods/{supplier_order_id}/suppliers/orders', 'SupplierOrderHasGoodsController@index')->name('goods.index.suppliers.orders');
 

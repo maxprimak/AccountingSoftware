@@ -59,10 +59,15 @@ class SupplierOrder extends Model
         return Supplier::find($this->supplier_id);
     }
 
-    private function getPrice(){
+    public function getPrice(){
         $order = $this->getOrder();
         
         return $order->price;
+    }
+
+    public function removeFromDB(){
+        SupplierOrderHasGood::where('orders_to_supplier_id', $this->id)->delete();
+        $this->delete();
     }
 
     private function getGoodsDescription(){
@@ -83,7 +88,7 @@ class SupplierOrder extends Model
         return $branch->name;
     }
 
-    private function getOrder(){
+    public function getOrder(){
         return Order::find($this->order_id);
     }
 
