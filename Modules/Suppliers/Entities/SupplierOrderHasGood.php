@@ -51,7 +51,7 @@ class SupplierOrderHasGood extends Model
 ////
 ////            return response()->json($result_goods);
         }else{
-            SupplierOrderHasGood::where('orders_to_supplier', $request->supplier_order_id)->delete();
+            SupplierOrderHasGood::where('orders_to_supplier_id', $request->supplier_order_id)->delete();
         }
     }
 
