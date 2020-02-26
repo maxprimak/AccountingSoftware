@@ -19,6 +19,7 @@ class StoreSupplierOrderRequest extends FormRequest
             'branch_id' => 'required|exists:branches,id',
             'order_nr' => 'required',
             'comment' => 'nullable',
+            'goods' => 'required|array|min:1',
             'goods.*.good_id' => 'required|exists:goods,id',
             'goods.*.retail_price' => 'nullable|min:1',
             'goods.*.amount' => 'required|min:1',
