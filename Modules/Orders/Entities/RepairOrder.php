@@ -22,6 +22,7 @@ use Modules\Devices\Entities\Device;
 use Modules\Goods\Entities\Color;
 use Modules\Goods\Entities\Good;
 use Modules\Goods\Entities\Part;
+use Modules\Services\Entities\Language;
 use Modules\Services\Entities\Service;
 use Modules\Services\Entities\ServicesTranslation;
 use Modules\Warehouses\Entities\Warehouse;
@@ -124,8 +125,10 @@ class RepairOrder extends Model
 
     public function getGoodsAsString(){
       $devices_ids = $this->getDevicesIds();
-      $counter = 1;
-      $result = "";
+      $devices = $this->getDevices();
+      $devices = $this->addIndexToDevices($devices);
+      $devices = $devices->toArray();
+      $result = array();
       foreach($devices_ids as $device_id){
         $has_good_ids = RepairOrderHasGood::where('device_id', $device_id)
                                       ->where('repair_order_id', $this->id)
@@ -133,50 +136,60 @@ class RepairOrder extends Model
                                       
         $good_ids = WarehouseHasGood::whereIn('id', $has_good_ids)->get()->toArray();
 
-        $good_ids = array_map(function($g)use($counter, $device_id){
-          return Warehouse::find($g['warehouse_id'])->name . " " . Submodel::find(Good::find($g['good_id'])->submodel_id)->getName() . " " .
+        $good_ids = array_map(function($g)use($device_id, $devices){
+          $index = array_slice(array_filter($devices, function($d)use($device_id){return $d['id'] == $device_id;}), 0)[0]['index'];
+          return Warehouse::find($g['warehouse_id'])->name . " " . Part::find(Good::find($g['good_id'])->part_id)->getTranslatedName(Language::getMyLanguageId()) ." " . Submodel::find(Good::find($g['good_id'])->submodel_id)->getName() . " " .
                   Color::find(Good::find($g['good_id'])->color_id)->name . " " . RepairOrderHasGood::where('repair_order_id', $this->id)
-                  ->where('device_id', $device_id)->where('warehouse_has_good_id', $g['id'])->first()->amount . " "  . "(". $counter++ .")";
+                  ->where('device_id', $device_id)->where('warehouse_has_good_id', $g['id'])->first()->amount . " "  . "(". $index .")";
         }, $good_ids);
 
-        $result .= implode(", ",$good_ids);    
+        array_push($result,implode(',',$good_ids));    
 
       }
 
-      if($result == "") $result = "Not set";
+      $result = implode(',',array_unique($result));
 
+      if($result == "") {
+        $result = "Not set";    
+      }   
+      
       return $result;
+    }
+
+    private function getDevices(){
+      return Device::whereIn('id', $this->getDevicesIds())->get();
     }
 
     public function getServicesNamesString(){
       $company = auth('api')->user()->getCompany();
-      $devices = Device::whereIn('id', $this->getDevicesIds())->get();
-      $result = "";
-      $counter = 1;
+      $devices = $this->getDevices();
+      $result = array();
+      $counter = 0;
       foreach($devices as $device){
+        $counter = $counter + 1;
         $servicesIds = DeviceHasService::where('repair_order_id', $this->id)
                                         ->where('device_id', $device->id)->pluck('service_id')->toArray();
         $services = ServicesTranslation::whereIn('service_id', $servicesIds)->where('language_id', $company->language_id)
                                         ->pluck('name')->toArray();
         
         $services = array_map(function($s)use($counter){
-                                return $s . " (". $counter++ .")";
+                                return $s . " (". $counter .")";
                               }, $services);
         
-        $result .= implode(", ",$services);                            
+        array_push($result,implode(',',$services));                            
       }
 
-      return $result;
+      return implode(',', $result);
 
     }
 
     public function getDevicesSerialNumberString(){
-      $devicesIds = $this->getDevicesIds();
-      $result = Device::whereIn('id', $devicesIds)->pluck('serial_nr')->toArray();
-      $counter = 1;
-      $result = array_map(function($s)use($counter){
-        $s = ($s == null) ? "Not set" : $s;
-        return $s . " (". $counter++ .")";
+      $result = $this->getDevices();
+      $result = $this->addIndexToDevices($result);
+      $result = $result->toArray();
+      $result = array_map(function($s){
+        $s['serial_nr'] = ($s['serial_nr'] == null) ? "Not set" : $s['serial_nr'];
+        return $s['serial_nr'] . " (". $s['index'] .")";
       }, $result);
 
       return implode(", ", $result);
@@ -198,24 +211,32 @@ class RepairOrder extends Model
     }
 
     public function getDevicesConditionsString(){
-      $devicesIds = $this->getDevicesIds();
-      $result = Device::whereIn('id', $devicesIds)->pluck('condition')->toArray();
-      $counter = 1;
-      $result = array_map(function($s)use($counter){
-        $s = ($s == null) ? "Not set" : $s;
-        return $s . " (". $counter++ .")";
+      $result = $this->getDevices();
+      $result = $this->addIndexToDevices($result);
+      $result = $result->toArray();
+
+      $result = array_map(function($s){
+        $s['condition'] = ($s['condition'] == null) ? "Not set" : $s['condition'];
+        return $s['condition'] . " (". $s['index'] .")";
       }, $result);
 
       return implode(", ", $result);
     }
 
     public function getDevicesNamesString(){
-      $devicesIds = $this->getDevicesIds();
-      $devices = Device::whereIn('id', $devicesIds)->pluck('submodel_id')->toArray();
-      $counter = 1;
-      $devices = array_map(function($s)use($counter){return Submodel::find($s)->getName(). " (". $counter++ .")";}, $devices);
+      $devices = $this->getDevices();
+      $devices = $this->addIndexToDevices($devices);
+      $devices = array_map(function($s){return Submodel::find($s['submodel_id'])->getName(). " (". $s['index'] .")";}, $devices->toArray());
 
       return implode(", ", $devices);
+    }
+
+    private function addIndexToDevices($devices){
+      $counter = 1;
+      foreach($devices as $device){
+        $device->index = $counter++;
+      }
+      return $devices;
     }
 
     private function getDevicesIds(){
