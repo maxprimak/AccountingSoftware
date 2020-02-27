@@ -31,6 +31,7 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
 
     Route::get('/goods/{supplier_order_id}/suppliers/orders', 'SupplierOrderHasGoodsController@index')->name('goods.index.suppliers.orders');
 
+    Route::get('/suppliers/orders/statuses', 'SupplierOrdersStatusesController@index')->name('suppliers.orders.statuses.index');
     //NOTE: needs facebook business verification to use twilio
     //Route::post('/orders/suppliers/whatsapp', 'SuplierOrderNotificationsController@whatsapp')->name('orders.suppliers.whatsapp');
 
