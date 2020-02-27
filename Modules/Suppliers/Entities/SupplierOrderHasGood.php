@@ -5,6 +5,8 @@ namespace Modules\Suppliers\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Modules\Goods\Entities\Good;
+use Modules\Goods\Entities\GoodHasPrices;
+use Modules\Warehouses\Entities\WarehouseHasGood;
 
 class SupplierOrderHasGood extends Model
 {
@@ -34,6 +36,7 @@ class SupplierOrderHasGood extends Model
                     ->where('good_id', $good['good_id'])->exists()){
                     $supplier_order_has_good = new SupplierOrderHasGood();
                     $supplier_order_has_good->store($good,$request->supplier_order_id);
+                    GoodHasPrices::updateRetailPrice($good,$request->branch_id,$request->supplier_id);
 
                     array_push($supplier_order_has_goods,$supplier_order_has_good);
                     array_push($goods_ids,$good['good_id']);

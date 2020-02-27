@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Modules\Companies\Entities\Branch;
 use Modules\Goods\Entities\Good;
+use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\PaymentStatuses;
 
@@ -67,6 +68,7 @@ class SupplierOrder extends Model
            ]);
            $has_good->amount = $good['amount'];
            $has_good->save();
+           GoodHasPrices::updateRetailPrice($good,$request->branch_id,$request->supplier_id);
         }
         
     }
