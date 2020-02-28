@@ -160,17 +160,27 @@ class Good extends Model
 
     public function combineGoodsWithPrices($goods_has_prices,$goods){
       $result_of_goods = array();
-      foreach ($goods_has_prices as $good_has_prices) {
-        foreach ($goods as $good) {
-          if($good->id == $good_has_prices->good_id){
-            $warehouse_has_good_id = $good->warehouse_has_good_id;
-            $good = (array) $good;
-            $good['retail_price'] = $good_has_prices->retail_price;
-            $good['wholesale_price'] = $good_has_prices->wholesale_price;
-            $good['warehouse_name'] = WarehouseHasGood::find($warehouse_has_good_id)->getWarehouseName();
-            array_push($result_of_goods,$good);
+      $goods_without_price = array();
+
+      foreach ($goods as $good){
+          $good = (array) $good;
+          $good['warehouse_name'] = WarehouseHasGood::find($good['warehouse_has_good_id'])->getWarehouseName();
+          array_push($goods_without_price,$good);
+      }
+
+
+      foreach ($goods_without_price as $good) {
+        $good['price'] = array();
+        foreach ($goods_has_prices as $good_has_prices) {
+          if($good['id'] == $good_has_prices->good_id){
+            $price = array();
+            $price['supplier_id'] =  $good_has_prices->supplier_id;
+            $price['retail_price'] = $good_has_prices->retail_price;
+            $price['wholesale_price'] = $good_has_prices->wholesale_price;
+            array_push ($good['price'],$price);
           }
         }
+        array_push($result_of_goods,$good);
       }
       return $result_of_goods;
     }
