@@ -53,6 +53,9 @@ class Supplier extends Model
     }
 
     public function removeFromDB(){
+        $supplier_orders = SupplierOrder::where('supplier_id', $this->id)->get();
+        foreach($supplier_orders as $order) $order->removeFromDB();
+        SupplierHasCompany::where('supplier_id', $this->id)->delete();
         SupplierHasAddress::where('supplier_id', $this->id)->delete();
         $this->delete();
     }

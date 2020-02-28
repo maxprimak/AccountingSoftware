@@ -93,6 +93,7 @@ class SupplierOrder extends Model
     public function removeFromDB(){
         SupplierOrderHasGood::where('orders_to_supplier_id', $this->id)->delete();
         $this->delete();
+        Order::where('id', $this->order_id)->delete();
     }
 
     private function getGoodsDescription(){
