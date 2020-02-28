@@ -68,10 +68,18 @@ class Good extends Model
       $this->model_name = $this->getModel()->name;
       $this->color_name = $this->getColor()->name;
       $this->color_hexcode = $this->getColor()->hex_code;
-      $this->supplier_price = $supplier_order->getPrice();
+      $this->supplier_price = $this->getSupplierPrice($supplier_order);
       $this->in_stock = $this->getInStockAmount($supplier_order);
       $this->amount = $this->getAmount($supplier_order);
       $this->warehouse_id = $this->getWarehouse($supplier_order)->id;
+    }
+
+    private function getSupplierPrice($supplier_order){
+      $has_prices = GoodHasPrices::where('good_id', $this->id)
+                                  ->where('supplier_id', $supplier_order->supplier_id)
+                                  ->orWhere('supplier_id', null)
+                                  ->first();
+      return ($has_prices->retail_price == null) ? 0 : $has_prices->retail_price;
     }
 
     private function getWarehouse($order){

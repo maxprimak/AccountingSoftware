@@ -27,7 +27,6 @@ class SupplierOrdersController extends Controller
 
         foreach ($supplier_orders as $supplier_order){
             $supplier_order->addInfoForIndex();
-
         }
        return response()->json($supplier_orders);
     }
