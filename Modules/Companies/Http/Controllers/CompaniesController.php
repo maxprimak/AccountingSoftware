@@ -43,6 +43,7 @@ class CompaniesController extends Controller
 
         $company->city_name = $city->name;
         $company->country_name = $country->name;
+        $company->address_name = $address->street_name . " " . $address->house_number . ", " . $address->postcode . ", " . $city->name. " (" . $country->code . ")";
 
         return response()->json(['company' => $company], 200);
     }
