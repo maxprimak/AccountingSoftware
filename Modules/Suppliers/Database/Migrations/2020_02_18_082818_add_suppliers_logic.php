@@ -61,7 +61,7 @@ class AddSuppliersLogic extends Migration
             $table->unsignedInteger('orders_to_supplier_statuses_id');
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('supplier_id');
-            $table->string('comment');
+            $table->string('comment')->nullable();
             $table->unsignedInteger('payment_status_id');
             $table->timestamps();
 
