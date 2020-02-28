@@ -159,4 +159,12 @@ class SupplierOrder extends Model
 
         return $this;
     }
+
+    public function addGoodsToStock(Request $request)
+    {
+        if(is_null($request->goods)){
+           $supplier_order_goods =  SupplierOrderHasGood::where('supplier_order_id',$this->id)->get();
+           dd($supplier_order_goods);
+        }
+    }
 }
