@@ -18,9 +18,16 @@ class GoodHasPrices extends Model
                 ->orWhere('supplier_id',null)
                 ->first();
 
+            if(!$good_has_price){
+                $good_has_price = new GoodHasPrices();
+                $good_has_price->good_id = $good['good_id'];
+                $good_has_price->branch_id = $branch_id;
+            }
+
             $good_has_price->retail_price = $good['retail_price'];
             $good_has_price->supplier_id = $supplier_id;
             $good_has_price->save();
+
         }
     }
 
