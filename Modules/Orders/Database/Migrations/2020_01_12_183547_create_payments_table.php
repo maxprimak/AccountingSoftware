@@ -16,14 +16,14 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
             $table->double('amount');
-            $table->unsignedInteger('repair_order_id');
+            $table->unsignedInteger('order_id');
             $table->unsignedInteger('payment_type_id');
             $table->unsignedInteger('currency_id');
             $table->timestamps();
         });
 
         Schema::table('payments', function($table) {
-            $table->foreign('repair_order_id')->references('id')->on('repair_orders');
+            $table->foreign('order_id')->references('id')->on('orders')->nullable();
             $table->foreign('payment_type_id')->references('id')->on('payment_types');
             $table->foreign('currency_id')->references('id')->on('currencies');
         });

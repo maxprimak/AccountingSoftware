@@ -34,10 +34,10 @@ class RepairOrderPaymentController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(StoreRepairOrderPaymentRequest $request, $repair_order_id)
+    public function store(StoreRepairOrderPaymentRequest $request, $order_id)
     {
-        $repair_order = RepairOrder::findOrFail($repair_order_id);
-        $request->repair_order_id = $repair_order_id;
+        $repair_order = RepairOrder::where('order_id',$order_id)->firstOrFail();
+        $request->order_id = $order_id;
         $payment = new Payment();
         $payment = $payment->store($request);
         $repair_order->changePaymentStatus($payment);

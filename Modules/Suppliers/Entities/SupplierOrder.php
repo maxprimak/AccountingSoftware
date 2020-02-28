@@ -40,7 +40,7 @@ class SupplierOrder extends Model
         $this->branch_name = $this->getBranchName();
         $this->goods_description = $this->getGoodsDescription();
         $this->price = $this->getPrice();
-        $this->payment_status_name = PaymentStatuses::getPaymentStatusWithTranslation($this)->name;
+        $this->payment_status_name = PaymentStatuses::getPaymentStatusWithTranslation($this->payment_status_id)->name;
         $this->supplier_name = $this->getSupplierName();
         $this->status_name = $this->getStatus()->name;
         $this->status_hexcode = $this->getStatus()->hex_code;
@@ -186,4 +186,10 @@ class SupplierOrder extends Model
         $this->orders_to_supplier_statuses_id = SupplierOrdersStatuses::getReceivedStatus()->id;
         $this->save();
     }
+
+    public function changePaymentStatus(){
+        $this->payment_status_id = PaymentStatuses::getPaidStatus()->id;
+        $this->save();
+    }
+
 }
