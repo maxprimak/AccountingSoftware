@@ -17,6 +17,12 @@ class SupplierOrdersStatuses extends Model
         return $status_pending;
     }
 
+    public static function getReceivedStatus()
+    {
+        $status_received = self::find(3);
+        return $status_received;
+    }
+
     public function store(Request $request)
     {
         $this->name = $request->name;

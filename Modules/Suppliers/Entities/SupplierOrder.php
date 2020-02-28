@@ -9,6 +9,7 @@ use Modules\Goods\Entities\Good;
 use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\PaymentStatuses;
+use Modules\Warehouses\Entities\WarehouseHasGood;
 
 class SupplierOrder extends Model
 {
@@ -164,8 +165,25 @@ class SupplierOrder extends Model
     public function addGoodsToStock(Request $request)
     {
         if(is_null($request->goods)){
-           $supplier_order_goods =  SupplierOrderHasGood::where('supplier_order_id',$this->id)->get();
-           dd($supplier_order_goods);
+           $goods_ids =  SupplierOrderHasGood::where('orders_to_supplier_id',$this->id)->pluck('good_id');
+           $supplier_order_goods =  SupplierOrderHasGood::where('orders_to_supplier_id',$this->id)->get();
+           $warehouse_has_goods = WarehouseHasGood::whereIn('good_id',$goods_ids)
+                                                    ->where('warehouse_id',$request->branch_id)
+                                                    ->get();
+
+           foreach ($supplier_order_goods as $supplier_order_good){
+                foreach ($warehouse_has_goods as $warehouse_has_good){
+                    if($warehouse_has_good->good_id == $supplier_order_good->good_id){
+                        $warehouse_has_good->amount += $supplier_order_good->amount;
+                        $warehouse_has_good->save();
+                    }
+                }
+            }
         }
+    }
+
+    public function setStatusToReceived(){
+        $this->orders_to_supplier_statuses_id = SupplierOrdersStatuses::getReceivedStatus()->id;
+        $this->save();
     }
 }
