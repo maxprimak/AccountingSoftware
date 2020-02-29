@@ -177,9 +177,12 @@ class SupplierOrder extends Model
                                                     ->get();
 
            foreach ($goods_ids as $good_id){
+               if(!$this->goodHasCopyInRequestedWarehouse($good_id, $request->branch_id)){
                $filtered_warehouse_has_goods = $warehouse_has_goods->filter(function ($value,$key) use ($good_id){
                     return $value->good_id == $good_id;
                });
+
+
 
                if(!$filtered_warehouse_has_goods->contains('warehouse_id',$request->branch_id)) {
                    $request->warehouse_id = $request->branch_id;
@@ -196,6 +199,7 @@ class SupplierOrder extends Model
                    $new_good = $new_good->makeCopy($request,$good_id);
                    $new_warehouse_has_good = $new_good->getWarehouseHasGood($request->branch_id);
                    $warehouse_has_goods->push($new_warehouse_has_good);
+
                    $supplier_order_goods = $supplier_order_goods->filter(function ($value,$key) use ($good_id,$new_good) {
                          if($value->good_id == $good_id){
                              return $value->good_id = $new_good->id;
@@ -204,6 +208,7 @@ class SupplierOrder extends Model
                          }
                    });
                }
+            }
            }
 
            foreach ($supplier_order_goods as $supplier_order_good){
@@ -215,6 +220,16 @@ class SupplierOrder extends Model
                 }
             }
         }
+    }
+
+    private function goodHasCopyInRequestedWarehouse($good_id, $warehouse_id){
+        $goods_ids = WarehouseHasGood::where('warehouse_id', $warehouse_id)->pluck('good_id')->toArray();
+        $good_to_compare = Good::find($good_id);
+        return Good::whereIn('id', $goods_ids)
+                    ->where('part_id', $good_to_compare->part_id)
+                    ->where('submodel_id', $good_to_compare->submodel_id)
+                    ->where('color_id', $good_to_compare->color_id)
+                    ->exists();
     }
 
     public function setStatusToReceived(){
