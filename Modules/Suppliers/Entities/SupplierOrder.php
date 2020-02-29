@@ -3,12 +3,14 @@
 namespace Modules\Suppliers\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Modules\Companies\Entities\Branch;
 use Modules\Goods\Entities\Good;
 use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\PaymentStatuses;
+use Modules\Suppliers\Http\Requests\AddGoodRequest;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 
 class SupplierOrder extends Model
@@ -166,14 +168,43 @@ class SupplierOrder extends Model
         return $this;
     }
 
-    public function addGoodsToStock(Request $request)
+    public function addGoodsToStock(FormRequest $request)
     {
         if(is_null($request->goods)){
            $goods_ids =  SupplierOrderHasGood::where('orders_to_supplier_id',$this->id)->pluck('good_id');
            $supplier_order_goods =  SupplierOrderHasGood::where('orders_to_supplier_id',$this->id)->get();
            $warehouse_has_goods = WarehouseHasGood::whereIn('good_id',$goods_ids)
-                                                    ->where('warehouse_id',$request->branch_id)
                                                     ->get();
+
+           foreach ($goods_ids as $good_id){
+               $filtered_warehouse_has_goods = $warehouse_has_goods->filter(function ($value,$key) use ($good_id){
+                    return $value->good_id == $good_id;
+               });
+
+               if(!$filtered_warehouse_has_goods->contains('warehouse_id',$request->branch_id)) {
+                   $request->warehouse_id = $request->branch_id;
+                   $request->amount = 0;
+                   $request->supplier_id = $this->supplier_id;
+                   $good_has_price = GoodHasPrices::where('good_id',$good_id)
+                       ->where('supplier_id',$this->supplier_id)
+                       ->orWhere('supplier_id',null)
+                       ->first();
+                       
+                   $request->retail_price = $good_has_price->retail_price;
+
+                   $new_good = new Good();
+                   $new_good = $new_good->makeCopy($request,$good_id);
+                   $new_warehouse_has_good = $new_good->getWarehouseHasGood($request->branch_id);
+                   $warehouse_has_goods->push($new_warehouse_has_good);
+                   $supplier_order_goods = $supplier_order_goods->filter(function ($value,$key) use ($good_id,$new_good) {
+                         if($value->good_id == $good_id){
+                             return $value->good_id = $new_good->id;
+                         }else{
+                             return $value;
+                         }
+                   });
+               }
+           }
 
            foreach ($supplier_order_goods as $supplier_order_good){
                 foreach ($warehouse_has_goods as $warehouse_has_good){
