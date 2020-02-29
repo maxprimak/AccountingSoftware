@@ -16,7 +16,6 @@ class StoreSupplierOrderRequest extends FormRequest
         return [
             'supplier_id' => 'required|exists:suppliers,id',
             'delivery_date' => 'required|date',
-            'branch_id' => 'required|exists:branches,id',
             'order_nr' => 'required',
             'comment' => 'nullable',
             'goods' => 'required|array|min:1',

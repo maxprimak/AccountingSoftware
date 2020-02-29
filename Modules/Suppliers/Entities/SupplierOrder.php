@@ -69,7 +69,7 @@ class SupplierOrder extends Model
            ]);
            $has_good->amount = $good['amount'];
            $has_good->save();
-           GoodHasPrices::updateRetailPrice($good,$request->branch_id,$request->supplier_id);
+           GoodHasPrices::updateRetailPrice($good,$this->getOrder()->branch_id,$request->supplier_id);
         }
         
     }
