@@ -49,6 +49,10 @@ class SupplierOrder extends Model
     }
 
     public function edit($request){
+        $price = $this->calculate_price($request);
+        $order = $this->getOrder();
+        $order->price = $price;
+        $order->save();
         $this->updateSupplierOrder($request);
         $this->updateGoods($request);
 
