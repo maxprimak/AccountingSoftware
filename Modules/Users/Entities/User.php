@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 use BranchesService;
 use Modules\Companies\Entities\Branch;
+use Modules\Employees\Entities\Employee;
 
 class User extends Model
 {

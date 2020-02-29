@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 use Modules\Goods\Entities\GoodHasPrices;
+use Modules\Suppliers\Entities\SupplierOrderHasGood;
 use Modules\Warehouses\Entities\Warehouse;
 
 
@@ -51,6 +52,80 @@ class Good extends Model
       return $this;
     }
 
+    public function getName(){
+      $language_id = auth('api')->user()->getCompany()->language_id;
+      $part_name =  Part::find($this->part_id)->getTranslatedName($language_id);
+      $submodel_name = Submodel::find($this->submodel_id)->getName();
+      $result = $part_name. " " . $submodel_name;
+
+      return $result;
+    }
+
+    public function addInfoForSupplierOrder($supplier_order){
+      $this->part_name = $this->getPartName();
+      $this->brand_name = $this->getBrand()->name;
+      $this->type_name = $this->getType()->name;
+      $this->model_name = $this->getModel()->name;
+      $this->color_name = $this->getColor()->name;
+      $this->color_hexcode = $this->getColor()->hex_code;
+      $this->supplier_price = $this->getSupplierPrice($supplier_order);
+      $this->in_stock = $this->getInStockAmount($supplier_order);
+      $this->amount = $this->getAmount($supplier_order);
+      $this->warehouse_id = $this->getWarehouse($supplier_order)->id;
+    }
+
+    private function getSupplierPrice($supplier_order){
+      $has_prices = GoodHasPrices::where('good_id', $this->id)
+                                  ->where('supplier_id', $supplier_order->supplier_id)
+                                  ->orWhere('supplier_id', null)
+                                  ->first();
+      return ($has_prices->retail_price == null) ? 0 : $has_prices->retail_price;
+    }
+
+    private function getWarehouse($order){
+      $branch_id = $order->getOrder()->branch_id;
+      $warehouse_id = Warehouse::where('branch_id', $branch_id)->first()->id;
+      return Warehouse::find($warehouse_id);
+    }
+
+    private function getAmount($order){
+      $has_goods = SupplierOrderHasGood::where('orders_to_supplier_id', $order->id)->where('good_id', $this->id)->first();
+      return $has_goods->amount;
+    }
+
+    private function getInStockAmount($order){
+      $warehouse_id = $this->getWarehouse($order)->id;
+      $warehouse_has_good = WarehouseHasGood::where('good_id', $this->id)->where('warehouse_id', $warehouse_id)->first();
+      return ($warehouse_has_good == null) ? 0 : $warehouse_has_good->amount;
+    }
+
+    private function getColor(){
+      return Color::find($this->color_id);
+    }
+
+    private function getModel(){
+      return Submodel::find($this->submodel_id);
+    }
+
+    private function getType(){
+      return Models::find($this->model_id);
+    }
+
+    private function getBrand(){
+      return Brand::find($this->brand_id);
+    }
+
+    private function getPartName(){
+      $part = $this->getPart();
+      $language_id = auth('api')->user()->getCompany()->language_id;
+
+      return $part->getTranslatedName($language_id);
+    }
+
+    private function getPart(){
+      return Part::find($this->part_id);
+    }
+
     public function addToBranch(FormRequest $request){
       $request->good_id = $this->id;
       $request->branch_id = $this->getBranchIdOfWarehouse($request);
@@ -85,17 +160,27 @@ class Good extends Model
 
     public function combineGoodsWithPrices($goods_has_prices,$goods){
       $result_of_goods = array();
-      foreach ($goods_has_prices as $good_has_prices) {
-        foreach ($goods as $good) {
-          if($good->id == $good_has_prices->good_id){
-            $warehouse_has_good_id = $good->warehouse_has_good_id;
-            $good = (array) $good;
-            $good['retail_price'] = $good_has_prices->retail_price;
-            $good['wholesale_price'] = $good_has_prices->wholesale_price;
-            $good['warehouse_name'] = WarehouseHasGood::find($warehouse_has_good_id)->getWarehouseName();
-            array_push($result_of_goods,$good);
+      $goods_without_price = array();
+
+      foreach ($goods as $good){
+          $good = (array) $good;
+          $good['warehouse_name'] = WarehouseHasGood::find($good['warehouse_has_good_id'])->getWarehouseName();
+          array_push($goods_without_price,$good);
+      }
+
+
+      foreach ($goods_without_price as $good) {
+        $good['price'] = array();
+        foreach ($goods_has_prices as $good_has_prices) {
+          if($good['id'] == $good_has_prices->good_id){
+            $price = array();
+            $price['supplier_id'] =  $good_has_prices->supplier_id;
+            $price['retail_price'] = $good_has_prices->retail_price;
+            $price['wholesale_price'] = $good_has_prices->wholesale_price;
+            array_push ($good['price'],$price);
           }
         }
+        array_push($result_of_goods,$good);
       }
       return $result_of_goods;
     }

@@ -12,7 +12,11 @@ class Order extends Model
 
     public function store(FormRequest $request){
 
-            $this->accept_date = $request->accept_date;
+            if(isset($request->accept_date)){
+                $this->accept_date = $request->accept_date;
+            }else{
+                $this->accept_date = date('Y-m-d');
+            }
             $this->price = $request->price;
             $this->branch_id = $request->branch_id;
             $this->created_by = auth('api')->user()->id;

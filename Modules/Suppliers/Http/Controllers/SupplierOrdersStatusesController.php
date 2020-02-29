@@ -1,23 +1,22 @@
 <?php
 
-namespace Modules\Orders\Http\Controllers;
+namespace Modules\Suppliers\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Orders\Entities\Payment;
-use Modules\Orders\Entities\RepairOrder;
-use Modules\Orders\Http\Requests\StoreRepairOrderPaymentRequest;
+use Modules\Suppliers\Entities\SupplierOrdersStatuses;
 
-class RepairOrderPaymentController extends Controller
+class SupplierOrdersStatusesController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        return view('orders::index');
+        $statuses = SupplierOrdersStatuses::all();
+        return response()->json($statuses);
     }
 
     /**
@@ -26,7 +25,7 @@ class RepairOrderPaymentController extends Controller
      */
     public function create()
     {
-        return view('orders::create');
+        return view('suppliers::create');
     }
 
     /**
@@ -34,14 +33,9 @@ class RepairOrderPaymentController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(StoreRepairOrderPaymentRequest $request, $order_id)
+    public function store(Request $request)
     {
-        $repair_order = RepairOrder::where('order_id',$order_id)->firstOrFail();
-        $request->order_id = $order_id;
-        $payment = new Payment();
-        $payment = $payment->store($request);
-        $repair_order->changePaymentStatus($payment);
-        return response()->json(['message' => 'Sucessfully paid!', 'repair_order' => $repair_order]);
+        //
     }
 
     /**
@@ -51,7 +45,7 @@ class RepairOrderPaymentController extends Controller
      */
     public function show($id)
     {
-        return view('orders::show');
+        return view('suppliers::show');
     }
 
     /**
@@ -61,7 +55,7 @@ class RepairOrderPaymentController extends Controller
      */
     public function edit($id)
     {
-        return view('orders::edit');
+        return view('suppliers::edit');
     }
 
     /**

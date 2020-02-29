@@ -87,7 +87,6 @@ class GoodsController extends Controller
         $branch_id = $warehouse->getBranchId();
         $goods_id = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('good_id')->toArray();
         $warehouse_has_goods_ids = WarehouseHasGood::where('warehouse_id',$warehouse_id)->pluck('id')->toArray();
-
         $goods_has_prices = GoodHasPrices::where('branch_id',$branch_id)->whereIn('good_id',$goods_id)->get();
 
         $goods = DB::table('warehouse_has_goods')

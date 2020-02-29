@@ -28,6 +28,11 @@ class Company extends Model
         parent::__construct($attributes);
     }
 
+    public static function getCompany() : Company
+    {
+        return auth('api')->user()->getCompany();
+    }
+
     public function getBranchesIdsOfCompany(){
       $branches_ids = Branch::where('company_id',$this->id)->pluck('id');
       return $branches_ids;

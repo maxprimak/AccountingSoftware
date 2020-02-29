@@ -48,7 +48,7 @@ class RepairOrdersBranchController extends Controller
             $branch = Branch::find($order->branch_id);
             $order_type = OrderTypes::getOrderTypeWithTranslation($repair_order);
             $status = OrderStatus::getOrderStatusWithTranslation($repair_order);
-            $payment_status = PaymentStatuses::getPaymentStatusWithTranslation($repair_order);
+            $payment_status = PaymentStatuses::getPaymentStatusWithTranslation($repair_order->payment_status_id);
             $result_devices = RepairOrderHasDevice::getDevicesOfOrderWithServices($repair_order);
             $item = array(
                 'id' => $repair_order->id,

@@ -5,6 +5,12 @@ namespace Modules\Suppliers\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Companies\Entities\Address;
+use Modules\Companies\Entities\City;
+use Modules\Companies\Entities\Country;
+use Modules\Suppliers\Entities\Supplier;
+use Modules\Suppliers\Entities\SupplierHasCompany;
+use Modules\Suppliers\Http\Requests\StoreSupplierRequest;
 
 class SuppliersController extends Controller
 {
@@ -14,16 +20,15 @@ class SuppliersController extends Controller
      */
     public function index()
     {
-        return view('suppliers::index');
-    }
+        $ids = SupplierHasCompany::where('company_id', auth('api')->user()->getCompany()->id)->pluck('supplier_id')->toArray();
+        $suppliers = Supplier::whereIn('id', $ids)->get();
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        return view('suppliers::create');
+        foreach($suppliers as $supplier){
+            $supplier->addAddressInfo();
+        }
+
+        return response()->json($suppliers);
+
     }
 
     /**
@@ -31,29 +36,12 @@ class SuppliersController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreSupplierRequest $request)
     {
-        //
-    }
+        $supplier = new Supplier();
+        $supplier->store($request);
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('suppliers::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('suppliers::edit');
+    return response()->json($supplier->addAddressInfo());
     }
 
     /**
@@ -62,9 +50,12 @@ class SuppliersController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreSupplierRequest $request, $id)
     {
-        //
+        $supplier = Supplier::find($id);
+        $supplier->edit($request);
+
+        return response()->json($supplier->addAddressInfo());
     }
 
     /**
@@ -74,6 +65,14 @@ class SuppliersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $supplier = Supplier::find($id);
+        try{
+            $supplier->removeFromDB();
+        }
+        catch(\Exception $e){
+            return response()->json(["success" => false, "message" => $e->getMessage()], 403);
+        }
+
+        return response()->json(["success" => true, "message" => "deleted"]);
     }
 }

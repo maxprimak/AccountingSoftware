@@ -140,7 +140,7 @@ class RepairOrdersController extends Controller
         $order_type = OrderTypes::getOrderTypeWithTranslation($repair_order);
         $discount_code = ($repair_order->discount_code_id == null) ? null : DiscountCode::findOrFail($repair_order->discount_code_id);
         $warranty = ($repair_order->warranty_id == null) ? null : Warranty::findOrFail($repair_order->warranty_id);
-        $payment_status = PaymentStatuses::getPaymentStatusWithTranslation($repair_order);
+        $payment_status = PaymentStatuses::getPaymentStatusWithTranslation($repair_order->payment_status_id);
         $branch = $order->getBranch();
         $currency_id = Login::find(auth('api')->id())->getCompany()->currency_id;
         $currency = Currency::find($currency_id);
