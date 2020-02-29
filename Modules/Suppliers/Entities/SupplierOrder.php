@@ -11,6 +11,7 @@ use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\PaymentStatuses;
 use Modules\Suppliers\Http\Requests\AddGoodRequest;
+use Modules\Warehouses\Entities\Warehouse;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 
 class SupplierOrder extends Model
@@ -215,15 +216,36 @@ class SupplierOrder extends Model
             }
            }
 
-           foreach ($supplier_order_goods as $supplier_order_good){
+           $this->updateAmounts($request->branch_id);
+
+           /*foreach ($supplier_order_goods as $supplier_order_good){
                 foreach ($warehouse_has_goods as $warehouse_has_good){
                     if($warehouse_has_good->good_id == $supplier_order_good->good_id){
                         $warehouse_has_good->amount += $supplier_order_good->amount;
                         $warehouse_has_good->save();
                     }
                 }
-            }
+            }*/
         }
+    }
+
+    private function updateAmounts($warehouse_id){
+        $supplier_order_goods =  SupplierOrderHasGood::where('orders_to_supplier_id',$this->id)->get();
+        
+        foreach ($supplier_order_goods as $supplier_order_good){
+            $needed_item = WarehouseHasGood::where('good_id', $supplier_order_good->good_id)->where('warehouse_id', $warehouse_id);
+            if($needed_item->exists()){
+                $needed_item = $needed_item->first();
+                $needed_item->amount += $supplier_order_good->amount;
+                $needed_item->save();
+            }else{
+                $good_copy = Good::findCopyInWarehouse($supplier_order_good->good_id, $warehouse_id);
+                $needed_item = WarehouseHasGood::where('good_id', $good_copy->id)->where('warehouse_id', $warehouse_id)->first();
+                $needed_item->amount += $supplier_order_good->amount;
+                $needed_item->save();
+            }   
+        }
+
     }
 
     private function goodHasCopyInRequestedWarehouse($good_id, $warehouse_id){

@@ -17,7 +17,15 @@ class Good extends Model
     protected $fillable = ['name','brand_id','model_id',
     'submodel_id','part_id','color_id'];
 
-
+    public static function findCopyInWarehouse($good_id,$warehouse_id){
+      $goods_ids = WarehouseHasGood::where('warehouse_id', $warehouse_id)->pluck('good_id')->toArray();
+      $good_to_compare = Good::find($good_id);
+      return Good::whereIn('id', $goods_ids)
+                  ->where('part_id', $good_to_compare->part_id)
+                  ->where('submodel_id', $good_to_compare->submodel_id)
+                  ->where('color_id', $good_to_compare->color_id)
+                  ->first();
+    }
 
     public function store(FormRequest $request): Good{
 
