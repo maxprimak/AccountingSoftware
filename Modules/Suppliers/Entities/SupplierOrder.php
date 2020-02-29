@@ -46,6 +46,10 @@ class SupplierOrder extends Model
         $this->supplier_name = $this->getSupplierName();
         $this->status_name = $this->getStatus()->name;
         $this->status_hexcode = $this->getStatus()->hex_code;
+        $this->currency_id = auth('api')->user()->getCompany()->getCurrency()->id;
+        $this->currency_name = auth('api')->user()->getCompany()->getCurrency()->name;
+        $this->currency_symbol = auth('api')->user()->getCompany()->getCurrency()->symbol;
+
 
         return $this;
     }
