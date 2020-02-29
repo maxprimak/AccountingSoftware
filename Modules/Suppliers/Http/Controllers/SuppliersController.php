@@ -66,7 +66,12 @@ class SuppliersController extends Controller
     public function destroy($id)
     {
         $supplier = Supplier::find($id);
-        $supplier->removeFromDB();
+        try{
+            $supplier->removeFromDB();
+        }
+        catch(\Exception $e){
+            return response()->json(["success" => false, "message" => $e->getMessage()], 403);
+        }
 
         return response()->json(["success" => true, "message" => "deleted"]);
     }

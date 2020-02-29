@@ -53,8 +53,9 @@ class Supplier extends Model
     }
 
     public function removeFromDB(){
-        $supplier_orders = SupplierOrder::where('supplier_id', $this->id)->get();
-        foreach($supplier_orders as $order) $order->removeFromDB();
+        if(SupplierOrder::where('supplier_id', $this->id)->exists()){
+            throw new \Exception("This supplier already has at least one order");
+        };
         SupplierHasCompany::where('supplier_id', $this->id)->delete();
         SupplierHasAddress::where('supplier_id', $this->id)->delete();
         $this->delete();

@@ -58,7 +58,9 @@ class ModelsController extends Controller
         $model->store($request);
         $company_has_models = new CompanyHasModels();
         $company_has_models = $company_has_models->store($company->id,$model->id);
-        return response()->json(['message' => 'Successfully added!', 'model' => $model], 200);
+        $language_id = auth('api')->user()->getCompany()->language_id;
+        $message = ($language_id == 1) ? 'Successfully added!' : "Erfolgreich hinzugefügt!" ;
+        return response()->json(['message' => $message, 'model' => $model], 200);
     }
 
     /**

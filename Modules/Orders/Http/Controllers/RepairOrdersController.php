@@ -99,7 +99,7 @@ class RepairOrdersController extends Controller
         $repair_order = $repair_order->storeUpdated($request, $repair_order->id);
 
         return response()->json([
-            'status' => 'Successfully updated',
+            'status' => (auth('api')->user()->getCompany()->language_id == 1) ? 'Successfully updated' : "Erfolgreich aktualisiert!",
             'order' => [
                 'id' => $repair_order->id,
                 'accept_date' => $order->accept_date,

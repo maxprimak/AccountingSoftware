@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Modules\Companies\Database\Seeders\AddGermanAndRussianTableSeeder;
+use Modules\Companies\Database\Seeders\AddISOCodesSeederTableSeeder;
+use Modules\Customers\Database\Seeders\MarketingChannelTableSeeder;
 use Modules\Login\Database\Seeders\LoginDatabaseSeeder;
 use Modules\Suppliers\Database\Seeders\SupplierOrdersStatusesTableSeeder;
 use Modules\Users\Database\Seeders\UsersDatabaseSeeder;
@@ -29,6 +31,11 @@ use Modules\Orders\Database\Seeders\OldOrdersTableSeeder;
 use Modules\Services\Database\Seeders\LanguagesTableSeeder;
 use Modules\Services\Database\Seeders\ModelFixTableSeeder;
 use Modules\Companies\Database\Seeders\StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder;
+use Modules\Goods\Database\Seeders\MorePartsAndPartsTranslationTableSeeder;
+use Modules\Orders\Database\Seeders\OrderStatusesTranslationsTableSeeder;
+use Modules\Orders\Database\Seeders\OrderTypesTranslationsTableSeeder;
+use Modules\Orders\Database\Seeders\PaymentStatusesTranslationsTableSeeder;
+use Modules\Services\Database\Seeders\ServicesTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -64,8 +71,15 @@ class DatabaseSeeder extends Seeder
         //$this->call(SalesOrdersTableSeeder::class);
         $this->call(ModelFixTableSeeder::class);
         $this->call(SupplierOrdersStatusesTableSeeder::class);
-        //$this->call(StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder::class);
-        //$this->call(AddGermanAndRussianTableSeeder::class);
-        //$this->call(AddReceiptMainTextForEveryExistingBranchTableSeeder::class);
+        $this->call(StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder::class);
+        $this->call(AddGermanAndRussianTableSeeder::class);
+        $this->call(AddReceiptMainTextForEveryExistingBranchTableSeeder::class);
+        $this->call(AddISOCodesSeederTableSeeder::class);
+        $this->call(OrderTypesTranslationsTableSeeder::class);
+        $this->call(OrderStatusesTranslationsTableSeeder::class);
+        $this->call(PaymentStatusesTranslationsTableSeeder::class);
+        $this->call(MorePartsAndPartsTranslationTableSeeder::class);
+        $this->call(ServicesTableSeeder::class);
+        $this->call(MarketingChannelTableSeeder::class);
     }
 }

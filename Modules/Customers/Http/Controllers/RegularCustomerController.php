@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Orders\Http\Controllers;
+namespace Modules\Customers\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Orders\Entities\RepairOrder;
+use Modules\Customers\Entities\Customer;
 
-class RepairOrderCompletedController extends Controller
+class RegularCustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +15,7 @@ class RepairOrderCompletedController extends Controller
      */
     public function index()
     {
+        return view('customers::index');
     }
 
     /**
@@ -23,7 +24,7 @@ class RepairOrderCompletedController extends Controller
      */
     public function create()
     {
-        return view('orders::create');
+        return view('customers::create');
     }
 
     /**
@@ -43,7 +44,7 @@ class RepairOrderCompletedController extends Controller
      */
     public function show($id)
     {
-        return view('orders::show');
+        return view('customers::show');
     }
 
     /**
@@ -53,23 +54,24 @@ class RepairOrderCompletedController extends Controller
      */
     public function edit($id)
     {
-        return view('orders::edit');
+        return view('customers::edit');
     }
 
     /**
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $repair_order_id)
+    public function update($id)
     {
-        $repair_order = RepairOrder::find($repair_order_id);
-        $repair_order = $repair_order->complete();
-        $language_id = auth('api')->user()->getCompany()->language_id;
-        $response = ($language_id == 1) ? "Order is completed!" : "Auftrag ist abgeschlossen";
-        
-        return response()->json($response);
+        $customer = Customer::find($id);
+        if($customer->isRegular()){
+            $customer->makeNotRegular();
+        }else{
+            $customer->makeRegular();
+        }
+        return response()->json('Successfully updated');
     }
 
     /**
