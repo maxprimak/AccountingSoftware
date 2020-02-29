@@ -11,6 +11,7 @@ use Modules\Orders\Entities\OrderStatus;
 use Modules\Goods\Entities\Brand;
 use Modules\Goods\Entities\Submodel;
 use Modules\Goods\Entities\Models;
+use Modules\Services\Entities\Language;
 
 class Device extends Model
 {
@@ -51,8 +52,10 @@ class Device extends Model
                 $query_order = $query_orders->sortByDesc('created_at')->first();
                 $status = OrderStatus::find($query_order->status_id);
 
+                $language_id = auth('api')->user()->getCompany()->language_id;
+
                 $has_device = array();
-                $has_device['name'] = $status->getTranslatedName();
+                $has_device['name'] = $status->getTranslatedName(Language::getMyLanguageId());
                 $has_device['hexcode'] = $status->hex_code;
                 $has_device['last_request'] = date('d-m-Y', strtotime($query_order->created_at));
     
@@ -76,7 +79,7 @@ class Device extends Model
 
     public function getNoStatusArray(){
         $has_device = array();
-        $has_device['name'] = "No Status";
+        $has_device['name'] = (auth('api')->user()->getCompany()->language_id == "en") ? "No Status" : "Kein Status";
         $has_device['hexcode'] = "#CCCCCC";
         $has_device['last_request'] = "None";
 

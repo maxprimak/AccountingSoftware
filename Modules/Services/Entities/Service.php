@@ -16,9 +16,9 @@ class Service extends Model
     
     public function getTranslatedName($language_id){
 
-        $translation = ServicesTranslation::where('service_id', $this->id)
-                                            ->where('language_id', $language_id)
-                                            ->first();
+        $translation = ($this->is_custom) ? ServicesTranslation::where('service_id', $this->id)->first()
+        : ServicesTranslation::where('service_id', $this->id)->where('language_id', $language_id)->first();
+        
         return $translation->name;
 
     }

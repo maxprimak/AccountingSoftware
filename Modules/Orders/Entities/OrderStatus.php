@@ -38,10 +38,10 @@ class OrderStatus extends Model
       return $order_status_translation;
     }
 
-    public function getTranslatedName(){
+    public function getTranslatedName($language_id){
 
       return OrderStatusesTranslation::where('order_status_id', $this->id)
-                                      ->where('language_id', 1)
+                                      ->where('language_id', $language_id)
                                       ->first()->name;
 
     }

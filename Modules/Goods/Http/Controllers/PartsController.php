@@ -9,6 +9,8 @@ use Modules\Goods\Entities\Part;
 use Modules\Goods\Entities\PartsTranslation;
 use Modules\Goods\Http\Requests\StorePartRequest;
 use DB;
+use Modules\Services\Entities\Language;
+
 class PartsController extends Controller
 {
     /**
@@ -19,7 +21,7 @@ class PartsController extends Controller
     {
         $company = auth('api')->user()->getCompany();
         $parts_ids = Part::where('is_custom',0)->pluck('id')->toArray();
-        $parts = PartsTranslation::whereIn('part_id',$parts_ids)->get();
+        $parts = PartsTranslation::whereIn('part_id',$parts_ids)->where('language_id', auth('api')->user()->getCompany()->language_id)->get();
         $parts_of_company = DB::table('company_has_parts')
                     ->join('parts', 'parts.id', '=', 'company_has_parts.part_id')
                     ->join('parts_translations', 'parts_translations.part_id', '=', 'company_has_parts.part_id')
@@ -71,7 +73,7 @@ class PartsController extends Controller
 
         $part = new Part();
         $part = $part->store($request);
-        $part->name = $part->getTranslatedName();
+        $part->name = $part->getTranslatedName(Language::getMyLanguageId());
         $part->part_id = $part->id;
 
         return response()->json(['message' => 'Successfully added!', 'part' => $part], 200);
@@ -85,7 +87,7 @@ class PartsController extends Controller
     public function show($id)
     {   
         $part = Part::find($id);
-        $part->name = $part->getTranslatedName();
+        $part->name = $part->getTranslatedName(Language::getMyLanguageId());
         return response()->json($part);
     }
 

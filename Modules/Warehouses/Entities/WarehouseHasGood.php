@@ -13,6 +13,7 @@ use Modules\Goods\Entities\Good;
 use Modules\Orders\Entities\RepairOrderHasGood;
 use Modules\Warehouses\Entities\Warehouse;
 use Exception;
+use Modules\Services\Entities\Language;
 
 class WarehouseHasGood extends Model
 {
@@ -118,7 +119,7 @@ class WarehouseHasGood extends Model
         $result_good['branch_name'] = $warehouse->name;
         $result_good['color_name'] = $color->name;
         $result_good['color_hex_code'] = $color->hex_code;
-        $result_good['part_name'] = $part->getTranslatedName();
+        $result_good['part_name'] = $part->getTranslatedName(Language::getMyLanguageId());
         $result_good['brand_name'] = $brand->name;
         $result_good['model_name'] = $model->name;
         $result_good['submodel_name'] = $submodel->name;

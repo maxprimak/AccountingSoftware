@@ -10,6 +10,7 @@ use Modules\Orders\Entities\RepairOrder;
 use Modules\Services\Entities\Service;
 use Modules\Devices\Entities\Device;
 use Modules\Devices\Http\Requests\CompleteServiceRequest;
+use Modules\Services\Entities\Language;
 
 class DeviceHasServiceController extends Controller
 {
@@ -24,7 +25,7 @@ class DeviceHasServiceController extends Controller
                             ->pluck('service_id')->toArray();
             $has_service->services = Service::whereIn('id', $services_ids)->get();
             foreach($has_service->services as $service){
-                $service->name = $service->getTranslatedName(1);
+                $service->name = $service->getTranslatedName(Language::getMyLanguageId());
             }
         }
 

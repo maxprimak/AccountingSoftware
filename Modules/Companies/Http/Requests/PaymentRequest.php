@@ -14,7 +14,7 @@ class PaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'plan_id' => 'required|numeric|min:1|max:3'
+            'plan_id' => 'required'
         ];
     }
 

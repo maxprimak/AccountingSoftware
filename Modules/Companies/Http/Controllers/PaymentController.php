@@ -27,10 +27,10 @@ class PaymentController extends Controller
         $company->updateDefaultPaymentMethod($payment_method);
         $plan_identifier = $request->plan_id;
 
-        if($plan_identifier == 1){
+        if($plan_identifier == env('STARTUP_PLAN_STRIPE_ID')){
             $company->changeSubscription(env('STARTUP_PLAN_STRIPE_ID'), $payment_method);
         }
-        else if($plan_identifier == 2){
+        else if($plan_identifier == env('PRO_PLAN_STRIPE_ID')){
             $company->changeSubscription(env('PRO_PLAN_STRIPE_ID'), $payment_method);
             if($request->has('extra_branches_amount') && $request->extra_branches_amount > 0){
                 $amount = $request->extra_branches_amount;
@@ -42,7 +42,7 @@ class PaymentController extends Controller
                 }
             }
         }
-        else if($plan_identifier == 3){
+        else if($plan_identifier == env('ENTERPRISE_PLAN_STRIPE_ID')){
             $company->changeSubscription(env('ENTERPRISE_PLAN_STRIPE_ID'), $payment_method);
         }
         else{

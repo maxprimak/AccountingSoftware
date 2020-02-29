@@ -1,13 +1,12 @@
 <?php
 
-namespace Modules\Orders\Http\Controllers;
+namespace Modules\Companies\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Orders\Entities\RepairOrder;
 
-class RepairOrderCompletedController extends Controller
+class PaymentPlansController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +14,10 @@ class RepairOrderCompletedController extends Controller
      */
     public function index()
     {
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        $plans = \Stripe\Plan::all();
+
+        return response()->json($plans);
     }
 
     /**
@@ -23,7 +26,7 @@ class RepairOrderCompletedController extends Controller
      */
     public function create()
     {
-        return view('orders::create');
+        return view('companies::create');
     }
 
     /**
@@ -43,7 +46,7 @@ class RepairOrderCompletedController extends Controller
      */
     public function show($id)
     {
-        return view('orders::show');
+        return view('companies::show');
     }
 
     /**
@@ -53,7 +56,7 @@ class RepairOrderCompletedController extends Controller
      */
     public function edit($id)
     {
-        return view('orders::edit');
+        return view('companies::edit');
     }
 
     /**
@@ -62,14 +65,9 @@ class RepairOrderCompletedController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $repair_order_id)
+    public function update(Request $request, $id)
     {
-        $repair_order = RepairOrder::find($repair_order_id);
-        $repair_order = $repair_order->complete();
-        $language_id = auth('api')->user()->getCompany()->language_id;
-        $response = ($language_id == 1) ? "Order is completed!" : "Auftrag ist abgeschlossen";
-        
-        return response()->json($response);
+        //
     }
 
     /**
