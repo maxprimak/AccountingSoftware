@@ -39,7 +39,7 @@ class SupplierOrdersController extends Controller
     public function store(StoreSupplierOrderRequest $request)
     {
         $supplier_order = new SupplierOrder();
-        //$supplier_order = $supplier_order->store($request);
+        $supplier_order = $supplier_order->store($request);
 
         return response()->json(1);
     }
