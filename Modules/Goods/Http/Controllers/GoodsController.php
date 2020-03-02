@@ -39,6 +39,7 @@ class GoodsController extends Controller
                         'colors.id as color_id','colors.hex_code as color_hexcode','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
                         'warehouse_has_goods.amount as amount')
                 ->where('parts_translations.language_id',$company->language_id)
+                ->whereIn('warehouse_id', $warehouse_ids)
                 ->get();
         $new_good = new Good();
         $result_of_goods = $new_good->combineGoodsWithPrices($goods_has_prices,$goods);
