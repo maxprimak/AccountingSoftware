@@ -12,7 +12,6 @@ class GoodHasPrices extends Model
     public static function updateRetailPrice($good,$branch_id,$supplier_id)
     {
         if(isset($good['retail_price'])){
-            dd($good['retail_price']);
             $good_has_price = self::where('good_id',$good['good_id'])
                 ->where('branch_id',$branch_id)
                 ->where('supplier_id',$supplier_id)
@@ -28,6 +27,8 @@ class GoodHasPrices extends Model
             $good_has_price->retail_price = $good['retail_price'];
             $good_has_price->supplier_id = $supplier_id;
             $good_has_price->save();
+
+            dd($good_has_price);
 
         }
     }
