@@ -41,7 +41,7 @@ class SupplierOrdersController extends Controller
         $supplier_order = new SupplierOrder();
         $supplier_order = $supplier_order->store($request);
 
-        return response()->json(1);
+        return response()->json($supplier_order->addInfoForIndex());
     }
 
     /**
