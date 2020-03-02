@@ -28,8 +28,6 @@ class GoodHasPrices extends Model
             $good_has_price->supplier_id = $supplier_id;
             $good_has_price->save();
 
-            dd($good_has_price);
-
         }
     }
 
