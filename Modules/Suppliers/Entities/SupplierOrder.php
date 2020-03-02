@@ -3,12 +3,15 @@
 namespace Modules\Suppliers\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Modules\Companies\Entities\Branch;
 use Modules\Goods\Entities\Good;
 use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Orders\Entities\Order;
 use Modules\Orders\Entities\PaymentStatuses;
+use Modules\Suppliers\Http\Requests\AddGoodRequest;
+use Modules\Warehouses\Entities\Warehouse;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 
 class SupplierOrder extends Model
@@ -44,6 +47,10 @@ class SupplierOrder extends Model
         $this->supplier_name = $this->getSupplierName();
         $this->status_name = $this->getStatus()->name;
         $this->status_hexcode = $this->getStatus()->hex_code;
+        $this->currency_id = auth('api')->user()->getCompany()->getCurrency()->id;
+        $this->currency_name = auth('api')->user()->getCompany()->getCurrency()->name;
+        $this->currency_symbol = auth('api')->user()->getCompany()->getCurrency()->symbol;
+
 
         return $this;
     }
@@ -166,24 +173,89 @@ class SupplierOrder extends Model
         return $this;
     }
 
-    public function addGoodsToStock(Request $request)
+    public function addGoodsToStock(FormRequest $request)
     {
         if(is_null($request->goods)){
            $goods_ids =  SupplierOrderHasGood::where('orders_to_supplier_id',$this->id)->pluck('good_id');
            $supplier_order_goods =  SupplierOrderHasGood::where('orders_to_supplier_id',$this->id)->get();
            $warehouse_has_goods = WarehouseHasGood::whereIn('good_id',$goods_ids)
-                                                    ->where('warehouse_id',$request->branch_id)
                                                     ->get();
 
-           foreach ($supplier_order_goods as $supplier_order_good){
+           foreach ($goods_ids as $good_id){
+               if(!$this->goodHasCopyInRequestedWarehouse($good_id, $request->branch_id)){
+               $filtered_warehouse_has_goods = $warehouse_has_goods->filter(function ($value,$key) use ($good_id){
+                    return $value->good_id == $good_id;
+               });
+
+
+
+               if(!$filtered_warehouse_has_goods->contains('warehouse_id',$request->branch_id)) {
+                   $request->warehouse_id = $request->branch_id;
+                   $request->amount = 0;
+                   $request->supplier_id = $this->supplier_id;
+                   $good_has_price = GoodHasPrices::where('good_id',$good_id)
+                       ->where('supplier_id',$this->supplier_id)
+                       ->orWhere('supplier_id',null)
+                       ->first();
+                       
+                   $request->retail_price = $good_has_price->retail_price;
+
+                   $new_good = new Good();
+                   $new_good = $new_good->makeCopy($request,$good_id);
+                   $new_warehouse_has_good = $new_good->getWarehouseHasGood($request->branch_id);
+                   $warehouse_has_goods->push($new_warehouse_has_good);
+
+                   $supplier_order_goods = $supplier_order_goods->filter(function ($value,$key) use ($good_id,$new_good) {
+                         if($value->good_id == $good_id){
+                             return $value->good_id = $new_good->id;
+                         }else{
+                             return $value;
+                         }
+                   });
+               }
+            }
+           }
+
+           $this->updateAmounts($request->branch_id);
+
+           /*foreach ($supplier_order_goods as $supplier_order_good){
                 foreach ($warehouse_has_goods as $warehouse_has_good){
                     if($warehouse_has_good->good_id == $supplier_order_good->good_id){
                         $warehouse_has_good->amount += $supplier_order_good->amount;
                         $warehouse_has_good->save();
                     }
                 }
-            }
+            }*/
         }
+    }
+
+    private function updateAmounts($warehouse_id){
+        $supplier_order_goods =  SupplierOrderHasGood::where('orders_to_supplier_id',$this->id)->get();
+        
+        foreach ($supplier_order_goods as $supplier_order_good){
+            $needed_item = WarehouseHasGood::where('good_id', $supplier_order_good->good_id)->where('warehouse_id', $warehouse_id);
+            if($needed_item->exists()){
+                $needed_item = $needed_item->first();
+                $needed_item->amount += $supplier_order_good->amount;
+                $needed_item->save();
+            }else{
+                $good_copy = Good::findCopyInWarehouse($supplier_order_good->good_id, $warehouse_id);
+                $needed_item = WarehouseHasGood::where('good_id', $good_copy->id)->where('warehouse_id', $warehouse_id)->first();
+                $needed_item->amount += $supplier_order_good->amount;
+                $needed_item->save();
+            }   
+        }
+
+    }
+
+    private function goodHasCopyInRequestedWarehouse($good_id, $warehouse_id){
+        $goods_ids = WarehouseHasGood::where('warehouse_id', $warehouse_id)->pluck('good_id')->toArray();
+        $good_to_compare = Good::find($good_id);
+        return Good::whereIn('id', $goods_ids)
+                    ->where('part_id', $good_to_compare->part_id)
+                    ->where('submodel_id', $good_to_compare->submodel_id)
+                    ->where('color_id', $good_to_compare->color_id)
+                    ->exists();
     }
 
     public function setStatusToReceived(){

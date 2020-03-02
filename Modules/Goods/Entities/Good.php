@@ -4,6 +4,7 @@ namespace Modules\Goods\Entities;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Suppliers\Entities\SupplierOrderHasGood;
@@ -16,6 +17,15 @@ class Good extends Model
     protected $fillable = ['name','brand_id','model_id',
     'submodel_id','part_id','color_id'];
 
+    public static function findCopyInWarehouse($good_id,$warehouse_id){
+      $goods_ids = WarehouseHasGood::where('warehouse_id', $warehouse_id)->pluck('good_id')->toArray();
+      $good_to_compare = Good::find($good_id);
+      return Good::whereIn('id', $goods_ids)
+                  ->where('part_id', $good_to_compare->part_id)
+                  ->where('submodel_id', $good_to_compare->submodel_id)
+                  ->where('color_id', $good_to_compare->color_id)
+                  ->first();
+    }
 
     public function store(FormRequest $request): Good{
 
@@ -183,5 +193,28 @@ class Good extends Model
         array_push($result_of_goods,$good);
       }
       return $result_of_goods;
+    }
+
+    public function makeCopy(FormRequest $request,$good_id)
+    {
+        $good_for_copy = self::find($good_id);
+
+        $request->part_id = $good_for_copy->part_id;
+        $request->brand_id = $good_for_copy->brand_id;
+        $request->model_id = $good_for_copy->model_id;
+        $request->submodel_id = $good_for_copy->submodel_id;
+        $request->color_id = $good_for_copy->color_id;
+
+        $good = new Good();
+        $good = $good->store($request);
+        return $good;
+    }
+
+    public function getWarehouseHasGood($warehouse_id){
+        $warehouse_has_good = WarehouseHasGood::where('good_id',$this->id)
+                                                ->where('warehouse_id',$warehouse_id)
+                                                ->firstOrFail();
+
+        return $warehouse_has_good;
     }
 }

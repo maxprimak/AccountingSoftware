@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Suppliers\Entities\SupplierOrder;
+use Modules\Suppliers\Http\Requests\AddGoodRequest;
 
 class AddSupplierGoodsToStockController extends Controller
 {
@@ -63,7 +64,7 @@ class AddSupplierGoodsToStockController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(AddGoodRequest $request, $id)
     {
         $supplier_order = SupplierOrder::find($id);
         $supplier_order->addGoodsToStock($request);
