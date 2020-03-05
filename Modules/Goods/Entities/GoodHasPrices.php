@@ -14,6 +14,8 @@ class GoodHasPrices extends Model
     {
 
         Log::info("out of loop");
+        
+        throw new \Exception('good_id'.$good['good_id']);
 
         if(isset($good['retail_price'])){
             $good_has_price = self::where('good_id',$good['good_id'])
