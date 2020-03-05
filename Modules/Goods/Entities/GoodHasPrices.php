@@ -27,9 +27,7 @@ class GoodHasPrices extends Model
                 ->where('supplier_id',null)
                 ->first();
             }
-            
-            throw new \Exception("4.good_id:".$good['good_id']."good_has_price".$good_has_price);
-            
+                        
             Log::info("in the loop");
 
             if(!$good_has_price){
