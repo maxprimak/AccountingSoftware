@@ -21,8 +21,6 @@ class GoodHasPrices extends Model
                 ->where('supplier_id',$supplier_id)
                 ->orWhere('supplier_id',null)
                 ->first();
-
-            throw new \Exception("in the loop. good has price:" . $good_has_price);
             
             Log::info("in the loop");
 
@@ -35,6 +33,8 @@ class GoodHasPrices extends Model
             $good_has_price->retail_price = $good['retail_price'];
             $good_has_price->supplier_id = $supplier_id;
             $good_has_price->save();
+            
+            throw new \Exception("in the loop2. good has price:" . $good_has_price);
 
         }
     }
