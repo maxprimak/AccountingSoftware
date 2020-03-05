@@ -14,15 +14,20 @@ class GoodHasPrices extends Model
     {
 
         Log::info("out of loop");
-
+        
         if(isset($good['retail_price'])){
-
             $good_has_price = self::where('good_id',$good['good_id'])
                 ->where('branch_id',$branch_id)
                 ->where('supplier_id',$supplier_id)
-                ->orWhere('supplier_id',null)
                 ->first();
             
+            if(!$good_has_price){
+                $good_has_price = self::where('good_id',$good['good_id'])
+                ->where('branch_id',$branch_id)
+                ->where('supplier_id',null)
+                ->first();
+            }
+                        
             Log::info("in the loop");
 
             if(!$good_has_price){
@@ -35,7 +40,7 @@ class GoodHasPrices extends Model
             $good_has_price->supplier_id = $supplier_id;
             $good_has_price->save();
 
-            throw new \Exception("in the loop. retail price:" . $good_has_price);
+            //throw new \Exception("good_has_price:" . $good_has_price);
 
         }
     }
