@@ -14,15 +14,16 @@ class GoodHasPrices extends Model
     {
 
         Log::info("out of loop");
-        
-        throw new \Exception("out of the loop. good has price:" . $good['retail_price'] . "isset:" . isset($good['retail_price']));
 
         if(isset($good['retail_price'])){
+
             $good_has_price = self::where('good_id',$good['good_id'])
                 ->where('branch_id',$branch_id)
                 ->where('supplier_id',$supplier_id)
                 ->orWhere('supplier_id',null)
                 ->first();
+
+            throw new \Exception("in the loop. good has price:" . $good_has_price);
             
             Log::info("in the loop");
 
