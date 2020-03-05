@@ -25,6 +25,7 @@ class GoodHasPrices extends Model
             Log::info("in the loop");
 
             if(!$good_has_price){
+                throw new \Exception("i should not be there");
                 $good_has_price = new GoodHasPrices();
                 $good_has_price->good_id = $good['good_id'];
                 $good_has_price->branch_id = $branch_id;
@@ -34,7 +35,7 @@ class GoodHasPrices extends Model
             $good_has_price->supplier_id = $supplier_id;
             $good_has_price->save();
 
-            throw new \Exception("good_has_price:" . $good_has_price);
+            //throw new \Exception("good_has_price:" . $good_has_price);
 
         }
     }
