@@ -23,7 +23,7 @@ class SupplierOrdersController extends Controller
         $company = auth('api')->user()->getCompany();
         $branch_ids = $company->getBranchesIdsOfCompany();
         $order_ids = Order::whereIn('branch_id',$branch_ids)->pluck('id')->toArray();
-        $supplier_orders = SupplierOrder::whereIn('order_id',$order_ids)->get()->orderBy('id','DESC');
+        $supplier_orders = SupplierOrder::whereIn('order_id',$order_ids)->orderBy('id','DESC')->get();
 
         foreach ($supplier_orders as $supplier_order){
             $supplier_order->addInfoForIndex();
