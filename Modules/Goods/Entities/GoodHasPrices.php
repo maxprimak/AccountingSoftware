@@ -3,6 +3,7 @@
 namespace Modules\Goods\Entities;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Model;
+use Log;
 use Modules\Goods\Entities\BranchHasGood;
 
 class GoodHasPrices extends Model
@@ -12,7 +13,7 @@ class GoodHasPrices extends Model
     public static function updateRetailPrice($good,$branch_id,$supplier_id)
     {
 
-        var_dump("out of loop");
+        Log::info("out of loop");
 
         if(isset($good['retail_price'])){
             $good_has_price = self::where('good_id',$good['good_id'])
@@ -21,7 +22,7 @@ class GoodHasPrices extends Model
                 ->orWhere('supplier_id',null)
                 ->first();
             
-            var_dump("in loop");
+            Log::info("in the loop");
 
             if(!$good_has_price){
                 $good_has_price = new GoodHasPrices();
