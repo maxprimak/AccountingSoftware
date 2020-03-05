@@ -58,7 +58,7 @@ Route::post('/discount_codes', 'DiscountCodesController@store')->name('discount_
     Route::post('/orders/repair/{device_id}/goods', 'RepairOrderDeviceGoodsController@index')->name('device_has_goods.index')->middleware('my_device');
 
 //RepairOrderPaymentController
-    Route::post('/orders/repair/{order_id}/paid', 'RepairOrderPaymentController@store')->name('repair_order_payment.store')->middleware('my_repair_order');
+    Route::post('/orders/repair/{order_id}/paid', 'RepairOrderPaymentController@store')->name('repair_order_payment.store');
 
 //RepairOrderHasDeviceController
     Route::post('/orders/repair/{order_id}/device', 'RepairOrderHasDeviceController@destroy')->name('repair_order_has_device.destroy')->middleware('my_repair_order');
