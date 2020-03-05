@@ -5,6 +5,7 @@ namespace Modules\Suppliers\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Log;
 use Modules\Companies\Entities\Branch;
 use Modules\Goods\Entities\Good;
 use Modules\Goods\Entities\GoodHasPrices;
@@ -21,7 +22,10 @@ class SupplierOrder extends Model
     protected $table = 'orders_to_suppliers';
 
     public function store(Request $request): SupplierOrder
-    {
+    {   
+
+        Log::info("in the store");
+
         $price = $this->calculate_price($request);
         $request->price = $price;
 
