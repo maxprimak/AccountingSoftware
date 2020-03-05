@@ -22,10 +22,11 @@ class GoodHasPrices extends Model
                 ->orWhere('supplier_id',null)
                 ->first();
             
+            throw new \Exception("2.good_id:".$good['good_id']."good_has_price".$good_has_price);
+            
             Log::info("in the loop");
 
             if(!$good_has_price){
-                throw new \Exception("i should not be there");
                 $good_has_price = new GoodHasPrices();
                 $good_has_price->good_id = $good['good_id'];
                 $good_has_price->branch_id = $branch_id;
