@@ -148,6 +148,7 @@ class RepairOrdersController extends Controller
         return response()->json([
             'order' => [
                 'id' => $repair_order->id,
+                'order_id' => $order->id,
                 'order_nr' => $repair_order->order_nr,
                 'order_type_id' => $repair_order->order_type_id,
                 'created_by_name' => $login->username,
