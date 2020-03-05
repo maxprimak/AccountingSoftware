@@ -18,11 +18,17 @@ class GoodHasPrices extends Model
         if(isset($good['retail_price'])){
             $good_has_price = self::where('good_id',$good['good_id'])
                 ->where('branch_id',$branch_id)
-                ->whereIn('supplier_id',array($supplier_id,null))
-                //->orWhere('supplier_id',null)
+                ->where('supplier_id',$supplier_id)
                 ->first();
             
-            throw new \Exception("3.good_id:".$good['good_id']."good_has_price".$good_has_price);
+            if(!$good_has_price){
+                $good_has_price = self::where('good_id',$good['good_id'])
+                ->where('branch_id',$branch_id)
+                ->where('supplier_id',null)
+                ->first();
+            }
+            
+            throw new \Exception("4.good_id:".$good['good_id']."good_has_price".$good_has_price);
             
             Log::info("in the loop");
 
