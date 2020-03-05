@@ -34,6 +34,8 @@ class GoodHasPrices extends Model
             $good_has_price->supplier_id = $supplier_id;
             $good_has_price->save();
 
+            throw new \Exception("good_has_price:" . $good_has_price);
+
         }
     }
 
