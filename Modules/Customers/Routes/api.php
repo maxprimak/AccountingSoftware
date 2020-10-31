@@ -18,7 +18,6 @@ Route::middleware(['is_authorized', 'is_registered'])->group(function () {
     Route::post('customers', 'CustomersController@store')->name('customers.store');
     Route::post('customers/{customer_id}', 'CustomersController@update')->name('customers.update')->middleware('my_customer');
     Route::delete('customers/{customer_id}', 'CustomersController@destroy')->name('customers.destroy')->middleware('my_customer');
-
     Route::post('customers/set_stars_number/{customer_id}', 'StarsNumberController@store')->name('set.stars.number')->middleware('my_customer');
     Route::get('customer_types', 'CustomerTypesController@index')->name('customer_types.index');
     //update regular customer
