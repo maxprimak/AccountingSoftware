@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware(['is_authorized', 'is_registered'])->group(function () {
-
     Route::get('customers', 'CustomersController@index')->name('customers.index');
     Route::post('customers', 'CustomersController@store')->name('customers.store');
     Route::post('customers/{customer_id}', 'CustomersController@update')->name('customers.update')->middleware('my_customer');
