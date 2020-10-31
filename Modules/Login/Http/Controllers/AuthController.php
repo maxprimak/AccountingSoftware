@@ -17,7 +17,6 @@ use GuzzleHttp\Client;
 class AuthController extends Controller
 {
     public function login(LoginRequest $request){
-
         if(!Auth::guard('web')->attempt(['username' => $request->username, 'password' => $request->password, 'is_active' => 1]))
 
         return response()->json([
@@ -80,7 +79,7 @@ class AuthController extends Controller
             'is_active' => 1,
         ]);
 
-        $user->sendEmailVerificationNotification(); 
+        $user->sendEmailVerificationNotification();
 
         $tokenResult = $this->getToken($user, $request);
 
