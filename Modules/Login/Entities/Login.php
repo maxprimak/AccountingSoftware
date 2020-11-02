@@ -20,6 +20,13 @@ class Login extends Authenticatable implements MustVerifyEmail
     protected $fillable = ['id', 'username', 'password', 'remember_token', 'email', 'email_verified_at'];
     public $timestamps = false;
 
+    /**
+     * @return User
+     */
+    public function user(){
+        return $this->belongsTo (User::class, 'id', 'login_id');
+    }
+
     public function store(FormRequest $request){
         $this->username = $request->username;
         $this->password = bcrypt($request->password);

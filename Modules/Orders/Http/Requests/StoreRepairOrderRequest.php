@@ -63,7 +63,7 @@ class StoreRepairOrderRequest extends FormRequest
     }
 
     public function messages()
-    {   
+    {
     return [
         'devices.required' => 'order does not contain any device',
         'devices.*.services.required' => 'some devices do not have any service',
@@ -71,7 +71,7 @@ class StoreRepairOrderRequest extends FormRequest
     }
 
     public function attributes()
-    {   
+    {
     return [
         'devices.*.goods.*.order_amount' => 'amount of goods for device',
         ];

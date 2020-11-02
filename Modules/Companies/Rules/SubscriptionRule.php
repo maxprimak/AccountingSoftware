@@ -5,9 +5,9 @@ namespace Modules\Companies\Rules;
 use Illuminate\Contracts\Validation\Rule;
 
 class SubscriptionRule implements Rule
-{   
+{
 
-    public $message = 'Your subscription plan does not allow you to perform this action.'; 
+    public $message = 'Your subscription plan does not allow you to perform this action.';
     public $message_orders = " You have reached the orders limit.";
     public $message_branches = " You have reached the branches limit.";
     public $message_employees = " You have reached the employees limit.";
@@ -39,7 +39,7 @@ class SubscriptionRule implements Rule
             $this->pro_employees_number += SubscriptionRule::$employees_number_for_extra*$amount;
         }
     }
-    
+
     public function checkRule($comparable, $comparator, $message_to_add){
         if($comparable >= $comparator){
             $this->message .= $message_to_add;
@@ -72,9 +72,7 @@ class SubscriptionRule implements Rule
      */
     public function passes($attribute, $value)
     {
-
         return true;
-
     }
 
     private function checkEnterprisePlan(){

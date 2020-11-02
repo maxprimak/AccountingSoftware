@@ -16,13 +16,10 @@ class SubscriptionRuleBranches extends SubscriptionRule
      */
     public function passes($attribute, $value)
     {
-
-        return true;
-
-        /*if($this->plan_name == "free"){
+        if($this->plan_name == "free"){
             if(!$this->checkRule($this->branches_number, SubscriptionRule::$free_branches_number, $this->message_branches)) return false;
             return true;
-        }   
+        }
         else if($this->plan_name == "startup"){
             if(!$this->checkRule($this->branches_number, SubscriptionRule::$startup_branches_number, $this->message_branches)) return false;
             return true;
@@ -38,6 +35,6 @@ class SubscriptionRuleBranches extends SubscriptionRule
         else{
             $this->message .= " Your plan was not detected";
             return false;
-        }*/
+        }
     }
 }

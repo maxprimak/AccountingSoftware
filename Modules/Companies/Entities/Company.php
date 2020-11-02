@@ -18,7 +18,7 @@ use Laravel\Cashier\Billable;
 use Carbon\Carbon;
 
 class Company extends Model
-{ 
+{
 
     use Billable;
 
@@ -106,7 +106,7 @@ class Company extends Model
       $result = RepairOrder::whereIn('order_id', $order_ids)
                             ->whereDate('created_at', '>=', Carbon::now()->startOfMonth())
                             ->whereDate('created_at', '<=', Carbon::now()->endOfMonth())
-                            ->get()->count();           
+                            ->get()->count();
 
       return $result;
     }
@@ -121,7 +121,7 @@ class Company extends Model
       }
     elseif($this->subscribedToPlan(env('PRO_PLAN_STRIPE_ID'), env('STANDARD_SUBSCRIPTION_NAME'))){
         return "pro";
-      } 
+      }
     elseif($this->subscribedToPlan(env('STARTUP_PLAN_STRIPE_ID'), env('STANDARD_SUBSCRIPTION_NAME'))){
         return "startup";
     }
@@ -145,7 +145,7 @@ class Company extends Model
     }
 
     public function hasExtraBranches(){
-      return $this->subscribed(env('EXTRA_BRANCHES_SUBSCRIPTION_NAME')) 
+      return $this->subscribed(env('EXTRA_BRANCHES_SUBSCRIPTION_NAME'))
               && !$this->subscription(env('EXTRA_BRANCHES_SUBSCRIPTION_NAME'))->cancelled();
     }
 

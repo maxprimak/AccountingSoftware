@@ -2,6 +2,7 @@
 
 namespace Modules\Orders\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -55,8 +56,8 @@ class RepairOrdersController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param StoreRepairOrderRequest $request
+     * @return JsonResponse
      */
     public function store(StoreRepairOrderRequest $request)
     {
@@ -85,10 +86,11 @@ class RepairOrdersController extends Controller
         ]);
     }
 
-        /**
+    /**
      * Update the specified resource in storage.
-     * @param Request $request
+     * @param UpdateRepairOrderRequest $request
      * @param int $id
+     * @return JsonResponse
      */
     public function update(UpdateRepairOrderRequest $request, $id)
     {
@@ -123,7 +125,7 @@ class RepairOrdersController extends Controller
     /**
      * Show the specified resource.
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
 
     public function show($repair_order_id)
@@ -210,7 +212,7 @@ class RepairOrdersController extends Controller
 
             $repair_order = RepairOrder::findOrFail($id);
             $order = Order::findOrFail($repair_order->order_id);
-            
+
             if(ReworkOrders::where('repair_order_id',$repair_order->id)->exists()){
                 $id = ReworkOrders::where('repair_order_id',$repair_order->id)->first()->id;
                 ReworkOrderHasWarrantyCase::where('rework_order_id', $id)->delete();

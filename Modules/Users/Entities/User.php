@@ -7,11 +7,19 @@ use Illuminate\Foundation\Http\FormRequest;
 
 use BranchesService;
 use Modules\Companies\Entities\Branch;
+use Modules\Companies\Entities\Company;
 use Modules\Employees\Entities\Employee;
 
 class User extends Model
 {
     protected $fillable = ['login_id', 'person_id', 'branch_id', 'is_active'];
+
+    /**
+     * @return Company
+     */
+    public function company(){
+        return $this->belongsTo (Company::class);
+    }
 
     public function store($login, $person, FormRequest $request){
             $this->login_id = $login->id;
