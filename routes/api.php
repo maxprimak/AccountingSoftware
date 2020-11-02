@@ -15,6 +15,6 @@ use Modules\Login\Http\Controllers\LoginController;
 |
 */
 
-Route::middleware('is_authorized')->get('/user', function (Request $request) {
-   return auth('api')->user();
-})->name('user');
+//Route::middleware('is_authorized')->get('/user', function (Request $request) {
+//   return auth('api')->user();
+//})->name('user');

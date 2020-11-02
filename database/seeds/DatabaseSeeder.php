@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
         //$this->call(OldOrdersTableSeeder::class);
         //$this->call(SalesOrdersTableSeeder::class);
         $this->call(ModelFixTableSeeder::class);*/
-        $this->call(SupplierOrdersStatusesTableSeeder::class);
+        //$this->call(SupplierOrdersStatusesTableSeeder::class);
         /*$this->call(StripeWillMakeCustomerFromEveryCompanyInDBTableSeeder::class);
         $this->call(AddGermanAndRussianTableSeeder::class);
         $this->call(AddReceiptMainTextForEveryExistingBranchTableSeeder::class);
