@@ -3,6 +3,7 @@
 namespace Modules\Orders\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Customers\Entities\Customer;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Companies\Entities\Company;
@@ -30,6 +31,7 @@ use Modules\Warehouses\Entities\WarehouseHasGood;
 
 class RepairOrder extends Model
 {
+    use SoftDeletes;
     protected $fillable = [];
 
     public function store(FormRequest $request, $order_id): RepairOrder{
@@ -133,7 +135,7 @@ class RepairOrder extends Model
         $has_good_ids = RepairOrderHasGood::where('device_id', $device_id)
                                       ->where('repair_order_id', $this->id)
                                       ->pluck('warehouse_has_good_id')->toArray();
-                                      
+
         $good_ids = WarehouseHasGood::whereIn('id', $has_good_ids)->get()->toArray();
 
         $good_ids = array_map(function($g)use($device_id, $devices){
@@ -143,16 +145,16 @@ class RepairOrder extends Model
                   ->where('device_id', $device_id)->where('warehouse_has_good_id', $g['id'])->first()->amount . " "  . "(". $index .")";
         }, $good_ids);
 
-        array_push($result,implode(',',$good_ids));    
+        array_push($result,implode(',',$good_ids));
 
       }
 
       $result = implode(',',array_unique($result));
 
       if($result == "") {
-        $result = "Not set";    
-      }   
-      
+        $result = "Not set";
+      }
+
       return $result;
     }
 
@@ -171,12 +173,12 @@ class RepairOrder extends Model
                                         ->where('device_id', $device->id)->pluck('service_id')->toArray();
         $services = ServicesTranslation::whereIn('service_id', $servicesIds)->where('language_id', $company->language_id)
                                         ->pluck('name')->toArray();
-        
+
         $services = array_map(function($s)use($counter){
                                 return $s . " (". $counter .")";
                               }, $services);
-        
-        array_push($result,implode(',',$services));                            
+
+        array_push($result,implode(',',$services));
       }
 
       return implode(',', $result);
@@ -338,11 +340,11 @@ class RepairOrder extends Model
         if($rest_of_payment <= 0){
           $this->payment_status_id = 1;
           $this->prepay_sum = Order::find($this->order_id)->price;
-        } 
+        }
         if($rest_of_payment > 0){
           $this->payment_status_id = 2;
           $this->prepay_sum += $payment->amount;
-        } 
+        }
         $this->save();
         return $this;
     }

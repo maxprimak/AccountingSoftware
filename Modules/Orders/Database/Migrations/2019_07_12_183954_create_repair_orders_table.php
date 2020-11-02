@@ -37,6 +37,7 @@ class CreateRepairOrdersTable extends Migration
             $table->foreign('warranty_id')->references('id')->on('warranties');
             $table->foreign('discount_code_id')->references('id')->on('discount_codes');
             $table->foreign('order_type_id')->references('id')->on('order_types');
+            $table->softDeletes();
         });
     }
 
