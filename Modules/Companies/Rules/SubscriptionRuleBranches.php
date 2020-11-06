@@ -16,6 +16,7 @@ class SubscriptionRuleBranches extends SubscriptionRule
      */
     public function passes($attribute, $value)
     {
+        $company = auth('api')->user()->user->company;
         if($this->plan_name == "free"){
             if(!$this->checkRule($this->branches_number, SubscriptionRule::$free_branches_number, $this->message_branches)) return false;
             return true;

@@ -57,19 +57,17 @@ class AuthController extends Controller
     protected function regValidator(array $data)
     {
         return Validator::make($data, [
+            'g-recaptcha-response' => 'recaptcha',
             'username' => 'required|min:6|unique:logins,username',
             'email' => 'required|email:rfc,dns,strict|unique:logins,email',
             'password' => 'required|min:8',
             'repassword' => 'required|same:password',
-            'recaptchaToken' => 'required',
-            'ip' => 'required'
         ]);
     }
 
     public function register(Request $request){
         $validator = $this->regValidator($request->all());
         if ($validator->fails()) return response()->json($validator->errors(), 422);
-        if (!$this->checkRecaptcha($request->recaptchaToken, $request->ip)) return response()->json("Recaptcha is not correct", 422);
 
         $user = Login::create([
             'username' => $request->username,
@@ -78,7 +76,7 @@ class AuthController extends Controller
             'is_active' => 1,
         ]);
 
-        $user->sendEmailVerificationNotification();
+        // $user->sendEmailVerificationNotification();
 
         $tokenResult = $this->getToken($user, $request);
 
@@ -93,19 +91,6 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]);
 
-    }
-
-    protected function checkRecaptcha($token, $ip)
-    {
-        $response = (new Client)->post('https://www.google.com/recaptcha/api/siteverify', [
-            'form_params' => [
-                'secret'   => env('RECAPTCHA_KEY'),
-                'response' => $token,
-                'remoteip' => $ip,
-            ],
-        ]);
-        $response = json_decode((string)$response->getBody(), true);
-        return $response['success'];
     }
 
     public function logout(){
