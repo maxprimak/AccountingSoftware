@@ -32,6 +32,7 @@ class SubscriptionRule implements Rule
     public $branches_number;
     public $employees_number;
 
+
     public function incrementProNumbersIfExtraBranches($company){
         if($company->hasExtraBranches()){
             $amount = $company->getExtraBranchesAmount();
@@ -55,7 +56,12 @@ class SubscriptionRule implements Rule
      */
     public function __construct()
     {
-        $this->company = auth('api')->user()->getCompany();
+        if(auth('api')->user()){
+            $user = auth('api')->user();
+        } else {
+            $user = request()->user();
+        }
+        $this->company = $user->getCompany();
         $this->plan_name = $this->company->getStripePlanName();
 
         $this->orders_this_month_number = $this->company->getRepairOrdersThisMonthNumber();

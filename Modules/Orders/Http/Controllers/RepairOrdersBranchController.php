@@ -71,6 +71,7 @@ class RepairOrdersBranchController extends Controller
                 'branch_id' => $order->branch_id,
                 'branch_name' => $branch->name,
                 'currency_symbol' => $currency->symbol,
+                'orders_left' => $company->getOrdersLeft(),
                 'deadline' => $repair_order->deadline,
                 'created_at' => $order->created_at,
                 'updated_at' => $order->updated_at,

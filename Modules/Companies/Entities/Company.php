@@ -7,6 +7,8 @@ use Modules\Companies\Http\Requests\StoreCompanyRequest;
 use Modules\Companies\Http\Requests\UpdateCompanyRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Companies\Entities\Branch;
+use Modules\Companies\Rules\SubscriptionRule;
+use Modules\Companies\Rules\SubscriptionRuleRepairOrders;
 use Modules\Warehouses\Entities\Warehouse;
 use Modules\Companies\Entities\Address;
 use Modules\Orders\Entities\Order;
@@ -100,6 +102,9 @@ class Company extends Model
         return $this;
     }
 
+    /**
+     * @return integer
+     */
     public function getRepairOrdersThisMonthNumber(){
       $order_ids = Order::whereIn('branch_id', $this->getBranchesIdsOfCompany())->pluck('id')->toArray();
 
@@ -213,5 +218,15 @@ class Company extends Model
         $currency = Currency::find($this->currency_id);
         return $currency;
     }
+
+    /**
+     * @return int
+     */
+    public function getOrdersLeft() {
+        $subscriptionRule = new SubscriptionRuleRepairOrders();
+        $subscriptionRule->passes ();
+        return $subscriptionRule->orders_left;
+    }
+
 
 }

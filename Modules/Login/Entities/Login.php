@@ -41,6 +41,9 @@ class Login extends Authenticatable implements MustVerifyEmail
         return User::where('login_id', $this->id)->exists();
     }
 
+    /**
+     * @return Company
+     */
     public function getCompany(){
 
         $user = User::where('login_id', $this->id)->first();

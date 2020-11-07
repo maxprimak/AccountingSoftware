@@ -10,20 +10,3 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-// Route::get('/employees', 'EmployeesController@index');
-// Route::patch('/employees/edit', 'EmployeesController@edit');
-// Route::patch('/employees/addEmployee', 'EmployeesController@create');
-
-
-// Route::prefix('users')->group(function() {
-//     Route::get('/', 'UsersController@index');
-// });
-
-
-//employees
-// Route::prefix('users')->group(function() {
-//     Route::get('/employees', 'EmployeesController@index');
-// });
-//
-// Route::patch('/employees', 'EmployeesController@index');

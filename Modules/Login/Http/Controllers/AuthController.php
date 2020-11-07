@@ -16,9 +16,6 @@ use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
-    public function env () {
-        return response ()->json (env('STANDARD_SUBSCRIPTION_NAME'));
-    }
     public function login(LoginRequest $request){
         if(!Auth::guard('web')->attempt(['username' => $request->username, 'password' => $request->password, 'is_active' => 1]))
 
@@ -29,7 +26,6 @@ class AuthController extends Controller
         $user = $request->user();
 
         $tokenResult = $this->getToken($user, $request);
-
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
@@ -38,7 +34,7 @@ class AuthController extends Controller
             'is_registered' => ($user->isRegistered()) ? 1 : 0,
             'language' => ($user->getCompany() == null) ? "en" : $user->getCompany()->getLanguage(),
             'plan_expires_at' => ($user->getCompany() == null) ? date("d.m.Y") :  $user->getCompany()->getPlanExpirationDate(),
-            'orders_left' => 3,
+            'orders_left' => ($user->getCompany() == null) ? 0 : $user->getCompany()->getOrdersLeft(),
             'expires_in' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
