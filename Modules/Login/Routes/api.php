@@ -14,10 +14,11 @@ use Illuminate\Http\Request;
 */
 
 Route::prefix('auth')->group(function () {
-    Route::post('login', 'AuthController@login')->name('login');
+    Route::post('login', 'AuthController@login')->name('login')->middleware ('cors');
     Route::post('register', 'AuthController@register')->name('register');
     Route::post('logout', 'AuthController@logout')->name('logout');
 });
 
+Route::get('env', 'AuthController@env');
 Route::get('email/verify/{id}', 'VerificationApiController@verify')->name('verification.verify');
 //Route::get('email/verify/{id}', 'VerificationController@verify')->name('verification.verify');

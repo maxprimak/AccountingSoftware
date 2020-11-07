@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware(['is_authorized','is_registered'])->group(function () {
+Route::middleware(['is_authorized','is_registered', 'cors'])->group(function () {
 
     Route::get('/suppliers', 'SuppliersController@index')->name('suppliers.index');
     Route::post('/suppliers', 'SuppliersController@store')->name('suppliers.store');

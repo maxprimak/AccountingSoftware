@@ -16,6 +16,9 @@ use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
+    public function env () {
+        return response ()->json (env('STANDARD_SUBSCRIPTION_NAME'));
+    }
     public function login(LoginRequest $request){
         if(!Auth::guard('web')->attempt(['username' => $request->username, 'password' => $request->password, 'is_active' => 1]))
 

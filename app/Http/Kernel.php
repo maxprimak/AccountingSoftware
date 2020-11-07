@@ -91,7 +91,7 @@ class Kernel extends HttpKernel
         'my_employee' => \Modules\Employees\Http\Middleware\MyEmployee::class,
         'my_service' => \Modules\Services\Http\Middleware\MyService::class,
         'my_warehouse_has_good' => \Modules\Warehouses\Http\Middleware\MyWarehouseHasGood::class,
-        'my_cors' => \Modules\Companies\Http\Middleware\MyCors::class
+        'cors' => \App\Http\Middleware\Cors::class,
 
     ];
 

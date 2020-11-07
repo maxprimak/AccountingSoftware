@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware(['is_authorized'])->group(function () {
+Route::middleware(['is_authorized', 'cors'])->group(function () {
 
 Route::get('cities/{country_id}', 'CitiesController@index')->name('cities.index');
 Route::get('currencies', 'CurrenciesController@index')->name('currencies.index');
