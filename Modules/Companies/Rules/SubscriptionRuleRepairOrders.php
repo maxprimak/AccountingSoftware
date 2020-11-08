@@ -23,7 +23,7 @@ class SubscriptionRuleRepairOrders extends SubscriptionRule
             return true;
         }
         else if($this->plan_name == "startup"){
-            $this->orders_left = SubscriptionRule::$free_orders_number - $this->orders_this_month_number;
+            $this->orders_left = SubscriptionRule::$startup_orders_number - $this->orders_this_month_number;
             if(!$this->checkRule($this->orders_this_month_number, SubscriptionRule::$startup_orders_number, $this->message_orders)) return false;
             return true;
         }

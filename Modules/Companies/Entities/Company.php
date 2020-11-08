@@ -25,6 +25,7 @@ class Company extends Model
     use Billable;
 
     protected $fillable = ['name', 'phone', 'address'];
+    public $orders_left;
 
     public function __construct(array $attributes = array()){
         parent::__construct($attributes);

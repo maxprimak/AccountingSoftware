@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Companies\Rules\SubscriptionRuleRepairOrders;
 use Modules\Customers\Entities\CustomerType;
 use Modules\Login\Entities\Login;
 use Modules\Orders\Entities\DeviceHasService;

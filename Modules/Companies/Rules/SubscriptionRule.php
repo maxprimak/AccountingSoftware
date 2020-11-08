@@ -64,6 +64,7 @@ class SubscriptionRule implements Rule
         $this->company = $user->getCompany();
         $this->plan_name = $this->company->getStripePlanName();
 
+
         $this->orders_this_month_number = $this->company->getRepairOrdersThisMonthNumber();
         $this->branches_number = $this->company->getBranchesNumber();
         $this->employees_number = $this->company->getEmployeesNumber();
