@@ -16,7 +16,7 @@ class PaymentController extends Controller
 {
 
     public function store(PaymentRequest $request){
-        
+
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $payment_method = PaymentMethod::retrieve(
@@ -27,6 +27,9 @@ class PaymentController extends Controller
         $company->updateDefaultPaymentMethod($payment_method);
         $plan_identifier = $request->plan_id;
 
+        if($plan_identifier == env('FREE_PLAN_STRIPE_ID')){
+            $company->changeSubscription(env('FREE_PLAN_STRIPE_ID'), $payment_method);
+        }
         if($plan_identifier == env('STARTUP_PLAN_STRIPE_ID')){
             $company->changeSubscription(env('STARTUP_PLAN_STRIPE_ID'), $payment_method);
         }
@@ -47,8 +50,8 @@ class PaymentController extends Controller
         }
         else{
             response()->json(['message' => 'Plan identifier invalid'], 403);
-        } 
-        
+        }
+
         return response()->json(['message' => 'Successfully subscribed!']);
 
     }
