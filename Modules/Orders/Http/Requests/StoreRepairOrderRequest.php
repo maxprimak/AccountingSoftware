@@ -57,7 +57,7 @@ class StoreRepairOrderRequest extends FormRequest
             'devices.*.goods.*.amount' => 'required|numeric|min:0',
             'devices.*.goods.*.order_amount' => 'required|numeric|min:1|',
             'devices.*.goods.*.warehouse_name' => 'required|exists:warehouses,name',
-            'devices.*.warehouse_has_good.*.id' => ['required', new SubscriptionRuleRepairOrders ],
+            'devices.*.warehouse_has_good.*.id' => 'required',
             'devices.*.warehouse_has_good.*.amount' => 'required|min:1',
         ];
     }
@@ -85,5 +85,15 @@ class StoreRepairOrderRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $subscriptionRuleRepairOrders = new SubscriptionRuleRepairOrders();
+            if (!$subscriptionRuleRepairOrders->passes ()) {
+                $validator->errors()->add('order_nr', $subscriptionRuleRepairOrders->message_orders);
+            }
+        });
     }
 }
