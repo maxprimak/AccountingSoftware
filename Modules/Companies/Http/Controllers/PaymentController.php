@@ -18,18 +18,20 @@ class PaymentController extends Controller
     public function store(PaymentRequest $request){
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
+        $company = auth('api')->user()->getCompany();
+        $plan_identifier = $request->plan_id;
+
+        if($plan_identifier == env('FREE_PLAN_STRIPE_ID')){
+            $company->changeSubscription(env('FREE_PLAN_STRIPE_ID'), null);
+            return response()->json(['message' => 'Successfully subscribed!']);
+        }
 
         $payment_method = PaymentMethod::retrieve(
             $request->payment_method
         );
 
-        $company = auth('api')->user()->getCompany();
         $company->updateDefaultPaymentMethod($payment_method);
-        $plan_identifier = $request->plan_id;
 
-        if($plan_identifier == env('FREE_PLAN_STRIPE_ID')){
-            $company->changeSubscription(env('FREE_PLAN_STRIPE_ID'), $payment_method);
-        }
         if($plan_identifier == env('STARTUP_PLAN_STRIPE_ID')){
             $company->changeSubscription(env('STARTUP_PLAN_STRIPE_ID'), $payment_method);
         }
