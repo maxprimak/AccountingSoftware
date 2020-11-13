@@ -29,6 +29,7 @@ class UserResource extends Resource
             'id' => $this->id,
             'is_active' => $this->is_active,
             'username' => $this->username,
+            'is_registered' => $this->isRegistered() ? 1 : 0,
             $this->mergeWhen (auth('api')->user()->user, $userPart),
 //            'comapny' => new CompanyResource($this->user->company)
 //            'person' => new PersonResource($this->user)
