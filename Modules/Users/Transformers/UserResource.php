@@ -18,7 +18,7 @@ class UserResource extends Resource
         $userPart = [];
         if ($this->user){
             $userPart = [
-                'company' => $this->user->company,
+                'company' => new CompanyResource($this->user->company),
                 'orders_left' => $this->user->company->getOrdersLeft(),
                 'current_plan' => $this->user->company->getStripePlanName(),
             ];
@@ -30,9 +30,7 @@ class UserResource extends Resource
             'is_active' => $this->is_active,
             'username' => $this->username,
             'is_registered' => $this->isRegistered() ? 1 : 0,
-            $this->mergeWhen (auth('api')->user()->user, $userPart),
-//            'comapny' => new CompanyResource($this->user->company)
-//            'person' => new PersonResource($this->user)
+            $this->mergeWhen (auth('api')->user()->user, $userPart)
         ];
     }
 }

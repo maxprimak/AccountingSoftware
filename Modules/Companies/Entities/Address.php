@@ -10,6 +10,10 @@ class Address extends Model
 {
     protected $fillable = [];
 
+    public function city() {
+        return $this->belongsTo (City::class);
+    }
+
     public function store($request){
 
         $this->street_name = $request->street_name;
@@ -21,7 +25,7 @@ class Address extends Model
           'name' => $request->city_name
         ])->id;
         $this->save();
-  
+
     }
 
     //for seeder
@@ -49,6 +53,6 @@ class Address extends Model
 
     public function getName(){
       $city = City::find($this->city_id);
-      return $this->street_name . " " . $this->house_number . ", " . $this->postcode . ", " . $city->name; 
+      return $this->street_name . " " . $this->house_number . ", " . $this->postcode . ", " . $city->name;
     }
 }

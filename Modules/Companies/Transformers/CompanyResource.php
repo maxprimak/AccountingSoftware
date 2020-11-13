@@ -15,7 +15,15 @@ class CompanyResource extends Resource
     public function toArray($request)
     {
         return [
-
+            'id' => $this->id,
+            'name' => $this->name,
+            'phone' => $this->phone,
+            'currency' => $this->getCurency(),
+            'language' => $this->language,
+            'address' => new AddressResource($this->address),
+            'plan' => $this->getStripePlanName(),
+            'extra_branches_paid' => $this->getExtraBranchesAmount(),
+            'plan_expires_at' => $this->getPlanExpirationDate(),
         ];
     }
 }

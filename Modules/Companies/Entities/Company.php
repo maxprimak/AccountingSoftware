@@ -3,14 +3,15 @@
 namespace Modules\Companies\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Companies\Entities\Address;
 use Modules\Companies\Http\Requests\StoreCompanyRequest;
 use Modules\Companies\Http\Requests\UpdateCompanyRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Companies\Entities\Branch;
 use Modules\Companies\Rules\SubscriptionRule;
 use Modules\Companies\Rules\SubscriptionRuleRepairOrders;
+use Modules\Services\Entities\Language;
 use Modules\Warehouses\Entities\Warehouse;
-use Modules\Companies\Entities\Address;
 use Modules\Orders\Entities\Order;
 use Modules\Users\Entities\User;
 use Modules\Employees\Entities\Employee;
@@ -34,6 +35,16 @@ class Company extends Model
     public static function getCompany() : Company
     {
         return auth('api')->user()->getCompany();
+    }
+
+    public function address()
+    {
+        return $this->belongsTo (Address::class);
+    }
+
+    public function language()
+    {
+        return $this->belongsTo (Language::class);
     }
 
     public function getBranchesIdsOfCompany(){

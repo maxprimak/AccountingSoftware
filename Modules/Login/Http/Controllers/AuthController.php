@@ -13,33 +13,20 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Modules\Login\Http\Requests\LoginRequest;
 use GuzzleHttp\Client;
+use Modules\Login\Transformers\AuthTokenResource;
 
 class AuthController extends Controller
 {
     public function login(LoginRequest $request){
-        if(!Auth::guard('web')->attempt(['username' => $request->username, 'password' => $request->password, 'is_active' => 1]))
-
-        return response()->json([
+        if(!Auth::guard('web')->attempt(['username' => $request->username, 'password' => $request->password, 'is_active' => 1])) {
+            return response()->json([
                 'error' => 'invalid_credentials'
             ], 401);
+        }
 
-        $user = $request->user();
-
+        $user = auth('web')->user();
         $tokenResult = $this->getToken($user, $request);
-        return response()->json([
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'plan' => ($user->getCompany() == null) ? "no_company_yet" : $user->getCompany()->getStripePlanName(),
-            'extra_branches_paid' => ($user->getCompany() == null) ? "no_company_yet" : $user->getCompany()->getExtraBranchesAmount(),
-            'is_registered' => ($user->isRegistered()) ? 1 : 0,
-            'language' => ($user->getCompany() == null) ? "en" : $user->getCompany()->getLanguage(),
-            'plan_expires_at' => ($user->getCompany() == null) ? date("d.m.Y") :  $user->getCompany()->getPlanExpirationDate(),
-            'orders_left' => ($user->getCompany() == null) ? 0 : $user->getCompany()->getOrdersLeft(),
-            'expires_in' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
-        ]);
-
+        return response()->json(new AuthTokenResource($tokenResult));
     }
 
     public function getToken($user, $request){
