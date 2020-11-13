@@ -18,6 +18,7 @@ class CompanyResource extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'phone' => $this->phone,
+            'tax' => $this->tax,
             'currency' => $this->getCurency(),
             'language' => $this->language,
             'address' => new AddressResource($this->address),

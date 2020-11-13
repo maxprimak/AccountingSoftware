@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Companies\Transformers\CompanyResource;
 use Modules\Users\Entities\People;
 use Modules\Employees\Entities\Role;
 use Modules\Companies\Entities\Company;
@@ -26,27 +27,12 @@ class CompaniesController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-
-        $user = User::where('login_id', auth('api')->user()->id)->firstOrFail();
-        $company = Company::findOrFail($user->company_id);
-        $address = Address::findOrFail($company->address_id);
-        $company->street_name = $address->street_name;
-        $company->house_number = $address->house_number;
-        $company->postcode = $address->postcode;
-
-        $city = City::findOrFail($address->city_id);
-        $country = Country::findOrFail($city->country_id);
-
-        $company->city_name = $city->name;
-        $company->country_name = $country->name;
-        $company->address_name = $address->street_name . " " . $address->house_number . ", " . $address->postcode . ", " . $city->name. " (" . $country->code . ")";
-        $company->currency_symbol = Currency::find($company->currency_id)->symbol;
-
-        return response()->json(['company' => $company], 200);
+        $user = auth('api')->user()->user;
+        return response()->json(new CompanyResource($user->company));
     }
 
     /**

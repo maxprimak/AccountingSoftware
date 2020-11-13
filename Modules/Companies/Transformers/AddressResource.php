@@ -19,7 +19,7 @@ class AddressResource extends Resource
             'house_number' => $this->house_number,
             'postcode' => $this->postcode,
             'street_name' => $this->street_name,
-            'city' => $this->city,
+            'city' => new CityResource($this->city),
         ];
     }
 }
