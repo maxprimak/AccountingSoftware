@@ -3,11 +3,14 @@
 namespace Modules\Orders\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Companies\Entities\Branch;
 
 class Order extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['accept_date', 'price', 'branch_id', 'created_by'];
 
     public function store(FormRequest $request){
@@ -49,6 +52,6 @@ class Order extends Model
 
     //for seeder
     public static function makeOrder(){
-        
+
     }
 }

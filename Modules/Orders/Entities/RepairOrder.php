@@ -16,8 +16,8 @@ use Modules\Orders\Entities\RepairOrderHasGood;
 use Modules\Orders\Entities\RepairOrderHasDevice;
 use Modules\Orders\Entities\DeviceHasService;
 use Modules\Orders\Entities\PayOrders;
-use Modules\Orders\Entities\WarrantyOrders;
 use Modules\Orders\Entities\ReworkOrders;
+use Modules\Orders\Entities\WarrantyOrders;
 use Illuminate\Http\Request;
 use Modules\Devices\Entities\Device;
 use Modules\Goods\Entities\Color;
@@ -33,6 +33,21 @@ class RepairOrder extends Model
 {
     use SoftDeletes;
     protected $fillable = [];
+
+    public function reworkOrder () {
+        return $this->belongsTo (ReworkOrders::class);
+    }
+    public function payment () {
+        return $this->belongsTo (Payment::class);
+    }
+    public static function boot() {
+        parent::boot();
+
+//        static::deleting(function($repair_order) {
+//            $repair_order->reworkOrder->delete();
+//            $repair_order->payment->delete();
+//        });
+    }
 
     public function store(FormRequest $request, $order_id): RepairOrder{
         $this->order_id = $order_id;

@@ -210,7 +210,6 @@ class RepairOrdersController extends Controller
         $ids = $request->repair_order_id;
 
         foreach($ids as $id){
-
             $repair_order = RepairOrder::findOrFail($id);
             $order = Order::findOrFail($repair_order->order_id);
 
