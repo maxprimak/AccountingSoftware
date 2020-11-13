@@ -15,13 +15,13 @@ class UserResource extends Resource
      */
     public function toArray($request)
     {
-        $company = $this->user->company;
-        if ($company) {
-            $orders_left = $this->user->company->getOrdersLeft();
-            $current_plan = $this->user->company->getStripePlanName();
-        } else {
-            $orders_left = 0;
-            $current_plan = null;
+        $userPart = [];
+        if ($this->user){
+            $userPart = [
+                'company' => $this->user->company,
+                'orders_left' => $this->user->company->getOrdersLeft(),
+                'current_plan' => $this->user->company->getStripePlanName(),
+            ];
         }
         return [
             'email' => $this->email,
@@ -29,9 +29,7 @@ class UserResource extends Resource
             'id' => $this->id,
             'is_active' => $this->is_active,
             'username' => $this->username,
-            'company' => $company,
-            'orders_left' => $orders_left,
-            'current_plan' => $current_plan,
+            $this->mergeWhen (auth('api')->user()->user, $userPart),
 //            'comapny' => new CompanyResource($this->user->company)
 //            'person' => new PersonResource($this->user)
         ];
