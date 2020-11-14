@@ -30,13 +30,10 @@ class Order extends Model
 
     }
 
-    public function storeUpdated(FormRequest $request, $id){
-
-        $order = Order::findOrFail($id);
-        $order->price = $request->price;
-        $order->update();
-
-        return $order;
+    public function storeUpdated(FormRequest $request){
+        $this->price = $request->price;
+        $this->update();
+        return $this;
 
     }
 

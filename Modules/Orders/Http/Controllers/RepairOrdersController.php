@@ -90,7 +90,7 @@ class RepairOrdersController extends Controller
     /**
      * Update the specified resource in storage.
      * @param UpdateRepairOrderRequest $request
-     * @param int $id
+     * @param $id
      * @return JsonResponse
      */
     public function update(UpdateRepairOrderRequest $request, $id)
@@ -98,8 +98,8 @@ class RepairOrdersController extends Controller
         $repair_order = RepairOrder::findOrFail($id);
         $order = Order::findOrFail($repair_order->order_id);
 
-        $order = $order->storeUpdated($request, $order->id);
-        $repair_order = $repair_order->storeUpdated($request, $repair_order->id);
+        $order = $order->storeUpdated($request);
+        $repair_order = $repair_order->storeUpdated($request);
 
         return response()->json([
             'status' => (auth('api')->user()->getCompany()->language_id == 1) ? 'Successfully updated' : "Erfolgreich aktualisiert!",
@@ -217,7 +217,7 @@ class RepairOrdersController extends Controller
                 $id = ReworkOrders::where('repair_order_id',$repair_order->id)->first()->id;
                 ReworkOrderHasWarrantyCase::where('rework_order_id', $id)->delete();
             }
-            Payment::where('repair_order_id', $repair_order->id)->delete();
+            Payment::where('order_id', $order->id)->delete();
             DeviceHasService::where('repair_order_id', $repair_order->id)->delete();
             RepairOrderHasGood::where('repair_order_id',$repair_order->id)->delete();
             RepairOrderHasDevice::where('repair_order_id',$repair_order->id)->delete();

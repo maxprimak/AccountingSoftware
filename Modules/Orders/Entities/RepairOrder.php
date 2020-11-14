@@ -71,15 +71,14 @@ class RepairOrder extends Model
         $this->storeDevicesHasService($request);
         return $this;
     }
-    public function storeUpdated(FormRequest $request, $id){
+    public function storeUpdated(FormRequest $request){
 
-        $repair_order = RepairOrder::find($id);
-        $request = $repair_order->setPaymentStatus($request);
-        $repair_order->order_nr = $request->order_nr;
-        $repair_order->comment = $request->comment;
-        $repair_order->update();
+        $request = $this->setPaymentStatus($request);
+        $this->order_nr = $request->order_nr;
+        $this->comment = $request->comment;
+        $this->update();
 
-        return $repair_order;
+        return $this;
 
     }
 
