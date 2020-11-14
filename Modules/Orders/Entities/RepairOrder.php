@@ -34,6 +34,10 @@ class RepairOrder extends Model
     use SoftDeletes;
     protected $fillable = [];
 
+    public function warranty () {
+        return $this->belongsTo (Warranty::class);
+    }
+
     public function reworkOrder () {
         return $this->belongsTo (ReworkOrders::class);
     }

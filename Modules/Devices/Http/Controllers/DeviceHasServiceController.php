@@ -19,6 +19,7 @@ class DeviceHasServiceController extends Controller
 
         foreach($has_services as $has_service){
             $repair_order = RepairOrder::find($has_service->repair_order_id);
+            $has_service->warranty = $repair_order->warranty;
             $has_service->warranty_case_date = $repair_order->created_at->toDateString();
             $services_ids = DeviceHasService::where('device_id', $device_id)
                             ->where('repair_order_id', $repair_order->id)
