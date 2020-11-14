@@ -13,7 +13,7 @@ class Order extends Model
 
     protected $fillable = ['accept_date', 'price', 'branch_id', 'created_by'];
 
-    public function store(FormRequest $request){
+    public function store(FormRequest $request): Order{
 
             if(isset($request->accept_date)){
                 $this->accept_date = $request->accept_date;
