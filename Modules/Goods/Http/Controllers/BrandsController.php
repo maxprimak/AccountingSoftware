@@ -49,7 +49,7 @@ class BrandsController extends Controller
     public function store(StoreBrandRequest $request)
     {
         if(is_null($request->logo)){
-          $request->logo = "http://www.aljanh.net/data/archive/img/1878616533.png";
+          $request->logo = "https://cdn0.iconfinder.com/data/icons/shopping-and-commerce-outline/512/Shopping_and_Commerce_-_Outline_31-512.png";
         }
         $company = auth('api')->user()->getCompany();
         $brand = new Brand();

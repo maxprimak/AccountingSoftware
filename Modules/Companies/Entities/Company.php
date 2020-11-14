@@ -118,9 +118,9 @@ class Company extends Model
      * @return integer
      */
     public function getRepairOrdersThisMonthNumber(){
-      $order_ids = Order::whereIn('branch_id', $this->getBranchesIdsOfCompany())->pluck('id')->toArray();
+      $order_ids = Order::withTrashed()->whereIn('branch_id', $this->getBranchesIdsOfCompany())->pluck('id')->toArray();
 
-      $result = RepairOrder::whereIn('order_id', $order_ids)
+      $result = RepairOrder::withTrashed()->whereIn('order_id', $order_ids)
                             ->whereDate('created_at', '>=', Carbon::now()->startOfMonth())
                             ->whereDate('created_at', '<=', Carbon::now()->endOfMonth())
                             ->get()->count();
