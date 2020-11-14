@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 Route::middleware(['is_authorized', 'is_registered'])->group(function () {
 //Repair Orders
+Route::get('/orders/repair/order_number', 'OrderNumberRepairOrdersController@show')->name('orders.repair.order_number.show');
 Route::post('/orders/repair', 'RepairOrdersController@store')->name('orders.repair.store');
 Route::get('/orders/repair/edit/{order_id}', 'RepairOrdersController@show')->name('orders.repair.show')->middleware('my_repair_order');
 Route::post('/orders/repair/{order_id}', 'RepairOrdersController@update')->name('orders.repair.update')->middleware('my_repair_order');
