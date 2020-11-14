@@ -19,7 +19,6 @@ class CreateSuppliersTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('comment');
-            $table->string('address_id');
             $table->timestamps();
             //TODO: foreign keys
         });
