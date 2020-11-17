@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Modules\Login\Http\Requests\LoginRequest;
 use GuzzleHttp\Client;
 use Modules\Login\Transformers\AuthTokenResource;
+use Newsletter;
 
 class AuthController extends Controller
 {
@@ -66,6 +67,7 @@ class AuthController extends Controller
 
         $tokenResult = $this->getToken($user, $request);
 
+        Newsletter::subscribe($request->email);
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',

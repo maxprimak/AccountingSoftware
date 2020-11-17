@@ -44,8 +44,8 @@ class RegisterController extends Controller
     }
 
     /**
-     * 
-     * 
+     *
+     *
      */
     public function showRegisterForm(){
         return view('login::register_form');
@@ -58,7 +58,7 @@ class RegisterController extends Controller
     * @return \Illuminate\Http\Response
     */
     public function register(Request $request)
-    {   
+    {
         $validator = $this->validator($request->all());
         if ($validator->fails()){
             return Redirect::to('/register')
@@ -93,7 +93,7 @@ class RegisterController extends Controller
      * @return Modules\Login\Entities\Login
      */
     protected function createLogin(array $data)
-    {   
+    {
         $login = Login::create([
             'username' => $data['username'],
             'email' => $data['email'],
