@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Login\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('login', 'AuthController@login')->name('login');
     Route::post('register', 'AuthController@register')->name('register');
+    Route::get('login/google', [AuthController::class, 'redirectToProvider']);
+    Route::get('login/google/callback', [AuthController::class, 'handleProviderCallback']);
     Route::post('logout', 'AuthController@logout')->name('logout');
 });
 Route::get('email/verify/{id}', 'VerificationApiController@verify')->name('verification.verify');

@@ -1,0 +1,17 @@
+{
+    "Login": true,
+    "Accounting": true,
+    "Companies": true,
+    "Customers": true,
+    "Dashboard": true,
+    "Devices": true,
+    "Documents": true,
+    "Employees": true,
+    "Goods": true,
+    "Orders": true,
+    "Registration": true,
+    "Services": true,
+    "Suppliers": true,
+    "Users": true,
+    "Warehouses": true
+}

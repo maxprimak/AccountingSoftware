@@ -165,23 +165,20 @@ return [
         /*
          * Package Service Providers...
          */
-        Barryvdh\DomPDF\ServiceProvider::class,
+        // Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Modules\Users\Providers\UsersServiceProvider::class,
         Modules\Companies\Providers\CompaniesServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
         Modules\Customers\Providers\CustomersServiceProvider::class,
-        Barryvdh\Cors\ServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Biscolab\ReCaptcha\ReCaptchaServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
     /*
@@ -237,6 +234,7 @@ return [
         'CustomerServiceFacad' => Modules\Customers\Facades\CustomerServiceFacad::class,
         'Bugsnag' => Bugsnag\BugsnagLaravel\Facades\Bugsnag::class,
         'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class
     ],
 
 ];

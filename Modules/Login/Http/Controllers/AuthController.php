@@ -2,6 +2,7 @@
 
 namespace Modules\Login\Http\Controllers;
 
+use Laravel\Socialite\Facades\Socialite;
 use Modules\Login\Entities\Login;
 use Modules\Login\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Modules\Login\Http\Requests\LoginRequest;
 use GuzzleHttp\Client;
 use Modules\Login\Transformers\AuthTokenResource;
 use Newsletter;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AuthController extends Controller
 {
@@ -26,15 +28,15 @@ class AuthController extends Controller
         }
 
         $user = auth('web')->user();
-        $tokenResult = $this->getToken($user, $request);
+        $tokenResult = $this->getToken($user);
         return response()->json(new AuthTokenResource($tokenResult));
     }
 
-    public function getToken($user, $request){
+    public function getToken($user){
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
 
-        if ($request->remember_me) $token->expires_at = Carbon::now()->addWeeks(1);
+        $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
 
         return $tokenResult;
@@ -65,7 +67,7 @@ class AuthController extends Controller
 
         // $user->sendEmailVerificationNotification();
 
-        $tokenResult = $this->getToken($user, $request);
+        $tokenResult = $this->getToken($user);
 
         Newsletter::subscribe($request->email);
         return response()->json([
@@ -98,6 +100,43 @@ class AuthController extends Controller
 
         }
 
+    }
+
+    /**
+     * Redirect the user to the Google authentication page.
+     *
+     * @return string
+     */
+    public function redirectToProvider()
+    {
+        return Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('google')->stateless()->user();
+
+        // check if they're an existing user
+        $existingUser = Login::where('email', $user->email)->first();
+        if($existingUser){
+            $tokenResult = $this->getToken($existingUser);
+        } else {
+            $newUser = Login::create([
+                'username' => $user->email,
+                'email' => $user->email,
+                'email_verified_at' => now (),
+                'password' => Hash::make($user->id),
+                'is_active' => 1,
+            ]);
+            $tokenResult = $this->getToken($newUser);
+        }
+
+        return response()->json(new AuthTokenResource($tokenResult));
     }
 
 }
