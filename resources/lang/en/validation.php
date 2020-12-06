@@ -145,6 +145,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'barcodeId' => 'barcode id',
+        'text' => 'value'
+    ],
 
 ];

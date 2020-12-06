@@ -1,0 +1,13 @@
+{
+    "name": "Barcodes",
+    "alias": "barcodes",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Barcodes\\Providers\\BarcodesServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
