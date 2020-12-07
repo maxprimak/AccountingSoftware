@@ -26,48 +26,30 @@ class BarcodesController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
+     * @param int $increment
      * @return JsonResponse
      */
-    public function generate(Request $request)
+    public function generate(Request $request, int $increment = 1)
     {
         $data = $this->validateGenerateData ($request);
-        $lastBarcode = Barcode::orderBy('id', 'DESC')->first();
-        if(!$lastBarcode) {
-            $number = 1;
-        } else {
-            $number = $lastBarcode->id + 1;
-        }
+        $code = $this->generateBarcode($data['format'], $increment);
+        return response ()->json ($code);
+    }
 
-        if($data['format'] === 'ean13'){
+    private function checkFormat($format, $number) {
+        if($format === 'ean13'){
             $code = $this->generateEAN($number);
         }
-        if($data['format'] === 'code128'){
+        if($format === 'code128'){
             $code = $this->generateCode128($number);
         }
-        if($data['format'] === 'code39'){
+        if($format === 'code39'){
             $code = $this->generateCode128($number);
         }
-        if($data['format'] === 'upca'){
+        if($format === 'upca'){
             $code = $this->generateUPCA(12345678912);
         }
-
-        if(Barcode::where ('value', $code)->exists()){
-            if($data['format'] === 'ean13'){
-                $code = $this->generateEAN($number);
-            }
-            if($data['format'] === 'code128'){
-                $code = $this->generateCode128($number);
-            }
-            if($data['format'] === 'code39'){
-                $code = $this->generateCode128($number);
-            }
-            if($data['format'] === 'upca'){
-                $code = $this->generateUPCA(12345678912);
-            }
-            return response ()->json ($code);
-        } else {
-            return response ()->json ($code);
-        }
+        return $code;
     }
 
     private function validateData(Request $request) {
@@ -129,5 +111,22 @@ class BarcodesController extends Controller
             $checkDigit = (10 - ($sumEvenOdd % 10)) % 10;
         }
         return $checkDigit;
+    }
+
+    private function generateBarcode($format, int $increment)
+    {
+        $lastBarcode = Barcode::orderBy('id', 'DESC')->first();
+        if(!$lastBarcode) {
+            $number = 1;
+        } else {
+            $number = $lastBarcode->id + $increment;
+        }
+        $code = $this->checkFormat ($format, $number);
+
+        if(Barcode::where ('value', $code)->exists()){
+            return $this->generateBarcode ($format, ++$increment);
+        } else {
+            return $code;
+        }
     }
 }

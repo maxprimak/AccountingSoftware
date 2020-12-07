@@ -13,5 +13,6 @@
     "Services": true,
     "Suppliers": true,
     "Users": true,
-    "Warehouses": true
+    "Warehouses": true,
+    "Barcodes": true
 }
