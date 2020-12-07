@@ -129,4 +129,13 @@ class BarcodesController extends Controller
             return $code;
         }
     }
+
+    public function downloadBarcodeIMG($barcode_id) {
+        $barcode = Barcode::findOrFail($barcode_id);
+        $filename = $barcode_id.'_barcode.png';
+        $tempImage = tempnam(sys_get_temp_dir(), $filename);
+        copy($barcode->barcodeUrl, $tempImage);
+
+        return response()->download($tempImage, $filename);
+    }
 }

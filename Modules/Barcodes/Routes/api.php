@@ -16,4 +16,5 @@ use Illuminate\Http\Request;
 Route::middleware(['is_authorized', 'is_registered'])->prefix('barcodes')->group(function() {
     Route::post('/', 'BarcodesController@store');
     Route::post('/generate', 'BarcodesController@generate');
+    Route::get('/download/{id}', 'BarcodesController@downloadBarcodeIMG');
 });

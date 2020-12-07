@@ -32,6 +32,7 @@ class WarehouseHasGood extends Model
       //$this->location_in_warehouse_id = $request->location_in_warehouse_id;
       $this->amount = $request->amount;
       $this->vendor_code = $request->vendor_code;
+      if($request->barcode_id) $this->barcode_id = $request->barcode_id;
       $this->save();
       return $this;
     }
@@ -44,19 +45,19 @@ class WarehouseHasGood extends Model
     }
 
     public function use($amount, $repair_order_id, $device_id){
- 
+
           $has_good = RepairOrderHasGood::where('warehouse_has_good_id', $this->id)
           ->where('repair_order_id', $repair_order_id)->where('device_id',$device_id)->first();
 
-          $amount = ($has_good->is_used == 0) ? $amount : $amount - $has_good->amount;  
-          
+          $amount = ($has_good->is_used == 0) ? $amount : $amount - $has_good->amount;
+
           if($amount >= 0 && $amount <= $this->amount){
 
             if($has_good->is_used == 0){
               $has_good->amount = $amount;
               $has_good->is_used = 1;
             }
-            else{   
+            else{
               $has_good->amount += $amount;
             }
             $has_good->save();
