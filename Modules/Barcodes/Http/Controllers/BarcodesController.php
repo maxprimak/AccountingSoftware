@@ -83,7 +83,7 @@ class BarcodesController extends Controller
     }
 
     private function generateCode128($number) {
-        $code = '200';
+        $code = '20'.$number;
         $weightflag = true;
         $sum = 0;
         // Weight for a digit in the checksum is 3, 1, 3.. starting from the last digit.
