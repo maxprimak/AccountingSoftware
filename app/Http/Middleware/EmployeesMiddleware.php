@@ -17,12 +17,10 @@ class EmployeesMiddleware
     {
         $role_id = auth('api')->user()->getRoleId();
 
-        if($role_id == '5')
-        {
+        if ($role_id == '5') {
             return response()->json(['message' => 'Courier does not have permission to access this route'], 403);
-        }else {
+        } else {
             return $next($request);
         }
-
     }
 }

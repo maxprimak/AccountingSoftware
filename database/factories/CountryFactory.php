@@ -9,6 +9,6 @@ use Modules\Companies\Entities\Country;
 $factory->define(Country::class, function (Faker $faker) {
     return [
         'name' => 'Austria',
-        'code' => 'AT'
+        'code' => 'AT',
     ];
 });

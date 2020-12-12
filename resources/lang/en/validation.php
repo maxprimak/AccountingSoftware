@@ -147,7 +147,7 @@ return [
 
     'attributes' => [
         'barcodeId' => 'barcode id',
-        'text' => 'value'
+        'text' => 'value',
     ],
 
 ];

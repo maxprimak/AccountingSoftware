@@ -9,6 +9,6 @@ use Modules\Companies\Entities\City;
 $factory->define(City::class, function (Faker $faker) {
     return [
         'name' => 'Vienna',
-        'country_id' => 1
+        'country_id' => 1,
     ];
 });
