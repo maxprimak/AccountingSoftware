@@ -2,9 +2,9 @@
 
 namespace Modules\Users\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class PersonResource extends Resource
+class PersonResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
