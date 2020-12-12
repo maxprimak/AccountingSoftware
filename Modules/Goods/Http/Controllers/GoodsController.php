@@ -37,10 +37,25 @@ class GoodsController extends Controller
                 ->select('goods.id as id', 'brands.name as brand_name','brands.id as brand_id' ,'models.name as model_name','models.id as model_id',
                         'submodels.name as submodel_name','submodels.id as submodel_id' ,'parts_translations.name as part_name','parts.id as part_id','colors.name as color_name',
                         'colors.id as color_id','colors.hex_code as color_hexcode','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
-                        'warehouse_has_goods.amount as amount')
+                        'warehouse_has_goods.amount as amount',
+                        'warehouse_has_goods.barcode_id as barcode_id'
+                    )
+                ->leftJoin('barcodes','barcodes.id', '=', 'warehouse_has_goods.barcode_id')
                 ->where('parts_translations.language_id',$company->language_id)
+                ->addSelect ('barcodes.id as barcode_id')
+                ->addSelect ('barcodes.value as value')
+                ->addSelect ('barcodes.format as format')
+                ->addSelect ('barcodes.barcodeUrl as barcodeUrl')
                 ->whereIn('warehouse_id', $warehouse_ids)
-                ->get();
+                ->get()->map(function ($good) {
+                    $good->barcode = [
+                        'id' => $good->barcode_id,
+                        'value' => $good->value,
+                        'format' => $good->format,
+                        'barcodeUrl' => $good->barcodeUrl
+                    ];
+                    return $good;
+                });
         $new_good = new Good();
         $result_of_goods = $new_good->combineGoodsWithPrices($goods_has_prices,$goods);
 
@@ -101,10 +116,25 @@ class GoodsController extends Controller
                 ->select('goods.id as id', 'brands.name as brand_name','brands.id as brand_id' ,'models.name as model_name','models.id as model_id',
                         'submodels.name as submodel_name','submodels.id as submodel_id' ,'parts_translations.name as part_name','parts.id as part_id','colors.name as color_name',
                         'colors.id as color_id','colors.hex_code as color_hexcode','warehouse_has_goods.id as warehouse_has_good_id','warehouse_has_goods.vendor_code as vendor_code',
-                        'warehouse_has_goods.amount as amount')
+                        'warehouse_has_goods.amount as amount',
+                        'warehouse_has_goods.barcode_id as barcode_id'
+                    )
+                ->leftJoin('barcodes','barcodes.id', '=', 'warehouse_has_goods.barcode_id')
+                ->addSelect ('barcodes.id as barcode_id')
+                ->addSelect ('barcodes.value as value')
+                ->addSelect ('barcodes.format as format')
+                ->addSelect ('barcodes.barcodeUrl as barcodeUrl')
                 ->whereIn('warehouse_has_goods.id',$warehouse_has_goods_ids)
                 ->where('parts_translations.language_id',$company->language_id)
-                ->get();
+                ->get()->map(function ($good) {
+                    $good->barcode = [
+                        'id' => $good->barcode_id,
+                        'value' => $good->value,
+                        'format' => $good->format,
+                        'barcodeUrl' => $good->barcodeUrl
+                    ];
+                    return $good;
+                });
         $new_good = new Good();
         $result_of_goods = $new_good->combineGoodsWithPrices($goods_has_prices,$goods);
 
