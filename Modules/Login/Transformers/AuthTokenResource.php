@@ -3,9 +3,9 @@
 namespace Modules\Login\Transformers;
 
 use Carbon\Carbon;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class AuthTokenResource extends Resource
+class AuthTokenResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

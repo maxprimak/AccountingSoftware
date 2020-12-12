@@ -2,9 +2,9 @@
 
 namespace Modules\Companies\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class AddressResource extends Resource
+class AddressResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

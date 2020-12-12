@@ -21,8 +21,9 @@
         "laravel/passport": "^9.3.2",
         "laravel/socialite": "^5.1",
         "laravel/tinker": "^2.5",
+        "laravel/ui": "^2.0",
         "lcobucci/jwt": "3.3.3",
-        "nwidart/laravel-modules": "^6.0",
+        "nwidart/laravel-modules": "^7.0",
         "spatie/laravel-newsletter": "^4.8",
         "twilio/sdk": "^6.11"
     },
