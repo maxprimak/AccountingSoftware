@@ -8,11 +8,11 @@ use Modules\Companies\Entities\Company;
 
 $factory->define(Company::class, function (Faker $faker) {
     return [
-        //account_id 
-        //package_id 
+        //account_id
+        //package_id
         'name' => $faker->unique()->word.' company',
         'currency_id' => 1,
         'phone' => $faker->phoneNumber,
-        'language_id' => 1
+        'language_id' => 1,
     ];
 });

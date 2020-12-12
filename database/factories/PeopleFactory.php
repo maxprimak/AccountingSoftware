@@ -7,6 +7,6 @@ $factory->define(People::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'address' => $faker->address,
-        'phone' => $faker->phoneNumber
+        'phone' => $faker->phoneNumber,
     ];
 });

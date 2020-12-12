@@ -5,7 +5,6 @@ use Illuminate\Support\Str;
 use Modules\Login\Entities\Login;
 
 $factory->define(Login::class, function (Faker $faker) {
-
     $email = $faker->unique()->email;
 
     return [
