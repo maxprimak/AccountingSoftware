@@ -234,7 +234,7 @@ return [
         'CustomerServiceFacad' => Modules\Customers\Facades\CustomerServiceFacad::class,
         'Bugsnag' => Bugsnag\BugsnagLaravel\Facades\Bugsnag::class,
         'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
 ];

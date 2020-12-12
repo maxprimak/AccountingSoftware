@@ -4,11 +4,10 @@
 
 use App\Model;
 use Faker\Generator as Faker;
-use Modules\Orders\Entities\RepairOrder;
 use Modules\Orders\Entities\Order;
+use Modules\Orders\Entities\RepairOrder;
 
 $factory->define(RepairOrder::class, function (Faker $faker) {
-
     $order = factory('Modules\Orders\Entities\Order')->create();
 
     return [
@@ -19,6 +18,6 @@ $factory->define(RepairOrder::class, function (Faker $faker) {
         'defect_description' => $faker->text(50),
         'comment' => $faker->text(100),
         'prepay_sum' => $faker->randomFloat($nbMaxDecimals = 2, $min = 20, $max = 1000),
-        'status_id' => $faker->numberBetween(1,3)
+        'status_id' => $faker->numberBetween(1, 3),
     ];
 });

@@ -8,6 +8,6 @@ use Modules\Orders\Entities\OrderStatus;
 
 $factory->define(OrderStatus::class, function (Faker $faker) {
     return [
-        'name' => $faker->name
+        'name' => $faker->name,
     ];
 });

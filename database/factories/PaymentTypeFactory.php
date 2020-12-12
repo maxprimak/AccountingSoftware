@@ -8,6 +8,6 @@ use Modules\Orders\Entities\PaymentType;
 
 $factory->define(PaymentType::class, function (Faker $faker) {
     return [
-        'name' => $faker->name
+        'name' => $faker->name,
     ];
 });
