@@ -15,7 +15,7 @@ class AddBarcode extends Migration
     {
         Schema::table('warehouse_has_goods', function($table) {
             $table->string('barcode_id')->nullable();
-            $table->foreign('barcode_id')->references('id')->on('barcodes');
+            // $table->foreign('barcode_id')->references('id')->on('barcodes');
         });
     }
 
@@ -26,6 +26,8 @@ class AddBarcode extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('warehouse_has_goods', function($table) {
+            $table->string('barcode_id')->nullable();
+        });
     }
 }
