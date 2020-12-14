@@ -2,12 +2,19 @@
 
 namespace Modules\Goods\Http\Controllers;
 
+use App\Search\Goods;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Goods\Entities\Brand;
 use Modules\Goods\Entities\Good;
+use Modules\Goods\Entities\Models;
+use Modules\Goods\Entities\Part;
+use Modules\Goods\Entities\PartsTranslation;
+use Modules\Goods\Entities\Submodel;
 use Modules\Goods\Http\Requests\StoreGoodRequest;
 use Modules\Goods\Http\Requests\UpdateGoodRequest;
+use Modules\Goods\Transformers\GoodsResource;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Warehouses\Entities\Warehouse;
@@ -167,6 +174,18 @@ class GoodsController extends Controller
         return response()->json(['message' => $e->getMessage()], 500);
       }
       return response()->json(['message' => 'Successfully updated!', 'good' => $good]);
+    }
+
+    public function search(Request $request){
+        $warehousesIds = auth('api')->user()->getCompany()->getWarehousesIds();
+        $allowedGoodsIds = WarehouseHasGood::whereIn('warehouse_id', $warehousesIds)->pluck('good_id')->toArray();
+
+        $models = Goods::search ($request->search)->get();
+
+        $goods = $models->pluck ('goods')->unique('id');
+
+        if($goods->count () > 0) $goods = $goods->first()->whereIn ('id', $allowedGoodsIds);
+        return GoodsResource::collection ($goods);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Search\Goods;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
@@ -28,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Goods::bootSearchable();
+
         Schema::defaultStringLength(191);
 
         Passport::routes();

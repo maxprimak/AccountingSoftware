@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3",
+        "algolia/scout-extended": "^1.10",
         "barryvdh/laravel-dompdf": "^0.8.7",
         "biscolab/laravel-recaptcha": "^4.4.0",
         "bugsnag/bugsnag-laravel": "^2.20",

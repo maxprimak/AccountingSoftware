@@ -3,11 +3,13 @@
 namespace Modules\Goods\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Modules\Goods\Entities\CompanyHasPart;
 use Modules\Goods\Entities\PartsTranslation;
 
 class Part extends Model
 {
+    use Searchable;
     protected $fillable = ['name'];
 
     public function store($request){
@@ -45,7 +47,7 @@ class Part extends Model
     }
 
     public function getTranslatedName($language_id){
-      return ($this->is_custom) ?  PartsTranslation::where('part_id', $this->id)->first()->name : 
+      return ($this->is_custom) ?  PartsTranslation::where('part_id', $this->id)->first()->name :
                                   PartsTranslation::where('part_id', $this->id)->where('language_id', $language_id)->first()->name;
     }
 

@@ -2,9 +2,11 @@
 
 namespace Modules\Goods\Entities;
 
+use Algolia\ScoutExtended\Searchable\Aggregator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Laravel\Scout\Searchable;
 use Modules\Warehouses\Entities\WarehouseHasGood;
 use Modules\Goods\Entities\GoodHasPrices;
 use Modules\Suppliers\Entities\SupplierOrderHasGood;
@@ -14,6 +16,9 @@ use Modules\Warehouses\Entities\Warehouse;
 
 class Good extends Model
 {
+
+    use Searchable;
+
     protected $fillable = ['name','brand_id','model_id',
     'submodel_id','part_id','color_id'];
 
@@ -142,7 +147,7 @@ class Good extends Model
 
       $warehouse_has_good = new WarehouseHasGood();
       $warehouse_has_good = $warehouse_has_good->store($request);
-      
+
       $good_has_prices = new GoodHasPrices();
       $good_has_prices = $good_has_prices->store($request);
       return $this;
@@ -216,5 +221,33 @@ class Good extends Model
                                                 ->firstOrFail();
 
         return $warehouse_has_good;
+    }
+
+    public function brand() {
+        return $this->belongsTo (Brand::class);
+    }
+
+    public function model() {
+        return $this->belongsTo (Models::class);
+    }
+
+    public function submodel() {
+        return $this->belongsTo (Submodel::class);
+    }
+
+    public function part() {
+        return $this->belongsTo (Part::class);
+    }
+
+    public function color() {
+        return $this->belongsTo (Color::class);
+    }
+
+    public function warehouseHasGood() {
+        return $this->hasMany (WarehouseHasGood::class);
+    }
+
+    public function goodhasPrices() {
+        return $this->hasMany (GoodHasPrices::class);
     }
 }

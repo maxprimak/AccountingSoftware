@@ -42,5 +42,5 @@ Route::middleware(['is_authorized','is_registered'])->group(function () {
     Route::get('goods/{warehouse_id}', 'GoodsController@show')->name('goods.show')->middleware('my_warehouse');
     Route::post('goods', 'GoodsController@store')->name('goods.store');
     Route::post('goods/{good_id}', 'GoodsController@update')->name('goods.update')->middleware('my_good');
-
+    Route::post('goods_warehouses/search', 'GoodsController@search')->name('goods.search');
 });

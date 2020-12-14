@@ -3,10 +3,12 @@
 namespace Modules\Goods\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Modules\Goods\Entities\CompanyHasSubmodel;
 
 class Submodel extends Model
 {
+    use Searchable;
     protected $fillable = ['model_id','name'];
 
     public function store($request){
@@ -67,5 +69,9 @@ class Submodel extends Model
       $company_has_submodel = new CompanyHasSubmodel();
       $company_has_submodel = $company_has_submodel->store($request);
       return $company_has_submodel;
+    }
+
+    public function goods() {
+        return $this->hasMany (Good::class);
     }
 }

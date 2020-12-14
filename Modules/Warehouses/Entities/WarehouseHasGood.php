@@ -3,6 +3,8 @@
 namespace Modules\Warehouses\Entities;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+use Modules\Barcodes\Entities\Barcode;
 use Modules\Companies\Entities\Branch;
 use Modules\Goods\Entities\Brand;
 use Modules\Goods\Entities\Color;
@@ -17,6 +19,8 @@ use Modules\Services\Entities\Language;
 
 class WarehouseHasGood extends Model
 {
+    use Searchable;
+
     protected $fillable = ['good_id','warehouse_id','location_in_warehouse_id','amount','vendor_code'];
 
     public function checkIfExistsOnWarehouse($request){
@@ -32,7 +36,10 @@ class WarehouseHasGood extends Model
       //$this->location_in_warehouse_id = $request->location_in_warehouse_id;
       $this->amount = $request->amount;
       $this->vendor_code = $request->vendor_code;
-      if($request->barcode_id) $this->barcode_id = $request->barcode_id;
+      if($request->barcode_id) {
+          $this->barcode_id = $request->barcode_id;
+          $this->barcode_value = Barcode::findOrFail($request->barcode_id)->value;
+      }
       $this->save();
       return $this;
     }
@@ -128,5 +135,17 @@ class WarehouseHasGood extends Model
         $result_good['warehouse_has_good_id'] = $this->id;
         $result_good['amount_in_warehouse'] = $this->amount;
         return $result_good;
+    }
+
+    public function barcode(){
+        return $this->belongsTo (Barcode::class);
+    }
+
+    public function warehouse(){
+        return $this->belongsTo (Warehouse::class);
+    }
+
+    public function goods() {
+        return $this->hasMany (Good::class, 'id', 'good_id');
     }
 }
