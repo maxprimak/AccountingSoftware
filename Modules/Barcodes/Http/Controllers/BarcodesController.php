@@ -123,7 +123,7 @@ class BarcodesController extends Controller
         }
         $code = $this->checkFormat ($format, $number);
 
-        if(Barcode::where ('value', $code)->exists()){
+        if(Barcode::where('value', $code)->exists()){
             return $this->generateBarcode ($format, ++$increment);
         } else {
             return $code;
