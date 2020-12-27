@@ -19,12 +19,7 @@ class BarcodesController extends Controller
     public function store(Request $request)
     {
         $data = $this->validateData ($request);
-        $barcode = new Barcode();
-        $barcode->value = $data['value'];
-        $barcode->format = $data['format'];
-        $barcode->barcodeUrl = $data['barcodeUrl'];
-        $barcode->save();
-        // $barcode = Barcode::create ($data);
+        $barcode = Barcode::create ($data);
         return response ()->json ($barcode);
     }
 
