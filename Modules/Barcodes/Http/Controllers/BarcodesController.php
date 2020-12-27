@@ -54,7 +54,7 @@ class BarcodesController extends Controller
 
     private function validateData(Request $request) {
         return $request->validate ([
-            "value" => "required|unique:barcodes, value",
+            "value" => "required|unique:barcodes,value",
             "format" => "required",
             "barcodeUrl" => "required|active_url",
         ]);
